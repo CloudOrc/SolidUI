@@ -34,34 +34,36 @@
 ---
 [English](README.md) | [中文](README_CN.md)
 
-# introduce
-3D data visualization editing tool, easy to build digital twin projects, support 2D, 3D models, combined with text-to-image models for quick editing.
+# 介绍
+3D数据可视化编辑工具，轻松构建数字孪生项目，支持2D，3D模型，结合text-to-image模型快速编辑。
 
-## Core Features
+## 核心特点
 
-* Minimalist process, concise design
-* Integration of multiple 2D legends
-* Various 3D legends/scenes/GIS integration
-* Support webgl
-* Support olap
-* Support table calculation
-* Support nlp algorithm
-* Containerized deployment
-
-
-
-# contribute
-
-We welcome and look forward to more contributors participating in building SolidUI, whether it is code, documentation, or other forms of contribution that can help the community.
+* 极简流程，简洁设计
+* 多种2D图例集成
+* 多种3D图例/场景/GIS集成
+* 支持webgl
+* 支持olap
+* 支持表格计算
+* 支持nlp算法
+* 容器化部署
 
 
-# contact us
 
-- For any questions and suggestions about SolidUI, you can submit an issue for tracking, processing and experience sharing
-- You can scan the QR code below and join our WeChat group for faster response
+# 贡献
+
+我们非常欢迎和期待更多的贡献者参与共建 SolidUI, 不论是代码、文档，或是其他能够帮助到社区的贡献形式。  
+
+
+# 联系我们
+
+- 对 SolidUI 的任何问题和建议，可以提交 issue，以便跟踪处理和经验沉淀共享
+- 可以扫描下面的二维码，加入我们的微信群，以获得更快速的响应
 
 ![SolidUI](docs/images/solidui_contact_01.jpg)
 
-# Who is using SolidUI
+# 谁在使用 SolidUI
 
-We created an issue [[Who is Using SolidUI]](https://github.com/CloudOrc/SolidUI/issues/1) for user feedback and documentation of who is using SolidUI.
+我们创建了一个 issue [[Who is Using SolidUI]](https://github.com/CloudOrc/SolidUI/issues/1) 以便用户反馈和记录谁在使用 SolidUI.  
+
+
