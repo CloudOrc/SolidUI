@@ -3,7 +3,7 @@
 </h2>
 
 <p align="center">
-  <strong>3D数据可视化编辑工具，轻松构建数字孪生项目</strong>
+  <strong>3D data visualization editing tool, easy to build digital twin projects</strong>
 </p>
 
 
