@@ -3,13 +3,13 @@ import Guides from "@scena/react-guides";
 import Selecto, { Rect } from "react-selecto";
 import InfiniteViewer from "react-infinite-viewer";
 import ScenaViewport from "./ScenaViewport";
-import HistoryManager from "@/utils/HistoryManager";
-import Memory from "@/utils/Memory";
-import EventBus from "@/utils/EventBus";
-import Debugger from "@/utils/Debugger";
-import KeyManager from "@/utils/KeyManager";
+import HistoryManager from "../../utils/HistoryManager";
+import Memory from "../../utils/Memory";
+import EventBus from "../../utils/EventBus";
+import Debugger from "../../utils/Debugger";
+import KeyManager from "../../utils/KeyManager";
 import MoveableManager from "../../utils/MoveableManager";
-import MoveableData from "@/utils/MoveableData";
+import MoveableData from "../../utils/MoveableData";
 
 import { getElementInfo } from "react-moveable";
 
@@ -33,8 +33,8 @@ import { invert, matrix3d } from "@scena/matrix";
 
 // test
 // import Menu from "@/__components/ScenaEditor/Menu";
-import { prefix } from "@/utils";
-import { ScenaEditorState, ElementInfo } from "@/types";
+import { prefix } from "../../utils";
+import { ScenaEditorState, ElementInfo } from "../../types";
 import "./ScenaEditor.less";
 
 export default class ScenaEditor extends React.PureComponent<

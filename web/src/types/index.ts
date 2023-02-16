@@ -1,14 +1,14 @@
 import React from "react";
 import Selecto from "react-selecto";
-import Memory from "@/utils/Memory";
-import EventBus from "@/utils/EventBus";
-import MoveableData from "@/utils/MoveableData";
-import MoveableManager from "@/utils/MoveableManager";
-import KeyManager from "@/utils/KeyManager";
-import ScenaEditor from "@/components/ScenaEditor/ScenaEditor";
-import ScenaViewport from "@/components/ScenaEditor/ScenaViewport";
-import HistoryManager from "@/utils/HistoryManager";
-import Debugger from "@/utils/Debugger";
+import Memory from "../utils/Memory";
+import EventBus from "../utils/EventBus";
+import MoveableData from "../utils/MoveableData";
+import MoveableManager from "../utils/MoveableManager";
+import KeyManager from "../utils/KeyManager";
+import ScenaEditor from "../components/ScenaEditor/ScenaEditor";
+import ScenaViewport from "../components/ScenaEditor/ScenaViewport";
+import HistoryManager from "../utils/HistoryManager";
+import Debugger from "../utils/Debugger";
 import { IObject } from "@daybrush/utils";
 
 export interface ScenaEditorState {

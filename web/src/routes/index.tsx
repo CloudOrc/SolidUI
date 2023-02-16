@@ -1,7 +1,7 @@
 import React from "react";
 import { RouteObject } from "react-router-dom";
-import Login from "@/pages/Login/Login";
-import Dashboard from "@/pages/Designer/Designer";
+import Login from "../pages/Login/Login";
+import Dashboard from "../pages/Designer/Designer";
 
 const routes: RouteObject[] = [
 	{

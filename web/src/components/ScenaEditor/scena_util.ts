@@ -16,7 +16,7 @@ import {
 	ScenaFunctionJSXElement,
 	ScenaFunctionComponent,
 	ScenaProps,
-} from "@/types";
+} from "../../types";
 import { Frame, NameType } from "scenejs";
 
 export const EDITOR_PROPERTIES = [

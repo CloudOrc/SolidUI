@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Slider } from "antd";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
-import ScenaEditor from "@/components/ScenaEditor/ScenaEditor";
-import { makeScenaFunctionComponent } from "@/components/ScenaEditor/scena_util";
-import { ScenaProps } from "@/types";
+import ScenaEditor from "../../../components/ScenaEditor/ScenaEditor";
+import { makeScenaFunctionComponent } from "../../../components/ScenaEditor/scena_util";
+import { ScenaProps } from "../../../types";
 
 let cw = 1260;
 let ch = 1782;

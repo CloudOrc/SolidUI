@@ -1,19 +1,19 @@
 import * as React from "react";
 import Moveable from "react-moveable";
-import { getContentElement, getId } from "@/components/ScenaEditor/scena_util";
-import Editor from "@/components/ScenaEditor/ScenaEditor";
-import { EditorInterface } from "@/types";
+import { getContentElement, getId } from "../components/ScenaEditor/scena_util";
+import Editor from "../components/ScenaEditor/ScenaEditor";
+import { EditorInterface } from "../types";
 import { IObject } from "@daybrush/utils";
 import { diff } from "@egjs/list-differ";
-import { connectEditorContext } from "@/decorators/ConnectEditorContext";
+import { connectEditorContext } from "../decorators/ConnectEditorContext";
 import {
 	DimensionViewableProps,
 	DimensionViewable,
-} from "@/components/ScenaEditor/ables/DimensionViewable";
+} from "../components/ScenaEditor/ables/DimensionViewable";
 import {
 	DelteButtonViewable,
 	DelteButtonViewableProps,
-} from "@/components/ScenaEditor/ables/DeleteButtonViewable";
+} from "../components/ScenaEditor/ables/DeleteButtonViewable";
 
 function restoreRender(
 	id: string,

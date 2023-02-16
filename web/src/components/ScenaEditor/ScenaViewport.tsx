@@ -9,7 +9,7 @@ import {
 	getOffsetOriginMatrix,
 	updateElements,
 } from "./scena_util";
-import { prefix } from "@/utils";
+import { prefix } from "../../utils";
 import { DATA_SCENA_ELEMENT_ID } from "./scena_util";
 import {
 	ScenaJSXElement,
@@ -18,7 +18,7 @@ import {
 	AddedInfo,
 	RemovedInfo,
 	MovedResult,
-} from "@/types";
+} from "../../types";
 
 export default class Viewport extends React.PureComponent<{
 	children: any;
