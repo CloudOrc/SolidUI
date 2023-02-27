@@ -58,7 +58,8 @@
 # 联系我们
 
 - 对 SolidUI 的任何问题和建议，可以提交 issue，以便跟踪处理和经验沉淀共享
-- 可以扫描下面的二维码，加入我们的微信群，以获得更快速的响应
+- [bilibili](https://space.bilibili.com/472576729) (in Chinese)
+- 可以扫描下面的二维码，加入我们的微信群，以获得更快速的响应 (in Chinese)
 
 ![SolidUI](docs/images/solidui_contact_01.jpg)
 

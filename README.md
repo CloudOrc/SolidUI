@@ -58,7 +58,8 @@ We welcome and look forward to more contributors participating in building Solid
 # contact us
 
 - For any questions and suggestions about SolidUI, you can submit an issue for tracking, processing and experience sharing
-- You can scan the QR code below and join our WeChat group for faster response
+- [bilibili](https://space.bilibili.com/472576729) (in Chinese)  
+- You can scan the QR code below and join our WeChat group for faster response (in Chinese)
 
 ![SolidUI](docs/images/solidui_contact_01.jpg)
 
