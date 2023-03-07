@@ -35,7 +35,7 @@
 [English](README.md) | [中文](README_CN.md)
 
 # introduce
-3D data visualization prototyping and editing platform, support 2D, 3D models, combined with text-to-image models for quick editing.
+3D data visualization prototyping and editing platform, support 2D, 3D models, combined with AIGC models for quick editing.
 
 ## Core Features
 
