@@ -3,7 +3,7 @@
 </h2>
 
 <p align="center">
-  <strong>3D数据可视化编辑工具，轻松构建数字孪生项目</strong>
+  <strong>3D数据可视化原型设计和编辑平台</strong>
 </p>
 
 
@@ -35,7 +35,7 @@
 [English](README.md) | [中文](README_CN.md)
 
 # 介绍
-3D数据可视化编辑工具，轻松构建数字孪生项目，支持2D，3D模型，结合text-to-image模型快速编辑。
+3D数据可视化原型设计和编辑平台，支持2D，3D模型，结合text-to-image模型快速编辑。
 
 ## 核心特点
 
