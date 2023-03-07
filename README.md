@@ -41,7 +41,7 @@
 
 * Minimalist process, concise design
 * Integration of multiple 2D legends
-* Various 3D scenes/GIS integration
+* Various 3D scenes
 * Support webgl
 * Support olap
 * Support table calculation
