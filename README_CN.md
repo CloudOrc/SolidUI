@@ -61,11 +61,11 @@
 - [bilibili](https://space.bilibili.com/472576729) (in Chinese)
 - 可以扫描下面的二维码，加入我们的微信群，以获得更快速的响应 (in Chinese)
 
-![SolidUI](docs/images/solidui_contact_01.jpg)
+![SolidUI1](docs/images/solidui_contact_01.png)
 
 - 微信公众号 (in Chinese)
 
-![imgs](docs/images/solidui_contact_02.jpg)
+![SolidUI2](docs/images/solidui_contact_02.png)
 
 # 谁在使用 SolidUI
 

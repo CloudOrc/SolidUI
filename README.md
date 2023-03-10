@@ -61,11 +61,11 @@ We welcome and look forward to more contributors participating in building Solid
 - [bilibili](https://space.bilibili.com/472576729) (in Chinese)  
 - You can scan the QR code below and join our WeChat group for faster response (in Chinese)
 
-![SolidUI](docs/images/solidui_contact_01.jpg)
+![SolidUI1](docs/images/solidui_contact_01.png)
 
 - WeChat Official Account (in Chinese)
 
-![imgs](docs/images/solidui_contact_02.jpg)
+![SolidUI2](docs/images/solidui_contact_02.png)
 
 # Who is using SolidUI
 
