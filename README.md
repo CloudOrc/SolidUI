@@ -59,6 +59,7 @@ We welcome and look forward to more contributors participating in building Solid
 
 - For any questions and suggestions about SolidUI, you can submit an issue for tracking, processing and experience sharing
 - [bilibili](https://space.bilibili.com/472576729) (in Chinese)  
+- [slack](https://app.slack.com/huddle/T04TCS4367L/C04SYKZL10X)  
 - You can scan the QR code below and join our WeChat group for faster response (in Chinese)
 
 ![SolidUI1](docs/images/solidui_contact_01.png)
