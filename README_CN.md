@@ -63,6 +63,10 @@
 
 ![SolidUI](docs/images/solidui_contact_01.jpg)
 
+- 微信公众号 (in Chinese)
+
+![imgs](docs/images/solidui_contact_02.jpg)
+
 # 谁在使用 SolidUI
 
 我们创建了一个 issue [[Who is Using SolidUI]](https://github.com/CloudOrc/SolidUI/issues/1) 以便用户反馈和记录谁在使用 SolidUI.  

@@ -63,6 +63,10 @@ We welcome and look forward to more contributors participating in building Solid
 
 ![SolidUI](docs/images/solidui_contact_01.jpg)
 
+- WeChat Official Account (in Chinese)
+
+![imgs](docs/images/solidui_contact_02.jpg)
+
 # Who is using SolidUI
 
 We created an issue [[Who is Using SolidUI]](https://github.com/CloudOrc/SolidUI/issues/1) for user feedback and documentation of who is using SolidUI.
