@@ -59,6 +59,7 @@
 
 - 对 SolidUI 的任何问题和建议，可以提交 issue，以便跟踪处理和经验沉淀共享
 - [bilibili](https://space.bilibili.com/472576729) (in Chinese)
+- [slack](https://app.slack.com/huddle/T04TCS4367L/C04SYKZL10X)
 - 可以扫描下面的二维码，加入我们的微信群，以获得更快速的响应 (in Chinese)
 
 ![SolidUI1](docs/images/solidui_contact_01.png)
@@ -66,6 +67,8 @@
 - 微信公众号 (in Chinese)
 
 ![SolidUI2](docs/images/solidui_contact_02.png)
+
+
 
 # 谁在使用 SolidUI
 
