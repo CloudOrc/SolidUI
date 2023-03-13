@@ -1,7 +1,7 @@
 import MoveableHelper from "moveable-helper";
 import Memory from "./Memory";
 import { Frame, NameType } from "scenejs";
-import { getId } from "../components/ScenaEditor/scena_util";
+import { getId } from "./index";
 
 export default class MoveableData extends MoveableHelper {
 	public selectedTargets: Array<HTMLElement | SVGElement> = [];

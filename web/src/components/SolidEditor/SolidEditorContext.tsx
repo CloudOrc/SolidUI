@@ -1,6 +1,10 @@
-import * as React from "react";
+import { createContext } from "react";
+import SolidEditor from "./SolidEditor";
+import { SOLID_EDITOR_PROPERTIES } from "./utils/const";
 
-export function connectContext(
+export const SolidEditorContext = createContext<SolidEditor | null>(null);
+
+function connectContext(
 	context: React.Context<any>,
 	properties: readonly string[]
 ) {
@@ -20,3 +24,8 @@ export function connectContext(
 		});
 	};
 }
+
+export const connectEditorContext = connectContext(
+	SolidEditorContext,
+	SOLID_EDITOR_PROPERTIES
+);

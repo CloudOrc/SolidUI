@@ -26,7 +26,6 @@
     user-select: none;
     background: #1f2024;
     border-bottom: 1px solid #0d0e0e;
-    font-family: "-apple-system, BlinkMacSystemFont, FontAwesome, Segoe UI, Helvetica Neue, Arial, Pingfang SC, Microsoft Yahei, WenQuanYi Micro Hei, sans-serif";
 
     .header-left {
       position: relative;
@@ -35,11 +34,12 @@
       height: 100%;
 
       .logo {
-        width: 72px;
-        height: 34px;
+        width: 29px;
+        height: 28px;
         margin-left: 20px;
-        // background: url('@/assets/images/logo.png') 50% no-repeat;
-        // background-size: contain;
+				margin-bottom: 4px;
+        background: url('@/assets/images/logo.png') 50% no-repeat;
+        background-size: contain;
 				font-size: 20px;
 				font-weight: 600;
 				color: #fff;
@@ -47,6 +47,16 @@
 				justify-content: center;
 				align-items: center;
       }
+
+			.logo-text {
+				display: flex;
+				height: 53px;
+				align-items: center;
+				padding-top: 2px;
+				margin-left: 10px;
+				color: #fff;
+				font-size: 20px;
+			}
 
       .version {
         display: inline-block;
@@ -57,7 +67,6 @@
         border-radius: 12px 12px 12px 0;
         margin-left: 12px;
         font-size: 12px;
-        font-family: "-apple-system, BlinkMacSystemFont, FontAwesome, Segoe UI, Helvetica Neue, Arial, Pingfang SC, Microsoft Yahei, WenQuanYi Micro Hei, sans-serif";
         color: #fff;
         text-align: center;
         line-height: 20px;

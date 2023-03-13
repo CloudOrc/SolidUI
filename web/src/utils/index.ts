@@ -1,26 +1,6 @@
-export const PREFIX = "scena-";
+import mitt from "mitt";
+import { EventBusType } from "@/types/eventbus";
 
-export function prefixNames(prefix: string, ...classNames: string[]) {
-	return classNames
-		.map((className) =>
-			className
-				.split(" ")
-				.map((name) => (name ? `${prefix}${name}` : ""))
-				.join(" ")
-		)
-		.join(" ");
-}
+const eventbus = mitt<EventBusType>();
 
-export function prefix(...classNames: string[]) {
-	return prefixNames(PREFIX, ...classNames);
-}
-
-export function checkInput(target: HTMLElement | SVGElement) {
-	const tagName = target.tagName.toLowerCase();
-
-	return (
-		(target as HTMLElement).isContentEditable ||
-		tagName === "input" ||
-		tagName === "textarea"
-	);
-}
+export { eventbus };

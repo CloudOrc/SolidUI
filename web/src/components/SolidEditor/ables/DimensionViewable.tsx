@@ -17,7 +17,7 @@ export const DimensionViewable = {
 		return (
 			<div
 				key={"dimension-viewer"}
-				className={"moveable-dimension"}
+				className="solid-view-dimension"
 				style={{
 					left: `${rect.width / 2}px`,
 					top: `${rect.height}px`,

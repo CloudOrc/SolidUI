@@ -1,12 +1,10 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Slider } from "antd";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
-import ScenaEditor from "../../../components/ScenaEditor/ScenaEditor";
-import { makeScenaFunctionComponent } from "../../../components/ScenaEditor/scena_util";
-import { ScenaProps } from "../../../types";
-
-let cw = 1260;
-let ch = 1782;
+import SolidEditor from "@/components/SolidEditor/SolidEditor";
+import EChartsBarSolidView from "@/views/echarts/EChartsBarSolidView";
+import { OnZoomEventData } from "@/types";
+import { eventbus } from "@/utils";
 
 type View = {
 	top: number;
@@ -16,124 +14,111 @@ type View = {
 	transform?: string;
 };
 
-const Badge = makeScenaFunctionComponent(
-	"Badge",
-	function Badge(props: ScenaProps) {
-		return (
-			<p className="badges" data-scena-element-id={props.scenaElementId}>
-				<a
-					href="https://github.com/CloudOrc/SolidUI/tree/master"
-					target="_blank"
-				>
-					<img
-						src="https://img.shields.io/npm/v/solidui.svg?style=flat-square&amp;color=007acc&amp;label=version"
-						alt="npm version"
-					/>
-				</a>
-				<a href="https://github.com/CloudOrc/SolidUI" target="_blank">
-					<img src="https://img.shields.io/github/stars/cloudorc/solidui.svg?color=42b883&amp;style=flat-square" />
-				</a>
-				<a href="https://github.com/CloudOrc/SolidUI" target="_blank">
-					<img src="https://img.shields.io/badge/language-typescript-blue.svg?style=flat-square" />
-				</a>
-				<br />
-				<a
-					href="https://github.com/CloudOrc/SolidUI/tree/master/main"
-					target="_blank"
-				>
-					<img
-						alt="React"
-						src="https://img.shields.io/static/v1.svg?label=&amp;message=React&amp;style=flat-square&amp;color=61daeb"
-					/>
-				</a>
-			</p>
-		);
-	}
-);
-
 function Scena() {
-	const [width, setWidth] = useState(582);
-	const [height, setHeight] = useState(482);
+	const [width, setWidth] = useState(1024);
+	const [height, setHeight] = useState(768);
+	const [zoom, setZoom] = useState(1);
 	const areaTopRef = useRef<HTMLDivElement>(null);
 
 	let thick = 24;
+	const editorRef = React.createRef<SolidEditor>();
 
-	const editorRef = React.useRef<ScenaEditor>();
+	function getZoomValue(zoom: number) {
+		let roundZoom = Math.floor(zoom * 100);
+		return roundZoom / 100;
+	}
 
 	useLayoutEffect(() => {
-		if (areaTopRef.current) {
-			let rect = areaTopRef.current.getBoundingClientRect();
-			let w = rect.width;
-			let h = rect.height;
-			setWidth(w - thick);
-			setHeight(h - thick);
+		if (editorRef.current) {
+			let container = editorRef.current.getInfiniteViewer().getContainer();
+			let infiniteViewContainerRect = container.getBoundingClientRect();
+			let infiniteWidth = infiniteViewContainerRect.width;
+			let infiniteHeight = infiniteViewContainerRect.height;
+
+			let wRatio = (infiniteWidth - 50) / width;
+			let hRatio = (infiniteHeight - 50) / height;
+			let ratio = Math.min(wRatio, hRatio);
+			let roundRatio = Math.floor(ratio * 100);
+			let zoom = roundRatio / 100;
+			setZoom(zoom);
+			editorRef.current.setZoom(zoom);
 		}
+
+		editorRef.current && editorRef.current.getInfiniteViewer()?.scrollCenter();
 	}, []);
 
 	useEffect(() => {
+		let viewModel: any = {};
+
+		viewModel.id = "123";
+		viewModel.title = "Bar";
+		viewModel.type = "echarts_bar";
+		viewModel.dataSheet = [
+			["name", "pjsf", "pjhf", "cc"],
+			["zhengshuzhi", 81.23, 16, 6],
+			["huashengke", 1156.13, 502.86, 242],
+		];
+		viewModel.metadata = {
+			viewDimensions: [
+				{
+					dimensionType: "view",
+					label: "name",
+					selectorType: "single",
+				},
+			],
+			measures: [
+				{
+					label: "pjsf",
+					aggregate: "sum",
+				},
+				{
+					label: "pjhf",
+					aggregate: "sum",
+				},
+				{
+					label: "cc",
+					aggregate: "sum",
+				},
+			],
+		};
+
+		const defaultOptions = {
+			tooltip: {
+				show: true,
+				trigger: "axis",
+				axisPointer: {
+					type: "shadow",
+				},
+			} as any,
+		};
+		viewModel.option = defaultOptions;
+		let viewStyle = {
+			position: "absolute",
+			top: 0,
+			left: 100,
+			width: 500,
+			height: 400,
+			background: "#fff",
+			overflow: "hidden",
+		} as React.CSSProperties;
+		viewModel.style = viewStyle;
+
 		editorRef
 			.current!.appendJSXs(
 				[
 					{
 						jsx: (
-							<div
-								className="moveable"
-								contentEditable="true"
-								suppressContentEditableWarning={true}
-							>
-								SolidUI
-							</div>
+							<EChartsBarSolidView
+								viewModel={viewModel}
+								id="bar123"
+								style={{
+									...viewStyle,
+									top: 200,
+									left: 200,
+								}}
+							/>
 						),
-						name: "(Logo)",
-						frame: {
-							position: "absolute",
-							left: "50%",
-							top: "30%",
-							width: "250px",
-							height: "200px",
-							"font-size": "40px",
-							transform: "translate(-125px, -100px)",
-							display: "flex",
-							"justify-content": "center",
-							"flex-direction": "column",
-							"text-align": "center",
-							"font-weight": 100,
-							color: "#fff",
-						},
-					},
-					{
-						jsx: <Badge />,
-						name: "(Badges)",
-						frame: {
-							position: "absolute",
-							left: "0%",
-							top: "50%",
-							width: "100%",
-							"text-align": "center",
-						},
-					},
-					{
-						jsx: (
-							<div
-								className="moveable"
-								contentEditable="true"
-								suppressContentEditableWarning={true}
-							>
-								3D data visualization editing tools to easily build digital
-								twins
-							</div>
-						),
-						name: "(Description)",
-						frame: {
-							position: "absolute",
-							left: "0%",
-							top: "65%",
-							width: "100%",
-							"font-size": "14px",
-							"text-align": "center",
-							"font-weight": "normal",
-							color: "#fff",
-						},
+						name: "ECharts Bar 123",
 					},
 				],
 				true
@@ -142,7 +127,17 @@ function Scena() {
 				editorRef.current &&
 					editorRef.current.setSelectedTargets([targets[0]], true);
 			});
+
+		eventbus.on("onZoom", onZoom);
+
+		return () => {
+			eventbus.off("onZoom", onZoom);
+		};
 	}, []);
+
+	function onZoom(data: OnZoomEventData) {
+		setZoom(data.zoom);
+	}
 
 	return (
 		<section className="workarea">
@@ -157,18 +152,12 @@ function Scena() {
 				}}
 				ref={areaTopRef}
 			>
-				<ScenaEditor
-					width={1024}
-					height={768}
-					ref={(ref) => {
-						if (null !== editorRef.current && undefined !== editorRef.current) {
-							return;
-						}
-						if (null !== ref && undefined !== ref) {
-							editorRef.current = ref;
-						}
-						console.log(editorRef.current);
-					}}
+				<SolidEditor
+					width={width}
+					height={height}
+					debug
+					ref={editorRef}
+					zoom={zoom}
 				/>
 			</div>
 			<div
@@ -187,7 +176,6 @@ function Scena() {
 				<div className="cu-b-r" style={{}}>
 					<div className="cu-b-r-nav">
 						<div className="cu-b-zoom-container">
-							<MinusOutlined />
 							<Slider
 								min={50}
 								max={200}
@@ -195,10 +183,15 @@ function Scena() {
 								disabled={false}
 								style={{
 									width: 100,
+									margin: "0 10px 0 10px",
 								}}
-								onChange={(value) => {}}
+								onChange={(value) => {
+									let zoom = value / 100;
+									setZoom(zoom);
+									editorRef.current && editorRef.current.setZoom(zoom);
+								}}
 							/>
-							<PlusOutlined />
+							<span>{(getZoomValue(zoom) * 100).toFixed(0)}%</span>
 						</div>
 					</div>
 				</div>

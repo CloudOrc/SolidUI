@@ -5,7 +5,8 @@ function Header() {
 		<header className="header">
 			<div className="header-main">
 				<div className="header-left">
-					<div className="logo">SolidUI</div>
+					<div className="logo"></div>
+					<div className="logo-text">SolidUI</div>
 					<div className="version">v0.1.0</div>
 					<div className="split-line"></div>
 					<div className="left-main"></div>

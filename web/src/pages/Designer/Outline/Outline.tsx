@@ -12,12 +12,10 @@ function Outline() {
 						width: "100%",
 						fontSize: "14px",
 						color: "#fff",
-						fontFamily:
-							'"-apple-system, BlinkMacSystemFont, FontAwesome, Segoe UI, Helvetica Neue, Arial, Pingfang SC, Microsoft Yahei, WenQuanYi Micro Hei, sans-serif"',
 						lineHeight: "38px",
 					}}
 				>
-					概要
+					View List
 				</span>
 			</div>
 			<div className="components">
@@ -53,14 +51,14 @@ function Outline() {
 											color: "#3dd8ff",
 										}}
 									></i>
-									<span className="text">基础柱状图</span>
+									<span className="text">Basic Bar Chart</span>
 									<div className="act act-eye">
-										<Tooltip title="隐藏">
+										<Tooltip title="hide">
 											<i className="bi-font bi-eye" />
 										</Tooltip>
 									</div>
 									<div className="act act-lock">
-										<Tooltip title="锁定">
+										<Tooltip title="lock">
 											<i className="bi-font bi-lock" />
 										</Tooltip>
 									</div>
@@ -76,14 +74,14 @@ function Outline() {
 											color: "#3dd8ff",
 										}}
 									></i>
-									<span className="text">基础柱状图</span>
+									<span className="text">Basic Bar Chart</span>
 									<div className="act act-eye">
-										<Tooltip title="隐藏">
+										<Tooltip title="hide">
 											<i className="bi-font bi-eye" />
 										</Tooltip>
 									</div>
 									<div className="act act-lock">
-										<Tooltip title="锁定">
+										<Tooltip title="lock">
 											<i className="bi-font bi-lock" />
 										</Tooltip>
 									</div>

@@ -1,6 +1,6 @@
 import { MoveableManagerInterface, Renderer } from "react-moveable";
-import { ScenaEditorContext } from "../ScenaConfig";
-import ScenaEditor from "../ScenaEditor";
+import { SolidEditorContext } from "../SolidEditorContext";
+import SolidEditor from "../SolidEditor";
 
 export interface DelteButtonViewableProps {
 	deleteButtonViewable?: boolean;
@@ -19,38 +19,38 @@ export const DelteButtonViewable = {
 			"div",
 			`
         {
-					position: absolute;
-					left: 0px;
-					top: 0px;
-					will-change: transform;
-					transform-origin: 0px 0px;
-					width: 24px;
-					height: 24px;
-					background: #4af;
-					background: var(--moveable-color);
-					opacity: 0.9;
-					border-radius: 4px;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            will-change: transform;
+            transform-origin: 0px 0px;
+            width: 24px;
+            height: 24px;
+            background: #4af;
+            background: var(--moveable-color);
+            opacity: 0.9;
+            border-radius: 4px;
         }
         :host:before, :host:after {
-					content: "";
-					position: absolute;
-					left: 50%;
-					top: 50%;
-					transform: translate(-50%, -50%) rotate(45deg);
-					width: 16px;
-					height: 2px;
-					background: #fff;
-					border-radius: 1px;
-					cursor: pointer;
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 16px;
+            height: 2px;
+            background: #fff;
+            border-radius: 1px;
+            cursor: pointer;
         }
         :host:after {
             transform: translate(-50%, -50%) rotate(-45deg);
         }
-			`
+        `
 		);
 		return (
-			<ScenaEditorContext.Consumer key="delete-button-viewer">
-				{(editor: ScenaEditor | null) => {
+			<SolidEditorContext.Consumer key="delete-button-viewer">
+				{(editor: SolidEditor | null) => {
 					return (
 						<DeleteButton
 							className={"moveable-delete-button"}
@@ -63,7 +63,7 @@ export const DelteButtonViewable = {
 						/>
 					);
 				}}
-			</ScenaEditorContext.Consumer>
+			</SolidEditorContext.Consumer>
 		);
 	},
 } as const;

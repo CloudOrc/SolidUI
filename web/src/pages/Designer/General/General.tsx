@@ -13,12 +13,10 @@ function General() {
 						width: "100%",
 						fontSize: "14px",
 						color: "#fff",
-						fontFamily:
-							'"-apple-system, BlinkMacSystemFont, FontAwesome, Segoe UI, Helvetica Neue, Arial, Pingfang SC, Microsoft Yahei, WenQuanYi Micro Hei, sans-serif"',
 						lineHeight: "38px",
 					}}
 				>
-					大纲
+					Outline
 				</span>
 				<Button
 					icon={<PlusOutlined />}

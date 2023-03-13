@@ -1,7 +1,7 @@
 import { IObject } from "@daybrush/utils";
-import ScenaEditor from "../components/ScenaEditor/ScenaEditor";
+import SolidEditor from "../SolidEditor";
 
-export type RestoreCallback = (props: any, editor: ScenaEditor) => any;
+export type RestoreCallback = (props: any, editor: SolidEditor) => any;
 export interface HistoryAction {
 	type: string;
 	props: IObject<any>;
@@ -10,7 +10,7 @@ export default class HistoryManager {
 	private undoStack: HistoryAction[] = [];
 	private redoStack: HistoryAction[] = [];
 	private types: IObject<{ redo: RestoreCallback; undo: RestoreCallback }> = {};
-	constructor(private editor: ScenaEditor) {}
+	constructor(private editor: SolidEditor) {}
 	public registerType(
 		type: string,
 		undo: RestoreCallback,

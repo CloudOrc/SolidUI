@@ -6,9 +6,9 @@
   "author": "solidui",
   "license": "Apache-2.0",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development BASE_ENV=development webpack-dev-server -c web/scripts/webpack.dev.js",
-    "build:analysis": "cross-env NODE_ENV=production BASE_ENV=production webpack -c web/scripts/webpack.analysis.js",
-    "build:prod": "cross-env NODE_ENV=production BASE_ENV=production webpack -c web/scripts/webpack.prod.js"
+    "dev": "cross-env NODE_ENV=development BASE_ENV=development webpack-dev-server -c scripts/webpack.dev.js",
+    "build:analysis": "cross-env NODE_ENV=production BASE_ENV=production webpack -c scripts/webpack.analysis.js",
+    "build:prod": "cross-env NODE_ENV=production BASE_ENV=production webpack -c scripts/webpack.prod.js"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",
@@ -65,6 +65,7 @@
     "echarts": "5.4.1",
     "keycon": "1.4.0",
     "lodash-es": "4.17.21",
+    "mitt": "3.0.0",
     "moveable-helper": "0.4.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

@@ -1,0 +1,93 @@
+@import "./variables.less";
+
+@editorPrefix: visual;
+
+[class*="visual-"] {
+  font-family: "Open Sans", sans-serif;
+}
+
+.@{editorPrefix}-editor {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-family: sans-serif;
+  transform-style: preserve-3d;
+
+	.editor-guides {
+		position: absolute !important;
+		top: 0;
+		left: 0;
+		transform: translateZ(1px);
+	}
+
+	.editor-guides.guides-horizontal {
+		left: calc(30px);
+		width: calc(100% - 30px);
+		height: 30px !important;
+	}
+
+	.editor-guides.guides-vertical {
+		top: 30px;
+		left: 0;
+		height: calc(100% - 30px);
+		width: 30px !important;
+	}
+
+	.editor-guides-reset {
+		position: absolute !important;
+		background: @back3Color;
+		width: 30px;
+		height: 30px;
+		z-index: 1;
+		border-right: 1px solid @back4Color;
+		border-bottom: 1px solid @back4Color;
+		box-sizing: border-box;
+		cursor: pointer;
+		left: 0;
+		top: 0px;
+	}
+
+	.editor-viewer {
+		position: absolute !important;
+		left: calc(30px);
+		top: 30px;
+		width: calc(100% - 30px);
+		height: calc(100% - 30px);
+		background: rgb(13, 14, 14);
+
+		.editor-viewport-container {
+			position: relative;
+
+			.editor-viewport {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				box-sizing: border-box;
+
+				&:before {
+					content: "";
+					position: absolute;
+					border: none;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					pointer-events: none;
+				}
+			}
+		}
+	}
+}
+
+.solid-view-dimension {
+  position: absolute;
+  background: @mainColor;
+  border-radius: 2px;
+  padding: 1px 3px;
+  color: white;
+  font-size: 13px;
+  white-space: nowrap;
+  font-weight: bold;
+  will-change: transform;
+  transform: translate(-50%) translateZ(0px);
+}
