@@ -1,5 +1,7 @@
 import React from "react";
 
+import "./header.less";
+
 function Header() {
 	return (
 		<header className="header">

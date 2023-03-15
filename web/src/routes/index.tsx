@@ -5,11 +5,11 @@ import Dashboard from "../pages/Designer/Designer";
 
 const routes: RouteObject[] = [
 	{
-		path: "/login",
+		path: "/",
 		element: <Login />,
 	},
 	{
-		path: "/",
+		path: "/dashboard",
 		element: <Dashboard />,
 	},
 ];

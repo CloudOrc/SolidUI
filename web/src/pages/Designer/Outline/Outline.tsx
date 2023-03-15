@@ -1,5 +1,6 @@
 import React from "react";
 import { Tooltip } from "antd";
+import "./outline.less";
 
 function Outline() {
 	return (
@@ -11,7 +12,7 @@ function Outline() {
 						height: "38px",
 						width: "100%",
 						fontSize: "14px",
-						color: "#fff",
+						// color: "#fff",
 						lineHeight: "38px",
 					}}
 				>

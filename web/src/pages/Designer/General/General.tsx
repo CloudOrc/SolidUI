@@ -2,6 +2,8 @@ import React from "react";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
+import "./general.less";
+
 function General() {
 	return (
 		<div className="aside-general">
@@ -12,7 +14,7 @@ function General() {
 						height: "38px",
 						width: "100%",
 						fontSize: "14px",
-						color: "#fff",
+						// color: "#fff",
 						lineHeight: "38px",
 					}}
 				>
@@ -35,7 +37,9 @@ function General() {
 						width: "100%",
 						height: "100%",
 						overflow: "hidden",
-						color: "#fff",
+						// color: "#fff",
+						color: "#1a1a1a",
+						backgroundColor: "#fff",
 					}}
 				>
 					<div

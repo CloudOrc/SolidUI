@@ -1,0 +1,100 @@
+@import "@/assets/styles/variables.less";
+
+@editorPrefix: visual;
+
+[class*="visual-"] {
+  font-family: "Open Sans", sans-serif;
+}
+
+.@{editorPrefix}-editor {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-family: sans-serif;
+  transform-style: preserve-3d;
+
+	.editor-guides {
+		position: absolute !important;
+		top: 0;
+		left: 0;
+		transform: translateZ(1px);
+	}
+
+	.editor-guides.guides-horizontal {
+		left: calc(@rulerGuidesSize);
+		width: calc(100% - @rulerGuidesSize);
+		height: @rulerGuidesSize !important;
+	}
+
+	.editor-guides.guides-vertical {
+		top: @rulerGuidesSize;
+		left: 0;
+		height: calc(100% - @rulerGuidesSize);
+		width: @rulerGuidesSize !important;
+	}
+
+	.editor-guides-reset {
+		position: absolute !important;
+		// background: @back3Color;
+		// background: #7f7f7f;
+		// background: #6B6B6C;
+		background: #EAECEE;
+		width: @rulerGuidesSize;
+		height: @rulerGuidesSize;
+		z-index: 1;
+		// border-right: 1px solid @back4Color;
+		// border-bottom: 1px solid @back4Color;
+		border-right: 1px solid #6B6B6C;
+		border-bottom: 1px solid #6B6B6C;
+		box-sizing: border-box;
+		cursor: pointer;
+		left: 0;
+		top: 0px;
+	}
+
+	.editor-viewer {
+		position: absolute !important;
+		left: calc(@rulerGuidesSize);
+		top: @rulerGuidesSize;
+		width: calc(100% - @rulerGuidesSize);
+		height: calc(100% - @rulerGuidesSize);
+		// background: rgb(13, 14, 14);
+		background: @infiniteViewBgColor;
+
+		.editor-viewport-container {
+			position: relative;
+
+			.editor-viewport {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				box-sizing: border-box;
+				background-color: #fff;
+
+				&:before {
+					content: "";
+					position: absolute;
+					border: none;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					pointer-events: none;
+				}
+			}
+		}
+	}
+}
+
+.solid-view-dimension {
+  position: absolute;
+  background: @mainColor;
+  border-radius: 2px;
+  padding: 1px 3px;
+  color: white;
+  font-size: 13px;
+  white-space: nowrap;
+  font-weight: bold;
+  will-change: transform;
+  transform: translate(-50%) translateZ(0px);
+}

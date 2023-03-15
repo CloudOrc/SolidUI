@@ -23,10 +23,11 @@ import { SolidEditorContext } from "./SolidEditorContext";
 import { invert, matrix3d } from "@scena/matrix";
 import { IObject } from "@daybrush/utils";
 import { ElementInfo } from "./utils/types";
-import { EventBusType } from "@/types";
+// import { EventBusType } from "@/types";
 
-import "@/assets/styles/solideditor.less";
+// import "@/assets/styles/solideditor.less";
 import { eventbus } from "@/utils";
+import "./style/index.less";
 
 export interface SolidEditorState {
 	selectedTargets: Array<SVGElement | HTMLElement>;
@@ -356,6 +357,9 @@ export default class SolidEditor extends React.PureComponent<
 							horizontalGuides: e.guides,
 						});
 					}}
+					lineColor="#EAECEE"
+					backgroundColor="#6B6B6C"
+					textColor="#EAECEE"
 				/>
 
 				<Guides
@@ -373,6 +377,9 @@ export default class SolidEditor extends React.PureComponent<
 							verticalGuides: e.guides,
 						});
 					}}
+					lineColor="#EAECEE"
+					backgroundColor={"#6B6B6C"}
+					textColor="#EAECEE"
 				/>
 
 				<InfiniteViewer
