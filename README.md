@@ -34,7 +34,7 @@
 ---
 [English](README.md) | [中文](README_CN.md)
 
-# introduce
+# Introduce
 3D data visualization prototyping and editing platform, support 2D, 3D models, combined with AIGC models for quick editing.
 
 ## Core Features
@@ -48,14 +48,16 @@
 * Support nlp algorithm
 * Containerized deployment
 
+# Document
+For a complete list of documentation for SolidUI v0.1.0, see [SolidUI-Doc](https://github.com/CloudOrc/SolidUI-Doc/tree/main/en_US)
 
 
-# contribute
+# Contribute
 
 We welcome and look forward to more contributors participating in building SolidUI, whether it is code, documentation, or other forms of contribution that can help the community.
 
 
-# contact us
+# Contact US
 
 - For any questions and suggestions about SolidUI, you can submit an issue for tracking, processing and experience sharing
 - [bilibili](https://space.bilibili.com/472576729) (in Chinese)  

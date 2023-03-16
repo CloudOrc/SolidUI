@@ -48,7 +48,8 @@
 * 支持nlp算法
 * 容器化部署
 
-
+# 文档
+SolidUI v0.1.0 的完整文档列表，请参见 [SolidUI-Doc](https://github.com/CloudOrc/SolidUI-Doc/tree/main/zh_CN)
 
 # 贡献
 
