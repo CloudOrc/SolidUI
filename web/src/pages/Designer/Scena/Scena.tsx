@@ -3,8 +3,9 @@ import { Slider } from "antd";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import SolidEditor from "@/components/SolidEditor/SolidEditor";
 import EChartsBarSolidView from "@/views/echarts/EChartsBarSolidView";
-import { OnZoomEventData } from "@/types";
-import { eventbus } from "@/utils";
+import { OnZoomEventData } from "@/types/eventbus";
+import { SolidViewDataType } from "@/types/solid";
+import { eventbus, genId } from "@/utils";
 
 type View = {
 	top: number;
@@ -48,50 +49,46 @@ function Scena() {
 	}, []);
 
 	useEffect(() => {
-		let viewModel: any = {};
-
-		viewModel.id = "123";
-		viewModel.title = "Bar";
-		viewModel.type = "echarts_bar";
-		viewModel.dataSheet = [
-			["name", "pjsf", "pjhf", "cc"],
-			["zhengshuzhi", 81.23, 16, 6],
-			["huashengke", 1156.13, 502.86, 242],
-		];
-		viewModel.metadata = {
-			viewDimensions: [
-				{
-					dimensionType: "view",
-					label: "name",
-					selectorType: "single",
-				},
-			],
-			measures: [
-				{
-					label: "pjsf",
-					aggregate: "sum",
-				},
-				{
-					label: "pjhf",
-					aggregate: "sum",
-				},
-				{
-					label: "cc",
-					aggregate: "sum",
-				},
-			],
+		let viewModel: SolidViewDataType = {
+			id: genId(),
+			title: "echarts_bar",
+			type: "echarts_bar",
+			position: {
+				top: 0,
+				left: 0,
+			},
+			size: {
+				width: 100,
+				height: 100,
+			},
+			data: {
+				id: "",
+				title: "",
+				remote: false,
+				dataset: [
+					["name", "pjsf", "pjhf", "cc"],
+					["zhengshuzhi", 81.23, 16, 6],
+					["huashengke", 1156.13, 502.86, 242],
+				],
+				xs: [
+					{
+						label: "name",
+					},
+				],
+				ys: [
+					{
+						label: "pjsf",
+					},
+					{
+						label: "pjhf",
+					},
+					{
+						label: "cc",
+					},
+				],
+			},
 		};
 
-		const defaultOptions = {
-			tooltip: {
-				show: true,
-				trigger: "axis",
-				axisPointer: {
-					type: "shadow",
-				},
-			} as any,
-		};
-		viewModel.option = defaultOptions;
 		let viewStyle = {
 			position: "absolute",
 			top: 0,
@@ -101,7 +98,6 @@ function Scena() {
 			background: "#fff",
 			overflow: "hidden",
 		} as React.CSSProperties;
-		viewModel.style = viewStyle;
 
 		editorRef
 			.current!.appendJSXs(
@@ -169,6 +165,7 @@ function Scena() {
 					bottom: 0,
 					height: 30,
 					display: "flex",
+					borderTop: "1px solid #D2D1D1",
 					justifyContent: "space-between",
 				}}
 			>

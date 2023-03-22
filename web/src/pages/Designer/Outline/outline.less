@@ -11,7 +11,10 @@
     position: relative;
     height: 38px;
     // background-color: #35373d;
-		background-color: @backgroundColor;
+		// background-color: @backgroundColor;
+		background-color: #FCFCFD;
+		border-top: 1px solid #E7E7E7;
+		border-bottom: 1px solid #E7E7E7;
 		color: @primaryTextColor;
     text-align: center;
     display: flex;
@@ -32,6 +35,7 @@
     left: 0;
     right: 0;
     bottom: 0;
+		background-color: #fff;
 
 		ul.charts {
       list-style: none;
@@ -48,12 +52,15 @@
 
         &:hover {
           cursor: pointer;
-          background: rgba(21,21,23,.4);
+          // background: rgba(21,21,23,.4);
+					background-color: #e0e0e0;
         }
 
         &.selected {
-          background: #00a5cf;
-          color: #fff;
+          // background: #00a5cf;
+          // color: #fff;
+					background-color: #e0e0e0;
+					color: @primaryTextColor;
         }
 
         > .eblock {
@@ -84,7 +91,7 @@
           cursor: pointer;
 
           > i.bi-font {
-            color: #c2c2c2;
+            color: #757272;
 
             &.bi-eye {
               font-size: 13px;

@@ -67,7 +67,8 @@ export default class EChartsBaseSolidView<
 		window.addEventListener("resize", this.resize);
 	}
 
-	// componentWillUnmount(): void {
+	// componentWillUnmount(): void {}
+
 	protected baseViewWillUnmount(): void {
 		window.removeEventListener("resize", this.resize);
 	}

@@ -1,3 +1,5 @@
+import { SolidModelDataType } from "./solid";
+
 type BaseEventData = {
 	id: string;
 };
@@ -18,11 +20,21 @@ type OnZoomEventData = {
 	zoom: number;
 };
 
+type OnDrawEventData = {
+	viewType: string;
+};
+
+type OnModelLoadEventData = {
+	model: SolidModelDataType;
+};
+
 type EventBusType = {
 	onResize: OnResizeEventData;
 	onDrag: { x: number; y: number };
 	onResizeGroup: OnReiszeGroupEventData;
 	onZoom: OnZoomEventData;
+	onDraw: OnDrawEventData;
+	onModelLoad: OnModelLoadEventData;
 };
 
 // export default EventBusType;
@@ -33,4 +45,6 @@ export {
 	OnDragEventData,
 	OnReiszeGroupEventData,
 	OnZoomEventData,
+	OnDrawEventData,
+	OnModelLoadEventData,
 };

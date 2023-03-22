@@ -5,13 +5,15 @@ import {
 	OnDragEventData,
 	OnResizeEventData,
 	OnReiszeGroupEventData,
-} from "@/types";
+} from "@/types/eventbus";
+
+import { SolidModelDataType, SolidViewDataType } from "@/types/solid";
 
 export interface SolidViewProps {
 	id: string;
 	className?: string;
 	style?: React.CSSProperties;
-	viewModel: any;
+	viewModel: SolidViewDataType;
 	"solidui-element-id"?: string;
 	eventbus?: Emitter<EventBusType>;
 	scenaAttrs?: any;
@@ -59,15 +61,10 @@ export default abstract class SolidView<
 
 	private readonly fetchData = async () => {
 		let viewModel = this.props.viewModel;
-		let metadata = viewModel.metadata;
-
-		if (
-			null === metadata ||
-			undefined === metadata ||
-			metadata.id === null ||
-			undefined === metadata.id
-		) {
-			this.dataSheet = viewModel.dataSheet || [];
+		let data = viewModel.data || {};
+		let remote = data.remote;
+		if (!remote) {
+			this.dataSheet = viewModel.data.dataset || [];
 			return;
 		}
 	};
@@ -103,10 +100,10 @@ export default abstract class SolidView<
 		snapshot?: any
 	) {
 		let viewModel = this.props.viewModel;
-		let metadata = viewModel.metadata || {};
-		if (viewModel.reFetch) {
-			await this.fetchData();
-		}
+		// let metadata = viewModel.metadata || {};
+		// if (viewModel.reFetch) {
+		// 	await this.fetchData();
+		// }
 
 		this.reRender();
 	}

@@ -5,6 +5,7 @@ import Selecto from "react-selecto";
 // import mitt from "mitt";
 
 import SolidViewport from "./SolidViewport";
+import SolidEditorManager from "./utils/SolidEditorManager";
 import MoveableManager from "./utils/MoveableManager";
 import MoveableData from "./utils/MoveableData";
 import Debugger from "./utils/Debugger";
@@ -65,6 +66,7 @@ export default class SolidEditor extends React.PureComponent<
 	public memory = new Memory();
 	public console = new Debugger();
 	public moveableData = new MoveableData(this.memory);
+	public manager = new SolidEditorManager(this);
 
 	public editorRef = React.createRef<HTMLDivElement>();
 	public horizontalGuides = React.createRef<Guides>();
@@ -357,9 +359,12 @@ export default class SolidEditor extends React.PureComponent<
 							horizontalGuides: e.guides,
 						});
 					}}
-					lineColor="#EAECEE"
-					backgroundColor="#6B6B6C"
-					textColor="#EAECEE"
+					// lineColor="#EAECEE"
+					// backgroundColor="#6B6B6C"
+					// textColor="#EAECEE"
+					lineColor="#D1D1D1"
+					backgroundColor="#F6F6F6"
+					textColor="#D1D1D1"
 				/>
 
 				<Guides
@@ -377,9 +382,14 @@ export default class SolidEditor extends React.PureComponent<
 							verticalGuides: e.guides,
 						});
 					}}
-					lineColor="#EAECEE"
-					backgroundColor={"#6B6B6C"}
-					textColor="#EAECEE"
+					// lineColor="#EAECEE"
+					lineColor="#D1D1D1"
+					// backgroundColor="#FFFFFF"
+					// backgroundColor="#E6E5E6"
+					backgroundColor="#F6F6F6"
+					textColor="#D1D1D1"
+					// backgroundColor={"#6B6B6C"}
+					// textColor="#EAECEE"
 				/>
 
 				<InfiniteViewer

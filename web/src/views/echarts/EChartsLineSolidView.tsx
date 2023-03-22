@@ -12,35 +12,38 @@ import {
 } from "echarts";
 import { findIndex, get, head } from "lodash-es";
 
-export interface SolidEChartsBarViewProps extends EChartsBaseSolidViewProps {}
+export interface SolidEChartsLineViewProps extends EChartsBaseSolidViewProps {}
 
-export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChartsBarViewProps> {
-	constructor(props: SolidEChartsBarViewProps) {
+export default class EChartsLineSolidView extends EChartsBaseSolidView<SolidEChartsLineViewProps> {
+	constructor(props: SolidEChartsLineViewProps) {
 		super(props);
 	}
 
-	private getSeries(x: any): SeriesOption | undefined {
+	private getSeries(measure: any): SeriesOption | undefined {
+		// 1.
 		let row0 = this.dataSheet[0];
 		if (!row0) return undefined;
 
-		let xIdx = findIndex(row0, function (o) {
-			return o === x.label;
+		// 2.
+		let measureIdx = findIndex(row0, function (o) {
+			return o === measure.label;
 		});
-		if (xIdx === -1) return undefined;
+		if (measureIdx === -1) return undefined;
 
+		// 3.
 		let seriesData: any[] = [];
 		this.dataSheet.forEach((row, idx) => {
 			if (idx === 0) return;
 
 			seriesData.push({
-				name: x.label,
-				value: row[xIdx],
+				name: measure.label,
+				value: row[measureIdx],
 			});
 		});
 
 		return {
 			type: "bar",
-			name: x.label,
+			name: measure.label,
 			data: seriesData,
 		};
 	}
@@ -51,7 +54,11 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 		| undefined {
 		let headRow = head(this.dataSheet);
 		if (!headRow) return {};
-		let viewDimensions = get(this.props.viewModel, "data.xs", []) as any[];
+		let viewDimensions = get(
+			this.props.viewModel,
+			"metadata.viewDimensions",
+			[]
+		) as any[];
 		let headDimension = head(viewDimensions);
 		if (!headDimension) return {};
 		let viewDimensionIdx = findIndex(headRow, function (o) {
@@ -80,10 +87,10 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 	}
 
 	protected getSeriesOption(): SeriesOption[] | undefined {
-		let xs = get(this.props.viewModel, "data.ys", []) as any[];
+		let measures = get(this.props.viewModel, "metadata.measures", []) as any[];
 		let seriesList: SeriesOption[] = [];
-		xs.forEach((x) => {
-			let series = this.getSeries(x);
+		measures.forEach((item, idx) => {
+			let series = this.getSeries(item);
 			if (series) {
 				seriesList.push(series);
 			}

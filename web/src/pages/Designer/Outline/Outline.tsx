@@ -1,8 +1,20 @@
 import React from "react";
 import { Tooltip } from "antd";
 import "./outline.less";
+import { eventbus } from "@/utils";
 
 function Outline() {
+	React.useEffect(() => {
+		eventbus.on("onModelLoad", (evt) => {
+			let model = evt.model;
+			console.log(model);
+		});
+
+		return () => {
+			eventbus.off("onModelLoad");
+		};
+	}, []);
+
 	return (
 		<div className="aside-outline">
 			<div className="heading">

@@ -24,6 +24,7 @@
 		left: calc(@rulerGuidesSize);
 		width: calc(100% - @rulerGuidesSize);
 		height: @rulerGuidesSize !important;
+		border-bottom: 1px solid #D2D1D1;
 	}
 
 	.editor-guides.guides-vertical {
@@ -31,6 +32,7 @@
 		left: 0;
 		height: calc(100% - @rulerGuidesSize);
 		width: @rulerGuidesSize !important;
+		border-right: 1px solid #D2D1D1;
 	}
 
 	.editor-guides-reset {
@@ -44,8 +46,10 @@
 		z-index: 1;
 		// border-right: 1px solid @back4Color;
 		// border-bottom: 1px solid @back4Color;
-		border-right: 1px solid #6B6B6C;
-		border-bottom: 1px solid #6B6B6C;
+		// border-right: 1px solid #6B6B6C;
+		// border-bottom: 1px solid #6B6B6C;
+		border-bottom: 1px solid #D2D1D1;
+		border-right: 1px solid #D2D1D1;
 		box-sizing: border-box;
 		cursor: pointer;
 		left: 0;
@@ -59,7 +63,8 @@
 		width: calc(100% - @rulerGuidesSize);
 		height: calc(100% - @rulerGuidesSize);
 		// background: rgb(13, 14, 14);
-		background: @infiniteViewBgColor;
+		// background: @infiniteViewBgColor;
+		background: #E6E5E6;
 
 		.editor-viewport-container {
 			position: relative;
