@@ -1,0 +1,190 @@
+import { SolidViewComponent, SolidViewJSXElement, ElementInfo } from "./types";
+import { SOLIDUI_ELEMENT_ID } from "./const";
+import { Frame } from "scenejs";
+import { fromTranslation, matrix3d } from "@scena/matrix";
+import { getElementInfo } from "react-moveable";
+import {
+	IObject,
+	isString,
+	splitComma,
+	isArray,
+	isFunction,
+	isNumber,
+	isObject,
+} from "@daybrush/utils";
+export const PREFIX = "visual-";
+
+export function prefixNames(prefix: string, ...classNames: string[]) {
+	return classNames
+		.map((className) =>
+			className
+				.split(" ")
+				.map((name) => (name ? `${prefix}${name}` : ""))
+				.join(" ")
+		)
+		.join(" ");
+}
+
+export function prefix(...classNames: string[]) {
+	return prefixNames(PREFIX, ...classNames);
+}
+
+export function getId(el: HTMLElement | SVGElement) {
+	return el.getAttribute(SOLIDUI_ELEMENT_ID)!;
+}
+
+export function getIds(els: Array<HTMLElement | SVGElement>): string[] {
+	return els.map((el) => getId(el));
+}
+
+export function isVisualFunction(value: any): value is SolidViewComponent {
+	return isFunction(value) && "visualComponentId" in value;
+}
+
+export function isVisualElement(value: any): value is SolidViewJSXElement {
+	return isObject(value) && !isVisualFunction(value);
+}
+
+export function getContentElement(el: HTMLElement): HTMLElement | null {
+	if (el.contentEditable === "inherit") {
+		return getContentElement(el.parentElement!);
+	}
+	if (el.contentEditable === "true") {
+		return el;
+	}
+	return null;
+}
+
+export function getVisualAttrs(el: HTMLElement | SVGElement) {
+	const attributes = el.attributes;
+	const length = attributes.length;
+	const attrs: IObject<any> = {};
+
+	for (let i = 0; i < length; ++i) {
+		const { name, value } = attributes[i];
+
+		if (name === SOLIDUI_ELEMENT_ID || name === "style") {
+			continue;
+		}
+		attrs[name] = value;
+	}
+
+	return attrs;
+}
+
+export function updateElements(infos: ElementInfo[]) {
+	return infos.map(function registerElement(info) {
+		const id = info.id!;
+
+		const target = document.querySelector<HTMLElement>(
+			`[${SOLIDUI_ELEMENT_ID}="${id}"]`
+		)!;
+		if (null === target || undefined === target) {
+			return { ...info };
+		}
+		const attrs = info.attrs || {};
+
+		info.el = target;
+
+		for (const name in attrs) {
+			target.setAttribute(name, attrs[name]);
+		}
+		info.attrs = getVisualAttrs(target);
+		const children = info.children || [];
+
+		if (children.length) {
+			children.forEach(registerElement);
+		} else if (info.attrs!.contenteditable) {
+			// if ("innerText" in info) {
+			// 	(target as HTMLElement).innerText = info.innerText || "";
+			// } else {
+			// 	info.innerText = (target as HTMLElement).innerText || "";
+			// }
+		} else if (!info.componentId) {
+			// if ("innerHTML" in info) {
+			// 	target.innerHTML = info.innerHTML || "";
+			// } else {
+			// 	info.innerHTML = target.innerHTML || "";
+			// }
+		}
+		return { ...info };
+	});
+}
+
+export function checkImageLoaded(el: HTMLElement | SVGElement): Promise<any> {
+	if (el.tagName.toLowerCase() !== "img") {
+		return Promise.all(
+			[].slice
+				.call(el.querySelectorAll("img"))
+				.map((el) => checkImageLoaded(el))
+		);
+	}
+	return new Promise((resolve) => {
+		if ((el as HTMLImageElement).complete) {
+			resolve({});
+		} else {
+			el.addEventListener("load", function loaded() {
+				resolve({});
+
+				el.removeEventListener("load", loaded);
+			});
+		}
+	});
+}
+
+export function setMoveMatrix(frame: Frame, moveMatrix: number[]) {
+	const transformOrders = [...(frame.getOrders(["transform"]) || [])];
+
+	if (`${transformOrders[0]}`.indexOf("matrix3d") > -1) {
+		const matrix = frame.get("transform", transformOrders[0]);
+		const prevMatrix = isArray(matrix)
+			? matrix
+			: splitComma(matrix).map((v) => parseFloat(v));
+
+		frame.set(
+			"transform",
+			transformOrders[0],
+			matrix3d(moveMatrix, prevMatrix)
+		);
+	} else if (frame.has("transform", "matrix3d")) {
+		let num = 1;
+		while (frame.has("transform", `matrix3d${++num}`)) {}
+
+		frame.set("transform", `matrix3d${num}`, [...moveMatrix]);
+		frame.setOrders(["transform"], [`matrix3d${num}`, ...transformOrders]);
+	} else {
+		frame.set("transform", "matrix3d", [...moveMatrix]);
+		frame.setOrders(["transform"], ["matrix3d", ...transformOrders]);
+	}
+}
+
+export function getOffsetOriginMatrix(
+	el: HTMLElement | SVGElement,
+	container: HTMLElement
+) {
+	const stack = getElementInfo(el, container);
+	const origin = stack.targetOrigin;
+	const translation = fromTranslation(
+		[origin[0], origin[1], origin[2] || 0],
+		4
+	);
+
+	return matrix3d(stack.offsetMatrix as any, translation);
+}
+
+export function getScenaAttrs(el: HTMLElement | SVGElement) {
+	const attributes = el.attributes;
+	const length = attributes.length;
+	const attrs: IObject<any> = {};
+
+	for (let i = 0; i < length; ++i) {
+		const { name, value } = attributes[i];
+
+		if (name === SOLIDUI_ELEMENT_ID || name === "style") {
+			continue;
+		}
+		attrs[name] = value;
+	}
+
+	return attrs;
+}
