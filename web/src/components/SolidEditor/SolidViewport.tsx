@@ -20,6 +20,7 @@ import {
 } from "./utils";
 import { connectEditorContext } from "./SolidEditorContext";
 import { eventbus } from "@/utils";
+import { indexOf } from "lodash-es";
 
 export default interface VisualViewport extends EditorInterface {}
 
@@ -142,6 +143,25 @@ export default class VisualViewport extends React.PureComponent<{
 		const indexes = this.getIndexes(id);
 		const length = indexes.length;
 		return length ? indexes[length - 1] : -1;
+	}
+
+	public removeAll(): Promise<RemovedInfo> {
+		let infos = this.getViewportInfos();
+		return this.removeTargets(infos);
+		// this.getInfoByElement
+		// this.unregisterChildren(this.ids);
+	}
+
+	public getElements(ids: string[]) {
+		return ids.map((id) => this.getElement(id)).filter((el) => el) as Array<
+			HTMLElement | SVGElement
+		>;
+	}
+
+	public getElement(id: string) {
+		const info = this.getInfo(id);
+
+		return info ? info.el : null;
 	}
 
 	public removeTargets(

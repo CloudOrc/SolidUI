@@ -7,7 +7,6 @@ import Debugger from "./Debugger";
 import Memory from "./Memory";
 import MoveableData from "./MoveableData";
 import { Emitter } from "mitt";
-import { EventBusType } from "@/types";
 
 export interface BaseSolidViewProps {
 	visualElementId?: string;

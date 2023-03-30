@@ -164,7 +164,7 @@ export default class EChartsBaseSolidView<
 			visualMap: this.getVisualMapOption(),
 			dataset: this.getDatasetOption(),
 		};
-		console.log(options);
+		// console.log(options);
 		return options;
 	}
 

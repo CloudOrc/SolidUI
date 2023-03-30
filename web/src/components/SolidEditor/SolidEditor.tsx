@@ -127,6 +127,24 @@ export default class SolidEditor extends React.PureComponent<
 			});
 	}
 
+	public removeAll() {
+		// this.getViewport().removeAll();
+		// this.getViewport().
+		let infos = this.getViewport().getViewportInfos();
+		let ids: string[] = [];
+		infos.forEach((info) => {
+			ids.push(info.id);
+		});
+		let elems = this.getViewport().getElements(ids);
+		this.removeElements(this.getViewport().getElements(ids));
+		// console.log(ids);
+		// console.log(elems);
+	}
+
+	public removeByIds(ids: string[], isRestore?: boolean) {
+		return this.removeElements(this.getViewport().getElements(ids), isRestore);
+	}
+
 	private appendComplete(infos: ElementInfo[], isRestore?: boolean) {
 		// return Promise.resolve([]);
 		// !isRestore &&
@@ -237,7 +255,7 @@ export default class SolidEditor extends React.PureComponent<
 		isRestore?: boolean
 	) {
 		const viewport = this.getViewport();
-		const frameMap = this.removeFrames(targets);
+		// const frameMap = this.removeFrames(targets);
 		const indexesList = viewport.getSortedIndexesList(targets);
 		const indexesListLength = indexesList.length;
 		let scopeId = "";
@@ -253,15 +271,17 @@ export default class SolidEditor extends React.PureComponent<
 			selectedInfo = nextInfo;
 		}
 		return viewport.removeTargets(targets).then(({ removed }) => {
-			let selectedTarget =
-				selectedInfo ||
-				viewport.getLastChildInfo(scopeId)! ||
-				viewport.getInfo(scopeId);
+			// let selectedTarget =
+			// 	selectedInfo ||
+			// 	viewport.getLastChildInfo(scopeId)! ||
+			// 	viewport.getInfo(scopeId);
 
-			this.setSelectedTargets(
-				selectedTarget && selectedTarget.el ? [selectedTarget.el!] : [],
-				true
-			);
+			// this.setSelectedTargets(
+			// 	selectedTarget && selectedTarget.el ? [selectedTarget.el!] : [],
+			// 	true
+			// );
+
+			this.setSelectedTargets([]);
 
 			// !isRestore &&
 			//   this.historyManager.addAction("removeElements", {
@@ -323,7 +343,7 @@ export default class SolidEditor extends React.PureComponent<
 		} = this;
 
 		const { selectedMenu, selectedTargets, zoom } = state;
-		console.log("this state zoom = ", zoom);
+		// console.log("this state zoom = ", zoom);
 
 		const { width, height } = this.props;
 
