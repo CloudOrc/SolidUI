@@ -99,30 +99,30 @@ function Scena() {
 			overflow: "hidden",
 		} as React.CSSProperties;
 
-		editorRef
-			.current!.appendJSXs(
-				[
-					{
-						jsx: (
-							<EChartsBarSolidView
-								viewModel={viewModel}
-								id="bar123"
-								style={{
-									...viewStyle,
-									top: 200,
-									left: 200,
-								}}
-							/>
-						),
-						name: "ECharts Bar 123",
-					},
-				],
-				true
-			)
-			.then((targets) => {
-				editorRef.current &&
-					editorRef.current.setSelectedTargets([targets[0]], true);
-			});
+		// editorRef
+		// 	.current!.appendJSXs(
+		// 		[
+		// 			{
+		// 				jsx: (
+		// 					<EChartsBarSolidView
+		// 						viewModel={viewModel}
+		// 						id="bar123"
+		// 						style={{
+		// 							...viewStyle,
+		// 							top: 200,
+		// 							left: 200,
+		// 						}}
+		// 					/>
+		// 				),
+		// 				name: "ECharts Bar 123",
+		// 			},
+		// 		],
+		// 		true
+		// 	)
+		// 	.then((targets) => {
+		// 		editorRef.current &&
+		// 			editorRef.current.setSelectedTargets([targets[0]], true);
+		// 	});
 
 		eventbus.on("onZoom", onZoom);
 
@@ -151,7 +151,7 @@ function Scena() {
 				<SolidEditor
 					width={width}
 					height={height}
-					debug
+					debug={true}
 					ref={editorRef}
 					zoom={zoom}
 				/>

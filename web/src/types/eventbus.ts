@@ -1,4 +1,4 @@
-import { SolidModelDataType } from "./solid";
+import { SolidModelDataType, SolidPageDataType, SolidViewType } from "./solid";
 
 type BaseEventData = {
 	id: string;
@@ -21,11 +21,16 @@ type OnZoomEventData = {
 };
 
 type OnDrawEventData = {
-	viewType: string;
+	viewType: SolidViewType;
 };
 
 type OnModelLoadEventData = {
 	model: SolidModelDataType;
+};
+
+type OnSelectPageEventData = {
+	id: string;
+	page?: SolidPageDataType;
 };
 
 type EventBusType = {
@@ -35,6 +40,7 @@ type EventBusType = {
 	onZoom: OnZoomEventData;
 	onDraw: OnDrawEventData;
 	onModelLoad: OnModelLoadEventData;
+	onSelectPage: OnSelectPageEventData;
 };
 
 // export default EventBusType;
@@ -47,4 +53,5 @@ export {
 	OnZoomEventData,
 	OnDrawEventData,
 	OnModelLoadEventData,
+	OnSelectPageEventData,
 };

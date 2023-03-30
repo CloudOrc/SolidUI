@@ -10,7 +10,7 @@ interface SolidComponentSizeDataType {
 	height: number;
 }
 
-type SolidViewType = "echarts_bar" | "echarts_line" | "echarts_pie";
+export type SolidViewType = "echarts_bar" | "echarts_line" | "echarts_pie";
 
 export interface SolidModelDataType {
 	id: string;
@@ -25,6 +25,9 @@ export interface SolidScenaDataType {
 	id: string;
 	title: string;
 	pages?: SolidPageDataType[];
+
+	// --- for designer
+	selected?: boolean;
 }
 
 export interface SolidPageDataType {
@@ -33,6 +36,9 @@ export interface SolidPageDataType {
 	frame: SolidComponentFrameDataType;
 	style: React.CSSProperties;
 	views: SolidViewDataType[];
+
+	// --- for designer
+	selected?: boolean;
 }
 
 export interface SolidViewDataType {
