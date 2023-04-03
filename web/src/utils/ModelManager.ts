@@ -82,6 +82,10 @@ class ModelManager {
 		return this.currentPage;
 	}
 
+	public getView(id: string): SolidViewDataType | undefined {
+		return this.viewMap.get(id);
+	}
+
 	public selectPage(id: string): void {
 		this.currentPage = this.getPage(id);
 		console.log(this.currentPage);
@@ -96,6 +100,8 @@ class ModelManager {
 			return;
 		}
 		this.currentPage.views.push(view);
+		this.viewMap.set(view.id, view);
+		this.views.push(view);
 	}
 }
 

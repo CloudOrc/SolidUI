@@ -4,7 +4,7 @@ import { getContentElement, getId } from "./index";
 import { EditorInterface } from "./types";
 import { connectEditorContext } from "../SolidEditorContext";
 import { SOLIDUI_ELEMENT_ID } from "./const";
-import { OnReiszeGroupEventData } from "@/types";
+import { OnReiszeGroupEventData } from "@/types/eventbus";
 import {
 	DimensionViewable,
 	DimensionViewableProps,
@@ -13,7 +13,7 @@ import {
 	DelteButtonViewable,
 	DelteButtonViewableProps,
 } from "../ables/DeleteButtonViewable";
-import { eventbus } from "@/utils";
+import { eventbus, mm } from "@/utils";
 
 @connectEditorContext
 export default class MoveableManager extends React.PureComponent<{
@@ -113,6 +113,27 @@ export default class MoveableManager extends React.PureComponent<{
 				onDragOrigin={(e) => {
 					moveableData.onDragOrigin(e);
 				}}
+				onDragEnd={(e) => {
+					let id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
+					if (null === id || undefined === id) {
+						return;
+					}
+					if (e.lastEvent === null || e.lastEvent === undefined) {
+						return;
+					}
+					let view = mm.getView(id);
+					if (null === view || undefined === view) {
+						return;
+					}
+
+					let translate = e.lastEvent.translate;
+					let pos = view.position;
+					let newPos = {
+						top: pos.top + translate[1],
+						left: pos.left + translate[0],
+					};
+					view.position = newPos;
+				}}
 				// Scale
 				onScaleStart={moveableData.onScaleStart}
 				onScale={moveableData.onScale}
@@ -132,8 +153,13 @@ export default class MoveableManager extends React.PureComponent<{
 					if (e.lastEvent === null || e.lastEvent === undefined) {
 						return;
 					}
+					let view = mm.getView(id);
+					if (null === view || undefined === view) {
+						return;
+					}
 					let w = e.lastEvent.boundingWidth;
 					let h = e.lastEvent.boundingHeight;
+					view.size = { ...view.size, width: w, height: h };
 					eventbus.emit("onResize", { id: id, width: w, height: h });
 				}}
 				onResizeGroupStart={moveableData.onResizeGroupStart}

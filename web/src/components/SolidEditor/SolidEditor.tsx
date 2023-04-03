@@ -23,7 +23,7 @@ import { SolidEditorContext } from "./SolidEditorContext";
 
 import { invert, matrix3d } from "@scena/matrix";
 import { IObject } from "@daybrush/utils";
-import { ElementInfo } from "./utils/types";
+import { ElementInfo, RemovedInfo } from "./utils/types";
 // import { EventBusType } from "@/types";
 
 // import "@/assets/styles/solideditor.less";
@@ -95,6 +95,10 @@ export default class SolidEditor extends React.PureComponent<
 		});
 	};
 
+	public getZoom = (): number => {
+		return this.state.zoom;
+	};
+
 	public appendJSX(info: ElementInfo) {
 		return this.appendJSXs([info]).then((targets) => targets[0]);
 	}
@@ -128,8 +132,6 @@ export default class SolidEditor extends React.PureComponent<
 	}
 
 	public removeAll() {
-		// this.getViewport().removeAll();
-		// this.getViewport().
 		let infos = this.getViewport().getViewportInfos();
 		let ids: string[] = [];
 		infos.forEach((info) => {
@@ -137,8 +139,32 @@ export default class SolidEditor extends React.PureComponent<
 		});
 		let elems = this.getViewport().getElements(ids);
 		this.removeElements(this.getViewport().getElements(ids));
-		// console.log(ids);
-		// console.log(elems);
+	}
+
+	public clear(): Promise<RemovedInfo> {
+		let root = this.getViewport().getInfo("viewport");
+		let targets: Array<HTMLElement | SVGElement> = [];
+		if (null !== root && undefined !== root && root.children) {
+			root.children.forEach((child) => {
+				if (child.el) {
+					targets.push(child.el);
+				}
+			});
+		}
+		return this.getViewport()
+			.removeTargets(targets)
+			.then((removed) => {
+				return new Promise((resolve) => {
+					this.setState(
+						{
+							selectedTargets: [],
+						},
+						() => {
+							resolve(removed);
+						}
+					);
+				});
+			});
 	}
 
 	public removeByIds(ids: string[], isRestore?: boolean) {

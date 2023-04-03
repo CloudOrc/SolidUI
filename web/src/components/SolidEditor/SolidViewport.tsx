@@ -20,31 +20,30 @@ import {
 } from "./utils";
 import { connectEditorContext } from "./SolidEditorContext";
 import { eventbus } from "@/utils";
-import { indexOf } from "lodash-es";
 
-export default interface VisualViewport extends EditorInterface {}
+export default interface SolidViewport extends EditorInterface {}
 
 @connectEditorContext
-export default class VisualViewport extends React.PureComponent<{
+export default class SolidViewport extends React.PureComponent<{
 	children: any;
 	style: IObject<any>;
 	onBlur: (e: any) => any;
 }> {
-	public components: IObject<SolidViewComponent> = {};
-	public jsxs: IObject<SolidViewJSXElement> = {};
+	public components: Record<string, SolidViewComponent> = {};
+	public jsxs: Record<string, SolidViewJSXElement> = {};
 	public viewport: ElementInfo = {
 		jsx: <div></div>,
 		name: "Viewport",
 		id: "viewport",
 		children: [],
 	};
-	public ids: IObject<ElementInfo> = {
+	public ids: Record<string, ElementInfo> = {
 		viewport: this.viewport,
 	};
 
 	public viewportRef = React.createRef<HTMLDivElement>();
 
-	public makeId(ids: IObject<any> = this.ids) {
+	public makeId(ids: Record<string, any> = this.ids) {
 		while (true) {
 			const id = `visual${Math.floor(Math.random() * 100000000)}`;
 			if (ids[id]) {
@@ -145,23 +144,15 @@ export default class VisualViewport extends React.PureComponent<{
 		return length ? indexes[length - 1] : -1;
 	}
 
-	public removeAll(): Promise<RemovedInfo> {
-		let infos = this.getViewportInfos();
-		return this.removeTargets(infos);
-		// this.getInfoByElement
-		// this.unregisterChildren(this.ids);
-	}
-
-	public getElements(ids: string[]) {
+	public getElements(ids: string[]): Array<HTMLElement | SVGElement> {
 		return ids.map((id) => this.getElement(id)).filter((el) => el) as Array<
 			HTMLElement | SVGElement
 		>;
 	}
 
-	public getElement(id: string) {
+	public getElement(id: string): HTMLElement | SVGElement | undefined {
 		const info = this.getInfo(id);
-
-		return info ? info.el : null;
+		return info && info.el;
 	}
 
 	public removeTargets(
@@ -247,8 +238,8 @@ export default class VisualViewport extends React.PureComponent<{
 				scopeId,
 				componentId,
 				jsxId,
-				frame: info.frame || {},
-				el: null,
+				// frame: info.frame || {},
+				// el: ,
 				id,
 			};
 			this.setInfo(id, elementInfo);
@@ -264,15 +255,6 @@ export default class VisualViewport extends React.PureComponent<{
 
 		return children.slice(0).map((info) => {
 			const target = info.el!;
-			let innerText = "";
-			let innerHTML = "";
-
-			if (info.attrs!.contenteditable) {
-				innerText = (target as HTMLElement).innerText;
-			} else {
-				innerHTML = target.innerHTML;
-			}
-
 			if (!isChild) {
 				const parentInfo = this.getInfo(info.scopeId!);
 				const parentChildren = parentInfo.children!;
@@ -286,8 +268,6 @@ export default class VisualViewport extends React.PureComponent<{
 
 			return {
 				...info,
-				innerText,
-				innerHTML,
 				attrs: getScenaAttrs(target),
 				children: nextChildren,
 			};

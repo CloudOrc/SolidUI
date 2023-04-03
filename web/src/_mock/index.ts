@@ -19,7 +19,26 @@ const model: SolidModelDataType = {
 					title: "scena1-page-01",
 					frame: {},
 					style: {},
-					views: [],
+					views: [
+						// {
+						// 	id: "1-1-1-1",
+						// 	title: "SolidViewDemo01",
+						// 	type: "echarts_bar",
+						// 	position: {
+						// 		top: 0,
+						// 		left: 0,
+						// 	},
+						// 	size: {
+						// 		width: 100,
+						// 		height: 100,
+						// 	},
+						// 	data: {
+						// 		id: "1-1-1-1",
+						// 		title: "data-1-1-1-1",
+						// 		remote: false,
+						// 	},
+						// },
+					],
 				},
 				{
 					id: "1-1-2",

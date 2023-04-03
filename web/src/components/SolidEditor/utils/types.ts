@@ -6,7 +6,7 @@ import MoveableManager from "./MoveableManager";
 import Debugger from "./Debugger";
 import Memory from "./Memory";
 import MoveableData from "./MoveableData";
-import { Emitter } from "mitt";
+// import { Emitter } from "mitt";
 
 export interface BaseSolidViewProps {
 	visualElementId?: string;
@@ -31,19 +31,18 @@ export type SolidViewJSXType =
 	| SolidViewComponent;
 
 export interface ElementInfo {
-	jsx: SolidViewJSXType;
+	id?: string;
 	name: string;
-	frame?: IObject<any>;
-	frameOrder?: IObject<any>;
-	moveMatrix?: number[];
-
+	jsx: SolidViewJSXType;
+	// frame?: IObject<any>;
+	// frameOrder?: IObject<any>;
+	// moveMatrix?: number[];
 	scopeId?: string;
 	children?: ElementInfo[];
 	attrs?: IObject<any>;
 	componentId?: string;
 	jsxId?: string;
-	el?: HTMLElement | null;
-	id?: string;
+	el?: HTMLElement | SVGElement;
 	index?: number;
 }
 

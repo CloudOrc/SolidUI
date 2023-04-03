@@ -16,8 +16,8 @@ export default class EChartsBarSolidViewBuilder extends EChartsBaseViewBuilder {
 				left: 0,
 			},
 			size: {
-				width: 200,
-				height: 120,
+				width: 560,
+				height: 250,
 			},
 			data: {
 				id: "",

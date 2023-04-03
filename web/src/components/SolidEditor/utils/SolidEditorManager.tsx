@@ -50,10 +50,19 @@ export default class SolidEditorManager {
 		}
 		let SolidViewComponent = builder.getComponentType();
 		let vm = builder.createModel();
+		let zoom = this.editor.getZoom();
+		let _style: React.CSSProperties = {
+			...vm.style,
+			top: `${vm.position.top}px`,
+			left: `${vm.position.left}px`,
+			width: `${vm.size.width}px`,
+			height: `${vm.size.height}px`,
+		};
 		this.editor
 			.appendJSX({
-				jsx: <SolidViewComponent viewModel={vm} style={vm.style} />,
-				frame: vm.frame,
+				id: vm.id,
+				jsx: <SolidViewComponent viewModel={vm} style={_style} />,
+				// frame: vm.frame,
 				name: builder.getTitle(),
 			})
 			.then(() => {
@@ -61,14 +70,16 @@ export default class SolidEditorManager {
 					id: vm.id,
 					title: vm.title,
 					type: viewType,
-					position: {
-						top: 0,
-						left: 0,
-					},
-					size: {
-						width: 100,
-						height: 100,
-					},
+					position: vm.position,
+					size: vm.size,
+					// position: {
+					// 	top: 0,
+					// 	left: 0,
+					// },
+					// size: {
+					// 	width: 100,
+					// 	height: 100,
+					// },
 					data: {
 						id: "123",
 						title: "123",
@@ -80,15 +91,43 @@ export default class SolidEditorManager {
 	}
 
 	private handleSelectPage(event: OnSelectPageEventData) {
-		// this.mm!.selectPage(event.page.id);
-		// this.page = event.page;
 		let pageId = event.id;
-		console.log(pageId);
-		this.editor.removeAll();
+		let page = mm.getPage(pageId);
+		this.editor.clear().then((removed) => {
+			let views = page?.views || [];
+			views.forEach((view) => {
+				let builder = this.factory.getBuilder(view.type);
+				if (builder === undefined) {
+					return;
+				}
+				let SolidViewComponent = builder.getComponentType();
+				let { style, ...vm } = view;
+				let _style: React.CSSProperties = {
+					...style,
+					width: `${vm.size.width}px`,
+					height: `${vm.size.height}px`,
+					top: `${vm.position.top}px`,
+					left: `${vm.position.left}px`,
+				};
+				if (!view.data.remote) {
+					let localVM = builder.createModel();
+					vm.data = localVM.data;
+				}
+				// let vm = builder.createModel(view);
+				this.editor.appendJSX({
+					id: view.id,
+					jsx: <SolidViewComponent viewModel={vm} style={_style} />,
+					// frame: vm.frame,
+					name: builder.getTitle(),
+				});
+			});
+		});
 	}
 
 	private handleModelLoad(event: OnModelLoadEventData) {
 		// this.model = event.model;
-		this.mm?.attach(event.model);
+		// this.mm?.attach(event.model);
 	}
+
+	private getJSX() {}
 }
