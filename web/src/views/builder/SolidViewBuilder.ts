@@ -14,6 +14,8 @@ export default abstract class ViewBuilder {
 
 	abstract createModel(): any;
 
+	abstract getFrame(): any;
+
 	abstract getComponentType(): any;
 
 	abstract getId(): string;

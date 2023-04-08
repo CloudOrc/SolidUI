@@ -4,7 +4,7 @@ import {
 	SolidPageDataType,
 	SolidViewDataType,
 } from "@/types/solid";
-import { isNil } from "lodash-es";
+import { isNil, set, unset, forEach, isEmpty } from "lodash-es";
 
 class ModelManager {
 	private model?: SolidModelDataType;
@@ -58,6 +58,46 @@ class ModelManager {
 		}
 	}
 
+	public createScene(): SolidScenaDataType | undefined {
+		if (isNil(this.model)) {
+			return undefined;
+		}
+		let _id = new Date().getTime();
+		let scene: SolidScenaDataType = {
+			id: "scene_" + _id,
+			title: "Scene_" + _id,
+			pages: [],
+		};
+		this.sceneMap.set(scene.id, scene);
+		this.scenes.push(scene);
+		if (this.model.scenas) {
+			this.model.scenas.push(scene);
+		} else {
+			set(this.model, "scenas", [scene]);
+		}
+		return scene;
+	}
+
+	public createPage(id: string): SolidPageDataType | undefined {
+		if (isNil(this.model)) {
+			return undefined;
+		}
+		let scene = this.getScene(id);
+		if (isNil(scene)) {
+			return undefined;
+		}
+		let _id = new Date().getTime();
+		let page: SolidPageDataType = {
+			id: "page_" + _id,
+			title: "Page_" + _id,
+			views: [],
+		};
+		scene.pages!.push(page);
+		this.pageMap.set(page.id, page);
+		this.pages.push(page);
+		return page;
+	}
+
 	public getScenes(): SolidScenaDataType[] {
 		return this.scenes || [];
 	}
@@ -88,7 +128,7 @@ class ModelManager {
 
 	public selectPage(id: string): void {
 		this.currentPage = this.getPage(id);
-		console.log(this.currentPage);
+		// console.log(this.currentPage);
 	}
 
 	public getModel(): SolidModelDataType | undefined {
@@ -102,6 +142,21 @@ class ModelManager {
 		this.currentPage.views.push(view);
 		this.viewMap.set(view.id, view);
 		this.views.push(view);
+	}
+
+	public getPrepareSavingModel(): SolidModelDataType | undefined {
+		if (isNil(this.model)) {
+			return undefined;
+		}
+		if (!isEmpty(this.model.scenas)) {
+			forEach(this.model.scenas, (item) => {
+				if (!isEmpty(item.pages)) {
+					forEach(item.pages, (page) => unset(page, "selected"));
+				}
+				unset(item, "selected");
+			});
+		}
+		return this.model;
 	}
 }
 

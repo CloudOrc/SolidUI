@@ -19,8 +19,7 @@ module.exports = merge(baseConfig, {
 			'/api': {
 				target: 'http://localhost:8080',
 				changeOrigin: true,
-				pathRewrite: {
-				}
+				pathRewrite: {}
 			}
 		}
   },

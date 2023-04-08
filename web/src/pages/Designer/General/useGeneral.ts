@@ -33,6 +33,39 @@ function useGeneral() {
 		};
 	}, []);
 
+	function createScene() {
+		console.log("createScene");
+		let newScene = mm.createScene() as StatefulSolidSceneDataType;
+		console.log(newScene);
+		if (undefined === newScene) {
+			return;
+		}
+		// newScene.open = false;
+		// let newPage = mm.createPage(newScene.id);
+		let _scenes_ = mm.getScenes() as StatefulSolidSceneDataType[];
+		_scenes_.forEach((_scene_) => {
+			_scene_.open = false;
+		});
+		// _scenes_.push(newScene);
+		setScenes(_scenes_);
+		forceUpdate();
+	}
+
+	function createPage(scene: StatefulSolidSceneDataType) {
+		let newPage = mm.createPage(scene.id) as StatefulSolidPageDataType;
+		if (undefined === newPage) {
+			return;
+		}
+		newPage.selected = false;
+		let _pages_ = mm.getPages() as StatefulSolidPageDataType[];
+		_pages_.forEach((_page_) => {
+			_page_.selected = false;
+		});
+		// _pages_.push(newPage);
+		// setPages(_pages_);
+		forceUpdate();
+	}
+
 	function toggleScene(scene: StatefulSolidSceneDataType) {
 		// let clonedScenes = cloneDeep(scenes);
 		// let ts = find(clonedScenes, (s) => s.id === scene.id);
@@ -69,6 +102,8 @@ function useGeneral() {
 	return {
 		loading,
 		scenes,
+		createScene,
+		createPage,
 		toggleScene,
 		selectPage,
 	};

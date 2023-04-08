@@ -99,6 +99,14 @@ export default class SolidEditor extends React.PureComponent<
 		return this.state.zoom;
 	};
 
+	public selectTarget(id: string) {
+		let target = this.getViewport().getElement(id);
+		if (target) {
+			this.setSelectedTargets([target]);
+		}
+		// this.getViewport().selectTarget(id);
+	}
+
 	public appendJSX(info: ElementInfo) {
 		return this.appendJSXs([info]).then((targets) => targets[0]);
 	}

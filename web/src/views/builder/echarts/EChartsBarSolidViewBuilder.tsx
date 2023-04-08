@@ -19,6 +19,11 @@ export default class EChartsBarSolidViewBuilder extends EChartsBaseViewBuilder {
 				width: 560,
 				height: 250,
 			},
+			frame: {
+				backgroundColor: "#333",
+				translate: [0, 0],
+				rotate: 0,
+			},
 			data: {
 				id: "",
 				title: "",
@@ -60,21 +65,22 @@ export default class EChartsBarSolidViewBuilder extends EChartsBaseViewBuilder {
 
 		let viewStyle = {
 			position: "absolute",
-			top: 0,
-			left: 100,
-			width: 500,
-			height: 400,
 			background: "#fff",
 			overflow: "hidden",
 			border: "1px solid #f1f1f1",
 		} as React.CSSProperties;
 
 		viewModel.style = viewStyle;
-		viewModel.frame = {
-			backgroundColor: "#333",
-		};
 
 		return { ...viewModel, option: defaultOptions };
+	}
+
+	getFrame(): any {
+		return {
+			translate: [0, 0],
+			transformOrigin: "50% 50%",
+			rotate: 0,
+		};
 	}
 
 	getComponentType(): any {

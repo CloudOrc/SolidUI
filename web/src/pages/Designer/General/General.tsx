@@ -7,7 +7,8 @@ import { mm } from "@/utils";
 import "./general.less";
 
 function General() {
-	const { loading, toggleScene, selectPage } = useGeneral();
+	const { loading, toggleScene, createScene, createPage, selectPage } =
+		useGeneral();
 	let scenes = mm.getScenes();
 	function renderScenes() {
 		let kids: React.ReactNode[] = [];
@@ -26,13 +27,32 @@ function General() {
 								viewBox="0 0 9 6"
 								xmlns="http://www.w3.org/2000/svg"
 								className="expander__icon"
+								style={{
+									width: 10,
+								}}
 							>
 								<path
 									d="M4.50009 6L-5.24537e-07 1.26364e-06L9 4.76837e-07L4.50009 6Z"
 									fill="currentcolor"
 								></path>
 							</svg>
-							<div>{scene.title}</div>
+							<div
+								style={{
+									width: "170px",
+								}}
+							>
+								{scene.title}
+							</div>
+							<Button
+								className="btn__page-create"
+								icon={<PlusOutlined />}
+								type="text"
+								onClick={(e) => {
+									e.stopPropagation();
+									e.preventDefault();
+									createPage(scene);
+								}}
+							/>
 						</div>
 						{pages.length > 0 ? (
 							<div className="expander__body">{renderPages(pages)}</div>
@@ -111,13 +131,11 @@ function General() {
 					Outline
 				</span>
 				<Button
+					className="btn__scene-create"
 					icon={<PlusOutlined />}
 					type="text"
-					style={{
-						color: "#fff",
-						marginRight: "6px",
-					}}
-				></Button>
+					onClick={createScene}
+				/>
 			</div>
 
 			<div className="columns">

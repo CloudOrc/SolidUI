@@ -7,6 +7,8 @@ import {
 	OnDrawEventData,
 	OnModelLoadEventData,
 	OnSelectPageEventData,
+	OnSelectViewInViewportEventData,
+	OnSelectViewInViewListEventData,
 } from "@/types/eventbus";
 import { SolidModelDataType, SolidPageDataType } from "@/types/solid";
 import SolidViewFactory from "@/views/SolidViewFactory";
@@ -32,10 +34,13 @@ export default class SolidEditorManager {
 		this.handleOnDraw = this.handleOnDraw.bind(this);
 		this.handleSelectPage = this.handleSelectPage.bind(this);
 		this.handleModelLoad = this.handleModelLoad.bind(this);
+		this.handleSelectViewinViewport =
+			this.handleSelectViewinViewport.bind(this);
 
 		eventbus.on("onDraw", this.handleOnDraw);
 		eventbus.on("onSelectPage", this.handleSelectPage);
 		eventbus.on("onModelLoad", this.handleModelLoad);
+		eventbus.on("onSelectViewInViewport", this.handleSelectViewinViewport);
 	}
 
 	private handleOnDraw(event: OnDrawEventData) {
@@ -53,8 +58,8 @@ export default class SolidEditorManager {
 		let zoom = this.editor.getZoom();
 		let _style: React.CSSProperties = {
 			...vm.style,
-			top: `${vm.position.top}px`,
-			left: `${vm.position.left}px`,
+			// top: `${vm.position.top}px`,
+			// left: `${vm.position.left}px`,
 			width: `${vm.size.width}px`,
 			height: `${vm.size.height}px`,
 		};
@@ -66,26 +71,7 @@ export default class SolidEditorManager {
 				name: builder.getTitle(),
 			})
 			.then(() => {
-				mm.addView({
-					id: vm.id,
-					title: vm.title,
-					type: viewType,
-					position: vm.position,
-					size: vm.size,
-					// position: {
-					// 	top: 0,
-					// 	left: 0,
-					// },
-					// size: {
-					// 	width: 100,
-					// 	height: 100,
-					// },
-					data: {
-						id: "123",
-						title: "123",
-						remote: false,
-					},
-				});
+				mm.addView(vm);
 				console.log(mm.getModel());
 			});
 	}
@@ -106,8 +92,10 @@ export default class SolidEditorManager {
 					...style,
 					width: `${vm.size.width}px`,
 					height: `${vm.size.height}px`,
-					top: `${vm.position.top}px`,
-					left: `${vm.position.left}px`,
+					// top: `${vm.position.top}px`,
+					// left: `${vm.position.left}px`,
+					position: "absolute",
+					transform: `translate(${vm.frame.translate[0]}px, ${vm.frame.translate[1]}px)`,
 				};
 				if (!view.data.remote) {
 					let localVM = builder.createModel();
@@ -127,6 +115,13 @@ export default class SolidEditorManager {
 	private handleModelLoad(event: OnModelLoadEventData) {
 		// this.model = event.model;
 		// this.mm?.attach(event.model);
+	}
+
+	private handleSelectViewinViewport(event: OnSelectViewInViewportEventData) {
+		let view = mm.getView(event.id);
+		if (view) {
+			this.editor.selectTarget(view.id);
+		}
 	}
 
 	private getJSX() {}

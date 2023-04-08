@@ -33,6 +33,14 @@ type OnSelectPageEventData = {
 	page?: SolidPageDataType;
 };
 
+type OnSelectViewInViewportEventData = {
+	id: string;
+};
+
+type OnSelectViewInViewListEventData = {
+	id: string;
+};
+
 type EventBusType = {
 	onResize: OnResizeEventData;
 	onDrag: { x: number; y: number };
@@ -41,6 +49,8 @@ type EventBusType = {
 	onDraw: OnDrawEventData;
 	onModelLoad: OnModelLoadEventData;
 	onSelectPage: OnSelectPageEventData;
+	onSelectViewInViewport: OnSelectViewInViewportEventData;
+	onSelectViewInViewList: OnSelectViewInViewListEventData;
 };
 
 // export default EventBusType;
@@ -54,4 +64,6 @@ export {
 	OnDrawEventData,
 	OnModelLoadEventData,
 	OnSelectPageEventData,
+	OnSelectViewInViewportEventData,
+	OnSelectViewInViewListEventData,
 };

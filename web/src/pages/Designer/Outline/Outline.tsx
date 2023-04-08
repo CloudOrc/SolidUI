@@ -1,19 +1,59 @@
 import React from "react";
 import { Tooltip } from "antd";
+import useOutline from "./useOutline";
+import { mm } from "@/utils";
+import { isNil } from "lodash-es";
+import { SolidViewDataType } from "@/types";
 import "./outline.less";
-import { eventbus } from "@/utils";
 
 function Outline() {
-	React.useEffect(() => {
-		eventbus.on("onModelLoad", (evt) => {
-			let model = evt.model;
-			console.log(model);
-		});
+	const { selectView, getViewState } = useOutline();
 
-		return () => {
-			eventbus.off("onModelLoad");
-		};
-	}, []);
+	function renderViews() {
+		let currentPage = mm.getCurrentPage();
+		let views: SolidViewDataType[] = [];
+		if (!isNil(currentPage)) {
+			views = currentPage.views;
+		}
+		let nodes: React.ReactNode[] = [];
+		views.forEach((view) => {
+			let vs = getViewState(view.id);
+			let selected = false;
+			if (!isNil(vs)) {
+				selected = vs.selected;
+			}
+			nodes.push(
+				<li
+					className={`chartview ${selected ? "selected" : ""}`}
+					onClick={() => {
+						selectView(view.id);
+					}}
+				>
+					<span className="eblock"></span>
+					<i
+						className="bi-font bi-chart-column"
+						style={{
+							position: "relative",
+							fontSize: "16px",
+							color: "#3dd8ff",
+						}}
+					/>
+					<span className="text">{view.title}</span>
+					<div className="act act-eye">
+						<Tooltip title="hide">
+							<i className="bi-font bi-eye" />
+						</Tooltip>
+					</div>
+					<div className="act act-lock">
+						<Tooltip title="lock">
+							<i className="bi-font bi-lock" />
+						</Tooltip>
+					</div>
+				</li>
+			);
+		});
+		return nodes;
+	}
 
 	return (
 		<div className="aside-outline">
@@ -53,53 +93,7 @@ function Outline() {
 						}}
 					>
 						<ul className="charts">
-							<div className="charts-container">
-								<li className="chartview">
-									<span className="eblock"></span>
-									<i
-										className="bi-font bi-chart-column"
-										style={{
-											position: "relative",
-											fontSize: "16px",
-											color: "#3dd8ff",
-										}}
-									></i>
-									<span className="text">Basic Bar Chart</span>
-									<div className="act act-eye">
-										<Tooltip title="hide">
-											<i className="bi-font bi-eye" />
-										</Tooltip>
-									</div>
-									<div className="act act-lock">
-										<Tooltip title="lock">
-											<i className="bi-font bi-lock" />
-										</Tooltip>
-									</div>
-								</li>
-
-								<li className="chartview selected">
-									<span className="eblock"></span>
-									<i
-										className="bi-font bi-chart-column"
-										style={{
-											position: "relative",
-											fontSize: "16px",
-											color: "#3dd8ff",
-										}}
-									></i>
-									<span className="text">Basic Bar Chart</span>
-									<div className="act act-eye">
-										<Tooltip title="hide">
-											<i className="bi-font bi-eye" />
-										</Tooltip>
-									</div>
-									<div className="act act-lock">
-										<Tooltip title="lock">
-											<i className="bi-font bi-lock" />
-										</Tooltip>
-									</div>
-								</li>
-							</div>
+							<div className="charts-container">{renderViews()}</div>
 						</ul>
 					</div>
 				</div>
