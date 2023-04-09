@@ -44,6 +44,8 @@
         <module>solidui-entrance</module>
         <module>solidui-service</module>
         <module>solidui-bom</module>
+        <module>solidui-common</module>
+        <module>solidui-dao</module>
     </modules>
 
     <properties>
@@ -83,6 +85,12 @@
             <dependency>
                 <groupId>com.cloudorc.solidui</groupId>
                 <artifactId>solidui-entrance</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.cloudorc.solidui</groupId>
+                <artifactId>solidui-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -384,7 +392,7 @@
                     <ratchetFrom>HEAD</ratchetFrom>
                     <java>
                         <eclipse>
-                            <file>style/spotless_dolphinscheduler_formatter.xml</file>
+                            <file>style/spotless_solidui_formatter.xml</file>
                         </eclipse>
                         <removeUnusedImports />
                         <importOrder>
