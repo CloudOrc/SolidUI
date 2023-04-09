@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "antd";
-import { eventbus } from "@/utils/index";
+import { eventbus, mm } from "@/utils/index";
+import Apis from "@/apis";
 import "./header.less";
 
 function Header() {
@@ -27,7 +28,25 @@ function Header() {
 					</div>
 				</div>
 				<div className="header-center"></div>
-				<div className="header-right"></div>
+				<div className="header-right">
+					<Button
+						type="primary"
+						size="small"
+						onClick={async () => {
+							let model = mm.getPrepareSavingModel();
+							console.log(model);
+							console.log(JSON.stringify(model));
+
+							let result = await Apis.model.save(model!);
+							if (result.ok) {
+								//// mock
+								localStorage.setItem("__MODEL__", JSON.stringify(model));
+							}
+						}}
+					>
+						Save
+					</Button>
+				</div>
 			</div>
 		</header>
 	);

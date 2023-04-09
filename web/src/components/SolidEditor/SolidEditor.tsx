@@ -23,7 +23,7 @@ import { SolidEditorContext } from "./SolidEditorContext";
 
 import { invert, matrix3d } from "@scena/matrix";
 import { IObject } from "@daybrush/utils";
-import { ElementInfo } from "./utils/types";
+import { ElementInfo, RemovedInfo } from "./utils/types";
 // import { EventBusType } from "@/types";
 
 // import "@/assets/styles/solideditor.less";
@@ -95,6 +95,18 @@ export default class SolidEditor extends React.PureComponent<
 		});
 	};
 
+	public getZoom = (): number => {
+		return this.state.zoom;
+	};
+
+	public selectTarget(id: string) {
+		let target = this.getViewport().getElement(id);
+		if (target) {
+			this.setSelectedTargets([target]);
+		}
+		// this.getViewport().selectTarget(id);
+	}
+
 	public appendJSX(info: ElementInfo) {
 		return this.appendJSXs([info]).then((targets) => targets[0]);
 	}
@@ -125,6 +137,46 @@ export default class SolidEditor extends React.PureComponent<
 			.then(({ added }) => {
 				return this.appendComplete(added, isRestore);
 			});
+	}
+
+	public removeAll() {
+		let infos = this.getViewport().getViewportInfos();
+		let ids: string[] = [];
+		infos.forEach((info) => {
+			ids.push(info.id);
+		});
+		let elems = this.getViewport().getElements(ids);
+		this.removeElements(this.getViewport().getElements(ids));
+	}
+
+	public clear(): Promise<RemovedInfo> {
+		let root = this.getViewport().getInfo("viewport");
+		let targets: Array<HTMLElement | SVGElement> = [];
+		if (null !== root && undefined !== root && root.children) {
+			root.children.forEach((child) => {
+				if (child.el) {
+					targets.push(child.el);
+				}
+			});
+		}
+		return this.getViewport()
+			.removeTargets(targets)
+			.then((removed) => {
+				return new Promise((resolve) => {
+					this.setState(
+						{
+							selectedTargets: [],
+						},
+						() => {
+							resolve(removed);
+						}
+					);
+				});
+			});
+	}
+
+	public removeByIds(ids: string[], isRestore?: boolean) {
+		return this.removeElements(this.getViewport().getElements(ids), isRestore);
 	}
 
 	private appendComplete(infos: ElementInfo[], isRestore?: boolean) {
@@ -237,7 +289,7 @@ export default class SolidEditor extends React.PureComponent<
 		isRestore?: boolean
 	) {
 		const viewport = this.getViewport();
-		const frameMap = this.removeFrames(targets);
+		// const frameMap = this.removeFrames(targets);
 		const indexesList = viewport.getSortedIndexesList(targets);
 		const indexesListLength = indexesList.length;
 		let scopeId = "";
@@ -253,15 +305,17 @@ export default class SolidEditor extends React.PureComponent<
 			selectedInfo = nextInfo;
 		}
 		return viewport.removeTargets(targets).then(({ removed }) => {
-			let selectedTarget =
-				selectedInfo ||
-				viewport.getLastChildInfo(scopeId)! ||
-				viewport.getInfo(scopeId);
+			// let selectedTarget =
+			// 	selectedInfo ||
+			// 	viewport.getLastChildInfo(scopeId)! ||
+			// 	viewport.getInfo(scopeId);
 
-			this.setSelectedTargets(
-				selectedTarget && selectedTarget.el ? [selectedTarget.el!] : [],
-				true
-			);
+			// this.setSelectedTargets(
+			// 	selectedTarget && selectedTarget.el ? [selectedTarget.el!] : [],
+			// 	true
+			// );
+
+			this.setSelectedTargets([]);
 
 			// !isRestore &&
 			//   this.historyManager.addAction("removeElements", {
@@ -323,7 +377,7 @@ export default class SolidEditor extends React.PureComponent<
 		} = this;
 
 		const { selectedMenu, selectedTargets, zoom } = state;
-		console.log("this state zoom = ", zoom);
+		// console.log("this state zoom = ", zoom);
 
 		const { width, height } = this.props;
 

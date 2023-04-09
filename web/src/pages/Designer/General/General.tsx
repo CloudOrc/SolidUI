@@ -1,98 +1,119 @@
 import React, { useEffect, useState } from "react";
-import { Button, Tree } from "antd";
+import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { eventbus } from "@/utils";
-import type { DataNode, TreeProps } from "antd/es/tree";
+import useGeneral from "./useGeneral";
+import { mm } from "@/utils";
 
 import "./general.less";
 
 function General() {
-	const [data, setData] = useState<any[]>([]);
-	const [expandedKeys] = useState(["0-0", "0-0-0", "0-0-0-0"]);
-
-	useEffect(() => {
-		eventbus.on("onModelLoad", (evt) => {
-			let model = evt.model;
-			console.log(model);
-			let scenas = model.scenas || [];
-			setData(scenas);
-		});
-
-		return () => {
-			eventbus.off("onModelLoad");
-		};
-	}, []);
-
-	const onDragEnter: TreeProps["onDragEnter"] = (info) => {
-		console.log(info);
-		// expandedKeys 需要受控时设置
-		// setExpandedKeys(info.expandedKeys)
-	};
-
-	const onDrop: TreeProps["onDrop"] = (info) => {
-		console.log(info);
-		const dropKey = info.node.key;
-		const dragKey = info.dragNode.key;
-		const dropPos = info.node.pos.split("-");
-		const dropPosition =
-			info.dropPosition - Number(dropPos[dropPos.length - 1]);
-
-		const loop = (
-			data: DataNode[],
-			key: React.Key,
-			callback: (node: DataNode, i: number, data: DataNode[]) => void
-		) => {
-			for (let i = 0; i < data.length; i++) {
-				if (data[i].key === key) {
-					return callback(data[i], i, data);
-				}
-				if (data[i].children) {
-					loop(data[i].children!, key, callback);
-				}
-			}
-		};
-
-		// Find dragObject
-		let dragObj: DataNode;
-		loop(data, dragKey, (item, index, arr) => {
-			arr.splice(index, 1);
-			dragObj = item;
-		});
-
-		if (!info.dropToGap) {
-			// Drop on the content
-			loop(data, dropKey, (item) => {
-				item.children = item.children || [];
-				// where to insert 示例添加到头部，可以是随意位置
-				item.children.unshift(dragObj);
+	const { loading, toggleScene, createScene, createPage, selectPage } =
+		useGeneral();
+	let scenes = mm.getScenes();
+	function renderScenes() {
+		let kids: React.ReactNode[] = [];
+		scenes &&
+			scenes.forEach((scene) => {
+				let pages = scene.pages || [];
+				kids.push(
+					<section
+						key={`${scene.id}`}
+						className={`expander ${scene.selected ? "open" : ""}`}
+					>
+						<div className="expander__head" onClick={() => toggleScene(scene)}>
+							<svg
+								width="9"
+								height="6"
+								viewBox="0 0 9 6"
+								xmlns="http://www.w3.org/2000/svg"
+								className="expander__icon"
+								style={{
+									width: 10,
+								}}
+							>
+								<path
+									d="M4.50009 6L-5.24537e-07 1.26364e-06L9 4.76837e-07L4.50009 6Z"
+									fill="currentcolor"
+								></path>
+							</svg>
+							<div
+								style={{
+									width: "170px",
+								}}
+							>
+								{scene.title}
+							</div>
+							<Button
+								className="btn__page-create"
+								icon={<PlusOutlined />}
+								type="text"
+								onClick={(e) => {
+									e.stopPropagation();
+									e.preventDefault();
+									createPage(scene);
+								}}
+							/>
+						</div>
+						{pages.length > 0 ? (
+							<div className="expander__body">{renderPages(pages)}</div>
+						) : undefined}
+					</section>
+				);
 			});
-		} else if (
-			((info.node as any).props.children || []).length > 0 && // Has children
-			(info.node as any).props.expanded && // Is expanded
-			dropPosition === 1 // On the bottom gap
-		) {
-			loop(data, dropKey, (item) => {
-				item.children = item.children || [];
-				// where to insert 示例添加到头部，可以是随意位置
-				item.children.unshift(dragObj);
-				// in previous version, we use item.children.push(dragObj) to insert the
-				// item to the tail of the children
+		return kids;
+	}
+
+	function renderPages(pages: any[]) {
+		let kids: React.ReactNode[] = [];
+		pages &&
+			pages.forEach((page) => {
+				let selectedCls = !!page.selected ? "selected" : "";
+				kids.push(
+					<div
+						className={`expander__body-item ${selectedCls}`}
+						key={`${page.id}`}
+						onClick={() => selectPage(page)}
+					>
+						<span className="expander__body-item-icon">
+							<svg
+								width="14"
+								height="14"
+								viewBox="0 0 48 48"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<rect
+									x="6"
+									y="6"
+									width="36"
+									height="36"
+									rx="3"
+									stroke="#757272"
+									strokeWidth="3"
+									strokeLinejoin="miter"
+								/>
+								<path
+									d="M6 17H42"
+									stroke="#757272"
+									strokeWidth="3"
+									strokeLinecap="square"
+									strokeLinejoin="miter"
+								/>
+								<path
+									d="M17 42V17"
+									stroke="#757272"
+									strokeWidth="3"
+									strokeLinecap="square"
+									strokeLinejoin="miter"
+								/>
+							</svg>
+						</span>
+						<span className="expander__body-item-title">{page.title}</span>
+					</div>
+				);
 			});
-		} else {
-			let ar: DataNode[] = [];
-			let i: number;
-			loop(data, dropKey, (_item, index, arr) => {
-				ar = arr;
-				i = index;
-			});
-			if (dropPosition === -1) {
-				ar.splice(i!, 0, dragObj!);
-			} else {
-				ar.splice(i! + 1, 0, dragObj!);
-			}
-		}
-		setData(data);
-	};
+		return kids;
+	}
 
 	return (
 		<div className="aside-general">
@@ -110,13 +131,11 @@ function General() {
 					Outline
 				</span>
 				<Button
+					className="btn__scene-create"
 					icon={<PlusOutlined />}
 					type="text"
-					style={{
-						color: "#fff",
-						marginRight: "6px",
-					}}
-				></Button>
+					onClick={createScene}
+				/>
 			</div>
 
 			<div className="columns">
@@ -143,17 +162,200 @@ function General() {
 							overflow: "scroll",
 						}}
 					>
-						<Tree
-							className="draggable-tree"
-							defaultExpandedKeys={expandedKeys}
-							// draggable
-							// blockNode
-							// onDragEnter={onDragEnter}
-							// onDrop={onDrop}
-							treeData={data}
-						/>
-						<br />
-						<br />
+						{renderScenes()}
+						{/* <section className={`expander open`}>
+							<div className="expander__head">
+								<svg
+									width="9"
+									height="6"
+									viewBox="0 0 9 6"
+									xmlns="http://www.w3.org/2000/svg"
+									className="expander__icon"
+								>
+									<path
+										d="M4.50009 6L-5.24537e-07 1.26364e-06L9 4.76837e-07L4.50009 6Z"
+										fill="currentcolor"
+									></path>
+								</svg>
+								<div>Files</div>
+							</div>
+							<div className="expander__body">
+								<div>
+									<div className="expander__body-item">
+										<span className="expander__body-item-icon">
+											<svg
+												width="14"
+												height="14"
+												viewBox="0 0 48 48"
+												fill="none"
+												xmlns="http://www.w3.org/2000/svg"
+											>
+												<rect
+													x="6"
+													y="6"
+													width="36"
+													height="36"
+													rx="3"
+													stroke="#757272"
+													stroke-width="3"
+													stroke-linejoin="miter"
+												/>
+												<path
+													d="M6 17H42"
+													stroke="#757272"
+													stroke-width="3"
+													stroke-linecap="square"
+													stroke-linejoin="miter"
+												/>
+												<path
+													d="M17 42V17"
+													stroke="#757272"
+													stroke-width="3"
+													stroke-linecap="square"
+													stroke-linejoin="miter"
+												/>
+											</svg>
+										</span>
+										<span className="expander__body-item-title">public</span>
+									</div>
+
+									<div className="expander__body-item">
+										<span className="expander__body-item-icon">
+											<svg
+												width="14"
+												height="14"
+												viewBox="0 0 48 48"
+												fill="none"
+												xmlns="http://www.w3.org/2000/svg"
+											>
+												<rect
+													x="6"
+													y="6"
+													width="36"
+													height="36"
+													rx="3"
+													stroke="#757272"
+													stroke-width="3"
+													stroke-linejoin="miter"
+												/>
+												<path
+													d="M6 17H42"
+													stroke="#757272"
+													stroke-width="3"
+													stroke-linecap="square"
+													stroke-linejoin="miter"
+												/>
+												<path
+													d="M17 42V17"
+													stroke="#757272"
+													stroke-width="3"
+													stroke-linecap="square"
+													stroke-linejoin="miter"
+												/>
+											</svg>
+										</span>
+										<span className="expander__body-item-title">public</span>
+									</div>
+								</div>
+							</div>
+						</section> */}
+
+						{/* <section className="expander">
+							<div className="expander__head">
+								<svg
+									width="9"
+									height="6"
+									viewBox="0 0 9 6"
+									xmlns="http://www.w3.org/2000/svg"
+									className="expander__icon"
+								>
+									<path
+										d="M4.50009 6L-5.24537e-07 1.26364e-06L9 4.76837e-07L4.50009 6Z"
+										fill="currentcolor"
+									></path>
+								</svg>
+								<div>Files</div>
+							</div>
+							<div className="expander__body">
+								<div>
+									<div className="expander__body-item">
+										<span className="expander__body-item-icon">
+											<svg
+												width="14"
+												height="14"
+												viewBox="0 0 48 48"
+												fill="none"
+												xmlns="http://www.w3.org/2000/svg"
+											>
+												<rect
+													x="6"
+													y="6"
+													width="36"
+													height="36"
+													rx="3"
+													stroke="#757272"
+													stroke-width="3"
+													stroke-linejoin="miter"
+												/>
+												<path
+													d="M6 17H42"
+													stroke="#757272"
+													stroke-width="3"
+													stroke-linecap="square"
+													stroke-linejoin="miter"
+												/>
+												<path
+													d="M17 42V17"
+													stroke="#757272"
+													stroke-width="3"
+													stroke-linecap="square"
+													stroke-linejoin="miter"
+												/>
+											</svg>
+										</span>
+										<span className="expander__body-item-title">public</span>
+									</div>
+
+									<div className="expander__body-item">
+										<span className="expander__body-item-icon">
+											<svg
+												width="14"
+												height="14"
+												viewBox="0 0 48 48"
+												fill="none"
+												xmlns="http://www.w3.org/2000/svg"
+											>
+												<rect
+													x="6"
+													y="6"
+													width="36"
+													height="36"
+													rx="3"
+													stroke="#757272"
+													stroke-width="3"
+													stroke-linejoin="miter"
+												/>
+												<path
+													d="M6 17H42"
+													stroke="#757272"
+													stroke-width="3"
+													stroke-linecap="square"
+													stroke-linejoin="miter"
+												/>
+												<path
+													d="M17 42V17"
+													stroke="#757272"
+													stroke-width="3"
+													stroke-linecap="square"
+													stroke-linejoin="miter"
+												/>
+											</svg>
+										</span>
+										<span className="expander__body-item-title">public</span>
+									</div>
+								</div>
+							</div>
+						</section> */}
 					</div>
 				</div>
 			</div>

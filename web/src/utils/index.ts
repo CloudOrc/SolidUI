@@ -1,6 +1,7 @@
 import mitt from "mitt";
 import { IObject, isString, isArray, isNumber } from "@daybrush/utils";
 import { EventBusType } from "@/types/eventbus";
+import ModelManager from "./ModelManager";
 
 const ids: IObject<string> = {};
 
@@ -16,5 +17,6 @@ function genId() {
 }
 
 const eventbus = mitt<EventBusType>();
+const mm = new ModelManager();
 
-export { eventbus, genId };
+export { eventbus, mm, genId };

@@ -1,6 +1,8 @@
 import React from "react";
 
 interface SolidComponentFrameDataType {
+	translate: number[];
+	rotate: number;
 	backgroundColor?: string;
 	backgroundImage?: string;
 }
@@ -10,7 +12,7 @@ interface SolidComponentSizeDataType {
 	height: number;
 }
 
-type SolidViewType = "echarts_bar" | "echarts_line" | "echarts_pie";
+export type SolidViewType = "echarts_bar" | "echarts_line" | "echarts_pie";
 
 export interface SolidModelDataType {
 	id: string;
@@ -25,14 +27,20 @@ export interface SolidScenaDataType {
 	id: string;
 	title: string;
 	pages?: SolidPageDataType[];
+
+	// --- for designer
+	selected?: boolean;
 }
 
 export interface SolidPageDataType {
 	id: string;
 	title: string;
-	frame: SolidComponentFrameDataType;
-	style: React.CSSProperties;
+	frame?: SolidComponentFrameDataType;
+	style?: React.CSSProperties;
 	views: SolidViewDataType[];
+
+	// --- for designer
+	selected?: boolean;
 }
 
 export interface SolidViewDataType {
@@ -48,7 +56,7 @@ export interface SolidViewDataType {
 	data: SolidViewDataDataType;
 	events?: SolidViewEventDataType[];
 	style?: React.CSSProperties;
-	frame?: SolidComponentFrameDataType;
+	frame: SolidComponentFrameDataType;
 }
 
 interface SolidViewDataDataType {
