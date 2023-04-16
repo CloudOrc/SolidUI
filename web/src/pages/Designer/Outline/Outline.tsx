@@ -25,6 +25,7 @@ function Outline() {
 			nodes.push(
 				<li
 					className={`chartview ${selected ? "selected" : ""}`}
+					key={`key_${view.id}`}
 					onClick={() => {
 						selectView(view.id);
 					}}

@@ -24,6 +24,10 @@ type OnDrawEventData = {
 	viewType: SolidViewType;
 };
 
+type OnDrawCompleteEventData = {
+	id: string;
+};
+
 type OnModelLoadEventData = {
 	model: SolidModelDataType;
 };
@@ -41,24 +45,29 @@ type OnSelectViewInViewListEventData = {
 	id: string;
 };
 
+type OnRemoveViewCompleteEventData = {
+	source: "viewport" | "viewlist";
+};
+
 type EventBusType = {
 	onResize: OnResizeEventData;
 	onDrag: { x: number; y: number };
 	onResizeGroup: OnReiszeGroupEventData;
 	onZoom: OnZoomEventData;
 	onDraw: OnDrawEventData;
+	onDrawComplete: OnDrawCompleteEventData;
 	onModelLoad: OnModelLoadEventData;
 	onSelectPage: OnSelectPageEventData;
 	onSelectViewInViewport: OnSelectViewInViewportEventData;
 	onSelectViewInViewList: OnSelectViewInViewListEventData;
+	onRemoveViewComplete: OnRemoveViewCompleteEventData;
 };
-
-// export default EventBusType;
 
 export {
 	EventBusType,
 	OnResizeEventData,
 	OnDragEventData,
+	OnDrawCompleteEventData,
 	OnReiszeGroupEventData,
 	OnZoomEventData,
 	OnDrawEventData,
@@ -66,4 +75,5 @@ export {
 	OnSelectPageEventData,
 	OnSelectViewInViewportEventData,
 	OnSelectViewInViewListEventData,
+	OnRemoveViewCompleteEventData,
 };

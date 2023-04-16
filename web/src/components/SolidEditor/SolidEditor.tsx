@@ -81,6 +81,10 @@ export default class SolidEditor extends React.PureComponent<
 		return this.viewport.current!;
 	};
 
+	public getEditorManager = () => {
+		return this.manager;
+	};
+
 	public getSelecto = () => {
 		return this.selecto.current!;
 	};
@@ -191,41 +195,41 @@ export default class SolidEditor extends React.PureComponent<
 		});
 		this.setSelectedTargets(targets1, true);
 		return targets1;
-		const data = this.moveableData;
-		const container = this.getViewport().viewportRef.current!;
-		const targets = infos
-			.map(function registerFrame(info) {
-				const frame = data.createFrame(info.el!, info.frame);
+		// const data = this.moveableData;
+		// const container = this.getViewport().viewportRef.current!;
+		// const targets = infos
+		// 	.map(function registerFrame(info) {
+		// 		const frame = data.createFrame(info.el!, info.frame);
 
-				if (info.frameOrder) {
-					frame.setOrderObject(info.frameOrder);
-				}
-				data.render(info.el!);
+		// 		if (info.frameOrder) {
+		// 			frame.setOrderObject(info.frameOrder);
+		// 		}
+		// 		data.render(info.el!);
 
-				info.children!.forEach(registerFrame);
-				return info.el!;
-			})
-			.filter((el) => el);
-		infos.forEach((info) => {
-			if (!info.moveMatrix) {
-				return;
-			}
-			const frame = data.getFrame(info.el!);
-			let nextMatrix = getOffsetOriginMatrix(info.el!, container);
+		// 		info.children!.forEach(registerFrame);
+		// 		return info.el!;
+		// 	})
+		// 	.filter((el) => el);
+		// infos.forEach((info) => {
+		// 	if (!info.moveMatrix) {
+		// 		return;
+		// 	}
+		// 	const frame = data.getFrame(info.el!);
+		// 	let nextMatrix = getOffsetOriginMatrix(info.el!, container);
 
-			nextMatrix = invert(nextMatrix, 4);
+		// 	nextMatrix = invert(nextMatrix, 4);
 
-			const moveMatrix = matrix3d(nextMatrix, info.moveMatrix);
+		// 	const moveMatrix = matrix3d(nextMatrix, info.moveMatrix);
 
-			setMoveMatrix(frame, moveMatrix);
-			data.render(info.el!);
-		});
-		return Promise.all(targets.map((target) => checkImageLoaded(target))).then(
-			() => {
-				this.setSelectedTargets(targets, true);
-				return targets;
-			}
-		);
+		// 	setMoveMatrix(frame, moveMatrix);
+		// 	data.render(info.el!);
+		// });
+		// return Promise.all(targets.map((target) => checkImageLoaded(target))).then(
+		// 	() => {
+		// 		this.setSelectedTargets(targets, true);
+		// 		return targets;
+		// 	}
+		// );
 	}
 
 	public promiseState(state: Partial<SolidEditorState>) {

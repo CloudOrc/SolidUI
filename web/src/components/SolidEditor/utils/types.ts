@@ -6,6 +6,7 @@ import MoveableManager from "./MoveableManager";
 import Debugger from "./Debugger";
 import Memory from "./Memory";
 import MoveableData from "./MoveableData";
+import SolidEditorManager from "./SolidEditorManager";
 // import { Emitter } from "mitt";
 
 export interface BaseSolidViewProps {
@@ -66,6 +67,7 @@ export interface EditorInterface {
 
 	getViewport: () => SolidViewport;
 	getSelecto: () => Selecto;
+	getEditorManager: () => SolidEditorManager;
 }
 
 export interface AddedInfo {
