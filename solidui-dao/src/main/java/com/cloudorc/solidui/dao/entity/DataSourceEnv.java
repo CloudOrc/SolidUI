@@ -15,41 +15,44 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.entrance.dto;
+package com.cloudorc.solidui.dao.entity;
 
 import com.cloudorc.solidui.common.utils.JSONUtils;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.*;
 
 /** Store the data source environment information */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-@JsonIgnoreProperties(
-        value = {"hibernateLazyInitializer", "handler"},
-        ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
 public class DataSourceEnv {
 
     private Long id;
     /** Environment name */
-    @NotNull private String envName;
+    @NotNull
+    private String envName;
 
     /** Environment description */
     @Size(min = 0, max = 200)
     private String envDesc;
 
     /** ID of data source type */
-    @NotNull private Long dataSourceTypeId;
+    @NotNull
+    private Long dataSourceTypeId;
 
     private DataSourceType dataSourceType;
     /** Connection parameters for environment */
     private Map<String, Object> connectParams = new HashMap<>();
 
     /** Parameter JSON string */
-    @JsonIgnore private String parameter;
+    @JsonIgnore
+    private String parameter;
 
     /** Create time */
     private Date createTime;
@@ -63,7 +66,8 @@ public class DataSourceEnv {
     /** Modify user */
     private String modifyUser;
 
-    @JsonIgnore private List<DataSourceParamKeyDefinition> keyDefinitions = new ArrayList<>();
+    @JsonIgnore
+    private List<DataSourceParamKeyDefinition> keyDefinitions = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -90,7 +94,7 @@ public class DataSourceEnv {
     }
 
     public Map<String, Object> getConnectParams() {
-        if (connectParams.isEmpty() && parameter != null && !parameter.isEmpty()){
+        if (connectParams.isEmpty() && parameter != null && !parameter.isEmpty()) {
             try {
                 connectParams.putAll(Objects.requireNonNull(JSONUtils.parseObject(parameter, Map.class)));
 

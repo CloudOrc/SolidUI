@@ -15,16 +15,14 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.entrance.dto;
+package com.cloudorc.solidui.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /** Data source type entity */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-@JsonIgnoreProperties(
-        value = {"hibernateLazyInitializer", "handler"},
-        ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
 public class DataSourceType {
 
     private String id;

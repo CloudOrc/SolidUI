@@ -15,23 +15,23 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.entrance.dto;
+package com.cloudorc.solidui.dao.entity;
 
 import com.cloudorc.solidui.common.utils.JSONUtils;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 /** Store the data source environment information */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-@JsonIgnoreProperties(
-        value = {"hibernateLazyInitializer", "handler"},
-        ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
 public class DatasourceVersion {
 
     /** version id for datasource */
@@ -54,7 +54,8 @@ public class DatasourceVersion {
     /** Creator */
     private String createUser;
 
-    public DatasourceVersion() {}
+    public DatasourceVersion() {
+    }
 
     public Long getVersionId() {
         return versionId;

@@ -15,53 +15,54 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.entrance.dto;
+package com.cloudorc.solidui.dao.entity;
+
+import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.cloudorc.solidui.common.enums.UserType;
 
+public class ProjectUser {
 
-import java.util.Date;
-
-
-
-public class User {
-
+    /**
+     * id
+     */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+    @TableField("user_id")
+    private int userId;
+
+    @TableField("project_id")
+    private int projectId;
+
+    /**
+     * project code
+     */
+    @TableField(exist = false)
+    private long projectCode;
+
+    /**
+     * project name
+     */
+    @TableField(exist = false)
+    private String projectName;
+
+    /**
+     * user name
+     */
+    @TableField(exist = false)
     private String userName;
 
-    private String userPassword;
+    /**
+     * permission
+     */
+    private int perm;
 
-    private String email;
-
-    private String phone;
-
-    private UserType userType;
-
-    private int tenantId;
-
-    private int state;
-
-    @TableField(exist = false)
-    private String tenantCode;
-
-    @TableField(exist = false)
-    private String queueName;
-
-    @TableField(exist = false)
-    private String alertGroup;
-
-    private String queue;
-
-    private String timeZone;
-
+    @TableField("create_time")
     private Date createTime;
 
+    @TableField("update_time")
     private Date updateTime;
-
 }

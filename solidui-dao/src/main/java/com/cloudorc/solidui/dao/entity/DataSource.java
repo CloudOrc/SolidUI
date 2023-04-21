@@ -15,24 +15,24 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.entrance.dto;
+package com.cloudorc.solidui.dao.entity;
 
 import com.cloudorc.solidui.common.utils.JSONUtils;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.*;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.util.*;
 /** Store the data source information */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-@JsonIgnoreProperties(
-        value = {"hibernateLazyInitializer", "handler"},
-        ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
 public class DataSource {
 
     private Long id;
@@ -47,17 +47,20 @@ public class DataSource {
     private String dataSourceDesc;
 
     /** ID of data source type */
-    @NotNull private Long dataSourceTypeId;
+    @NotNull
+    private Long dataSourceTypeId;
 
     /** Identify from creator */
     private String createIdentify;
 
     /** System name from creator */
-    @NotNull private String createSystem;
+    @NotNull
+    private String createSystem;
     /** Connection parameters */
     private Map<String, Object> connectParams = new HashMap<>();
     /** Parameter JSON string */
-    @JsonIgnore private String parameter;
+    @JsonIgnore
+    private String parameter;
 
     /** ID of data source environment */
     private Long dataSourceEnvId;
@@ -89,7 +92,8 @@ public class DataSource {
     /** Data source env */
     private DataSourceEnv dataSourceEnv;
 
-    @JsonIgnore private List<DataSourceParamKeyDefinition> keyDefinitions = new ArrayList<>();
+    @JsonIgnore
+    private List<DataSourceParamKeyDefinition> keyDefinitions = new ArrayList<>();
 
     public DataSource() {
         this.createTime = Calendar.getInstance().getTime();

@@ -6,9 +6,9 @@ import static com.cloudorc.solidui.entrance.enums.Status.LOGIN_USER_QUERY_PROJEC
 import static com.cloudorc.solidui.entrance.enums.Status.QUERY_PROJECT_DETAILS_BY_CODE_ERROR;
 import static com.cloudorc.solidui.entrance.enums.Status.UPDATE_PROJECT_ERROR;
 
+import com.cloudorc.solidui.dao.entity.Project;
+import com.cloudorc.solidui.dao.entity.User;
 import com.cloudorc.solidui.entrance.constants.Constants;
-import com.cloudorc.solidui.entrance.dto.Project;
-import com.cloudorc.solidui.entrance.dto.User;
 import com.cloudorc.solidui.entrance.exceptions.ApiException;
 import com.cloudorc.solidui.entrance.utils.PageInfo;
 import com.cloudorc.solidui.entrance.utils.Result;

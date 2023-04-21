@@ -1,9 +1,10 @@
 package com.cloudorc.solidui.entrance.controller;
 
-import com.cloudorc.solidui.entrance.dto.DataSource;
-import com.cloudorc.solidui.entrance.dto.DataSourceParamKeyDefinition;
-import com.cloudorc.solidui.entrance.dto.DataSourceType;
-import com.cloudorc.solidui.entrance.dto.DatasourceVersion;
+
+import com.cloudorc.solidui.dao.entity.DataSource;
+import com.cloudorc.solidui.dao.entity.DataSourceParamKeyDefinition;
+import com.cloudorc.solidui.dao.entity.DataSourceType;
+import com.cloudorc.solidui.dao.entity.DatasourceVersion;
 import com.cloudorc.solidui.entrance.utils.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

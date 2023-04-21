@@ -15,10 +15,7 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.entrance.dto;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+package com.cloudorc.solidui.dao.entity;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -26,14 +23,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 /** Parameter key definition for data source type */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-@JsonIgnoreProperties(
-        value = {"hibernateLazyInitializer", "handler"},
-        ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
 public class DataSourceParamKeyDefinition {
+
     /** Key-value type */
     public enum ValueType {
+
         /** Email format */
         EMAIL(String.class),
         /** String */
@@ -199,8 +199,6 @@ public class DataSourceParamKeyDefinition {
     public void setRefValue(String refValue) {
         this.refValue = refValue;
     }
-
-
 
     @Override
     public boolean equals(Object o) {
