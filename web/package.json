@@ -58,6 +58,7 @@
     "webpack-merge": "5.8.0"
   },
   "dependencies": {
+    "@icon-park/react": "^1.4.2",
     "@scena/react-guides": "0.22.3",
     "antd": "4.24.7",
     "axios": "1.3.2",

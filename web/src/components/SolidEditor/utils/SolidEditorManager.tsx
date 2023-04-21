@@ -21,26 +21,24 @@ export interface HistoryAction {
 	props: IObject<any>;
 }
 export default class SolidEditorManager {
-	private types: IObject<{ redo: RestoreCallback; undo: RestoreCallback }> = {};
+	// private types: IObject<{ redo: RestoreCallback; undo: RestoreCallback }> = {};
 	private factory: SolidViewFactory;
-	private model?: SolidModelDataType;
-	private page?: SolidPageDataType;
-	// private mm?: ModelManager;
+	// private model?: SolidModelDataType;
+	// private page?: SolidPageDataType;
 
 	constructor(private editor: SolidEditor) {
 		this.factory = new SolidViewFactory();
-		// this.mm = new ModelManager();
 
 		this.handleOnDraw = this.handleOnDraw.bind(this);
 		this.handleSelectPage = this.handleSelectPage.bind(this);
 		this.handleModelLoad = this.handleModelLoad.bind(this);
-		this.handleSelectViewinViewport =
-			this.handleSelectViewinViewport.bind(this);
+		this.handleSelectViewinViewList =
+			this.handleSelectViewinViewList.bind(this);
 
 		eventbus.on("onDraw", this.handleOnDraw);
 		eventbus.on("onSelectPage", this.handleSelectPage);
 		eventbus.on("onModelLoad", this.handleModelLoad);
-		eventbus.on("onSelectViewInViewport", this.handleSelectViewinViewport);
+		eventbus.on("onSelectViewInViewList", this.handleSelectViewinViewList);
 	}
 
 	private handleOnDraw(event: OnDrawEventData) {
@@ -55,7 +53,7 @@ export default class SolidEditorManager {
 		}
 		let SolidViewComponent = builder.getComponentType();
 		let vm = builder.createModel();
-		let zoom = this.editor.getZoom();
+		// let zoom = this.editor.getZoom();
 		let _style: React.CSSProperties = {
 			...vm.style,
 			// top: `${vm.position.top}px`,
@@ -72,7 +70,7 @@ export default class SolidEditorManager {
 			})
 			.then(() => {
 				mm.addView(vm);
-				console.log(mm.getModel());
+				eventbus.emit("onDrawComplete", { id: vm.id });
 			});
 	}
 
@@ -117,12 +115,18 @@ export default class SolidEditorManager {
 		// this.mm?.attach(event.model);
 	}
 
-	private handleSelectViewinViewport(event: OnSelectViewInViewportEventData) {
+	private handleSelectViewinViewList(event: OnSelectViewInViewListEventData) {
 		let view = mm.getView(event.id);
 		if (view) {
 			this.editor.selectTarget(view.id);
 		}
 	}
 
-	private getJSX() {}
+	//// ------------------ internal communcation methods ------------------
+	public _internal_select_view(id: string) {
+		// console.log("interal select view", id);
+		eventbus.emit("onSelectViewInViewport", { id });
+	}
+
+	// private getJSX() {}
 }

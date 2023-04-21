@@ -1,6 +1,6 @@
 @import "@/assets/styles/variables.less";
 
-.properties {
+.aside-east {
   position: absolute;
   top: @headerHeight;
   right: 0;
@@ -11,4 +11,60 @@
 	color: @textColor;
   transition: all .3s;
 	border-left: 1px solid #D2D1D1;
+
+	.aside-east__container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 10;
+	}
+}
+
+.conf-header {
+	position: relative;
+	height: 36px;
+	background-color: #FCFCFD;
+	color: @primaryTextColor;
+	border-bottom: 1px solid #E7E7E7;
+
+	.conf-header__tabs {
+		position: absolute;
+		right: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		z-index: 1;
+
+		.conf-header__tabs-item {
+			position: relative;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+			cursor: pointer;
+			width: 33.33%;
+			font-size: 12px;
+
+			&.active {
+				&::after {
+					content: "";
+					position: absolute;
+					left: 0;
+					bottom: -1px;
+					height: 2px;
+					width: 100%;
+					// background-color: #fff;
+					background-color: #0070cc;
+				}
+			}
+		}
+	}
+}
+
+.conf-main {
+
 }

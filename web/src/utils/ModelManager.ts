@@ -144,6 +144,20 @@ class ModelManager {
 		this.views.push(view);
 	}
 
+	public removeView(id: string): void {
+		if (isNil(this.currentPage)) {
+			return;
+		}
+		let index = this.currentPage.views.findIndex((item) => item.id === id);
+		console.log(index, this.currentPage.views, id);
+		if (index > -1) {
+			this.currentPage.views.splice(index, 1);
+		}
+		console.log(this.currentPage);
+		this.viewMap.delete(id);
+		this.views = this.views.filter((item) => item.id !== id);
+	}
+
 	public getPrepareSavingModel(): SolidModelDataType | undefined {
 		if (isNil(this.model)) {
 			return undefined;

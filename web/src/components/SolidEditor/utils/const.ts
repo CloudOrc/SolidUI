@@ -9,6 +9,7 @@ export const SOLID_EDITOR_PROPERTIES = [
 	"moveableManager",
 	"historyManager",
 	"console",
+	"getEditorManager",
 	"getViewport",
 	"getSelecto",
 	"getEditorElement",
