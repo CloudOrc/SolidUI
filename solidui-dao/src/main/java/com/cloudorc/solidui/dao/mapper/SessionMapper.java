@@ -14,33 +14,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.cloudorc.solidui.dao.entity;
-
+package com.cloudorc.solidui.dao.mapper;
 
 
-import java.util.Date;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.cloudorc.solidui.dao.entity.Session;
+import org.apache.ibatis.annotations.Param;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
+import java.util.List;
 
-@Data
-@TableName("solidui_user")
-public class User {
+/**
+ * session mapper interface
+ */
+public interface SessionMapper extends BaseMapper<Session> {
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    /**
+     * query session list by userId
+     * @param userId userId
+     * @return session list
+     */
+    List<Session> queryByUserId(@Param("userId") int userId);
 
-    private String userName;
-
-    private String userPassword;
-
-    private String queue;
-
-    private Date createTime;
-
-    private Date updateTime;
+    /**
+     * query session by userId and Ip
+     * @param userId userId
+     * @param ip ip
+     * @return session
+     */
+    Session queryByUserIdAndIp(@Param("userId") int userId,@Param("ip") String ip);
 
 }

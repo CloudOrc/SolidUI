@@ -1,9 +1,15 @@
 package com.cloudorc.solidui.entrance.controller;
 
+import static com.cloudorc.solidui.common.constants.Constants.COMMA;
+import static com.cloudorc.solidui.common.constants.Constants.HTTP_HEADER_UNKNOWN;
+import static com.cloudorc.solidui.common.constants.Constants.HTTP_X_FORWARDED_FOR;
+import static com.cloudorc.solidui.common.constants.Constants.HTTP_X_REAL_IP;
 import com.cloudorc.solidui.entrance.constants.Constants;
 import com.cloudorc.solidui.entrance.enums.Status;
 import com.cloudorc.solidui.entrance.utils.Result;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -178,6 +184,33 @@ public class BaseController {
 
         result.setData(list);
         return result;
+    }
+
+
+    /**
+     * get ip address in the http request
+     *
+     * @param request http servlet request
+     * @return client ip address
+     */
+    public static String getClientIpAddress(HttpServletRequest request) {
+        String clientIp = request.getHeader(HTTP_X_FORWARDED_FOR);
+
+        if (StringUtils.isNotEmpty(clientIp) && !clientIp.equalsIgnoreCase(HTTP_HEADER_UNKNOWN)) {
+            int index = clientIp.indexOf(COMMA);
+            if (index != -1) {
+                return clientIp.substring(0, index);
+            } else {
+                return clientIp;
+            }
+        }
+
+        clientIp = request.getHeader(HTTP_X_REAL_IP);
+        if (StringUtils.isNotEmpty(clientIp) && !clientIp.equalsIgnoreCase(HTTP_HEADER_UNKNOWN)) {
+            return clientIp;
+        }
+
+        return request.getRemoteAddr();
     }
 
 }
