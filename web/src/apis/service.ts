@@ -38,6 +38,7 @@ instance.interceptors.response.use(
 		return response;
 	},
 	(error) => {
+		console.log(error);
 		if (error.response.status === 401) {
 			message.error("session timeout, please sign in again");
 			localStorage.removeItem("token");

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 
 import "./index.less";
@@ -22,6 +22,10 @@ export default function (props: CheckboxProps) {
 		},
 		props.className
 	);
+
+	useEffect(() => {
+		setChecked(!!props.checked);
+	}, [props.checked]);
 
 	function handleChecked(e: React.MouseEvent<HTMLDivElement>) {
 		e.stopPropagation();

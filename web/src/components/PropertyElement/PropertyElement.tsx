@@ -7,7 +7,9 @@ export interface PropertyElementProps {
 
 	height?: number;
 	labelWidth?: number;
+	labelStyle?: React.CSSProperties;
 	label?: string;
+	inputStyle?: React.CSSProperties;
 	children?: React.ReactNode;
 }
 
@@ -17,7 +19,9 @@ export default function (props: PropertyElementProps) {
 		style,
 		height = 40,
 		labelWidth = 70,
+		labelStyle: _labelStyle,
 		label,
+		inputStyle: _inputStyle,
 		children,
 	} = props;
 
@@ -34,6 +38,7 @@ export default function (props: PropertyElementProps) {
 		width: labelWidth,
 		bottom: 0,
 		overflow: "hidden",
+		..._labelStyle,
 	};
 
 	let inputStyle: React.CSSProperties = {
@@ -43,6 +48,7 @@ export default function (props: PropertyElementProps) {
 		right: 0,
 		bottom: 0,
 		overflow: "hidden",
+		..._inputStyle,
 	};
 
 	let _className = classNames(

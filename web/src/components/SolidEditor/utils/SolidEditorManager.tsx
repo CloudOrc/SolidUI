@@ -7,8 +7,7 @@ import {
 	OnDrawEventData,
 	OnModelLoadEventData,
 	OnSelectPageEventData,
-	OnSelectViewInViewportEventData,
-	OnSelectViewInViewListEventData,
+	OnSelectViewEventData,
 } from "@/types/eventbus";
 import { SolidModelDataType, SolidPageDataType } from "@/types/solid";
 import SolidViewFactory from "@/views/SolidViewFactory";
@@ -40,6 +39,14 @@ export default class SolidEditorManager {
 		eventbus.on("onModelLoad", this.handleModelLoad);
 		eventbus.on("onSelectViewInViewList", this.handleSelectViewinViewList);
 	}
+
+	/**
+	 * TODO: refactor
+	 * 处理 properties 配置的值，修改后，影响中间编辑器的显示
+	 * 定制方法 this.editor | this.viewport (.updateView(....))
+	 * @param event event {}
+	 */
+	private handleUpdateViewPropertyValue(event: any) {}
 
 	private handleOnDraw(event: OnDrawEventData) {
 		if (!mm.getCurrentPage()) {
@@ -99,13 +106,27 @@ export default class SolidEditorManager {
 					let localVM = builder.createModel();
 					vm.data = localVM.data;
 				}
-				// let vm = builder.createModel(view);
-				this.editor.appendJSX({
-					id: view.id,
-					jsx: <SolidViewComponent viewModel={vm} style={_style} />,
-					// frame: vm.frame,
-					name: builder.getTitle(),
-				});
+
+				this.editor.appendJSXsOnly([
+					{
+						id: view.id,
+						// jsx: (
+						// 	<div style={_style}>
+						// 		<SolidViewComponent viewModel={vm} />
+						// 	</div>
+						// ),
+						jsx: <SolidViewComponent viewModel={vm} style={_style} />,
+						// frame: vm.frame,
+						name: builder.getTitle(),
+					},
+				]);
+
+				// this.editor.appendJSX({
+				// 	id: view.id,
+				// 	jsx: <SolidViewComponent viewModel={vm} style={_style} />,
+				// 	// frame: vm.frame,
+				// 	name: builder.getTitle(),
+				// });
 			});
 		});
 	}
@@ -115,7 +136,7 @@ export default class SolidEditorManager {
 		// this.mm?.attach(event.model);
 	}
 
-	private handleSelectViewinViewList(event: OnSelectViewInViewListEventData) {
+	private handleSelectViewinViewList(event: OnSelectViewEventData) {
 		let view = mm.getView(event.id);
 		if (view) {
 			this.editor.selectTarget(view.id);
@@ -124,9 +145,6 @@ export default class SolidEditorManager {
 
 	//// ------------------ internal communcation methods ------------------
 	public _internal_select_view(id: string) {
-		// console.log("interal select view", id);
 		eventbus.emit("onSelectViewInViewport", { id });
 	}
-
-	// private getJSX() {}
 }
