@@ -4,11 +4,14 @@ import {
 	SolidPageDataType,
 	SolidViewDataType,
 } from "@/types/solid";
+import { eventbus } from "@/utils";
+import { OnSelectViewEventData } from "@/types/eventbus";
 import { isNil, set, unset, forEach, isEmpty } from "lodash-es";
 
 class ModelManager {
 	private model?: SolidModelDataType;
 	private currentPage?: SolidPageDataType;
+	private currentView?: SolidViewDataType;
 	private sceneMap: Map<string, SolidScenaDataType> = new Map();
 	private pageMap: Map<string, SolidPageDataType> = new Map();
 	private viewMap: Map<string, SolidViewDataType> = new Map();
@@ -16,7 +19,20 @@ class ModelManager {
 	private pages: SolidPageDataType[] = [];
 	private views: SolidViewDataType[] = [];
 
-	constructor() {}
+	constructor() {
+		this.handleSelectView = this.handleSelectView.bind(this);
+
+		eventbus.on("onSelectViewInViewList", this.handleSelectView);
+		eventbus.on("onSelectViewInViewport", this.handleSelectView);
+	}
+
+	private handleSelectView(data: OnSelectViewEventData) {
+		let viewId = data.id;
+		let view = this.viewMap.get(viewId);
+		if (!isNil(view)) {
+			this.currentView = view;
+		}
+	}
 
 	public attach(model: SolidModelDataType): void {
 		this.model = model;
@@ -122,13 +138,16 @@ class ModelManager {
 		return this.currentPage;
 	}
 
+	public getCurrentView(): SolidViewDataType | undefined {
+		return this.currentView;
+	}
+
 	public getView(id: string): SolidViewDataType | undefined {
 		return this.viewMap.get(id);
 	}
 
 	public selectPage(id: string): void {
 		this.currentPage = this.getPage(id);
-		// console.log(this.currentPage);
 	}
 
 	public getModel(): SolidModelDataType | undefined {
@@ -149,11 +168,9 @@ class ModelManager {
 			return;
 		}
 		let index = this.currentPage.views.findIndex((item) => item.id === id);
-		console.log(index, this.currentPage.views, id);
 		if (index > -1) {
 			this.currentPage.views.splice(index, 1);
 		}
-		console.log(this.currentPage);
 		this.viewMap.delete(id);
 		this.views = this.views.filter((item) => item.id !== id);
 	}

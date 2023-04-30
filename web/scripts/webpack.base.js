@@ -39,7 +39,8 @@ module.exports = {
         test: /\.less$/,
         include: [
 					path.resolve(__dirname, '../src'),
-					path.resolve(__dirname, '../node_modules/antd')
+					path.resolve(__dirname, '../node_modules/antd'),
+					path.resolve(__dirname, '../node_modules/rc-select')
 				],
         use: [
           isDev ? 'style-loader' : MiniCssExtractPlugin.loader,

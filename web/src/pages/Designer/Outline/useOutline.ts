@@ -9,7 +9,7 @@ import { find, cloneDeep, isNil } from "lodash-es";
 import {
 	OnSelectPageEventData,
 	OnModelLoadEventData,
-	OnSelectViewInViewportEventData,
+	OnSelectViewEventData,
 	OnDrawEventData,
 	OnDrawCompleteEventData,
 	OnRemoveViewCompleteEventData,
@@ -27,6 +27,10 @@ function useOutline() {
 	const viewStatesMap = React.useRef<Map<string, ViewStateDataType>>(new Map());
 
 	function __handleSelectPage(evt: OnSelectPageEventData) {
+		viewStatesMap.current.forEach((viewState) => {
+			viewState.selected = false;
+		});
+		forceUpdate();
 		forceUpdate();
 	}
 
@@ -34,7 +38,7 @@ function useOutline() {
 		let model = evt.model;
 	}
 
-	function __handleSelectViewInViewport(evt: OnSelectViewInViewportEventData) {
+	function __handleSelectViewInViewport(evt: OnSelectViewEventData) {
 		selectViewById(evt.id);
 	}
 
@@ -44,7 +48,6 @@ function useOutline() {
 
 	function __handleRemoveViewComplete(evt: OnRemoveViewCompleteEventData) {
 		if ("viewlist" !== evt.source) {
-			console.log("handle remove ");
 			viewStatesMap.current.forEach((viewState) => {
 				viewState.selected = false;
 			});

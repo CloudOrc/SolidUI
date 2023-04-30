@@ -1,0 +1,59 @@
+.solid-select {
+	// height: 20px;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	width: 100%;
+}
+
+.solid-select__option {
+	// display: flex;
+	// justify-content: center;
+	// align-items: center;
+	cursor: pointer;
+	// background-color: yellow;
+	background-color: #fff;
+
+	// &:hover {
+	// 	background-color: #3e7dff;
+  // 	color: #fff;
+	// }
+
+	&.rc-select-item-option-active {
+		background-color: #3e7dff;
+  	color: #fff;
+	}
+
+
+	.select-option__item {
+		display: flex;
+		align-items: center;
+		height: 14px;
+		width: 100%;
+		font-size: 12px;
+	}
+}
+
+.rc-select-single:not(.rc-select-customize-input) .rc-select-selector {
+	padding: 0;
+	border: none;
+}
+
+/* 修改下拉框选项的背景颜色 */
+// .rc-select-dropdown-menu-item {
+//   background-color: #f5f5f5;
+// }
+
+// /* 修改下拉框选项的悬浮背景 */
+// .rc-select-dropdown-menu-item:hover {
+//   background-color: red;
+// }
+
+// /* 修改下拉框选项的选中背景 */
+// .rc-select-dropdown-menu-item-selected {
+//   background-color: #1890ff;
+//   color: #fff;
+// }
+
+.rc-select-item-option .rc-select-item-option-state {
+	top: -2px;
+	right: 4px;
+}

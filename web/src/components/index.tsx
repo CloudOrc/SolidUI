@@ -19,3 +19,15 @@ export { default as InputNumber } from "./InputNumber/InputNumber";
 
 //// InputText
 export { default as InputText } from "./InputText/InputText";
+
+//// InputColor
+export { default as InputColor } from "./InputColor/InputColor";
+
+//// InputTextArea
+export { default as InputTextArea } from "./InputTextArea/InputTextArea";
+
+//// InputUpload
+export { default as InputUpload } from "./InputUpload/InputUpload";
+
+//// Select
+export { default as Select } from "./Select/Select";

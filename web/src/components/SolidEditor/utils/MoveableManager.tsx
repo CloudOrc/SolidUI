@@ -115,7 +115,6 @@ export default class MoveableManager extends React.PureComponent<{
 					if (null === view || undefined === view) {
 						return;
 					}
-					console.log(view);
 					e.set(view.frame.translate);
 				}}
 				onDrag={(e) => {
@@ -135,7 +134,6 @@ export default class MoveableManager extends React.PureComponent<{
 						return;
 					}
 					// moveableData.onDrag(e);
-					// console.log(e.beforeTranslate[0], e.beforeTranslate[1]);
 					view.frame.translate = e.beforeTranslate;
 					// frame.translate = e.beforeTranslate;
 					// view.position = {
@@ -176,7 +174,6 @@ export default class MoveableManager extends React.PureComponent<{
 				// 		top: translate[1],
 				// 		left: translate[0],
 				// 	};
-				// 	console.log(e, view.position);
 				// }}
 				// Scale
 				onScaleStart={moveableData.onScaleStart}

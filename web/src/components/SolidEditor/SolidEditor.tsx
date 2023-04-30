@@ -23,7 +23,7 @@ import { SolidEditorContext } from "./SolidEditorContext";
 
 import { invert, matrix3d } from "@scena/matrix";
 import { IObject } from "@daybrush/utils";
-import { ElementInfo, RemovedInfo } from "./utils/types";
+import { AddedInfo, ElementInfo, RemovedInfo } from "./utils/types";
 // import { EventBusType } from "@/types";
 
 // import "@/assets/styles/solideditor.less";
@@ -109,6 +109,30 @@ export default class SolidEditor extends React.PureComponent<
 			this.setSelectedTargets([target]);
 		}
 		// this.getViewport().selectTarget(id);
+	}
+
+	public appendJSXsOnly(
+		jsxs: ElementInfo[],
+		isRestore?: boolean
+	): Promise<AddedInfo> {
+		const viewport = this.getViewport();
+		const indexesList = viewport.getSortedIndexesList(
+			this.getSelectedTargets()
+		);
+		const indexesListLength = indexesList.length;
+		let appendIndex = -1;
+		let scopeId: string = "";
+
+		if (!isRestore && indexesListLength) {
+			const indexes = indexesList[indexesListLength - 1];
+
+			const info = viewport.getInfoByIndexes(indexes);
+
+			scopeId = info.scopeId!;
+			appendIndex = indexes[indexes.length - 1] + 1;
+		}
+
+		return this.getViewport().appendJSXs(jsxs, appendIndex, scopeId);
 	}
 
 	public appendJSX(info: ElementInfo) {

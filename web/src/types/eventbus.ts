@@ -37,12 +37,18 @@ type OnSelectPageEventData = {
 	page?: SolidPageDataType;
 };
 
-type OnSelectViewInViewportEventData = {
+type OnSelectViewEventData = {
 	id: string;
 };
 
-type OnSelectViewInViewListEventData = {
+// type OnSelectViewEventData = {
+// 	id: string;
+// };
+
+type OnUpdateViewPropertyValueEventData = {
 	id: string;
+	property: string;
+	value: any;
 };
 
 type OnRemoveViewCompleteEventData = {
@@ -58,9 +64,10 @@ type EventBusType = {
 	onDrawComplete: OnDrawCompleteEventData;
 	onModelLoad: OnModelLoadEventData;
 	onSelectPage: OnSelectPageEventData;
-	onSelectViewInViewport: OnSelectViewInViewportEventData;
-	onSelectViewInViewList: OnSelectViewInViewListEventData;
+	onSelectViewInViewport: OnSelectViewEventData;
+	onSelectViewInViewList: OnSelectViewEventData;
 	onRemoveViewComplete: OnRemoveViewCompleteEventData;
+	onUpdateViewPropertyValue: OnUpdateViewPropertyValueEventData;
 };
 
 export {
@@ -73,7 +80,7 @@ export {
 	OnDrawEventData,
 	OnModelLoadEventData,
 	OnSelectPageEventData,
-	OnSelectViewInViewportEventData,
-	OnSelectViewInViewListEventData,
+	OnSelectViewEventData,
 	OnRemoveViewCompleteEventData,
+	OnUpdateViewPropertyValueEventData,
 };

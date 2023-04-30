@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import {
-	LeftRightExpander,
-	PropertyElement,
-	Switch,
-	Slider,
-	InputNumber,
-	InputText,
-	ButtonGroupRadio,
-} from "@/components";
+import React, { useEffect, useState } from "react";
+import TopPropertiesPanel from "./TopPropertiesPanel";
+import ScenePropertiesPanel from "./ScenePropertiesPanel";
+import PagePropertiesPanel from "./PagePropertiesPanel";
+import StylePropertiesPanel from "./StylePropertiesPanel";
+import DataPropertiesPanel from "./DataPropertiesPanel";
+import EventPropertiesPanel from "./EventPropertiesPanel";
+import useProperties from "./useProperties";
+import { mm, eventbus } from "@/utils/index";
+import { OnSelectViewEventData } from "@/types/eventbus";
 
 import "./configurations.less";
 
@@ -27,56 +27,57 @@ import "./configurations.less";
 // });
 
 function Properties() {
-	const [selectedMenu, setSelectedMenu] = useState<string>("MoveTool");
+	const { propertyKey, currentTabKey, asideRef, mainRef, renderTabs } =
+		useProperties({
+			tabs: [
+				{
+					key: "Style",
+					tab: "Style",
+				},
+				{
+					key: "Data",
+					tab: "Data",
+				},
+				{
+					key: "Events",
+					tab: "Events",
+				},
+			],
+		});
 
-	function onMenuChange(id: string) {
-		setSelectedMenu(id);
+	function renderByPropertyKey() {
+		if (propertyKey === "top") {
+			return <TopPropertiesPanel />;
+		} else if (propertyKey === "scene") {
+			return <ScenePropertiesPanel />;
+		} else if (propertyKey === "page") {
+			return <PagePropertiesPanel />;
+		} else if (propertyKey === "view") {
+			return (
+				<>
+					<header className="conf-header">{renderTabs()}</header>
+					<main className="conf-main" ref={mainRef}>
+						{renderPanel()}
+					</main>
+				</>
+			);
+		}
+		return undefined;
+	}
+
+	function renderPanel() {
+		if (currentTabKey === "Style") {
+			return <StylePropertiesPanel />;
+		} else if (currentTabKey === "Data") {
+			return <DataPropertiesPanel />;
+		} else if (currentTabKey === "Events") {
+			return <EventPropertiesPanel />;
+		}
 	}
 
 	return (
-		<section className="aside-east">
-			<div className="aside-east__container">
-				<header className="conf-header">
-					<ul className="conf-header__tabs">
-						<li className="conf-header__tabs-item active">Basic</li>
-						<li className="conf-header__tabs-item">Data</li>
-						<li className="conf-header__tabs-item">Event</li>
-					</ul>
-				</header>
-				<main className="conf-main">
-					<LeftRightExpander expanded={true}>
-						<PropertyElement label="布局方式">input element</PropertyElement>
-						<PropertyElement label="Switch">
-							<Switch checked={false} />
-						</PropertyElement>
-						<PropertyElement label="ButtonGroupRadio" labelWidth={120}>
-							<ButtonGroupRadio
-								value={"horizontal"}
-								items={[
-									{
-										text: "水平",
-										value: "horizontal",
-									},
-									{
-										text: "垂直",
-										value: "vertical",
-									},
-								]}
-							/>
-						</PropertyElement>
-						{/* <PropertyElement label="ButtonGroupRadio" labelWidth={120}>
-							<Slider min={1} max={100} />
-						</PropertyElement> */}
-						<PropertyElement label="InputNumber" labelWidth={120}>
-							<InputNumber step={1} min={1} max={100} value={20} />
-						</PropertyElement>
-
-						<PropertyElement label="InputText" labelWidth={120}>
-							<InputText value={"some text..."} />
-						</PropertyElement>
-					</LeftRightExpander>
-				</main>
-			</div>
+		<section className="aside-east" ref={asideRef}>
+			<div className="aside-east__container">{renderByPropertyKey()}</div>
 		</section>
 	);
 }
