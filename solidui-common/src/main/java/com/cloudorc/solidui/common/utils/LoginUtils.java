@@ -14,8 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.cloudorc.solidui.entrance.service;
+package com.cloudorc.solidui.common.utils;
 
-public interface UserService {
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class LoginUtils {
+
+    Map<String, Long> userTicketIdToLastAccessTime = new ConcurrentHashMap<>();
+
+    public static void setLoginUser(String userName){
+        if(StringUtils.isNotBlank(userName)) {
+
+        }
+    }
 
 }
