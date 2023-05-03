@@ -26,12 +26,14 @@ public enum Status {
     INTERNAL_SERVER_ERROR_ARGS(10000, "Internal Server Error: {0}", "服务端异常: {0}"),
     USER_NAME_EXIST(10003, "user name already exists", "用户名已存在"),
     USER_NAME_NULL(10004, "user name is null", "用户名不能为空"),
+    PASSWORD_NAME_NULL(10004, "user name is null", "用户名不能为空"),
     USER_LOGIN_FAILURE(10043, "user login failure", "用户登录失败"),
     UPDATE_PROJECT_ERROR(10046, "update project error", "更新项目信息错误"),
     QUERY_PROJECT_DETAILS_BY_CODE_ERROR(10047, "query project details by code error", "查询项目详细信息错误"),
     CREATE_PROJECT_ERROR(10048, "create project error", "创建项目错误"),
     LOGIN_USER_QUERY_PROJECT_LIST_PAGING_ERROR(10049, "login user query project list paging error", "分页查询项目列表错误"),
     DELETE_PROJECT_ERROR(10050, "delete project error", "删除项目错误"),
+    LOGIN_OUT_FAILURE(10051, "user login out failure", "用户退出失败"),
     FAILED(1, "failed", "失败");
 
     private final int code;

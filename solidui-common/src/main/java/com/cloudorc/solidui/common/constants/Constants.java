@@ -22,4 +22,15 @@ public final class Constants {
      * comma ,
      */
     public static final String COMMA = ",";
+
+    public static final String CRYPTKEY = "solidui-for-server";
+
+    public static final String TICKETHEADER = "bfs_";
+
+    public static final String WEB_SESSION_TIMEOUT = "2h";
+
+    public static final String SESSION_TICKETID_KEY = "solidui_user_session_ticket_id_v1";
+
+    public static final long SESSION_TIMEOUT = 2 * 60 * 60 * 1000L;
+
 }

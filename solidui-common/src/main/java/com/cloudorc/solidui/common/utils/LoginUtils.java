@@ -16,19 +16,86 @@
  */
 package com.cloudorc.solidui.common.utils;
 
-
+import com.cloudorc.solidui.common.constants.Constants;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.Cookie;
+
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 public class LoginUtils {
 
-    Map<String, Long> userTicketIdToLastAccessTime = new ConcurrentHashMap<>();
+    private static final Logger logger = LoggerFactory.getLogger(LoginUtils.class);
 
-    public static void setLoginUser(String userName){
+    public static Map<String, Long> userTicketIdToLastAccessTime = new ConcurrentHashMap<>();
+
+    static {
+
+        Utils.defaultScheduler().scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    long currentTime = System.currentTimeMillis();
+                    userTicketIdToLastAccessTime.entrySet().stream().filter(entry -> currentTime - entry.getValue() > Constants.SESSION_TIMEOUT).forEach(entry -> {
+                        String key = entry.getKey();
+                        Long value = entry.getValue();
+                        if (userTicketIdToLastAccessTime.containsKey(entry.getKey()) && System.currentTimeMillis() - userTicketIdToLastAccessTime.get(key) > Constants.SESSION_TIMEOUT) {
+                            logger.info("remove timeout userTicket {}, since the last access time is {}.", key, DateFormatUtils.format(value, "yyyy-MM-dd HH:mm:ss"));
+                            userTicketIdToLastAccessTime.remove(key);
+                        }
+                    });
+                }catch (Exception e) {
+                    logger.error("Failed to remove timeout user ticket id.", e);
+                }
+
+            }
+            },  Constants.SESSION_TIMEOUT, Constants.SESSION_TIMEOUT / 10, TimeUnit.MILLISECONDS);
+
+    }
+
+    private static String getUserTicketId(String username){
+        String timeoutUser = username + "," + System.currentTimeMillis();
+        try {
+            return DESUtil.encrypt(Constants.TICKETHEADER + timeoutUser, Constants.CRYPTKEY);
+        }catch (Exception e) {
+            logger.info("Failed to encrypt user ticket id, username: {}", username);
+            return null;
+        }
+
+    }
+
+    public static Cookie setLoginUser(String userName) {
         if(StringUtils.isNotBlank(userName)) {
+            String userTicketId = getUserTicketId(userName);
+            if(StringUtils.isNotBlank(userTicketId)) {
+                userTicketIdToLastAccessTime.put(userTicketId, System.currentTimeMillis());
+                Cookie cookie = new Cookie(Constants.SESSION_TICKETID_KEY, userTicketId);
+                cookie.setMaxAge(-1);
+                cookie.setPath("/");
+                return cookie;
+            }
+        }
+        return null;
+    }
 
+    public static void removeLoginUser(Cookie[] cookies){
+        if(cookies != null && cookies.length > 0){
+            for(Cookie cookie : cookies) {
+                if(Constants.SESSION_TICKETID_KEY.equals(cookie.getName())) {
+                    String userTicketId = cookie.getValue();
+                    if(StringUtils.isNotBlank(userTicketId)) {
+                        userTicketIdToLastAccessTime.remove(userTicketId);
+                    }
+                    cookie.setValue(null);
+                    cookie.setMaxAge(0);
+                }
+            }
         }
     }
 

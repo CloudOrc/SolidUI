@@ -14,17 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.cloudorc.solidui.entrance.service;
 
-import com.cloudorc.solidui.dao.entity.User;
+package com.cloudorc.solidui.common.utils;
 
-public interface UserService {
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
+
+public class EncryptionUtils {
+
+    private EncryptionUtils() {
+        throw new UnsupportedOperationException("Construct EncryptionUtils");
+    }
+
     /**
-     * query user by userName and password
-     *
-     * @param username userName
-     * @param password password
-     * @return user
+     * @param rawStr raw string
+     * @return md5(rawStr)
      */
-    User queryByUserNameAndPassword(String username, String password);
+    public static String getMd5(String rawStr) {
+        return DigestUtils.md5Hex(null == rawStr ? StringUtils.EMPTY : rawStr);
+    }
 }

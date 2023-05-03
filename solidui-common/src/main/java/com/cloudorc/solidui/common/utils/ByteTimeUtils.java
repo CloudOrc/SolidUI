@@ -14,17 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.cloudorc.solidui.entrance.service;
 
-import com.cloudorc.solidui.dao.entity.User;
+package com.cloudorc.solidui.common.utils;
 
-public interface UserService {
-    /**
-     * query user by userName and password
-     *
-     * @param username userName
-     * @param password password
-     * @return user
-     */
-    User queryByUserNameAndPassword(String username, String password);
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+
+public class ByteTimeUtils {
+    private static final Logger logger = LoggerFactory.getLogger(ByteTimeUtils.class);
+
 }

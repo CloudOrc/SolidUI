@@ -14,17 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.cloudorc.solidui.entrance.service;
 
+package com.cloudorc.solidui.entrance.service.impl;
+
+import com.cloudorc.solidui.common.utils.EncryptionUtils;
 import com.cloudorc.solidui.dao.entity.User;
+import com.cloudorc.solidui.dao.mapper.UserMapper;
+import com.cloudorc.solidui.entrance.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public interface UserService {
-    /**
-     * query user by userName and password
-     *
-     * @param username userName
-     * @param password password
-     * @return user
-     */
-    User queryByUserNameAndPassword(String username, String password);
+/**
+ * user service impl
+ */
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Override
+    public User queryByUserNameAndPassword(String username, String password) {
+        String passwordMd5 = EncryptionUtils.getMd5(password);
+        return userMapper.queryUserByNamePassword(username,passwordMd5);
+    }
 }

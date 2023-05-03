@@ -14,33 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.cloudorc.solidui.dao.mapper;
+
+package com.cloudorc.solidui.common.utils;
 
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cloudorc.solidui.dao.entity.Session;
-import org.apache.ibatis.annotations.Param;
+import org.junit.Assert;
+import org.junit.Test;
 
-import java.util.List;
+public class EncryptionUtilsTest {
 
-/**
- * session mapper interface
- */
-public interface SessionMapper extends BaseMapper<Session> {
-
-    /**
-     * query session list by userId
-     * @param userId userId
-     * @return session list
-     */
-    List<Session> queryByUserId(@Param("userId") int userId);
-
-    /**
-     * query session by userId and Ip
-     * @param userId userId
-     * @param ip ip
-     * @return session
-     */
-    Session queryByUserIdAndIp(@Param("userId") int userId,@Param("ip") String ip);
-
+    @Test
+    public void testMd5() {
+        String userName = "admin";
+        String md5 = EncryptionUtils.getMd5(userName);
+        Assert.assertNotNull(md5);
+    }
 }

@@ -21,25 +21,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cloudorc.solidui.dao.entity.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 
 
 @CacheConfig(cacheNames = "user", keyGenerator = "cacheKeyGenerator")
 public interface UserMapper extends BaseMapper<User> {
-
-    /**
-     * select by user id
-     */
-    @Cacheable(sync = true)
-    User selectById(int id);
-
-    /**
-     * delete by id
-     */
-    @CacheEvict
-    int deleteById(int id);
-
 
     /**
      * query user by userName and password
