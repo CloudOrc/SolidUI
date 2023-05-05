@@ -31,6 +31,7 @@
         <module>solidui-bom</module>
         <module>solidui-common</module>
         <module>solidui-dao</module>
+        <module>solidui-dist</module>
     </modules>
 
     <properties>
