@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 
 import java.util.Map;
@@ -97,6 +98,28 @@ public class LoginUtils {
                 }
             }
         }
+    }
+
+    public static String getLoginUser(HttpServletRequest request){
+         Cookie[] cookies = request.getCookies();
+         if(cookies != null){
+             for (Cookie cookie : cookies) {
+                 if(Constants.SESSION_TICKETID_KEY.equals(cookie.getName())) {
+                     String userTicketId = cookie.getValue();
+                     if(StringUtils.isNotBlank(userTicketId)) {
+                         try {
+                             String timeoutUser = DESUtil.decrypt(userTicketId, Constants.CRYPTKEY);
+                             if(StringUtils.isNotBlank(timeoutUser) && timeoutUser.startsWith(Constants.TICKETHEADER)) {
+                                 return timeoutUser.substring(Constants.TICKETHEADER.length(),timeoutUser.lastIndexOf(","));
+                             }
+                         }catch (Exception e) {
+                             logger.info("Failed to decrypt user ticket id, userTicketId: {}", userTicketId);
+                         }
+                     }
+                 }
+             }
+         }
+        return Constants.ADMIN_NAME;
     }
 
 }

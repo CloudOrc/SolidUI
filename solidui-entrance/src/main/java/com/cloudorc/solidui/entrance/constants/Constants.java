@@ -28,6 +28,6 @@ public class Constants {
     public static final String CURRENT_PAGE = "currentPage";
     public static final String TOTAL_PAGE = "totalPage";
     public static final String TOTAL = "total";
-
-    public static final String SESSION_USER = "session.user";
+    public static final Integer DEFAULT_PAGE_SIZE = 10;
+    public static final Integer DEFAULT_PAGE_NO = 1;
 }

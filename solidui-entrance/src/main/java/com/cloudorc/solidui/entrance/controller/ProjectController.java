@@ -19,34 +19,36 @@ package com.cloudorc.solidui.entrance.controller;
 import static com.cloudorc.solidui.entrance.enums.Status.CREATE_PROJECT_ERROR;
 import static com.cloudorc.solidui.entrance.enums.Status.DELETE_PROJECT_ERROR;
 import static com.cloudorc.solidui.entrance.enums.Status.LOGIN_USER_QUERY_PROJECT_LIST_PAGING_ERROR;
-import static com.cloudorc.solidui.entrance.enums.Status.QUERY_PROJECT_DETAILS_BY_CODE_ERROR;
 import static com.cloudorc.solidui.entrance.enums.Status.UPDATE_PROJECT_ERROR;
 
-import com.cloudorc.solidui.dao.entity.Project;
-import com.cloudorc.solidui.dao.entity.User;
+import com.cloudorc.solidui.common.utils.LoginUtils;
 import com.cloudorc.solidui.entrance.constants.Constants;
+import com.cloudorc.solidui.entrance.enums.Status;
 import com.cloudorc.solidui.entrance.exceptions.ApiException;
-import com.cloudorc.solidui.entrance.utils.PageInfo;
+import com.cloudorc.solidui.entrance.service.ProjectService;
 import com.cloudorc.solidui.entrance.utils.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
-//import com.baomidou.mybatisplus.core.metadata.IPage;
-//import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import javax.servlet.http.HttpServletRequest;
+
 
 @Api(tags = "PROJECT_TAG")
 @RestController
 @RequestMapping("projects")
 public class ProjectController extends BaseController{
 
+    @Autowired
+    private ProjectService projectService;
     /**
      * create project
      *
-     * @param loginUser   login user
      * @param projectName project name
      * @param description description
      * @return returns an error if it exists
@@ -56,116 +58,103 @@ public class ProjectController extends BaseController{
             @ApiImplicitParam(name = "projectName", value = "PROJECT_NAME", dataTypeClass = String.class),
             @ApiImplicitParam(name = "description", value = "PROJECT_DESC", dataTypeClass = String.class)
     })
-    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     @ApiException(CREATE_PROJECT_ERROR)
-
-    public Result createProject(@ApiIgnore @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
+    @RequestMapping(path = "", method = RequestMethod.POST)
+    public Result createProject(HttpServletRequest req,
                                 @RequestParam("projectName") String projectName,
                                 @RequestParam(value = "description", required = false) String description) {
-        Project project = new Project();
-        project.setName(projectName);
-        project.setDescription(description);
-        return success(project);
+        if(StringUtils.isBlank(projectName))   {
+            return error(Status.CREATE_PROJECT_ERROR.getCode(),
+                    Status.CREATE_PROJECT_ERROR.getMsg());
+        }
+        String loginUser = LoginUtils.getLoginUser(req);
+        return projectService.createProject(loginUser, projectName, description);
     }
 
     /**
      * update project
      *
-     * @param loginUser   login user
-     * @param code        project code
      * @param projectName project name
      * @param description description
      * @return update result code
      */
     @ApiOperation(value = "update", notes = "UPDATE_PROJECT_NOTES")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "code", value = "PROJECT_CODE", dataTypeClass = long.class, example = "123456"),
+            @ApiImplicitParam(name = "id", value = "PROJECT_ID", dataTypeClass = int.class, example = "123456"),
             @ApiImplicitParam(name = "projectName", value = "PROJECT_NAME", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "description", value = "PROJECT_DESC", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "userName", value = "USER_NAME", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "description", value = "PROJECT_DESC", dataTypeClass = String.class)
     })
-    @PutMapping(value = "/{code}")
     @ResponseStatus(HttpStatus.OK)
     @ApiException(UPDATE_PROJECT_ERROR)
-
-    public Result updateProject(@ApiIgnore @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
-                                @PathVariable("code") Long code,
+    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+    public Result updateProject(HttpServletRequest req,
+                                @PathVariable("id") Integer projectId,
                                 @RequestParam("projectName") String projectName,
-                                @RequestParam(value = "description", required = false) String description,
-                                @RequestParam(value = "userName") String userName) {
-        Project project = new Project();
-        project.setName(projectName);
-        project.setDescription(description);
-        return success(project);
+                                @RequestParam(value = "description", required = false) String description) {
+
+        if(StringUtils.isBlank(projectName))   {
+            return error(Status.UPDATE_PROJECT_ERROR.getCode(),
+                    Status.UPDATE_PROJECT_ERROR.getMsg());
+        }
+
+        if(projectId == null)   {
+            return error(Status.UPDATE_PROJECT_ERROR.getCode(),
+                    Status.UPDATE_PROJECT_ERROR.getMsg());
+        }
+        return projectService.updateProject(projectId, projectName, description);
     }
 
-    /**
-     * query project details by code
-     *
-     * @param loginUser login user
-     * @param code      project code
-     * @return project detail information
-     */
-    @ApiOperation(value = "queryProjectByCode", notes = "QUERY_PROJECT_BY_ID_NOTES")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "code", value = "PROJECT_CODE", dataTypeClass = long.class, example = "123456")
-    })
-    @GetMapping(value = "/{code}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiException(QUERY_PROJECT_DETAILS_BY_CODE_ERROR)
-    public Result queryProjectByCode(@ApiIgnore @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
-                                     @PathVariable("code") long code) {
-        Project project = new Project();
-        project.setName("projectName");
-        project.setDescription("description");
-        return success(project);
-    }
 
     /**
      * query project list paging
-     *
-     * @param loginUser login user
-     * @param searchVal search value
+     * @param searchName search name
      * @param pageSize  page size
      * @param pageNo    page number
      * @return project list which the login user have permission to see
      */
     @ApiOperation(value = "queryProjectListPaging", notes = "QUERY_PROJECT_LIST_PAGING_NOTES")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "searchVal", value = "SEARCH_VAL", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "searchName", value = "SEARCH_NAME", dataTypeClass = String.class),
             @ApiImplicitParam(name = "pageSize", value = "PAGE_SIZE", required = true, dataTypeClass = int.class, example = "10"),
             @ApiImplicitParam(name = "pageNo", value = "PAGE_NO", required = true, dataTypeClass = int.class, example = "1")
     })
-    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     @ApiException(LOGIN_USER_QUERY_PROJECT_LIST_PAGING_ERROR)
-    public Result queryProjectListPaging(@ApiIgnore @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
-                                         @RequestParam(value = "searchVal", required = false) String searchVal,
-                                         @RequestParam("pageSize") Integer pageSize,
-                                         @RequestParam("pageNo") Integer pageNo) {
+    @RequestMapping(path = "/queryProjectListPaging", method = RequestMethod.GET)
+    public Result queryProjectListPaging(HttpServletRequest req,
+                                         @RequestParam(value = "searchName", required = false) String searchName,
+                                         @RequestParam(value ="pageSize", required = false) Integer pageSize,
+                                         @RequestParam(value ="pageNo", required = false) Integer pageNo) {
 
-        Result result = new Result();
-
-        return success();
+        if (pageSize == null || pageSize <= 0) {
+            pageSize = Constants.DEFAULT_PAGE_SIZE;
+        }
+        if (pageNo == null || pageNo <= 0) {
+            pageNo = Constants.DEFAULT_PAGE_NO;
+        }
+        return projectService.queryProjectListPaging(searchName, pageNo, pageSize);
     }
 
     /**
-     * delete project by code
+     * delete project by id
      *
-     * @param loginUser login user
-     * @param code      project code
-     * @return delete result code
+     * @param projectId project id
+     * @return delete result id
      */
     @ApiOperation(value = "delete", notes = "DELETE_PROJECT_BY_ID_NOTES")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "code", value = "PROJECT_CODE", dataTypeClass = long.class, example = "123456")
+            @ApiImplicitParam(name = "id", value = "PROJECT_ID", dataTypeClass = int.class, example = "123456")
     })
-    @DeleteMapping(value = "/{code}")
     @ResponseStatus(HttpStatus.OK)
     @ApiException(DELETE_PROJECT_ERROR)
-    public Result deleteProject(@ApiIgnore @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
-                                @PathVariable("code") Long code) {
-        return success();
+    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+    public Result deleteProject(HttpServletRequest req,
+                                @PathVariable("id") Integer projectId) {
+        if(projectId == null)   {
+            return error(Status.DELETE_PROJECT_ERROR.getCode(),
+                    Status.DELETE_PROJECT_ERROR.getMsg());
+        }
+        return projectService.deleteProject(projectId);
     }
 }

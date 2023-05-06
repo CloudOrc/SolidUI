@@ -33,4 +33,6 @@ public final class Constants {
 
     public static final long SESSION_TIMEOUT = 2 * 60 * 60 * 1000L;
 
+    public static final String ADMIN_NAME = "admin";
+
 }

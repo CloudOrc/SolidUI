@@ -14,11 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.cloudorc.solidui.entrance.service;
 
-package com.cloudorc.solidui.dao.mapper;
+import com.cloudorc.solidui.entrance.enums.Status;
+import com.cloudorc.solidui.entrance.utils.Result;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.Map;
 
-public interface ProjectUserMapper extends BaseMapper<ProjectUserMapper> {
+public interface BaseService {
 
+    void putMsg(Map<String, Object> result, Status status, Object... statusParams);
+
+    void putMsg(Result<Object> result, Status status, Object... statusParams);
 }

@@ -14,20 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.cloudorc.solidui.entrance.service;
 
-package com.cloudorc.solidui.dao.mapper;
+import com.cloudorc.solidui.entrance.utils.Result;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.cloudorc.solidui.dao.entity.Project;
-import org.apache.ibatis.annotations.Param;
+public interface ProjectService {
 
-import java.util.List;
+    Result createProject(String loginUser, String name, String desc);
 
-public interface ProjectMapper extends BaseMapper<Project> {
+    Result updateProject(Integer projectId, String name, String desc);
 
-    Project queryByName(@Param("projectName") String projectName);
+    Result queryProjectListPaging(String searchName, Integer pageNo, Integer pageSize);
 
-    IPage<Project> queryProjectListPaging(IPage<Project> page,
-                                          @Param("searchName") String searchName);
+    Result deleteProject(Integer projectId);
 }

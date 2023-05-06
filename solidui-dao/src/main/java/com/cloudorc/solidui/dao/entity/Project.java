@@ -35,26 +35,19 @@ public class Project {
     private Integer id;
 
     /**
-     * user id
-     */
-    @TableField("user_id")
-    private Integer userId;
-
-    /**
      * user name
      */
-    @TableField(exist = false)
     private String userName;
-
-    /**
-     * project code
-     */
-    private long code;
 
     /**
      * project name
      */
-    private String name;
+    private String projectName;
+
+    /**
+     * project image
+     */
+    private String image;
 
     /**
      * project description
@@ -71,23 +64,6 @@ public class Project {
      */
     private Date updateTime;
 
-    /**
-     * permission
-     */
-    @TableField(exist = false)
-    private int perm;
-
-    /**
-     * process define count
-     */
-    @TableField(exist = false)
-    private int defCount;
-
-    /**
-     * process instance running count
-     */
-    @TableField(exist = false)
-    private int instRunningCount;
 
     @Override
     public boolean equals(Object o) {
@@ -103,14 +79,14 @@ public class Project {
         if (id != project.id) {
             return false;
         }
-        return name.equals(project.name);
+        return projectName.equals(project.projectName);
 
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + name.hashCode();
+        result = 31 * result + projectName.hashCode();
         return result;
     }
 
@@ -122,13 +98,6 @@ public class Project {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public String getUserName() {
         return userName;
@@ -136,22 +105,6 @@ public class Project {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public long getCode() {
-        return code;
-    }
-
-    public void setCode(long code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
@@ -178,27 +131,21 @@ public class Project {
         this.updateTime = updateTime;
     }
 
-    public int getPerm() {
-        return perm;
+
+    public String getImage() {
+        return image;
     }
 
-    public void setPerm(int perm) {
-        this.perm = perm;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public int getDefCount() {
-        return defCount;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setDefCount(int defCount) {
-        this.defCount = defCount;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
-    public int getInstRunningCount() {
-        return instRunningCount;
-    }
-
-    public void setInstRunningCount(int instRunningCount) {
-        this.instRunningCount = instRunningCount;
-    }
 }
