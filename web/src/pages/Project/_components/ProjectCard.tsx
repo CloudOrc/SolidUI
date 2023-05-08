@@ -34,6 +34,7 @@ export interface ProjectCardProps {
 
 	handleMouseEnter: (e: React.MouseEvent, id: string) => void;
 	handleMouseLeave: (e: React.MouseEvent, id: string) => void;
+	handleDelete: (id: string) => void;
 }
 
 export default function (props: ProjectCardProps) {
@@ -46,16 +47,16 @@ export default function (props: ProjectCardProps) {
 		item,
 		handleMouseEnter,
 		handleMouseLeave,
+		handleDelete,
 	} = props;
 
 	async function handleEdit() {
 		navigate("/dashboard");
 	}
 
-	async function handleDelete() {
+	async function __handleDelete() {
 		confirm({
 			title: "Are you sure delete this project?",
-			// icon: <ExclamationCircleOutlined />,
 			content: `Delete project ${item.projectName}`,
 			okText: "Yes",
 			okType: "danger",
@@ -70,11 +71,11 @@ export default function (props: ProjectCardProps) {
 				size: "small",
 			},
 			onOk() {
-				console.log("OK");
+				handleDelete(item.id + "");
 			},
-			onCancel() {
-				console.log("Cancel");
-			},
+			// onCancel() {
+			// 	console.log("Cancel");
+			// },
 		});
 	}
 
@@ -135,7 +136,7 @@ export default function (props: ProjectCardProps) {
 									strokeWidth={2}
 									strokeLinejoin="miter"
 									strokeLinecap="square"
-									onClick={handleDelete}
+									onClick={__handleDelete}
 								/>
 								<Export
 									className="solidui-icon-btn"

@@ -37,7 +37,13 @@ let project = {
 	query: <T>(
 		params: { pageNo: number; pageSize: number } = { pageNo: 1, pageSize: 10 }
 	) => ApiService.get<T>("/solidui/projects/queryProjectListPaging", params),
-	// create: <T>()
+	create: <T>(params: { projectName: string; description?: string }) =>
+		ApiService.post<T>("/solidui/projects", params, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		}),
+	delete: <T>(id: string) => ApiService.delete(`/solidui/projects/${id}`),
 };
 
 let Apis = {

@@ -24,7 +24,30 @@
 		position: relative;
 		width: 100%;
 		height: 40px;
-		background-color: #fff;
+		background-color: #f7f7f7;
+		border-bottom: 1px solid #e9e9e9;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 14px;
+		font-weight: 700;
+
+		.solidui-modal__close-btn {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			width: 40px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			.i-icon {
+				width: 16px;
+				height: 16px;
+				cursor: pointer;
+			}
+		}
 	}
 
 	.solidui-modal__content {
@@ -32,12 +55,24 @@
 		width: 100%;
 		height: 200px;
 		background-color: #fff;
+
+		.modal-content__form {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			padding: 20px;
+		}
 	}
 
 	.solidui-modal__footer {
 		position: relative;
 		width: 100%;
 		height: 40px;
-		background-color: #fff;
+		padding: 0 20px;
+		background-color: #f7f7f7;
+		border-top: 1px solid #e9e9e9;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
 	}
 }

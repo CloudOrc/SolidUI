@@ -16,7 +16,8 @@
  */
 
 import React from "react";
-import { Input, Space, Button, Table, Spin, Modal } from "antd";
+import { Input, Space, Button, Form, Spin, Modal } from "antd";
+import { Close } from "@icon-park/react";
 import useProject from "./useProject";
 import ProjectCard from "./_components/ProjectCard";
 
@@ -32,15 +33,75 @@ export default function () {
 		toggleCover,
 		popupConverMap,
 		modalOpen,
+		form,
+		create,
+		del,
 		toggleModal,
 	} = useProject();
 
 	function renderModalContent() {
 		return (
 			<div className="solidui-modal">
-				<div className="solidui-modal__header">header</div>
-				<div className="solidui-modal__content">content</div>
-				<div className="solidui-modal__footer">footer</div>
+				<div className="solidui-modal__header">
+					New Project
+					<span className="solidui-modal__close-btn">
+						<Close
+							theme="outline"
+							size="16"
+							fill="rgba(0, 0, 0, 0.65)"
+							strokeWidth={2}
+							strokeLinejoin="miter"
+							strokeLinecap="square"
+							onClick={() => {
+								toggleModal(false);
+							}}
+						/>
+					</span>
+				</div>
+				<div
+					className="solidui-modal__content"
+					style={{
+						height: 100,
+					}}
+				>
+					<div className="modal-content__form">
+						<Form
+							layout={"vertical"}
+							form={form}
+							initialValues={{ layout: "vertical" }}
+							onFinish={(values) => {
+								create(values);
+							}}
+						>
+							<Form.Item
+								label="Project Name"
+								name="name"
+								required
+								rules={[
+									{
+										required: true,
+										message: "Please input project name",
+									},
+								]}
+							>
+								<Input placeholder="project name" autoFocus={true} />
+							</Form.Item>
+						</Form>
+					</div>
+				</div>
+				<div className="solidui-modal__footer">
+					<Button
+						type="default"
+						size="small"
+						style={{ marginRight: 10 }}
+						onClick={() => toggleModal(false)}
+					>
+						Cancel
+					</Button>
+					<Button type="primary" size="small" onClick={() => form.submit()}>
+						Save
+					</Button>
+				</div>
 			</div>
 		);
 	}
@@ -65,6 +126,9 @@ export default function () {
 							e.stopPropagation();
 							e.preventDefault();
 							toggleCover(id, false);
+						}}
+						handleDelete={(id) => {
+							del(id);
 						}}
 					/>
 				);
@@ -104,8 +168,15 @@ export default function () {
 				</div>
 			</div>
 
-			<Modal open={modalOpen} modalRender={renderModalContent}>
-				create projec
+			<Modal
+				title={null}
+				footer={null}
+				closable={false}
+				bodyStyle={{ padding: 0 }}
+				open={modalOpen}
+				modalRender={(modal: any) => modal}
+			>
+				{renderModalContent()}
 			</Modal>
 		</div>
 	);

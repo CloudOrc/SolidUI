@@ -16,8 +16,10 @@
  */
 
 import { useEffect, useState, useRef } from "react";
+import { Form } from "antd";
 import Apis from "@/apis";
 import { useUpdate } from "react-use";
+import { useForm } from "antd/lib/form/Form";
 
 type InitialData = {
 	projects?: any[];
@@ -28,6 +30,7 @@ function useProject(InitialData: InitialData = {}) {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [projects, setProjects] = useState<any[]>([]);
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
+	const [form] = useForm();
 
 	const [pagination, setPagination] = useState<{
 		current: number;
@@ -64,6 +67,29 @@ function useProject(InitialData: InitialData = {}) {
 		setLoading(false);
 	}
 
+	async function create(values: { name: string; description?: string }) {
+		let res = await Apis.project.create({
+			projectName: values.name,
+			description: values.description,
+		});
+		if (res.ok) {
+			query();
+			toggleModal(false);
+			resetForm();
+		}
+	}
+
+	async function del(id: string) {
+		let res = await Apis.project.delete(id);
+		if (res.ok) {
+			query();
+		}
+	}
+
+	async function resetForm() {
+		form && form.resetFields();
+	}
+
 	async function toggleCover(id: string, popup: boolean) {
 		popupConverMap.current && popupConverMap.current.set(id, popup);
 		forceUpdate();
@@ -76,8 +102,12 @@ function useProject(InitialData: InitialData = {}) {
 	return {
 		loading,
 		modalOpen,
+		form,
+		resetForm,
 		toggleModal,
 		query,
+		create,
+		del,
 		toggleCover,
 		projects,
 		pagination,

@@ -119,7 +119,6 @@ function doRequest<T>(
 			response = doGet(url, data, config);
 			break;
 		case "post":
-			console.log("post....");
 			response = doPost(url, data, config);
 			break;
 		case "put":
