@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React, { useEffect, useState } from "react";
 import TopPropertiesPanel from "./TopPropertiesPanel";
 import ScenePropertiesPanel from "./ScenePropertiesPanel";
@@ -7,24 +24,8 @@ import DataPropertiesPanel from "./DataPropertiesPanel";
 import EventPropertiesPanel from "./EventPropertiesPanel";
 import useProperties from "./useProperties";
 import { mm, eventbus } from "@/utils/index";
-import { OnSelectViewEventData } from "@/types/eventbus";
 
 import "./configurations.less";
-
-// const items = new Array(3).fill(null).map((_, i) => {
-// 	const id = String(i + 1);
-// 	return {
-// 		label: `Tab Title ${id}`,
-// 		key: id,
-// 		children: (
-// 			<>
-// 				<p>Content of Tab Pane {id}</p>
-// 				<p>Content of Tab Pane {id}</p>
-// 				<p>Content of Tab Pane {id}</p>
-// 			</>
-// 		),
-// 	};
-// });
 
 function Properties() {
 	const { propertyKey, currentTabKey, asideRef, mainRef, renderTabs } =

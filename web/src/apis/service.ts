@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 import { API_URL } from "@/config";
 import { message } from "antd";
@@ -6,6 +23,7 @@ import { Result, AxiosResultType, HttpMethod, ApiResult } from "@/types";
 const ErrorCode = {
 	OK: 0,
 	UNAUTHORIZED: 401,
+	FAILED: 10004,
 	FAIL: -1,
 };
 
@@ -38,7 +56,6 @@ instance.interceptors.response.use(
 		return response;
 	},
 	(error) => {
-		console.log(error);
 		if (error.response.status === 401) {
 			message.error("session timeout, please sign in again");
 			localStorage.removeItem("token");
@@ -52,12 +69,10 @@ function doGet<T>(
 	url: string,
 	params: any = {},
 	config: AxiosRequestConfig = {}
-	// headers: AxiosRequestHeaders
 ): Promise<AxiosResultType<Result<T>>> {
 	return instance.get(url, {
 		params,
 		...config,
-		// ...headers,
 	});
 }
 
@@ -65,11 +80,9 @@ function doPost<T>(
 	url: string,
 	data: any = {},
 	config: AxiosRequestConfig = {}
-	// headers: AxiosRequestHeaders
 ): Promise<AxiosResultType<Result<T>>> {
 	return instance.post(url, data, {
 		...config,
-		// ...headers,
 	});
 }
 
@@ -77,11 +90,9 @@ function doPut<T>(
 	url: string,
 	data: any = {},
 	config: AxiosRequestConfig = {}
-	// headers: AxiosRequestHeaders
 ): Promise<AxiosResultType<Result<T>>> {
 	return instance.put(url, data, {
 		...config,
-		// ...headers,
 	});
 }
 
@@ -89,12 +100,10 @@ function doDelete<T>(
 	url: string,
 	data: any = {},
 	config: AxiosRequestConfig = {}
-	// headers: AxiosRequestHeaders
 ): Promise<AxiosResultType<Result<T>>> {
 	return instance.delete(url, {
 		data,
 		...config,
-		// ...headers,
 	});
 }
 
@@ -103,7 +112,6 @@ function doRequest<T>(
 	url: string,
 	data: any = {},
 	config: AxiosRequestConfig = {}
-	// headers: AxiosRequestHeaders
 ): Promise<ApiResult<T>> {
 	let response: Promise<AxiosResultType<Result<T>>>;
 	switch (method) {
@@ -125,21 +133,20 @@ function doRequest<T>(
 			break;
 	}
 
-	console.log(response);
 	return new Promise<ApiResult<T>>((resolve, reject) => {
 		return response
 			.then((res) => {
-				console.log(res);
 				let data = res.data;
+				let success = data.success;
 				let code = data.code;
-				if (code === ErrorCode.OK) {
+				if (success) {
 					resolve({
 						ok: true,
 						data: data.data,
 					});
 				} else {
-					if (code === ErrorCode.UNAUTHORIZED) {
-						message.warning(data.message);
+					if (code === ErrorCode.FAILED) {
+						message.warning(data.msg);
 						resolve({
 							ok: false,
 						});
@@ -157,12 +164,8 @@ function doRequest<T>(
 }
 
 const service = {
-	get: <T>(
-		url: string,
-		params: any = {},
-		config: AxiosRequestConfig = {},
-		headers: AxiosRequestHeaders
-	) => doRequest<T>("get", url, params, config),
+	get: <T>(url: string, params: any = {}, config: AxiosRequestConfig = {}) =>
+		doRequest<T>("get", url, params, config),
 	post: <T>(
 		url: string,
 		data: any = {},

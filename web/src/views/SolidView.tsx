@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React from "react";
 import { Emitter } from "mitt";
 import {
@@ -9,7 +26,7 @@ import {
 } from "@/types/eventbus";
 
 import { SolidModelDataType, SolidViewDataType } from "@/types/solid";
-import { set } from "lodash-es";
+import { set, cloneDeep } from "lodash-es";
 
 export interface SolidViewProps {
 	id: string;
@@ -53,18 +70,6 @@ export default abstract class SolidView<
 		this.fetchData = this.fetchData.bind(this);
 	}
 
-	// static getDerivedStateFromProps(
-	// 	nextProps: SolidViewProps,
-	// 	prevState: SolidViewState
-	// ): SolidViewState | null {
-	// 	if (null === prevState || nextProps.viewModel !== prevState.viewModel) {
-	// 		return {
-	// 			viewModel: nextProps.viewModel,
-	// 		};
-	// 	}
-	// 	return null;
-	// }
-
 	//// ------------------------------------------------------------------
 	//// abstract methods
 	protected abstract renderView(): React.ReactNode;
@@ -81,9 +86,14 @@ export default abstract class SolidView<
 		let viewModel = this.vm;
 		let options = viewModel.options || {};
 		let title = options.title || {};
+		let style = title.style || {};
 		let show = title.show;
 		if (!!show) {
-			return <div className="solid-view-title">{title.text}</div>;
+			return (
+				<div className="solid-view-title" style={style}>
+					{title.text}
+				</div>
+			);
 		}
 		return null;
 	}
@@ -129,10 +139,11 @@ export default abstract class SolidView<
 		evt: OnUpdateViewPropertyValueEventData
 	) => {
 		if (this.id === evt.id) {
-			set(this.vm, evt.property, evt.value);
+			let clonedVM = cloneDeep(this.vm);
+			set(clonedVM, evt.property, evt.value);
+			this.vm = clonedVM;
 			this.forceUpdate();
 			this.reRender();
-			// this.handleUpdateViewPropertyValueInternal(evt);
 		}
 	};
 

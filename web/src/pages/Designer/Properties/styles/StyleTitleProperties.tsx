@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React from "react";
 import {
 	LeftRightExpander,
@@ -14,7 +31,7 @@ import {
 } from "@/components";
 import { useUpdate } from "react-use";
 import { eventbus, mm } from "@/utils";
-import { set, get } from "lodash-es";
+import { set, get, update, cloneDeep } from "lodash-es";
 
 export interface TitleStylePropertiesProps {}
 
@@ -32,7 +49,11 @@ function updateViewAndEmitEvent(
 ): Promise<any> {
 	let view = mm.getCurrentView();
 	if (view) {
-		set(view, propertyKey, propertyValue);
+		let clonedView = cloneDeep(view);
+
+		set(clonedView, propertyKey, propertyValue);
+		// set(view, propertyKey, propertyValue);
+		view = clonedView;
 		eventbus.emit("onUpdateViewPropertyValue", {
 			id: view.id,
 			property: propertyKey,
@@ -94,8 +115,31 @@ export default function (props: TitleStylePropertiesProps) {
 				/>
 			</PropertyElement>
 
-			<PropertyElement label="Font Color" labelWidth={120}>
-				<InputColor />
+			<PropertyElement label="Frontend Color" labelWidth={120}>
+				<InputColor
+					value={getPropertyValue("options.title.style.color")}
+					onChange={(value) => {
+						updateViewAndEmitEvent("options.title.style.color", value).then(
+							() => {
+								forceUpdate();
+							}
+						);
+					}}
+				/>
+			</PropertyElement>
+
+			<PropertyElement label="Backgroud Color" labelWidth={120}>
+				<InputColor
+					value={getPropertyValue("options.title.style.backgroundColor")}
+					onChange={(value) => {
+						updateViewAndEmitEvent(
+							"options.title.style.backgroundColor",
+							value
+						).then(() => {
+							forceUpdate();
+						});
+					}}
+				/>
 			</PropertyElement>
 
 			<PropertyElement label="Font Size" labelWidth={120}>
