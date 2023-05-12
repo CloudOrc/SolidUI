@@ -35,7 +35,7 @@
 [English](README.md) | [中文](README_CN.md)
 
 # Introduce
-3D data visualization prototyping and editing platform, support 2D, 3D models, combined with AIGC(AI Generated Content) models for quick editing.
+3D data visualization prototyping and editing platform, support 2D, 3D models, combined with LLM(Large Language Model) for quick editing.
 
 ## Core Features
 
@@ -44,8 +44,7 @@
 * Various 3D scenes
 * Support webgl
 * Support olap
-* Support table calculation
-* Support nlp algorithm
+* Support Large Language Model
 * Containerized deployment
 
 # Document

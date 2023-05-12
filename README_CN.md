@@ -35,7 +35,7 @@
 [English](README.md) | [中文](README_CN.md)
 
 # 介绍
-3D数据可视化原型设计和编辑平台，支持2D，3D模型，结合AIGC(AI Generated Content)模型快速编辑。
+3D数据可视化原型设计和编辑平台，支持2D，3D模型，结合LLM(Large Language Model) 快速编辑。
 
 ## 核心特点
 
@@ -44,8 +44,7 @@
 * 多种3D场景
 * 支持webgl
 * 支持olap
-* 支持表格计算
-* 支持nlp算法
+* 支持Large Language Model
 * 容器化部署
 
 # 文档
