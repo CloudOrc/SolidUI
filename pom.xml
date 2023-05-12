@@ -32,6 +32,8 @@
         <module>solidui-common</module>
         <module>solidui-dao</module>
         <module>solidui-dist</module>
+        <module>solidui-spi</module>
+        <module>solidui-datasource-plugin</module>
     </modules>
 
     <properties>

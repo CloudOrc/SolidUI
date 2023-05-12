@@ -17,14 +17,15 @@
 
 package com.cloudorc.solidui.dao.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 
 /** Data source type entity */
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
+@TableName("solidui_datasource_type")
 public class DataSourceType {
 
+    @TableId(value = "id", type = IdType.AUTO)
     private String id;
     /** Name */
     private String name;

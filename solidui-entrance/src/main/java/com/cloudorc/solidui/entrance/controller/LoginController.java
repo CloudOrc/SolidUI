@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -62,13 +62,13 @@ public class LoginController extends BaseController {
                         HttpServletRequest request,
                         HttpServletResponse response) {
         // user name check
-        if (StringUtils.isEmpty(username)) {
+        if (StringUtils.isBlank(username)) {
             return error(Status.USER_NAME_NULL.getCode(),
                     Status.USER_NAME_NULL.getMsg());
         }
 
         // user password check
-        if (StringUtils.isEmpty(password)) {
+        if (StringUtils.isBlank(password)) {
             return error(Status.PASSWORD_NAME_NULL.getCode(),
                     Status.PASSWORD_NAME_NULL.getMsg());
         }
