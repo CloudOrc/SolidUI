@@ -14,14 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.cloudorc.solidui.plugin.jdbc;
 
+package com.cloudorc.solidui.plugin.jdbc;
 
 import java.sql.Connection;
 import java.util.List;
 
-public interface JdbcClient {
+public abstract class BaseJdbcClient implements JdbcClient{
 
-    List<String> getDatabases(Connection connection);
-
+    @Override
+    public List<String> getDatabases(Connection connection) {
+        return null;
+    }
 }

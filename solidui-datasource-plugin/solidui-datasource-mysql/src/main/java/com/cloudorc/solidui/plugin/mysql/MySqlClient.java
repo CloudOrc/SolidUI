@@ -14,14 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.cloudorc.solidui.plugin.jdbc;
 
+package com.cloudorc.solidui.plugin.mysql;
 
-import java.sql.Connection;
-import java.util.List;
+import com.cloudorc.solidui.plugin.jdbc.BaseJdbcClient;
 
-public interface JdbcClient {
-
-    List<String> getDatabases(Connection connection);
-
+public class MySqlClient extends BaseJdbcClient {
 }
