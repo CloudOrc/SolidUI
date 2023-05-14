@@ -16,10 +16,11 @@
  */
 package com.cloudorc.solidui.spi.connector;
 
+import java.sql.Connection;
 import java.util.List;
 
-public interface Connector {
+public interface Connector extends AutoCloseable {
 
-    List<String> getDatabases();
+    List<String> getDatabases(Connection connection);
 
 }

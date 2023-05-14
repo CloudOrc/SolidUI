@@ -16,7 +16,6 @@
  */
 package com.cloudorc.solidui.spi.connector;
 
-import com.sun.jdi.connect.Connector;
 
 import java.util.Map;
 
