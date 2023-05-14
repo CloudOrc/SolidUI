@@ -95,6 +95,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.cloudorc.solidui</groupId>
+                <artifactId>solidui-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
                 <version>${junit.version}</version>
@@ -106,12 +112,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <!--
-          NOTE: only development / test phase dependencies (scope = test / provided)
-          that won't be packaged into final jar can be declared here.
-          For example: annotation processors, test dependencies that are used by most
-          of the submodules.
-        -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

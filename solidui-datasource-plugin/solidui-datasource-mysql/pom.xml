@@ -19,35 +19,29 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>solidui</artifactId>
+        <artifactId>solidui-datasource-plugin</artifactId>
         <groupId>com.cloudorc.solidui</groupId>
         <version>0.1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>solidui-datasource-plugin</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>solidui-datasource-jdbc</module>
-        <module>solidui-datasource-mysql</module>
-    </modules>
+    <artifactId>solidui-datasource-mysql</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.cloudorc.solidui</groupId>
+            <artifactId>solidui-datasource-jdbc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.cloudorc.solidui</groupId>
-                <artifactId>solidui-bom</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+    </dependencies>
 </project>

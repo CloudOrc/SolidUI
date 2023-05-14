@@ -100,20 +100,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- netty -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-bom</artifactId>
-                <version>${netty.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-all</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-
             <!-- spring -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -334,17 +320,6 @@
                 <version>${logback.version}</version>
             </dependency>
 
-            <!--excel poi-->
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi</artifactId>
-                <version>${poi.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi-ooxml</artifactId>
-                <version>${poi.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
@@ -530,7 +505,6 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>3.12.4</version>
-                <!-- TODO: remove this dependency management after removing powermock -->
                 <scope>test</scope>
             </dependency>
 
