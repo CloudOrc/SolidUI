@@ -17,11 +17,18 @@
 package com.cloudorc.solidui.plugin.jdbc;
 
 
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface JdbcClient {
 
-    List<String> getDatabases(Connection connection);
+    List<String> getAllDatabase() throws SQLException;
 
+    List<String> getAllTables(String database) throws SQLException ;
+
+    List<List<String>> getSelectResult(String sql) throws SQLException;
+
+    void close() throws IOException;
 }

@@ -16,9 +16,9 @@
  */
 package com.cloudorc.solidui.spi;
 
-import com.cloudorc.solidui.spi.connector.ConnectorFactory;
 
 public interface Plugin {
 
-    Iterable<ConnectorFactory> getConnectorFactoryList();
+    String getName();
+
 }

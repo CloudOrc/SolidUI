@@ -15,9 +15,18 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.plugin.mysql;
 
-import com.cloudorc.solidui.plugin.jdbc.BaseJdbcClient;
+package com.cloudorc.solidui.plugin.jdbc;
 
-public class MySqlClient extends BaseJdbcClient {
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Map;
+
+public class MySqlClientFactory extends BaseJdbcClientFactory {
+
+    @Override
+    public JdbcClient createJdbcClient(String host, Integer port, String username, String password, String database, Map<String, Object> extraParams) throws SQLException, ClassNotFoundException {
+        Connection connection = new MySqlConnectionFactory().openConnection(host, port, username, password, database, extraParams);
+        return new MySqlClient(connection);
+    }
 }

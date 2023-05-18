@@ -14,13 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.cloudorc.solidui.spi.connector;
+
+
+package com.cloudorc.solidui.plugin.jdbc.connector;
+
+import com.cloudorc.solidui.spi.Plugin;
 
 import java.sql.Connection;
-import java.util.List;
+import java.sql.SQLException;
+import java.util.Map;
 
-public interface Connector extends AutoCloseable {
+public interface ConnectionFactory extends Plugin {
 
-    List<String> getDatabases(Connection connection);
-
+    Connection openConnection(String host, Integer port,
+                              String username, String password,
+                              String database,
+                              Map<String, Object> extraParams) throws ClassNotFoundException, SQLException;
 }

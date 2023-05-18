@@ -27,7 +27,6 @@ public final class Constants {
 
     public static final String TICKETHEADER = "bfs_";
 
-    public static final String WEB_SESSION_TIMEOUT = "2h";
 
     public static final String SESSION_TICKETID_KEY = "solidui_user_session_ticket_id_v1";
 

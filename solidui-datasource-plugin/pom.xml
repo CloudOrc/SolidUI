@@ -31,6 +31,7 @@
     <modules>
         <module>solidui-datasource-jdbc</module>
         <module>solidui-datasource-mysql</module>
+        <module>solidui-datasource-all</module>
     </modules>
 
     <properties>

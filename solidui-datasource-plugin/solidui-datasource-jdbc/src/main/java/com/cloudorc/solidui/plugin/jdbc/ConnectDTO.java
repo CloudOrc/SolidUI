@@ -14,14 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.cloudorc.solidui.spi.connector;
 
+
+package com.cloudorc.solidui.plugin.jdbc;
 
 import java.util.Map;
 
-public interface ConnectorFactory {
+public class ConnectDTO {
+    private String host;
 
-    String getName();
+    private Integer port;
 
-    Connector create(Map<String, String> config);
+    private String username;
+
+    private String password;
+
+    private Map<String, Object> extraParams;
+
 }

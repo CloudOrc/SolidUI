@@ -15,15 +15,21 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.plugin.mysql;
 
-import com.cloudorc.solidui.spi.Plugin;
-import com.cloudorc.solidui.spi.connector.ConnectorFactory;
+package com.cloudorc.solidui.spi;
 
-public class MySqlPlugin implements Plugin {
+public class Constants {
 
-    @Override
-    public Iterable<ConnectorFactory> getConnectorFactoryList() {
-        return null;
-    }
+    public static final String PARAM_SQL_HOST ="host";
+
+    public static final String PARAM_SQL_PORT ="port";
+
+    public static final String PARAM_SQL_USERNAME = "username";
+
+    public static final String PARAM_SQL_PASSWORD = "password";
+
+    public static final String PARAM_SQL_EXTRA_PARAMS = "params";
+
+    public static final String PARAM_SQL_DRIVERCLASSNAME = "driverClassName";
+
 }

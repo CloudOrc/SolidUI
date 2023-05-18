@@ -17,13 +17,48 @@
 
 package com.cloudorc.solidui.plugin.jdbc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 import java.sql.Connection;
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 
 public abstract class BaseJdbcClient implements JdbcClient{
 
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private final Connection conn;
+
+    public BaseJdbcClient(Connection conn) {
+        this.conn = conn;
+    }
+
+    public void closeResource(Connection connection, Statement statement, ResultSet resultSet) {
+        try {
+            if (null != resultSet && !resultSet.isClosed()) {
+                resultSet.close();
+            }
+            if (null != statement && !statement.isClosed()) {
+                statement.close();
+            }
+            if (null != connection && !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            logger.warn("Fail to release resource [" + e.getMessage() + "]", e);
+        }
+    }
+
     @Override
-    public List<String> getDatabases(Connection connection) {
-        return null;
+    public void close() throws IOException {
+        closeResource(conn,null,null);
+    }
+
+    public Connection getConn() {
+        return conn;
     }
 }
