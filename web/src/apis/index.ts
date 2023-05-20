@@ -46,11 +46,26 @@ let project = {
 	delete: <T>(id: string) => ApiService.delete(`/solidui/projects/${id}`),
 };
 
+let datasource = {
+	query: <T>(
+		params: { pageNo: number; pageSize: number } = { pageNo: 1, pageSize: 10 }
+	) =>
+		ApiService.get<T>(
+			`/solidui/datasources?page=${params.pageNo}&size=${params.pageSize}`
+		),
+	types: <T>() => ApiService.get<T>(`/solidui/datasources/types`),
+	delete: <T>(id: string) => ApiService.delete(`/solidui/datasources/${id}`),
+	update: <T>(id: string, params: any) =>
+		ApiService.put(`/solidui/datasources/${id}`, params),
+	create: <T>(params: any) => ApiService.post(`/solidui/datasources`, params),
+};
+
 let Apis = {
 	model,
 	images,
 	user,
 	project,
+	datasource,
 };
 
 export default Apis;

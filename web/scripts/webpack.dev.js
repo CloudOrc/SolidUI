@@ -37,7 +37,7 @@ module.exports = merge(baseConfig, {
 				changeOrigin: true,
 				pathRewrite: {}
 			}
-		}
+		},
   },
   plugins: [
     new ReactRefreshWebpackPlugin(),
