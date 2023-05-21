@@ -23,13 +23,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /** Parameter key definition for data source type */
+@TableName("solidui_datasource_type_key")
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
-public class DataSourceParamKeyDefinition {
+public class DataSourceParamKey {
 
     /** Key-value type */
     public enum ValueType {
@@ -72,6 +76,7 @@ public class DataSourceParamKeyDefinition {
         ENV,
     }
     /** Definition id */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /** Key name */
@@ -95,22 +100,7 @@ public class DataSourceParamKeyDefinition {
     /** Value regex */
     private String valueRegex;
 
-    /** Reference id */
-    private Long refId;
 
-    /** Reference value */
-    private String refValue;
-
-    /** Form fill content */
-    private String dataSource;
-
-    public String getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(String dataSource) {
-        this.dataSource = dataSource;
-    }
 
     public Long getId() {
         return id;
@@ -184,21 +174,6 @@ public class DataSourceParamKeyDefinition {
         this.scope = scope;
     }
 
-    public Long getRefId() {
-        return refId;
-    }
-
-    public void setRefId(Long refId) {
-        this.refId = refId;
-    }
-
-    public String getRefValue() {
-        return refValue;
-    }
-
-    public void setRefValue(String refValue) {
-        this.refValue = refValue;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -208,7 +183,7 @@ public class DataSourceParamKeyDefinition {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DataSourceParamKeyDefinition that = (DataSourceParamKeyDefinition) o;
+        DataSourceParamKey that = (DataSourceParamKey) o;
         return Objects.equals(id, that.id);
     }
 

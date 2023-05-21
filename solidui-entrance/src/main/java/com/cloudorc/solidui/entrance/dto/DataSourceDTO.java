@@ -15,35 +15,31 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.dao.entity;
+package com.cloudorc.solidui.entrance.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.cloudorc.solidui.common.utils.JSONUtils;
+import com.cloudorc.solidui.dao.entity.DataSourceParamKey;
+import com.cloudorc.solidui.dao.entity.DataSourceType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang3.StringUtils;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.*;
 
 /** Store the data source information */
-@TableName("solidui_datasource")
+
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-@JsonIgnoreProperties(
-        value = {"hibernateLazyInitializer", "handler"},
-        ignoreUnknown = true)
-public class DataSource {
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
+public class DataSourceDTO {
 
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-
     /** Data source name */
     @NotNull
+    @Pattern(regexp = "^[\\w\\u4e00-\\u9fa5_-]+$")
     private String dataSourceName;
 
     /** Data source description */
@@ -51,35 +47,33 @@ public class DataSource {
     private String dataSourceDesc;
 
     /** ID of data source type */
-    @NotNull private Long dataSourceTypeId;
+    @NotNull
+    private Long dataSourceTypeId;
 
-    /** Identify from creator */
-    private String createIdentify;
-
+    /** System name from creator */
+    @NotNull
+    private String createSystem;
     /** Connection parameters */
     private Map<String, Object> connectParams = new HashMap<>();
     /** Parameter JSON string */
-    @JsonIgnore private String parameter;
+    @JsonIgnore
+    private String parameter;
 
     /** Create time */
     private Date createTime;
-
 
     private String createUser;
 
     private String labels;
 
-
-
-    private boolean expire;
-
     /** Data source type entity */
     private DataSourceType dataSourceType;
 
 
-    @JsonIgnore private List<DataSourceParamKey> keyDefinitions = new ArrayList<>();
+    @JsonIgnore
+    private List<DataSourceParamKey> keyDefinitions = new ArrayList<>();
 
-    public DataSource() {
+    public DataSourceDTO() {
         this.createTime = Calendar.getInstance().getTime();
     }
 
@@ -115,14 +109,14 @@ public class DataSource {
         this.dataSourceTypeId = dataSourceTypeId;
     }
 
-    public String getCreateIdentify() {
-        return createIdentify;
+
+    public String getCreateSystem() {
+        return createSystem;
     }
 
-    public void setCreateIdentify(String createIdentify) {
-        this.createIdentify = createIdentify;
+    public void setCreateSystem(String createSystem) {
+        this.createSystem = createSystem;
     }
-
 
     public String getParameter() {
         return parameter;
@@ -179,7 +173,7 @@ public class DataSource {
     public Map<String, Object> getConnectParams() {
         if (connectParams.isEmpty() && StringUtils.isNotBlank(parameter)) {
             try {
-                connectParams.putAll(Objects.requireNonNull(JSONUtils.parseObject(parameter, new TypeReference<Map<String, Object>>() {})));
+                connectParams.putAll(Objects.requireNonNull(JSONUtils.parseObject(parameter, Map.class)));
             } catch (Exception e) {
                 // Ignore
             }
@@ -191,13 +185,5 @@ public class DataSource {
         this.connectParams = connectParams;
     }
 
-
-    public boolean isExpire() {
-        return expire;
-    }
-
-    public void setExpire(boolean expire) {
-        this.expire = expire;
-    }
 
 }

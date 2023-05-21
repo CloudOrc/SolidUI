@@ -75,7 +75,7 @@ public class MySqlClient extends BaseJdbcClient {
             int columnCount = metaData.getColumnCount();
 
             while (rs.next()) {
-                ArrayList<String> stringArrayList = new ArrayList<>();
+                List<String> stringArrayList = new ArrayList<>();
                 for (int i = 1; i < columnCount + 1; i++) {
                     stringArrayList.add(rs.getString(i).trim());
                 }

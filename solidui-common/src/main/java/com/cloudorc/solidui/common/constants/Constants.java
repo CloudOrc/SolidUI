@@ -17,10 +17,6 @@ public final class Constants {
      */
     public static final String HTTP_HEADER_UNKNOWN = "unKnown";
 
-
-    /**
-     * comma ,
-     */
     public static final String COMMA = ",";
 
     public static final String CRYPTKEY = "solidui-for-server";
@@ -33,5 +29,7 @@ public final class Constants {
     public static final long SESSION_TIMEOUT = 2 * 60 * 60 * 1000L;
 
     public static final String ADMIN_NAME = "admin";
+
+
 
 }

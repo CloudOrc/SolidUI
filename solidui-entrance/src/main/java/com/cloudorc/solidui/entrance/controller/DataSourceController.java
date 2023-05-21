@@ -18,21 +18,21 @@ package com.cloudorc.solidui.entrance.controller;
 
 
 import com.cloudorc.solidui.dao.entity.DataSource;
-import com.cloudorc.solidui.dao.entity.DataSourceParamKeyDefinition;
+import com.cloudorc.solidui.dao.entity.DataSourceParamKey;
 import com.cloudorc.solidui.dao.entity.DataSourceType;
-import com.cloudorc.solidui.dao.entity.DatasourceVersion;
+import com.cloudorc.solidui.dao.entity.DataSourceInfo;
+import com.cloudorc.solidui.entrance.service.DataSourceService;
+import com.cloudorc.solidui.entrance.service.DataSourceTypeService;
 import com.cloudorc.solidui.entrance.utils.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.groups.Default;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
@@ -43,35 +43,28 @@ import java.util.*;
 @RestController
 @RequestMapping("datasource")
 public class DataSourceController extends BaseController {
+    @Autowired
+    private DataSourceService dataSourceService;
+    @Autowired
+    private DataSourceTypeService dataSourceTypeService;
 
-    @ApiOperation(value = "getAllDataSourceTypes", notes = "get all data source types")
+    @ApiOperation(value = "queryAllDataSourceTypes", notes = "get all data source types")
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/type/all", method = RequestMethod.GET)
     public Result getAllDataSourceTypes() {
-        List<DataSourceType> dataSourceTypes  = new ArrayList<>();
-        DataSourceType dataSourceType = new DataSourceType();
-        dataSourceType.setId("1");
-        dataSourceType.setName("mysql");
-        dataSourceTypes.add(dataSourceType);
 
-        return success(dataSourceTypes);
+        return dataSourceTypeService.queryAllDataSourceTypes();
     }
 
-    @ApiOperation(value = "getKeyDefinitionsByType", notes = "get key definitions by type")
+    @ApiOperation(value = "queryKeyByType", notes = "get key definitions by type")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "typeId", required = true, dataType = "Long", value = "type id")
     })
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/key-define/type/{typeId}", method = RequestMethod.GET)
-    public Result getKeyDefinitionsByType(
+    @RequestMapping(value = "/key/type/{typeId}", method = RequestMethod.GET)
+    public Result getKeyByType(
             @PathVariable("typeId") Long dataSourceTypeId, HttpServletRequest req) {
-        List<DataSourceParamKeyDefinition> keyDefinitions = new ArrayList<>();
-        DataSourceParamKeyDefinition keyDefinition = new DataSourceParamKeyDefinition();
-        keyDefinition.setKey("host");
-        keyDefinition.setName("host");
-        keyDefinition.setDefaultValue("");
-        keyDefinitions.add(keyDefinition);
-        return success(keyDefinitions);
+        return dataSourceTypeService.queryKeyByType(dataSourceTypeId);
     }
 
     @ApiOperation(value = "insertJsonInfo", notes = "insert json info")
@@ -125,27 +118,7 @@ public class DataSourceController extends BaseController {
         return success(dataSourceId);
     }
 
-    /**
-     * create or update parameter, save a version of parameter,return version id.
-     *
-     * @param params
-     * @param req
-     * @return
-     */
-    @ApiOperation(value = "insertJsonParameter", notes = "insert json parameter")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id")
-    })
-    @RequestMapping(value = "/parameter/{dataSourceId}/json", method = RequestMethod.POST)
-    public Result insertJsonParameter(
-            @PathVariable("dataSourceId") Long dataSourceId,
-            @RequestBody() Map<String, Object> params,
-            HttpServletRequest req) {
 
-        long versionId=1L;
-        return success(versionId);
-
-    }
 
     /**
      * get datasource detail, for current version
@@ -188,87 +161,6 @@ public class DataSourceController extends BaseController {
 
     }
 
-
-    @ApiOperation(value = "getPublishedInfoByDataSourceName", notes = "get published info by data source name")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name")
-    })
-    @RequestMapping(value = "/publishedInfo/name/{dataSourceName}", method = RequestMethod.GET)
-    public Result getPublishedInfoByDataSourceName(
-            @PathVariable("dataSourceName") String dataSourceName, HttpServletRequest request)
-            throws UnsupportedEncodingException {
-        DataSource dataSource = new DataSource();
-        dataSource.setDataSourceName("test");
-        dataSource.setDataSourceDesc("test");
-        dataSource.setDataSourceTypeId(1L);
-        dataSource.setLabels("test");
-        dataSource.setConnectParams(new HashMap<>());
-        return success(dataSource);
-    }
-
-
-    /**
-     * get datasource detail
-     *
-     * @param dataSourceId
-     * @param version
-     * @return
-     */
-    @ApiOperation(value = "getInfoByDataSourceIdAndVersion",notes = "get info by data source id and version")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id"),
-            @ApiImplicitParam(name = "version", required = true, dataType = "Long", value = "version")
-    })
-    @RequestMapping(value = "/info/{dataSourceId}/{version}", method = RequestMethod.GET)
-    public Result getInfoByDataSourceIdAndVersion(
-            @PathVariable("dataSourceId") Long dataSourceId,
-            @PathVariable("version") Long version,
-            HttpServletRequest request) {
-        DataSource dataSource = new DataSource();
-        dataSource.setDataSourceName("test");
-        dataSource.setDataSourceDesc("test");
-        dataSource.setDataSourceTypeId(1L);
-        dataSource.setLabels("test");
-        dataSource.setConnectParams(new HashMap<>());
-        return success(dataSource);
-    }
-
-    /**
-     * get verion list for datasource
-     *
-     * @param dataSourceId
-     * @param request
-     * @return
-     */
-    @ApiOperation(value = "getVersionList", notes = "get version list")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id")
-    })
-    @RequestMapping(value = "/{dataSourceId}/versions", method = RequestMethod.GET)
-    public Result getVersionList(
-            @PathVariable("dataSourceId") Long dataSourceId, HttpServletRequest request) {
-        List<DatasourceVersion> versions = new ArrayList<>();
-        DatasourceVersion version = new DatasourceVersion();
-        version.setVersionId(1L);
-
-        version.setCreateTime(new Date());
-        versions.add(version);
-        return success(versions);
-    }
-
-    @ApiOperation(value = "publishByDataSourceId", notes = "publish by data source id")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id"),
-            @ApiImplicitParam(name = "version", required = true, dataType = "Long", value = "version")
-    })
-    @RequestMapping(value = "/publish/{dataSourceId}/{versionId}", method = RequestMethod.POST)
-    public Result publishByDataSourceId(
-            @PathVariable("dataSourceId") Long dataSourceId,
-            @PathVariable("versionId") Long versionId,
-            HttpServletRequest request) {
-        return success();
-    }
-
     /**
      * Dangerous operation!
      *
@@ -298,51 +190,6 @@ public class DataSourceController extends BaseController {
 
     }
 
-    /**
-     * get datasource connect params for publish version
-     *
-     * @param dataSourceId
-     * @param req
-     * @return
-     */
-    @ApiOperation(value = "getConnectParams(dataSourceId)", notes = "get connect params(dataSourceId)")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id")
-    })
-    @RequestMapping(value = "/{dataSourceId}/connect-params", method = RequestMethod.GET)
-    public Result getConnectParams(
-            @PathVariable("dataSourceId") Long dataSourceId, HttpServletRequest req) {
-        Map<String, Object> connectParams = new HashMap<>();
-        connectParams.put("url", "jdbc:mysql://localhost:3306/test");
-        return success(connectParams);
-
-    }
-
-    @ApiOperation(value = "getConnectParams(dataSourceName)", notes = "get connect params(dataSourceName)")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name")
-    })
-    @RequestMapping(value = "/name/{dataSourceName}/connect-params", method = RequestMethod.GET)
-    public Result getConnectParams(
-            @PathVariable("dataSourceName") String dataSourceName, HttpServletRequest req)
-            throws UnsupportedEncodingException {
-        Map<String, Object> connectParams = new HashMap<>();
-        connectParams.put("url", "jdbc:mysql://localhost:3306/test");
-        return success(connectParams);
-    }
-
-    @ApiOperation(value = "connectDataSource", notes = "connect data source")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id"),
-            @ApiImplicitParam(name = "version", required = true, dataType = "Long", value = "version")
-    })
-    @RequestMapping(value = "/{dataSourceId}/{version}/op/connect", method = RequestMethod.PUT)
-    public Result connectDataSource(
-            @PathVariable("dataSourceId") Long dataSourceId,
-            @PathVariable("version") Long version,
-            HttpServletRequest req) {
-        return success(true);
-    }
 
     @ApiOperation(value = "queryDataSource", notes = "query data source")
     @ApiImplicitParams({

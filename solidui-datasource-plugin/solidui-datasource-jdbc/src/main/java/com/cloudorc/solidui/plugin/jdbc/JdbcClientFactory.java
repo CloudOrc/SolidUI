@@ -24,5 +24,7 @@ import java.util.Map;
 
 public interface JdbcClientFactory {
 
-    JdbcClient createJdbcClient(String host, Integer port, String username, String password, String database, Map<String, Object> extraParams) throws SQLException, ClassNotFoundException;
+    JdbcClient createJdbcClient(ConnectDTO connectDTO) throws SQLException, ClassNotFoundException;
+
+    ConnectDTO getConnectDTO(Map<String, Object> connParams);
 }

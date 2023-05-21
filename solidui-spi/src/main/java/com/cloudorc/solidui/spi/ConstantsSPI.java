@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,32 +15,28 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.dao.entity;
 
-import java.util.HashMap;
-import java.util.Map;
+package com.cloudorc.solidui.spi;
 
-/** Store the data source information */
-public class DataSourceParameter {
+public class ConstantsSPI {
 
-    /** Connection parameters */
-    private Map<String, Object> connectParams = new HashMap<>();
-    /** comment */
-    private String comment;
+    public static final String PARAM_SQL_HOST ="host";
 
-    public Map<String, Object> getConnectParams() {
-        return connectParams;
-    }
+    public static final String PARAM_SQL_PORT ="port";
 
-    public void setConnectParams(Map<String, Object> connectParams) {
-        this.connectParams = connectParams;
-    }
+    public static final String PARAM_SQL_USERNAME = "username";
 
-    public String getComment() {
-        return comment;
-    }
+    public static final String PARAM_SQL_PASSWORD = "password";
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+    public static final String PARAM_SQL_EXTRA_PARAMS = "params";
+
+    public static final String PARAM_SQL_DATABASE = "database";
+
+    public static final String PARAM_SQL_DRIVERCLASSNAME = "driverClassName";
+
+    public static final String DATASOURCE_CLASSNAME = "com.cloudorc.solidui.plugin.jdbc.%sClientFactory";
+
+    public static final String DATASOURCE_TYPE_LIST = "mysql,drois";
+
+
 }

@@ -18,8 +18,11 @@
 
 package com.cloudorc.solidui.plugin.jdbc;
 
+import lombok.Data;
+
 import java.util.Map;
 
+@Data
 public class ConnectDTO {
     private String host;
 
@@ -28,6 +31,10 @@ public class ConnectDTO {
     private String username;
 
     private String password;
+
+    private String database;
+
+    private String driverClassName;
 
     private Map<String, Object> extraParams;
 

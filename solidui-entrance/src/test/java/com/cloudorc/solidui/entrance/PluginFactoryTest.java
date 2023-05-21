@@ -41,10 +41,10 @@ public class PluginFactoryTest {
             throw new IllegalArgumentException(className + "JdbcClientFactory implements error");
         }
         JdbcClientFactory clientFactory = (JdbcClientFactory) instance;
-        // JdbcClient
-        JdbcClient client = clientFactory.createJdbcClient("117.68.113.63", 3306, "root", "SolidUI@123", "solidui", new HashMap<>());
-        List<String> allDatabase = client.getAllDatabase();
-        allDatabase.stream().forEach(System.out::println);
+//        // JdbcClient
+//        JdbcClient client = clientFactory.createJdbcClient("117.68.113.63", 3306, "root", "SolidUI@123", "solidui", new HashMap<>());
+//        List<String> allDatabase = client.getAllDatabase();
+//        allDatabase.stream().forEach(System.out::println);
 
     }
 }

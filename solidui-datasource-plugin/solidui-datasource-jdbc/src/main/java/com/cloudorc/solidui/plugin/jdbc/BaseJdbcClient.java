@@ -57,7 +57,7 @@ public abstract class BaseJdbcClient implements JdbcClient{
     public void close() throws IOException {
         closeResource(conn,null,null);
     }
-
+    @Override
     public Connection getConn() {
         return conn;
     }

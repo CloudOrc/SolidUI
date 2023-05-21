@@ -19,7 +19,25 @@
 package com.cloudorc.solidui.plugin.jdbc;
 
 
+import com.cloudorc.solidui.spi.ConstantsSPI;
+
+import java.util.Map;
 
 public abstract class BaseJdbcClientFactory  implements JdbcClientFactory {
+
+    public ConnectDTO getConnectDTO(Map<String, Object> connParams) {
+        ConnectDTO connectDTO = new ConnectDTO();
+        connectDTO.setHost((String) connParams.get(ConstantsSPI.PARAM_SQL_HOST));
+        connectDTO.setPort((Integer) connParams.get(ConstantsSPI.PARAM_SQL_PORT));
+        connectDTO.setUsername((String) connParams.get(ConstantsSPI.PARAM_SQL_PASSWORD));
+        connectDTO.setPassword((String) connParams.get(ConstantsSPI.PARAM_SQL_PASSWORD));
+        connectDTO.setDatabase((String) connParams.get(ConstantsSPI.PARAM_SQL_DATABASE));
+        Object obj = connParams.get(ConstantsSPI.PARAM_SQL_EXTRA_PARAMS);
+        if (obj instanceof Map<?, ?>) {
+            Map<String, Object> extraParams = (Map<String, Object>) obj;
+            connectDTO.setExtraParams(extraParams);
+        }
+        return connectDTO;
+    }
 
 }

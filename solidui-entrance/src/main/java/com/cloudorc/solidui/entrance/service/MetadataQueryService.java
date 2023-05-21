@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
+package com.cloudorc.solidui.entrance.service;
 
-package com.cloudorc.solidui.plugin.jdbc;
+import com.cloudorc.solidui.entrance.utils.Result;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Map;
+public interface MetadataQueryService {
 
-public class MySqlClientFactory extends BaseJdbcClientFactory {
+    Result queryDatabasesByDsName(String dataSourceName,String typeName);
 
-    @Override
-    public JdbcClient createJdbcClient(ConnectDTO connectDTO) throws SQLException, ClassNotFoundException {
-        Connection connection = new MySqlConnectionFactory().openConnection(connectDTO.getHost(), connectDTO.getPort(), connectDTO.getUsername(), connectDTO.getPassword(), connectDTO.getDatabase(), connectDTO.getExtraParams());
-        return new MySqlClient(connection);
-    }
+    Result queryTablesByDsName(String dataSourceName,String dbName,String typeName);
+
+    Result queryBySql(String dataSourceName,String sql,String typeName);
+
+    Result queryConnection(String dataSourceName,String typeName);
+
 }

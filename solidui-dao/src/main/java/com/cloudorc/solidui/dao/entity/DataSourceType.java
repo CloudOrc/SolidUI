@@ -37,11 +37,7 @@ public class DataSourceType {
     private String classifier;
     /** Icon url */
     private String icon;
-    /**
-     * Tells the user the number of levels for the datasource eg: for mysql/hive/presto datasource:
-     * (datasource) --> database --> tables --> column 3 for kafka datasource: (datasource) -->
-     * topic --> partition 2
-     */
+
     private int layers;
 
     public String getId() {

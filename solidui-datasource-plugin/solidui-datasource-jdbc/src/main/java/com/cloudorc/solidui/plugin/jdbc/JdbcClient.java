@@ -18,6 +18,7 @@ package com.cloudorc.solidui.plugin.jdbc;
 
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -30,4 +31,6 @@ public interface JdbcClient {
     List<List<String>> getSelectResult(String sql) throws SQLException;
 
     void close() throws IOException;
+
+    Connection getConn();
 }
