@@ -19,8 +19,23 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { ConfigProvider } from "antd";
 import App from "./App";
+import Mock from "mockjs";
 import "@/_mock/index";
 import "@/_mock/upload";
+import "@/_mock/datasource";
+
+Mock.setup({
+	timeout: "200-500",
+});
+
+// Mock.mock("/api/data", "get", {
+// 	code: 0,
+// 	msg: "success",
+// 	success: true,
+// 	data: {
+// 		xman: "xman",
+// 	},
+// });
 
 const root = document.getElementById("root");
 if (root) {

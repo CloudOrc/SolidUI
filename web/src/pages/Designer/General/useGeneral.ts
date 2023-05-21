@@ -51,9 +51,7 @@ function useGeneral() {
 	}, []);
 
 	function createScene() {
-		console.log("createScene");
 		let newScene = mm.createScene() as StatefulSolidSceneDataType;
-		console.log(newScene);
 		if (undefined === newScene) {
 			return;
 		}
