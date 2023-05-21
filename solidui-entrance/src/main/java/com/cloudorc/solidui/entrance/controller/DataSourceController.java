@@ -21,13 +21,17 @@ import com.cloudorc.solidui.dao.entity.DataSource;
 import com.cloudorc.solidui.dao.entity.DataSourceParamKey;
 import com.cloudorc.solidui.dao.entity.DataSourceType;
 import com.cloudorc.solidui.dao.entity.DataSourceInfo;
+import com.cloudorc.solidui.entrance.constants.Constants;
+import com.cloudorc.solidui.entrance.enums.Status;
 import com.cloudorc.solidui.entrance.service.DataSourceService;
 import com.cloudorc.solidui.entrance.service.DataSourceTypeService;
+import com.cloudorc.solidui.entrance.service.MetadataQueryService;
 import com.cloudorc.solidui.entrance.utils.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +51,8 @@ public class DataSourceController extends BaseController {
     private DataSourceService dataSourceService;
     @Autowired
     private DataSourceTypeService dataSourceTypeService;
+    @Autowired
+    private MetadataQueryService metadataQueryService;
 
     @ApiOperation(value = "queryAllDataSourceTypes", notes = "get all data source types")
     @ResponseStatus(HttpStatus.OK)
@@ -69,7 +75,6 @@ public class DataSourceController extends BaseController {
 
     @ApiOperation(value = "insertJsonInfo", notes = "insert json info")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "createSystem", example = "Linkis", required = true, dataType = "String", value = "create system"),
             @ApiImplicitParam(name = "dataSourceDesc", required = true, dataType = "String", value = "data source desc"),
             @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name"),
             @ApiImplicitParam(name = "dataSourceTypeId", required = true, dataType = "String", value = "data source type id"),
@@ -78,20 +83,35 @@ public class DataSourceController extends BaseController {
             @ApiImplicitParam(name = "host", example = "10.107.93.146", required = false, dataType = "String", value = "host"),
             @ApiImplicitParam(name = "password", required = false, dataType = "String", value = "password"),
             @ApiImplicitParam(name = "port", required = false, dataType = "String", value = "port", example = "9523"),
-            @ApiImplicitParam(name = "subSystem", required = false, dataType = "String", value = "sub system"),
             @ApiImplicitParam(name = "username", required = false, dataType = "String", value = "user name")
     })
+    @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/info/json", method = RequestMethod.POST)
     public Result insertJsonInfo(@RequestBody DataSource dataSource, HttpServletRequest req) {
-        Long id = dataSource.getId();
-        return success(id);
+        Result<Object> result = new Result<>();
+        String dataSourceName = dataSource.getDataSourceName();
+        if (StringUtils.isBlank(dataSourceName)){
+            return error(Status.CREATE_DATASOURCE_ERROR.getCode(),
+                    Status.CREATE_PROJECT_ERROR.getMsg());
+        }
+        Long dataSourceTypeId = dataSource.getDataSourceTypeId();
+        String parameter = dataSource.getParameter();
+        if(dataSourceTypeId == null){
+            return error(Status.CREATE_DATASOURCE_ERROR.getCode(),
+                    Status.CREATE_PROJECT_ERROR.getMsg());
+        }
+        if(StringUtils.isBlank(parameter)){
+            return error(Status.CREATE_DATASOURCE_ERROR.getCode(),
+                    Status.CREATE_PROJECT_ERROR.getMsg());
+        }
+
+        return dataSourceService.createDataSource(dataSource);
 
     }
 
     @ApiOperation(value = "updateDataSourceInJson", notes = "update data source in json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id"),
-            @ApiImplicitParam(name = "createSystem", required = true, dataType = "String", value = "create system", example = "Linkis"),
             @ApiImplicitParam(name = "createTime", required = true, dataType = "String", value = "create time", example = "1650426189000"),
             @ApiImplicitParam(name = "createUser", required = true, dataType = "String", value = "create user", example = "johnnwang"),
             @ApiImplicitParam(name = "dataSourceDesc", required = true, dataType = "String", value = "data source desc"),
@@ -102,20 +122,16 @@ public class DataSourceController extends BaseController {
             @ApiImplicitParam(name = "host", required = false, dataType = "String", value = "host", example = "10.107.93.146"),
             @ApiImplicitParam(name = "password", required = false, dataType = "String", value = "password"),
             @ApiImplicitParam(name = "port", required = false, dataType = "String", value = "port", example = "9523"),
-            @ApiImplicitParam(name = "subSystem", required = false, dataType = "String", value = "sub system"),
             @ApiImplicitParam(name = "username", required = false, dataType = "String", value = "user name"),
-            @ApiImplicitParam(name = "expire", required = false, dataType = "boolean", value = "expire", example = "false"),
-            @ApiImplicitParam(name = "file", required = false, dataType = "String", value = "file", example = "adn"),
-            @ApiImplicitParam(name = "modifyTime", required = false, dataType = "String", value = "modify time", example = "1657611440000"),
-            @ApiImplicitParam(name = "modifyUser", required = false, dataType = "String", value = "modify user", example = "johnnwang"),
-            @ApiImplicitParam(name = "versionId", required = false, dataType = "String", value = "versionId", example = "18")
+            @ApiImplicitParam(name = "expire", required = false, dataType = "boolean", value = "expire", example = "false")
     })
     @RequestMapping(value = "/info/{dataSourceId}/json", method = RequestMethod.PUT)
     public Result updateDataSourceInJson(
             @RequestBody DataSource dataSource,
             @PathVariable("dataSourceId") Long dataSourceId,
             HttpServletRequest req) {
-        return success(dataSourceId);
+
+        return dataSourceService.updateDataSource(dataSource);
     }
 
 
@@ -127,23 +143,18 @@ public class DataSourceController extends BaseController {
      * @param request
      * @return
      */
-    @ApiOperation(value = "getInfoByDataSourceId", notes = "get info by data source id")
+    @ApiOperation(value = "queryInfoByDataSourceId", notes = "get info by data source id")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id")
     })
     @RequestMapping(value = "/info/{dataSourceId}", method = RequestMethod.GET)
     public Result getInfoByDataSourceId(
             @PathVariable("dataSourceId") Long dataSourceId, HttpServletRequest request) {
-        DataSource dataSource = new DataSource();
-        dataSource.setDataSourceName("test");
-        dataSource.setDataSourceDesc("test");
-        dataSource.setDataSourceTypeId(1L);
-        dataSource.setLabels("test");
-        dataSource.setConnectParams(new HashMap<>());
-        return success(dataSource);
+
+        return dataSourceService.queryDataSource(dataSourceId);
     }
 
-    @ApiOperation(value = "getInfoByDataSourceName", notes = "get info by data source name")
+    @ApiOperation(value = "queryInfoByDataSourceName", notes = "get info by data source name")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name")
     })
@@ -151,14 +162,8 @@ public class DataSourceController extends BaseController {
     public Result getInfoByDataSourceName(
             @PathVariable("dataSourceName") String dataSourceName, HttpServletRequest request)
             throws UnsupportedEncodingException {
-        DataSource dataSource = new DataSource();
-        dataSource.setDataSourceName("test");
-        dataSource.setDataSourceDesc("test");
-        dataSource.setDataSourceTypeId(1L);
-        dataSource.setLabels("test");
-        dataSource.setConnectParams(new HashMap<>());
-        return success(dataSource);
 
+        return dataSourceService.queryDataSource(dataSourceName);
     }
 
     /**
@@ -167,15 +172,15 @@ public class DataSourceController extends BaseController {
      * @param dataSourceId
      * @return
      */
-    @ApiOperation(value = "removeDataSource", notes = "remove data source")
+    @ApiOperation(value = "deleteDataSource", notes = "remove data source")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id")
     })
     @RequestMapping(value = "/info/delete/{dataSourceId}", method = RequestMethod.DELETE)
     public Result removeDataSource(
             @PathVariable("dataSourceId") Long dataSourceId, HttpServletRequest request) {
-        Long removeId = 1L;
-        return success(removeId);
+
+        return dataSourceService.deleteDataSource(dataSourceId);
     }
 
     @ApiOperation(value = "expireDataSource", notes = "expire data source")
@@ -185,45 +190,42 @@ public class DataSourceController extends BaseController {
     @RequestMapping(value = "/info/{dataSourceId}/expire", method = RequestMethod.PUT)
     public Result expireDataSource(
             @PathVariable("dataSourceId") Long dataSourceId, HttpServletRequest request) {
-        Long expireId = 1L;
-        return success(expireId);
 
+        return dataSourceService.existDataSource(dataSourceId);
     }
 
 
     @ApiOperation(value = "queryDataSource", notes = "query data source")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "system", required = false, dataType = "String", value = "system"),
-            @ApiImplicitParam(name = "name", required = false, dataType = "Long", value = "name"),
-            @ApiImplicitParam(name = "typeId", required = false, dataType = "Long", value = "type id"),
-            @ApiImplicitParam(name = "identifies", required = false, dataType = "String", value = "identifies"),
-            @ApiImplicitParam(name = "currentPage", required = false, dataType = "Integer", value = "current page"),
-            @ApiImplicitParam(name = "pageSize", required = false, dataType = "Integer", value = "page size")
+            @ApiImplicitParam(name = "name", required = false, dataType = "Long", value = "NAME"),
+            @ApiImplicitParam(name = "typeId", required = false, dataType = "Long", value = "TYPE_ID"),
+            @ApiImplicitParam(name = "pageSize", value = "PAGE_SIZE", required = true, dataTypeClass = int.class, example = "10"),
+            @ApiImplicitParam(name = "pageNo", value = "PAGE_NO", required = true, dataTypeClass = int.class, example = "1")
     })
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public Result queryDataSource(
-            @RequestParam(value = "system", required = false) String createSystem,
             @RequestParam(value = "name", required = false) String dataSourceName,
             @RequestParam(value = "typeId", required = false) Long dataSourceTypeId,
-            @RequestParam(value = "identifies", required = false) String identifies,
-            @RequestParam(value = "currentPage", required = false) Integer currentPage,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
+            @RequestParam(value ="pageSize", required = false) Integer pageSize,
+            @RequestParam(value ="pageNo", required = false) Integer pageNo,
             HttpServletRequest req) {
-        List<DataSource> dataSources = new ArrayList<>();
-        DataSource dataSource = new DataSource();
-        dataSource.setDataSourceName("test");
-        dataSources.add(dataSource);
-        Result<Object> result = new Result<>();
-        result.setData(dataSources);
-        return result;
+        if (pageSize == null || pageSize <= 0) {
+            pageSize = Constants.DEFAULT_PAGE_SIZE;
+        }
+        if (pageNo == null || pageNo <= 0) {
+            pageNo = Constants.DEFAULT_PAGE_NO;
+        }
+
+        return dataSourceService.queryDataSourceByPage(dataSourceName,dataSourceTypeId,pageNo,pageSize);
     }
 
 
     @ApiOperation(value = "connect", notes = "connect")
-
     @RequestMapping(value = "/connect/json", method = RequestMethod.POST)
-    public Result connect(@RequestBody DataSource dataSource, HttpServletRequest request) {
-        return success(true);
+    public Result connect(@RequestParam(value ="dataSourceName", required = true) String dataSourceName,
+                          @RequestParam(value = "typeName", required = true) String typeName,
+                          HttpServletRequest request) {
+        return metadataQueryService.queryConnection(dataSourceName,typeName);
     }
 
 

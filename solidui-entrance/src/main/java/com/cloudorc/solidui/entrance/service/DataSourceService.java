@@ -20,7 +20,7 @@ public interface DataSourceService {
 
     Result queryDataSource(String dataSourceName);
 
-    Result existDataSource(String dataSourceName);
+    Result existDataSource(Long dataSourceId);
 
     Result queryDataSourceByPage(String dataSourceName, Long dataSourceTypeId, Integer pageNo, Integer pageSize);
 

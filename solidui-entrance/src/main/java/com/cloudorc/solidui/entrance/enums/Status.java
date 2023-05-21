@@ -38,6 +38,7 @@ public enum Status {
     PROJECT_NOT_EXISTS_ERROR(10053, "project not exists error", "项目不存在错误"),
     DATASOURCE_NOT_EXISTS_ERROR(10054, "datasource not exists error", "数据源不存在错误"),
     DELETE_DATASOURCE_ERROR(10055, "delete project error", "删除数据源错误"),
+    CREATE_DATASOURCE_ERROR(10055, "create project error", "创建数据源错误"),
     CREATE_DATASOURCE_TYPE_ERROR(10060, "create project error", "创建数据源类型错误"),
     QUERY_DATASOURCE_TYPE_ERROR(10061, "create project error", "查询数据源类型错误"),
     QUERY_DATASOURCE_KEY_ERROR(10062, "create project error", "查询数据源KEY错误"),

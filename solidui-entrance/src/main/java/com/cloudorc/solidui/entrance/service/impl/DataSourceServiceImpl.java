@@ -104,14 +104,14 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     }
 
     @Override
-    public Result existDataSource(String dataSourceName) {
+    public Result existDataSource(Long dataSourceId) {
         Result<Object> result = new Result<>();
-        if(StringUtils.isBlank(dataSourceName)){
+        if(dataSourceId == null){
             putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
             return result;
         }
 
-        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName);
+        DataSource dataSource = dataSourceMapper.selectById(dataSourceId);
         if(dataSource == null) {
             putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
         }else{

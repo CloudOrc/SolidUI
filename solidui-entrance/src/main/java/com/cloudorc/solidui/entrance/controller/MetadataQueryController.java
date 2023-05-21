@@ -16,12 +16,14 @@
  */
 package com.cloudorc.solidui.entrance.controller;
 
+import com.cloudorc.solidui.entrance.service.MetadataQueryService;
 import com.cloudorc.solidui.entrance.utils.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,42 +40,51 @@ import java.util.Map;
 @RequestMapping("metadataQuery")
 public class MetadataQueryController extends BaseController {
 
-    @ApiOperation(value = "getDatabases", notes = "get databases")
+    @Autowired
+    private MetadataQueryService metadataQueryService;
+
+    @ApiOperation(value = "queryDatabases", notes = "query databases")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name"),
-            @ApiImplicitParam(name = "system", required = true, dataType = "String", value = "system")
+            @ApiImplicitParam(name = "typeName", required = true, dataType = "String", value = "typeName")
     })
-    @RequestMapping(value = "/getDatabases", method = RequestMethod.GET)
+    @RequestMapping(value = "/queryDatabases", method = RequestMethod.GET)
     public Result getDatabases(
             @RequestParam("dataSourceName") String dataSourceName,
-            @RequestParam("system") String system,
+            @RequestParam("typeName") String typeName,
             HttpServletRequest request) {
-        List<String> databases =new ArrayList<>();
-        databases.add("db1");
-        databases.add("db2");
-        return Result.success(databases);
+        return metadataQueryService.queryDatabasesByDsName(dataSourceName,typeName);
 
     }
 
-    @ApiOperation(value = "getTables", notes = "get tables")
+    @ApiOperation(value = "queryTables", notes = "query tables")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name"),
-            @ApiImplicitParam(name = "system", required = true, dataType = "String", value = "system"),
+            @ApiImplicitParam(name = "typeName", required = true, dataType = "String", value = "typeName"),
             @ApiImplicitParam(name = "database", required = true, dataType = "String", value = "database")
     })
-    @RequestMapping(value = "/getTables", method = RequestMethod.GET)
+    @RequestMapping(value = "/queryTables", method = RequestMethod.GET)
     public Result getTables(
             @RequestParam("dataSourceName") String dataSourceName,
             @RequestParam("database") String database,
-            @RequestParam("system") String system,
+            @RequestParam("typeName") String typeName,
             HttpServletRequest request) {
-        List<String> tables = new ArrayList<>();
-        tables.add("table1");
-        tables.add("table2");
-        return Result.success(tables);
-
+        return metadataQueryService.queryTablesByDsName(dataSourceName,database,typeName);
     }
 
-
+    @ApiOperation(value = "querySql", notes = "query sql")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name"),
+            @ApiImplicitParam(name = "typeName", required = true, dataType = "String", value = "typeName"),
+            @ApiImplicitParam(name = "sql", required = true, dataType = "String", value = "sql")
+    })
+    @RequestMapping(value = "/querySql", method = RequestMethod.GET)
+    public Result querySelectSql(
+            @RequestParam("dataSourceName") String dataSourceName,
+            @RequestParam("sql") String sql,
+            @RequestParam("typeName") String typeName,
+            HttpServletRequest request) {
+        return metadataQueryService.queryBySql(dataSourceName,sql,typeName);
+    }
 
 }
