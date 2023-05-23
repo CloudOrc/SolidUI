@@ -22,9 +22,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MySqlClient extends BaseJdbcClient {
+public class MysqlClient extends BaseJdbcClient {
 
-    public MySqlClient(Connection conn) {
+    public MysqlClient(Connection conn) {
         super(conn);
     }
 

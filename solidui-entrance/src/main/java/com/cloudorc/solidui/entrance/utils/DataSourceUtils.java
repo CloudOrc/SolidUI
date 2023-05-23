@@ -36,20 +36,18 @@ public class DataSourceUtils {
         }
         JdbcClientFactory jdbcClientFactory = jdbcClientFactoryInstances.get(typeName);
         if(jdbcClientFactory == null){
-            String className = String.format(ConstantsSPI.DATASOURCE_CLASSNAME, typeName);
+            String prefix = typeName.substring(0, 1).toUpperCase() + typeName.substring(1);
+            String className = String.format(ConstantsSPI.DATASOURCE_CLASSNAME, prefix);
             Class<?> clazz = classLoader.loadClass(className);
             Object instance = clazz.getDeclaredConstructor().newInstance();
             if (!(instance instanceof JdbcClientFactory)) {
                 throw new IllegalArgumentException(className + "JdbcClientFactory implements error");
             }
             jdbcClientFactory = (JdbcClientFactory) instance;
+            jdbcClientFactoryInstances.put(typeName, jdbcClientFactory);
         }
 
         return jdbcClientFactory;
-//        // JdbcClient
-//        JdbcClient client = clientFactory.createJdbcClient("117.68.113.63", 3306, "root", "SolidUI@123", "solidui", new HashMap<>());
-//        List<String> allDatabase = client.getAllDatabase();
-//        allDatabase.stream().forEach(System.out::println);
 
     }
 
@@ -78,7 +76,6 @@ public class DataSourceUtils {
                                 + dataSource.getId()
                                 + "]",
                         e);
-                // TODO throws Exception defined Exception
             }
             dataSource.setConnectParams(connectParams);
         }

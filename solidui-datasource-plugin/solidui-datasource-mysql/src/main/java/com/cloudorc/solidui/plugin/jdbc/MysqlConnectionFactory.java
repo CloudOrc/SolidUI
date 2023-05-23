@@ -19,13 +19,14 @@ package com.cloudorc.solidui.plugin.jdbc;
 
 import com.cloudorc.solidui.plugin.jdbc.connector.ConnectionFactory;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class MySqlConnectionFactory implements ConnectionFactory {
+public class MysqlConnectionFactory implements ConnectionFactory {
 
     public static final String SQL_DRIVER_CLASS = "com.mysql.jdbc.Driver";
 

@@ -21,6 +21,7 @@ package com.cloudorc.solidui.plugin.jdbc;
 
 import com.cloudorc.solidui.spi.ConstantsSPI;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class BaseJdbcClientFactory  implements JdbcClientFactory {
@@ -29,13 +30,14 @@ public abstract class BaseJdbcClientFactory  implements JdbcClientFactory {
         ConnectDTO connectDTO = new ConnectDTO();
         connectDTO.setHost((String) connParams.get(ConstantsSPI.PARAM_SQL_HOST));
         connectDTO.setPort((Integer) connParams.get(ConstantsSPI.PARAM_SQL_PORT));
-        connectDTO.setUsername((String) connParams.get(ConstantsSPI.PARAM_SQL_PASSWORD));
+        connectDTO.setUsername((String) connParams.get(ConstantsSPI.PARAM_SQL_USERNAME));
         connectDTO.setPassword((String) connParams.get(ConstantsSPI.PARAM_SQL_PASSWORD));
         connectDTO.setDatabase((String) connParams.get(ConstantsSPI.PARAM_SQL_DATABASE));
         Object obj = connParams.get(ConstantsSPI.PARAM_SQL_EXTRA_PARAMS);
-        if (obj instanceof Map<?, ?>) {
-            Map<String, Object> extraParams = (Map<String, Object>) obj;
-            connectDTO.setExtraParams(extraParams);
+        if(obj == null){
+            connectDTO.setExtraParams(new HashMap<>());
+        }else{
+            connectDTO.setExtraParams((Map<String, Object>) obj);
         }
         return connectDTO;
     }

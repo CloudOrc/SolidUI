@@ -24,10 +24,10 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
 
     @Override
     public Result queryDatabasesByDsName(String dataSourceName, String typeName) {
-        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName);
+        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName,null);
         Result<Object> result = new Result<>();
         if(dataSource == null) {
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.QUERY_METADATA_DB_ERROR);
             return result;
         }
 
@@ -36,18 +36,18 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
             if(jdbcClient != null)  {
                 List<String> allDatabase = jdbcClient.getAllDatabase();
                 if(CollectionUtils.isEmpty(allDatabase)){
-                    putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+                    putMsg(result, Status.QUERY_METADATA_DB_ERROR);
                 }else{
                     putMsg(result, Status.SUCCESS);
                     result.setData(allDatabase);
                 }
             } else {
-                putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+                putMsg(result, Status.QUERY_METADATA_DB_ERROR);
             }
 
         } catch (Exception e) {
             logger.error("queryDatabasesByDsName error", e);
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.QUERY_METADATA_DB_ERROR);
         }
 
         return result;
@@ -55,10 +55,10 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
 
     @Override
     public Result queryTablesByDsName(String dataSourceName, String dbName, String typeName) {
-        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName);
+        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName,null);
         Result<Object> result = new Result<>();
         if(dataSource == null) {
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.QUERY_METADATA_TABLE_ERROR);
             return result;
         }
 
@@ -67,18 +67,18 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
             if(jdbcClient != null)  {
                 List<String> allTables = jdbcClient.getAllTables(dbName);
                 if(CollectionUtils.isEmpty(allTables)){
-                    putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+                    putMsg(result, Status.QUERY_METADATA_TABLE_ERROR);
                 }else{
                     putMsg(result, Status.SUCCESS);
                     result.setData(allTables);
                 }
             } else {
-                putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+                putMsg(result, Status.QUERY_METADATA_TABLE_ERROR);
             }
 
         } catch (Exception e) {
             logger.error("queryTablesByDsName error", e);
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.QUERY_METADATA_TABLE_ERROR);
         }
 
         return result;
@@ -86,10 +86,10 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
 
     @Override
     public Result queryBySql(String dataSourceName, String sql, String typeName) {
-        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName);
+        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName,null);
         Result<Object> result = new Result<>();
         if(dataSource == null) {
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.QUERY_METADATA_SQL_ERROR);
             return result;
         }
 
@@ -98,7 +98,7 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
             if(jdbcClient != null)  {
                 List<List<String>> selectResult = jdbcClient.getSelectResult(sql);
                 if(CollectionUtils.isEmpty(selectResult)){
-                    putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+                    putMsg(result, Status.QUERY_METADATA_SQL_ERROR);
                 }else{
                     putMsg(result, Status.SUCCESS);
                     result.setData(selectResult);
@@ -109,7 +109,7 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
 
         } catch (Exception e) {
             logger.error("queryBySql error", e);
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.QUERY_METADATA_SQL_ERROR);
         }
 
         return result;
@@ -117,10 +117,10 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
 
     @Override
     public Result queryConnection(String dataSourceName, String typeName) {
-        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName);
+        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName,null);
         Result<Object> result = new Result<>();
         if(dataSource == null) {
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.QUERY_METADATA_DB_ERROR);
             return result;
         }
 
@@ -129,17 +129,17 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
             if(jdbcClient != null)  {
                 Connection conn = jdbcClient.getConn();
                 if(conn == null){
-                    putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+                    putMsg(result, Status.QUERY_METADATA_DB_ERROR);
                 }else{
                     putMsg(result, Status.SUCCESS);
                 }
             } else {
-                putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+                putMsg(result, Status.QUERY_METADATA_DB_ERROR);
             }
 
         } catch (Exception e) {
             logger.error("queryConnection error", e);
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.QUERY_METADATA_DB_ERROR);
         }
 
         return result;

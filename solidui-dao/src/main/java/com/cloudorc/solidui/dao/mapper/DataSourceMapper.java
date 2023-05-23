@@ -8,10 +8,14 @@ import org.apache.ibatis.annotations.Param;
 
 public interface DataSourceMapper extends BaseMapper<DataSource> {
 
-    DataSource queryByName(@Param("dataSourceName") String dataSourceName);
+    DataSource queryByName(@Param("dataSourceName") String dataSourceName,@Param("id") Long id);
 
     int expireOne(@Param("dataSourceId") Long dataSourceId);
 
     IPage<DataSource> queryDataSourceByPage(IPage<DataSource> page,
                                          @Param("dataSourceName") String dataSourceName,@Param("dataSourceTypeId") Long dataSourceTypeId);
+
+    int updateOne(DataSource dataSource);
+
+    int insertOne(DataSource dataSource);
 }

@@ -134,7 +134,7 @@ public class DataSourceController extends BaseController {
             @RequestBody DataSource dataSource,
             @PathVariable("dataSourceId") Long dataSourceId,
             HttpServletRequest req) {
-
+        dataSource.setId(dataSourceId);
         return dataSourceService.updateDataSource(dataSource);
     }
 

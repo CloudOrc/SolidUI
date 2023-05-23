@@ -19,14 +19,11 @@
 package com.cloudorc.solidui.entrance;
 
 
-import com.cloudorc.solidui.plugin.jdbc.JdbcClient;
 import com.cloudorc.solidui.plugin.jdbc.JdbcClientFactory;
 import org.junit.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
 
 public class PluginFactoryTest {
 
@@ -35,7 +32,7 @@ public class PluginFactoryTest {
         // MySqlClientFactory ClassLoader
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         String className = "MySqlClientFactory";
-        Class<?> clazz = classLoader.loadClass("com.cloudorc.solidui.plugin.jdbc.MySqlClientFactory");
+        Class<?> clazz = classLoader.loadClass("com.cloudorc.solidui.plugin.jdbc.MysqlClientFactory");
         Object instance = clazz.getDeclaredConstructor().newInstance();
         if (!(instance instanceof JdbcClientFactory)) {
             throw new IllegalArgumentException(className + "JdbcClientFactory implements error");

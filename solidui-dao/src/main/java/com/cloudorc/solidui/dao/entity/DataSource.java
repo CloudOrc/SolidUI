@@ -18,6 +18,7 @@
 package com.cloudorc.solidui.dao.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cloudorc.solidui.common.utils.JSONUtils;
@@ -43,14 +44,18 @@ public class DataSource {
 
     /** Data source name */
     @NotNull
+    @TableField("datasource_name")
     private String dataSourceName;
 
     /** Data source description */
     @Size(min = 0, max = 200)
+    @TableField("datasource_desc")
     private String dataSourceDesc;
 
     /** ID of data source type */
-    @NotNull private Long dataSourceTypeId;
+    @NotNull
+    @TableField("datasource_type_id")
+    private Long dataSourceTypeId;
 
     /** Identify from creator */
     private String createIdentify;

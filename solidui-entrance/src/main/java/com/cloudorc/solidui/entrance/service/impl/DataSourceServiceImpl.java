@@ -28,7 +28,6 @@ import com.cloudorc.solidui.entrance.service.DataSourceService;
 import com.cloudorc.solidui.entrance.utils.DataSourceUtils;
 import com.cloudorc.solidui.entrance.utils.PageInfo;
 import com.cloudorc.solidui.entrance.utils.Result;
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +56,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     @Transactional(rollbackFor = Exception.class)
     public Result createDataSource(DataSource dataSource) throws ServiceException {
          Result<Object> result = new Result<>();
-        if(dataSourceMapper.insert(dataSource) > 0){
+        if(dataSourceMapper.insertOne(dataSource) > 0){
             putMsg(result, Status.SUCCESS);
         }else{
             putMsg(result, Status.CREATE_DATASOURCE_ERROR);
@@ -73,7 +72,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
             return result;
         }
 
-        DataSource dataSource = dataSourceMapper.selectById(dataSourceId);
+        DataSource dataSource = dataSourceMapper.queryByName(null,dataSourceId);
         if(dataSource == null) {
             putMsg(result, Status.QUERY_DATASOURCE_ERROR);
         }else{
@@ -92,7 +91,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
             return result;
         }
 
-        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName);
+        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName,null);
         if(dataSource == null) {
             putMsg(result, Status.QUERY_DATASOURCE_ERROR);
         }else{
@@ -158,11 +157,17 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result updateDataSource(DataSource dataSource) {
-        deleteDataSource(dataSource.getId());
-        createDataSource(dataSource);
         Result<Object> result = new Result<>();
-        putMsg(result, Status.SUCCESS);
-        result.setData(dataSource);
+        DataSource newDataSource = dataSourceMapper.queryByName(null,dataSource.getId());
+        if(newDataSource == null) {
+            putMsg(result,Status.UPDATE_DATASOURCE_ERROR);
+            return result;
+        }
+        if(dataSourceMapper.updateOne(dataSource) > 0) {
+            putMsg(result, Status.SUCCESS);
+        }else{
+            putMsg(result, Status.UPDATE_DATASOURCE_ERROR);
+        }
         return result;
     }
 

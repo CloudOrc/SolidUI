@@ -27,12 +27,21 @@
         d.`create_identify`, d.`create_user`, d.`create_time`,
         d.`labels`, d.`expire`
     </sql>
+    <sql id="data_source_insert_columns">
+        datasource_name, datasource_type_id,datasource_desc, create_identify,create_user,`parameter`,create_time,labels,expire
+    </sql>
 
     <select id="queryByName" resultType="com.cloudorc.solidui.dao.entity.DataSource">
         select
         <include refid="baseSql"/>
         from solidui_datasource
-        where datasource_name = #{dataSourceName}
+        where 1=1
+        <if test="dataSourceName != null and dataSourceName != ''">
+           and datasource_name = #{dataSourceName}
+        </if>
+        <if test="id != null and id > 0">
+           and id = #{id}
+        </if>
         limit 1
     </select>
 
@@ -52,7 +61,7 @@
         <![CDATA[ ORDER BY create_time DESC ]]>
     </select>
 
-    <update id="expireOne">
+    <update id="expireOne"  parameterType="com.cloudorc.solidui.dao.entity.DataSource">
         <![CDATA[UPDATE `solidui_datasource`]]>
         <set>
             <![CDATA[`expire` = true]]>
@@ -62,7 +71,7 @@
         </where>
     </update>
 
-    <update id="updateOne">
+    <update id="updateOne" parameterType="com.cloudorc.solidui.dao.entity.DataSource">
         <![CDATA[UPDATE `solidui_datasource`]]>
         <set>
             <![CDATA[`datasource_name` = #{dataSourceName},]]>
@@ -71,11 +80,31 @@
                 <![CDATA[`datasource_type_id` = #{dataSourceTypeId},]]>
             </if>
             <![CDATA[`create_identify` = #{createIdentify,jdbcType=VARCHAR},]]>
-            <![CDATA[`labels` = #{labels,jdbcType=VARCHAR}]]>
+            <![CDATA[`labels` = #{labels,jdbcType=VARCHAR},]]>
+            <![CDATA[`parameter` = #{parameter,jdbcType=VARCHAR},]]>
         </set>
         <where>
             `id` = #{id}
         </where>
     </update>
+
+
+    <insert id="insertOne" useGeneratedKeys="true" keyProperty="id" parameterType="com.cloudorc.solidui.dao.entity.DataSource">
+        INSERT INTO `solidui_datasource`(
+        <include refid="data_source_insert_columns"/>
+        ) VALUES(#{dataSourceName}, #{dataSourceTypeId},
+        #{dataSourceDesc,jdbcType=VARCHAR}, #{createIdentify}, #{createUser},
+        #{parameter},
+        <choose>
+            <when test="createTime == null">
+                now(),
+            </when>
+            <otherwise>
+                #{createTime,jdbcType=TIMESTAMP},
+            </otherwise>
+        </choose>
+
+        #{labels},#{expire})
+    </insert>
 
 </mapper>

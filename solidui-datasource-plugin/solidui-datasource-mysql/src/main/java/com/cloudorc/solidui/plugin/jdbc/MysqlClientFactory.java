@@ -20,13 +20,13 @@ package com.cloudorc.solidui.plugin.jdbc;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Map;
 
-public class MySqlClientFactory extends BaseJdbcClientFactory {
+
+public class MysqlClientFactory extends BaseJdbcClientFactory {
 
     @Override
     public JdbcClient createJdbcClient(ConnectDTO connectDTO) throws SQLException, ClassNotFoundException {
-        Connection connection = new MySqlConnectionFactory().openConnection(connectDTO.getHost(), connectDTO.getPort(), connectDTO.getUsername(), connectDTO.getPassword(), connectDTO.getDatabase(), connectDTO.getExtraParams());
-        return new MySqlClient(connection);
+        Connection connection = new MysqlConnectionFactory().openConnection(connectDTO.getHost(), connectDTO.getPort(), connectDTO.getUsername(), connectDTO.getPassword(), connectDTO.getDatabase(), connectDTO.getExtraParams());
+        return new MysqlClient(connection);
     }
 }
