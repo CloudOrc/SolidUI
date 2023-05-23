@@ -18,7 +18,7 @@
 package com.cloudorc.solidui.entrance.dto;
 
 import com.cloudorc.solidui.common.utils.JSONUtils;
-import com.cloudorc.solidui.dao.entity.DataSourceParamKey;
+import com.cloudorc.solidui.dao.entity.DataSourceTypeKey;
 import com.cloudorc.solidui.dao.entity.DataSourceType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -71,7 +71,7 @@ public class DataSourceDTO {
 
 
     @JsonIgnore
-    private List<DataSourceParamKey> keyDefinitions = new ArrayList<>();
+    private List<DataSourceTypeKey> keyDefinitions = new ArrayList<>();
 
     public DataSourceDTO() {
         this.createTime = Calendar.getInstance().getTime();
@@ -154,11 +154,11 @@ public class DataSourceDTO {
     }
 
 
-    public List<DataSourceParamKey> getKeyDefinitions() {
+    public List<DataSourceTypeKey> getKeyDefinitions() {
         return keyDefinitions;
     }
 
-    public void setKeyDefinitions(List<DataSourceParamKey> keyDefinitions) {
+    public void setKeyDefinitions(List<DataSourceTypeKey> keyDefinitions) {
         this.keyDefinitions = keyDefinitions;
     }
 

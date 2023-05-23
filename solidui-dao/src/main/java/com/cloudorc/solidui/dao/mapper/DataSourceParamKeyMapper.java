@@ -1,7 +1,11 @@
 package com.cloudorc.solidui.dao.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cloudorc.solidui.dao.entity.DataSourceParamKey;
+import com.cloudorc.solidui.dao.entity.DataSourceTypeKey;
 
-public interface DataSourceParamKeyMapper extends BaseMapper<DataSourceParamKey> {
+import java.util.List;
+
+public interface DataSourceParamKeyMapper extends BaseMapper<DataSourceTypeKey> {
+
+    List<DataSourceTypeKey> queryByDataSourceTypeId(Long dataSourceTypeId);
 }

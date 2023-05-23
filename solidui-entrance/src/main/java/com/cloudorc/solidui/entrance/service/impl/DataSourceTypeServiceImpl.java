@@ -17,7 +17,7 @@
 
 package com.cloudorc.solidui.entrance.service.impl;
 
-import com.cloudorc.solidui.dao.entity.DataSourceParamKey;
+import com.cloudorc.solidui.dao.entity.DataSourceTypeKey;
 import com.cloudorc.solidui.dao.entity.DataSourceType;
 import com.cloudorc.solidui.dao.mapper.DataSourceParamKeyMapper;
 import com.cloudorc.solidui.dao.mapper.DataSourceTypeMapper;
@@ -69,12 +69,12 @@ public class DataSourceTypeServiceImpl extends BaseServiceImpl implements DataSo
     @Override
     public Result queryKeyByType(Long dataSourceTypeId) {
         Result result = new Result<>();
-        DataSourceParamKey dataSourceParamKey = dataSourceParamKeyMapper.selectById(dataSourceTypeId);
-        if(dataSourceTypeId == null){
-            putMsg(result, Status.QUERY_DATASOURCE_KEY_ERROR);
+        List<DataSourceTypeKey> dataSourceTypeKey = dataSourceParamKeyMapper.queryByDataSourceTypeId(dataSourceTypeId);
+        if(CollectionUtils.isEmpty(dataSourceTypeKey)){
+            putMsg(result, Status.QUERY_DATASOURCE_TYPE_KEY_ERROR);
         }else{
             putMsg(result, Status.SUCCESS);
-            result.setData(dataSourceParamKey);
+            result.setData(dataSourceTypeKey);
         }
         return result;
     }

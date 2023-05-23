@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @TableName("solidui_datasource_type_key")
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
-public class DataSourceParamKey {
+public class DataSourceTypeKey {
 
     /** Key-value type */
     public enum ValueType {
@@ -85,8 +85,13 @@ public class DataSourceParamKey {
     /** Definition description */
     private String description;
 
+    private String descriptionEn;
+
     /** Option name */
     private String name;
+
+    private String nameEn;
+
 
     /** Default value */
     private String defaultValue;
@@ -174,6 +179,21 @@ public class DataSourceParamKey {
         this.scope = scope;
     }
 
+    public String getDescriptionEn() {
+        return descriptionEn;
+    }
+
+    public void setDescriptionEn(String descriptionEn) {
+        this.descriptionEn = descriptionEn;
+    }
+
+    public String getNameEn() {
+        return nameEn;
+    }
+
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -183,7 +203,7 @@ public class DataSourceParamKey {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DataSourceParamKey that = (DataSourceParamKey) o;
+        DataSourceTypeKey that = (DataSourceTypeKey) o;
         return Objects.equals(id, that.id);
     }
 

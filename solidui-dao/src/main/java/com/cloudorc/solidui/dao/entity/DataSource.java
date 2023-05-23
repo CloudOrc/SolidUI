@@ -27,7 +27,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang3.StringUtils;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.*;
 
@@ -59,7 +58,7 @@ public class DataSource {
     /** Connection parameters */
     private Map<String, Object> connectParams = new HashMap<>();
     /** Parameter JSON string */
-    @JsonIgnore private String parameter;
+    private String parameter;
 
     /** Create time */
     private Date createTime;
@@ -77,10 +76,11 @@ public class DataSource {
     private DataSourceType dataSourceType;
 
 
-    @JsonIgnore private List<DataSourceParamKey> keyDefinitions = new ArrayList<>();
+    @JsonIgnore private List<DataSourceTypeKey> keyDefinitions = new ArrayList<>();
 
     public DataSource() {
         this.createTime = Calendar.getInstance().getTime();
+        this.expire = false;
     }
 
     public Long getId() {
@@ -160,11 +160,11 @@ public class DataSource {
     }
 
 
-    public List<DataSourceParamKey> getKeyDefinitions() {
+    public List<DataSourceTypeKey> getKeyDefinitions() {
         return keyDefinitions;
     }
 
-    public void setKeyDefinitions(List<DataSourceParamKey> keyDefinitions) {
+    public void setKeyDefinitions(List<DataSourceTypeKey> keyDefinitions) {
         this.keyDefinitions = keyDefinitions;
     }
 
@@ -199,5 +199,7 @@ public class DataSource {
     public void setExpire(boolean expire) {
         this.expire = expire;
     }
+
+
 
 }

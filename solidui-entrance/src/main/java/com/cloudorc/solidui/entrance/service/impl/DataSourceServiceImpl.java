@@ -60,7 +60,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
         if(dataSourceMapper.insert(dataSource) > 0){
             putMsg(result, Status.SUCCESS);
         }else{
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.CREATE_DATASOURCE_ERROR);
         }
         return result;
     }
@@ -69,13 +69,13 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     public Result queryDataSource(Long dataSourceId) {
         Result<Object> result = new Result<>();
         if(dataSourceId == null) {
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.QUERY_DATASOURCE_ERROR);
             return result;
         }
 
         DataSource dataSource = dataSourceMapper.selectById(dataSourceId);
         if(dataSource == null) {
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.QUERY_DATASOURCE_ERROR);
         }else{
             DataSourceUtils.mergeParams(dataSource, dataSource.getParameter());
             putMsg(result, Status.SUCCESS);
@@ -88,13 +88,13 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     public Result queryDataSource(String dataSourceName) {
         Result<Object> result = new Result<>();
         if(StringUtils.isBlank(dataSourceName)){
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.QUERY_DATASOURCE_ERROR);
             return result;
         }
 
         DataSource dataSource = dataSourceMapper.queryByName(dataSourceName);
         if(dataSource == null) {
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.QUERY_DATASOURCE_ERROR);
         }else{
             DataSourceUtils.mergeParams(dataSource, dataSource.getParameter());
             putMsg(result, Status.SUCCESS);
@@ -145,7 +145,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     public Result deleteDataSource(Long dataSourceId) {
         Result<Object> result = new Result<>();
         if(dataSourceId == null) {
-            putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            putMsg(result, Status.DELETE_DATASOURCE_ERROR);
         }
         if(dataSourceMapper.deleteById(dataSourceId) > 0) {
             putMsg(result, Status.SUCCESS);

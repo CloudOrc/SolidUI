@@ -16,24 +16,20 @@
  */
 package com.cloudorc.solidui.entrance.controller;
 
+import com.cloudorc.solidui.entrance.exceptions.ApiException;
 import com.cloudorc.solidui.entrance.service.MetadataQueryService;
 import com.cloudorc.solidui.entrance.utils.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import static com.cloudorc.solidui.entrance.enums.Status.*;
 
 @Api(tags = "METADATA_QUERY")
 @RestController
@@ -48,6 +44,8 @@ public class MetadataQueryController extends BaseController {
             @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name"),
             @ApiImplicitParam(name = "typeName", required = true, dataType = "String", value = "typeName")
     })
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(QUERY_METADATA_DB_ERROR)
     @RequestMapping(value = "/queryDatabases", method = RequestMethod.GET)
     public Result getDatabases(
             @RequestParam("dataSourceName") String dataSourceName,
@@ -63,6 +61,8 @@ public class MetadataQueryController extends BaseController {
             @ApiImplicitParam(name = "typeName", required = true, dataType = "String", value = "typeName"),
             @ApiImplicitParam(name = "database", required = true, dataType = "String", value = "database")
     })
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(QUERY_METADATA_TABLE_ERROR)
     @RequestMapping(value = "/queryTables", method = RequestMethod.GET)
     public Result getTables(
             @RequestParam("dataSourceName") String dataSourceName,
@@ -78,6 +78,8 @@ public class MetadataQueryController extends BaseController {
             @ApiImplicitParam(name = "typeName", required = true, dataType = "String", value = "typeName"),
             @ApiImplicitParam(name = "sql", required = true, dataType = "String", value = "sql")
     })
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(QUERY_METADATA_SQL_ERROR)
     @RequestMapping(value = "/querySql", method = RequestMethod.GET)
     public Result querySelectSql(
             @RequestParam("dataSourceName") String dataSourceName,

@@ -18,11 +18,9 @@ package com.cloudorc.solidui.entrance.controller;
 
 
 import com.cloudorc.solidui.dao.entity.DataSource;
-import com.cloudorc.solidui.dao.entity.DataSourceParamKey;
-import com.cloudorc.solidui.dao.entity.DataSourceType;
-import com.cloudorc.solidui.dao.entity.DataSourceInfo;
 import com.cloudorc.solidui.entrance.constants.Constants;
 import com.cloudorc.solidui.entrance.enums.Status;
+import com.cloudorc.solidui.entrance.exceptions.ApiException;
 import com.cloudorc.solidui.entrance.service.DataSourceService;
 import com.cloudorc.solidui.entrance.service.DataSourceTypeService;
 import com.cloudorc.solidui.entrance.service.MetadataQueryService;
@@ -38,7 +36,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+
+import static com.cloudorc.solidui.entrance.enums.Status.*;
 
 /**
  * data source controller
@@ -56,6 +55,7 @@ public class DataSourceController extends BaseController {
 
     @ApiOperation(value = "queryAllDataSourceTypes", notes = "get all data source types")
     @ResponseStatus(HttpStatus.OK)
+    @ApiException(QUERY_DATASOURCE_TYPE_ERROR)
     @RequestMapping(value = "/type/all", method = RequestMethod.GET)
     public Result getAllDataSourceTypes() {
 
@@ -67,6 +67,7 @@ public class DataSourceController extends BaseController {
             @ApiImplicitParam(name = "typeId", required = true, dataType = "Long", value = "type id")
     })
     @ResponseStatus(HttpStatus.OK)
+    @ApiException(QUERY_DATASOURCE_TYPE_KEY_ERROR)
     @RequestMapping(value = "/key/type/{typeId}", method = RequestMethod.GET)
     public Result getKeyByType(
             @PathVariable("typeId") Long dataSourceTypeId, HttpServletRequest req) {
@@ -80,12 +81,13 @@ public class DataSourceController extends BaseController {
             @ApiImplicitParam(name = "dataSourceTypeId", required = true, dataType = "String", value = "data source type id"),
             @ApiImplicitParam(name = "labels", required = true, dataType = "String", value = "labels"),
             @ApiImplicitParam(name = "connectParams", required = true, dataType = "List", value = "connect params"),
-            @ApiImplicitParam(name = "host", example = "10.107.93.146", required = false, dataType = "String", value = "host"),
+            @ApiImplicitParam(name = "host", example = "127.0.0.1", required = false, dataType = "String", value = "host"),
             @ApiImplicitParam(name = "password", required = false, dataType = "String", value = "password"),
-            @ApiImplicitParam(name = "port", required = false, dataType = "String", value = "port", example = "9523"),
+            @ApiImplicitParam(name = "port", required = false, dataType = "String", value = "port", example = "12345"),
             @ApiImplicitParam(name = "username", required = false, dataType = "String", value = "user name")
     })
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiException(CREATE_DATASOURCE_ERROR)
     @RequestMapping(value = "/info/json", method = RequestMethod.POST)
     public Result insertJsonInfo(@RequestBody DataSource dataSource, HttpServletRequest req) {
         Result<Object> result = new Result<>();
@@ -125,6 +127,8 @@ public class DataSourceController extends BaseController {
             @ApiImplicitParam(name = "username", required = false, dataType = "String", value = "user name"),
             @ApiImplicitParam(name = "expire", required = false, dataType = "boolean", value = "expire", example = "false")
     })
+    @ApiException(UPDATE_DATASOURCE_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/info/{dataSourceId}/json", method = RequestMethod.PUT)
     public Result updateDataSourceInJson(
             @RequestBody DataSource dataSource,
@@ -148,6 +152,8 @@ public class DataSourceController extends BaseController {
             @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id")
     })
     @RequestMapping(value = "/info/{dataSourceId}", method = RequestMethod.GET)
+    @ApiException(QUERY_DATASOURCE_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     public Result getInfoByDataSourceId(
             @PathVariable("dataSourceId") Long dataSourceId, HttpServletRequest request) {
 
@@ -159,6 +165,8 @@ public class DataSourceController extends BaseController {
             @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name")
     })
     @RequestMapping(value = "/info/name/{dataSourceName}", method = RequestMethod.GET)
+    @ApiException(QUERY_DATASOURCE_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     public Result getInfoByDataSourceName(
             @PathVariable("dataSourceName") String dataSourceName, HttpServletRequest request)
             throws UnsupportedEncodingException {
@@ -177,6 +185,8 @@ public class DataSourceController extends BaseController {
             @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id")
     })
     @RequestMapping(value = "/info/delete/{dataSourceId}", method = RequestMethod.DELETE)
+    @ApiException(DELETE_DATASOURCE_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     public Result removeDataSource(
             @PathVariable("dataSourceId") Long dataSourceId, HttpServletRequest request) {
 
@@ -188,6 +198,8 @@ public class DataSourceController extends BaseController {
             @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id")
     })
     @RequestMapping(value = "/info/{dataSourceId}/expire", method = RequestMethod.PUT)
+    @ApiException(UPDATE_DATASOURCE_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     public Result expireDataSource(
             @PathVariable("dataSourceId") Long dataSourceId, HttpServletRequest request) {
 
@@ -203,6 +215,8 @@ public class DataSourceController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "PAGE_NO", required = true, dataTypeClass = int.class, example = "1")
     })
     @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @ApiException(QUERY_DATASOURCE_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     public Result queryDataSource(
             @RequestParam(value = "name", required = false) String dataSourceName,
             @RequestParam(value = "typeId", required = false) Long dataSourceTypeId,
@@ -221,12 +235,17 @@ public class DataSourceController extends BaseController {
 
 
     @ApiOperation(value = "connect", notes = "connect")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "dataSourceName", required = false, dataType = "String", value = "data source name"),
+               @ApiImplicitParam(name = "typeName", required = false, dataType = "String", value = "type name")
+    })
     @RequestMapping(value = "/connect/json", method = RequestMethod.POST)
+    @ApiException(QUERY_DATASOURCE_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     public Result connect(@RequestParam(value ="dataSourceName", required = true) String dataSourceName,
                           @RequestParam(value = "typeName", required = true) String typeName,
                           HttpServletRequest request) {
         return metadataQueryService.queryConnection(dataSourceName,typeName);
     }
-
 
 }
