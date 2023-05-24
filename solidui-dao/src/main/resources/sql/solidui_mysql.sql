@@ -15,242 +15,171 @@
  * limitations under the License.
 */
 
-SET FOREIGN_KEY_CHECKS=0;
+SET NAMES utf8mb4;
 
--- ----------------------------
--- Table structure for QRTZ_BLOB_TRIGGERS
--- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_BLOB_TRIGGERS`;
-CREATE TABLE `QRTZ_BLOB_TRIGGERS` (
-  `SCHED_NAME` varchar(120) NOT NULL,
-  `TRIGGER_NAME` varchar(200) NOT NULL,
-  `TRIGGER_GROUP` varchar(200) NOT NULL,
-  `BLOB_DATA` blob,
-  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
-  KEY `SCHED_NAME` (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
-  CONSTRAINT `QRTZ_BLOB_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `QRTZ_TRIGGERS` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
+
+
+DROP TABLE IF EXISTS `solidui_datasource`;
+
+CREATE TABLE `solidui_datasource` (
+                                      `id` int(11) NOT NULL AUTO_INCREMENT,
+                                      `datasource_name` varchar(255) COLLATE utf8_bin NOT NULL,
+                                      `datasource_desc` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+                                      `datasource_type_id` int(11) NOT NULL,
+                                      `create_identify` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+                                      `parameter` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+                                      `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+                                      `create_user` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+                                      `labels` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+                                      `expire` tinyint(1) DEFAULT '0',
+                                      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+
+DROP TABLE IF EXISTS `solidui_datasource_info`;
+
+CREATE TABLE `solidui_datasource_info` (
+                                           `id` int(11) NOT NULL AUTO_INCREMENT,
+                                           `parameter` varchar(2048) NOT NULL DEFAULT '',
+                                           `comment` varchar(255) NOT NULL DEFAULT '',
+                                           `create_time` datetime NOT NULL,
+                                           `create_user` varchar(255) NOT NULL DEFAULT '',
+                                           `datasource_id` int(11) NOT NULL,
+                                           PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of QRTZ_BLOB_TRIGGERS
--- ----------------------------
 
--- ----------------------------
--- Table structure for QRTZ_CALENDARS
--- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_CALENDARS`;
-CREATE TABLE `QRTZ_CALENDARS` (
-  `SCHED_NAME` varchar(120) NOT NULL,
-  `CALENDAR_NAME` varchar(200) NOT NULL,
-  `CALENDAR` blob NOT NULL,
-  PRIMARY KEY (`SCHED_NAME`,`CALENDAR_NAME`)
+
+# 转储表 solidui_datasource_type
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `solidui_datasource_type`;
+
+CREATE TABLE `solidui_datasource_type` (
+                                           `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                                           `name` varchar(32) NOT NULL DEFAULT '',
+                                           `description` varchar(255) NOT NULL DEFAULT '',
+                                           `option` varchar(32) NOT NULL DEFAULT '',
+                                           `classifier` varchar(32) NOT NULL DEFAULT '',
+                                           `icon` varchar(255) NOT NULL DEFAULT '',
+                                           `layers` int(11) NOT NULL,
+                                           PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of QRTZ_CALENDARS
--- ----------------------------
 
--- ----------------------------
--- Table structure for QRTZ_CRON_TRIGGERS
--- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_CRON_TRIGGERS`;
-CREATE TABLE `QRTZ_CRON_TRIGGERS` (
-  `SCHED_NAME` varchar(120) NOT NULL,
-  `TRIGGER_NAME` varchar(200) NOT NULL,
-  `TRIGGER_GROUP` varchar(200) NOT NULL,
-  `CRON_EXPRESSION` varchar(120) NOT NULL,
-  `TIME_ZONE_ID` varchar(80) DEFAULT NULL,
-  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
-  CONSTRAINT `QRTZ_CRON_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `QRTZ_TRIGGERS` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
+DROP TABLE IF EXISTS `solidui_datasource_type_key`;
+
+CREATE TABLE `solidui_datasource_type_key` (
+                                               `id` int(11) NOT NULL AUTO_INCREMENT,
+                                               `data_source_type_id` int(11) NOT NULL,
+                                               `key` varchar(32) COLLATE utf8_bin NOT NULL,
+                                               `name` varchar(32) COLLATE utf8_bin NOT NULL,
+                                               `name_en` varchar(32) COLLATE utf8_bin NOT NULL,
+                                               `default_value` varchar(50) COLLATE utf8_bin DEFAULT NULL,
+                                               `value_type` varchar(50) COLLATE utf8_bin NOT NULL,
+                                               `scope` varchar(50) COLLATE utf8_bin DEFAULT NULL,
+                                               `require` tinyint(1) DEFAULT '0',
+                                               `description` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+                                               `description_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+                                               `value_regex` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+                                               `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                               `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                               PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+DROP TABLE IF EXISTS `solidui_project`;
+
+CREATE TABLE `solidui_project` (
+                                   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                                   `user_name` varchar(100) NOT NULL DEFAULT '',
+                                   `project_name` varchar(255) NOT NULL DEFAULT '',
+                                   `image` varchar(255) DEFAULT NULL,
+                                   `description` varchar(255) DEFAULT NULL,
+                                   `create_time` datetime DEFAULT NULL,
+                                   `update_time` datetime DEFAULT NULL,
+                                   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of QRTZ_CRON_TRIGGERS
--- ----------------------------
 
--- ----------------------------
--- Table structure for QRTZ_FIRED_TRIGGERS
--- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_FIRED_TRIGGERS`;
-CREATE TABLE `QRTZ_FIRED_TRIGGERS` (
-  `SCHED_NAME` varchar(120) NOT NULL,
-  `ENTRY_ID` varchar(200) NOT NULL,
-  `TRIGGER_NAME` varchar(200) NOT NULL,
-  `TRIGGER_GROUP` varchar(200) NOT NULL,
-  `INSTANCE_NAME` varchar(200) NOT NULL,
-  `FIRED_TIME` bigint(13) NOT NULL,
-  `SCHED_TIME` bigint(13) NOT NULL,
-  `PRIORITY` int(11) NOT NULL,
-  `STATE` varchar(16) NOT NULL,
-  `JOB_NAME` varchar(200) DEFAULT NULL,
-  `JOB_GROUP` varchar(200) DEFAULT NULL,
-  `IS_NONCONCURRENT` varchar(1) DEFAULT NULL,
-  `REQUESTS_RECOVERY` varchar(1) DEFAULT NULL,
-  PRIMARY KEY (`SCHED_NAME`,`ENTRY_ID`),
-  KEY `IDX_QRTZ_FT_TRIG_INST_NAME` (`SCHED_NAME`,`INSTANCE_NAME`),
-  KEY `IDX_QRTZ_FT_INST_JOB_REQ_RCVRY` (`SCHED_NAME`,`INSTANCE_NAME`,`REQUESTS_RECOVERY`),
-  KEY `IDX_QRTZ_FT_J_G` (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`),
-  KEY `IDX_QRTZ_FT_JG` (`SCHED_NAME`,`JOB_GROUP`),
-  KEY `IDX_QRTZ_FT_T_G` (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
-  KEY `IDX_QRTZ_FT_TG` (`SCHED_NAME`,`TRIGGER_GROUP`)
+DROP TABLE IF EXISTS `solidui_user`;
+
+CREATE TABLE `solidui_user` (
+                                `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                                `user_name` varchar(20) NOT NULL DEFAULT '',
+                                `user_password` varchar(255) NOT NULL DEFAULT '',
+                                `create_time` datetime NOT NULL,
+                                `update_time` datetime NOT NULL,
+                                `queue` varchar(20) DEFAULT NULL,
+                                PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of QRTZ_FIRED_TRIGGERS
--- ----------------------------
 
--- ----------------------------
--- Table structure for QRTZ_JOB_DETAILS
--- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_JOB_DETAILS`;
-CREATE TABLE `QRTZ_JOB_DETAILS` (
-  `SCHED_NAME` varchar(120) NOT NULL,
-  `JOB_NAME` varchar(200) NOT NULL,
-  `JOB_GROUP` varchar(200) NOT NULL,
-  `DESCRIPTION` varchar(250) DEFAULT NULL,
-  `JOB_CLASS_NAME` varchar(250) NOT NULL,
-  `IS_DURABLE` varchar(1) NOT NULL,
-  `IS_NONCONCURRENT` varchar(1) NOT NULL,
-  `IS_UPDATE_DATA` varchar(1) NOT NULL,
-  `REQUESTS_RECOVERY` varchar(1) NOT NULL,
-  `JOB_DATA` blob,
-  PRIMARY KEY (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`),
-  KEY `IDX_QRTZ_J_REQ_RECOVERY` (`SCHED_NAME`,`REQUESTS_RECOVERY`),
-  KEY `IDX_QRTZ_J_GRP` (`SCHED_NAME`,`JOB_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `solidui_job_element`;
 
--- ----------------------------
--- Records of QRTZ_JOB_DETAILS
--- ----------------------------
+CREATE TABLE `solidui_job_element` (
+                                       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                                       `project_id` int(11) NOT NULL,
+                                       `name` varchar(255) NOT NULL DEFAULT '',
+                                       `data` varchar(255) NOT NULL DEFAULT '',
+                                       `dataType` varchar(255) NOT NULL DEFAULT '',
+                                       `create_time` datetime NOT NULL,
+                                       `update_time` datetime NOT NULL,
+                                       PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='storage of various elements';
 
--- ----------------------------
--- Table structure for QRTZ_LOCKS
--- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_LOCKS`;
-CREATE TABLE `QRTZ_LOCKS` (
-  `SCHED_NAME` varchar(120) NOT NULL,
-  `LOCK_NAME` varchar(40) NOT NULL,
-  PRIMARY KEY (`SCHED_NAME`,`LOCK_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of QRTZ_LOCKS
--- ----------------------------
 
--- ----------------------------
--- Table structure for QRTZ_PAUSED_TRIGGER_GRPS
--- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_PAUSED_TRIGGER_GRPS`;
-CREATE TABLE `QRTZ_PAUSED_TRIGGER_GRPS` (
-  `SCHED_NAME` varchar(120) NOT NULL,
-  `TRIGGER_GROUP` varchar(200) NOT NULL,
-  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of QRTZ_PAUSED_TRIGGER_GRPS
--- ----------------------------
+DROP TABLE IF EXISTS `solidui_job_element_page`;
 
--- ----------------------------
--- Table structure for QRTZ_SCHEDULER_STATE
--- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_SCHEDULER_STATE`;
-CREATE TABLE `QRTZ_SCHEDULER_STATE` (
-  `SCHED_NAME` varchar(120) NOT NULL,
-  `INSTANCE_NAME` varchar(200) NOT NULL,
-  `LAST_CHECKIN_TIME` bigint(13) NOT NULL,
-  `CHECKIN_INTERVAL` bigint(13) NOT NULL,
-  PRIMARY KEY (`SCHED_NAME`,`INSTANCE_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `solidui_job_element_page` (
+                                            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                                            `job_page_id` int(11) NOT NULL,
+                                            `job_element_id` int(11) NOT NULL,
+                                            `position` varchar(255) NOT NULL DEFAULT '',
+                                            `create_time` datetime NOT NULL,
+                                            `update_time` datetime NOT NULL,
+                                            PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='store between page and element';
 
--- ----------------------------
--- Records of QRTZ_SCHEDULER_STATE
--- ----------------------------
 
--- ----------------------------
--- Table structure for QRTZ_SIMPLE_TRIGGERS
--- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_SIMPLE_TRIGGERS`;
-CREATE TABLE `QRTZ_SIMPLE_TRIGGERS` (
-  `SCHED_NAME` varchar(120) NOT NULL,
-  `TRIGGER_NAME` varchar(200) NOT NULL,
-  `TRIGGER_GROUP` varchar(200) NOT NULL,
-  `REPEAT_COUNT` bigint(7) NOT NULL,
-  `REPEAT_INTERVAL` bigint(12) NOT NULL,
-  `TIMES_TRIGGERED` bigint(10) NOT NULL,
-  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
-  CONSTRAINT `QRTZ_SIMPLE_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `QRTZ_TRIGGERS` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of QRTZ_SIMPLE_TRIGGERS
--- ----------------------------
 
--- ----------------------------
--- Table structure for QRTZ_SIMPROP_TRIGGERS
--- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_SIMPROP_TRIGGERS`;
-CREATE TABLE `QRTZ_SIMPROP_TRIGGERS` (
-  `SCHED_NAME` varchar(120) NOT NULL,
-  `TRIGGER_NAME` varchar(200) NOT NULL,
-  `TRIGGER_GROUP` varchar(200) NOT NULL,
-  `STR_PROP_1` varchar(512) DEFAULT NULL,
-  `STR_PROP_2` varchar(512) DEFAULT NULL,
-  `STR_PROP_3` varchar(512) DEFAULT NULL,
-  `INT_PROP_1` int(11) DEFAULT NULL,
-  `INT_PROP_2` int(11) DEFAULT NULL,
-  `LONG_PROP_1` bigint(20) DEFAULT NULL,
-  `LONG_PROP_2` bigint(20) DEFAULT NULL,
-  `DEC_PROP_1` decimal(13,4) DEFAULT NULL,
-  `DEC_PROP_2` decimal(13,4) DEFAULT NULL,
-  `BOOL_PROP_1` varchar(1) DEFAULT NULL,
-  `BOOL_PROP_2` varchar(1) DEFAULT NULL,
-  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
-  CONSTRAINT `QRTZ_SIMPROP_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `QRTZ_TRIGGERS` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of QRTZ_SIMPROP_TRIGGERS
--- ----------------------------
+DROP TABLE IF EXISTS `solidui_job_page`;
 
--- ----------------------------
--- Table structure for QRTZ_TRIGGERS
--- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_TRIGGERS`;
-CREATE TABLE `QRTZ_TRIGGERS` (
-  `SCHED_NAME` varchar(120) NOT NULL,
-  `TRIGGER_NAME` varchar(200) NOT NULL,
-  `TRIGGER_GROUP` varchar(200) NOT NULL,
-  `JOB_NAME` varchar(200) NOT NULL,
-  `JOB_GROUP` varchar(200) NOT NULL,
-  `DESCRIPTION` varchar(250) DEFAULT NULL,
-  `NEXT_FIRE_TIME` bigint(13) DEFAULT NULL,
-  `PREV_FIRE_TIME` bigint(13) DEFAULT NULL,
-  `PRIORITY` int(11) DEFAULT NULL,
-  `TRIGGER_STATE` varchar(16) NOT NULL,
-  `TRIGGER_TYPE` varchar(8) NOT NULL,
-  `START_TIME` bigint(13) NOT NULL,
-  `END_TIME` bigint(13) DEFAULT NULL,
-  `CALENDAR_NAME` varchar(200) DEFAULT NULL,
-  `MISFIRE_INSTR` smallint(2) DEFAULT NULL,
-  `JOB_DATA` blob,
-  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
-  KEY `IDX_QRTZ_T_J` (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`),
-  KEY `IDX_QRTZ_T_JG` (`SCHED_NAME`,`JOB_GROUP`),
-  KEY `IDX_QRTZ_T_C` (`SCHED_NAME`,`CALENDAR_NAME`),
-  KEY `IDX_QRTZ_T_G` (`SCHED_NAME`,`TRIGGER_GROUP`),
-  KEY `IDX_QRTZ_T_STATE` (`SCHED_NAME`,`TRIGGER_STATE`),
-  KEY `IDX_QRTZ_T_N_STATE` (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`,`TRIGGER_STATE`),
-  KEY `IDX_QRTZ_T_N_G_STATE` (`SCHED_NAME`,`TRIGGER_GROUP`,`TRIGGER_STATE`),
-  KEY `IDX_QRTZ_T_NEXT_FIRE_TIME` (`SCHED_NAME`,`NEXT_FIRE_TIME`),
-  KEY `IDX_QRTZ_T_NFT_ST` (`SCHED_NAME`,`TRIGGER_STATE`,`NEXT_FIRE_TIME`),
-  KEY `IDX_QRTZ_T_NFT_MISFIRE` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`),
-  KEY `IDX_QRTZ_T_NFT_ST_MISFIRE` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`,`TRIGGER_STATE`),
-  KEY `IDX_QRTZ_T_NFT_ST_MISFIRE_GRP` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`,`TRIGGER_GROUP`,`TRIGGER_STATE`),
-  CONSTRAINT `QRTZ_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`) REFERENCES `QRTZ_JOB_DETAILS` (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `solidui_job_page` (
+                                    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                                    `project_id` int(11) NOT NULL,
+                                    `name` varchar(255) NOT NULL DEFAULT '',
+                                    `order` int(11) NOT NULL,
+                                    `parent_id` int(11) NOT NULL,
+                                    `layout` varchar(255) NOT NULL DEFAULT '',
+                                    `create_time` datetime NOT NULL,
+                                    `update_time` datetime NOT NULL,
+                                    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Store page information';
 
--- ----------------------------
--- Records of QRTZ_TRIGGERS
--- ----------------------------
 
+
+INSERT INTO `solidui_user` (`id`, `user_name`, `user_password`, `create_time`, `update_time`, `queue`)
+VALUES
+(1,'admin','21232f297a57a5a743894a0e4a801fc3','2023-05-01 00:00:00','2023-05-01 00:00:00',NULL);
+
+INSERT INTO `solidui_datasource_type` (`id`, `name`, `description`, `option`, `classifier`, `icon`, `layers`)
+VALUES
+(1,'mysql','mysql','mysql','mysql','mysql',3);
+
+INSERT INTO `solidui_datasource_type_key` (`id`, `data_source_type_id`, `key`, `name`, `name_en`, `default_value`, `value_type`, `scope`, `require`, `description`, `description_en`, `value_regex`, `update_time`, `create_time`)
+VALUES
+(1,1,'host','主机名(Host)','Host',NULL,'TEXT',NULL,1,'主机名(Host)','Host',NULL,'2023-05-23 09:57:24','2023-05-23 09:57:24'),
+(2,1,'port','端口号(Port)','Port',NULL,'TEXT',NULL,1,'端口号(Port)','Port',NULL,'2023-05-23 09:57:24','2023-05-23 09:57:24'),
+(3,1,'driverClassName','驱动类名(Driver class name)','Driver class name','com.mysql.jdbc.Driver','TEXT',NULL,0,'驱动类名(Driver class name)','Driver class name',NULL,'2023-05-23 09:57:25','2023-05-23 09:57:25'),
+(4,1,'params','连接参数(Connection params)','Connection params',NULL,'TEXT',NULL,0,'输入JSON格式(Input JSON format): {"param":"value"}','Input JSON format: {"param":"value"}',NULL,'2023-05-23 09:57:25','2023-05-23 09:57:25'),
+(5,1,'username','用户名(Username)','Username',NULL,'TEXT',NULL,1,'用户名(Username)','Username','^[0-9A-Za-z_-]+$','2023-05-23 09:57:25','2023-05-23 09:57:25'),
+(6,1,'password','密码(Password)','Password',NULL,'PASSWORD',NULL,1,'密码(Password)','Password','','2023-05-23 09:57:25','2023-05-23 09:57:25'),
+(7,1,'databaseName','数据库名(Database name)','Database name',NULL,'TEXT',NULL,0,'数据库名(Database name)','Database name',NULL,'2023-05-23 09:57:25','2023-05-23 09:57:25');

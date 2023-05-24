@@ -47,9 +47,10 @@ public enum Status {
     DELETE_DATASOURCE_TYPE_KEY_ERROR(10063, "delete datasource type key error", "删除数据源键值错误"),
     UPDATE_DATASOURCE_TYPE_KEY_ERROR(10064, "update datasource type key error", "修改数据源键值错误"),
     QUERY_DATASOURCE_TYPE_KEY_ERROR(10065, "query datasource type key error", "查询数据源键值错误"),
-    QUERY_METADATA_DB_ERROR(10065, "query metadata db error", "查询元数据数据库错误"),
-    QUERY_METADATA_TABLE_ERROR(10065, "query metadata table error", "查询元数据数据库表错误"),
-    QUERY_METADATA_SQL_ERROR(10065, "query metadata sql error", "查询数据SQL错误"),
+    QUERY_METADATA_DB_ERROR(10066, "query metadata db error", "查询元数据数据库错误"),
+    QUERY_METADATA_TABLE_ERROR(10067, "query metadata table error", "查询元数据数据库表错误"),
+    QUERY_METADATA_SQL_ERROR(10068, "query metadata sql error", "查询数据SQL错误"),
+    QUERY_METADATA_CONN_ERROR(10069, "query metadata conn error", "查询数据连接错误"),
     FAILED(1, "failed", "失败");
 
     private final int code;
@@ -74,15 +75,5 @@ public enum Status {
         }
     }
 
-    /**
-     * Retrieve Status enum entity by status code.
-     */
-    public static Optional<Status> findStatusBy(int code) {
-        for (Status status : Status.values()) {
-            if (code == status.getCode()) {
-                return Optional.of(status);
-            }
-        }
-        return Optional.empty();
-    }
+
 }

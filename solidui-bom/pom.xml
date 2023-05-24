@@ -162,17 +162,6 @@
                 <version>${mybatis-plus.version}</version>
             </dependency>
 
-            <!-- quartz-->
-            <dependency>
-                <groupId>org.quartz-scheduler</groupId>
-                <artifactId>quartz</artifactId>
-                <version>${quartz.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.cronutils</groupId>
-                <artifactId>cron-utils</artifactId>
-                <version>${cron-utils.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -228,11 +217,6 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-email</artifactId>
-                <version>${commons-email.version}</version>
             </dependency>
 
             <dependency>
@@ -346,12 +330,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
@@ -375,24 +353,6 @@
                         <artifactId>hamcrest</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>com.clickhouse</groupId>
-                <artifactId>clickhouse-jdbc</artifactId>
-                <version>${clickhouse-jdbc.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.microsoft.sqlserver</groupId>
-                <artifactId>mssql-jdbc</artifactId>
-                <version>${mssql-jdbc.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.facebook.presto</groupId>
-                <artifactId>presto-jdbc</artifactId>
-                <version>${presto-jdbc.version}</version>
             </dependency>
 
             <dependency>
@@ -425,12 +385,6 @@
             </dependency>
 
             <dependency>
-                <groupId>net.sf.py4j</groupId>
-                <artifactId>py4j</artifactId>
-                <version>${py4j.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>jsr305</artifactId>
                 <version>${jsr305.version}</version>
@@ -451,7 +405,6 @@
                 <version>${error_prone_annotations.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>

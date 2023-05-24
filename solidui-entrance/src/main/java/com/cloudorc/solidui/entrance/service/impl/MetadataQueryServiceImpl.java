@@ -120,7 +120,7 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
         DataSource dataSource = dataSourceMapper.queryByName(dataSourceName,null);
         Result<Object> result = new Result<>();
         if(dataSource == null) {
-            putMsg(result, Status.QUERY_METADATA_DB_ERROR);
+            putMsg(result, Status.QUERY_METADATA_CONN_ERROR);
             return result;
         }
 
@@ -129,17 +129,17 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
             if(jdbcClient != null)  {
                 Connection conn = jdbcClient.getConn();
                 if(conn == null){
-                    putMsg(result, Status.QUERY_METADATA_DB_ERROR);
+                    putMsg(result, Status.QUERY_METADATA_CONN_ERROR);
                 }else{
                     putMsg(result, Status.SUCCESS);
                 }
             } else {
-                putMsg(result, Status.QUERY_METADATA_DB_ERROR);
+                putMsg(result, Status.QUERY_METADATA_CONN_ERROR);
             }
 
         } catch (Exception e) {
             logger.error("queryConnection error", e);
-            putMsg(result, Status.QUERY_METADATA_DB_ERROR);
+            putMsg(result, Status.QUERY_METADATA_CONN_ERROR);
         }
 
         return result;
