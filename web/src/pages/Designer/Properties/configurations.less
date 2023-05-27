@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
- @import "@/assets/styles/variables.less";
+@import "@/assets/styles/variables.less";
 
 .aside-east {
   position: absolute;
@@ -63,7 +63,8 @@
 			align-items: center;
 			height: 100%;
 			cursor: pointer;
-			width: 33.33%;
+			// width: 33.33%;
+			width: 50%;
 			font-size: 12px;
 
 			&.active {
@@ -87,4 +88,98 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
+}
+
+.conf-main {
+	.data-conf {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		overflow: auto;
+		padding: 8px;
+
+		.ds-conf {
+			position: relative;
+			width: 100%;
+
+			.ds-select-area {
+				position: relative;
+				width: 100%;
+			}
+
+			.ds-sql-area {
+				position: relative;
+				width: 100%;
+				margin-top: 10px;
+			}
+		}
+
+		.ds-data-table {
+			position: relative;
+			width: 100%;
+			margin-top: 10px;
+			overflow: auto;
+			border: 1px solid #000;
+		}
+	}
+}
+
+.Grid,
+.List {
+  overflow: hidden;
+}
+
+.Cell {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 150px;
+  height: 32px;
+  // border: 1px solid black;
+	border-bottom: 1px solid #000;
+	border-right: 1px solid #000;
+  vertical-align: top;
+  // padding: 10px;
+
+	&:last-child {
+		border-right: none;
+	}
+}
+
+.Grid .Cell {
+  background-color: lightgray;
+  font-weight: bold;
+	border-bottom: 1px solid #000;
+	border-right: 1px solid #000;
+	word-break: break-all;
+
+	&:last-child {
+		border-right: none;
+	}
+
+}
+
+.List .Cell {
+	word-break: break-all;
+}
+
+.List .ListItemOdd {
+  background-color: #f5f5f5;
+
+	&:last-child {
+		.Cell {
+			border-bottom: none;
+		}
+	}
+}
+
+.List .ListItemEven {
+  background-color: #ffffff;
+
+	&:last-child {
+		.Cell {
+			border-bottom: none;
+		}
+	}
 }

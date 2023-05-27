@@ -37,6 +37,7 @@ export default function () {
 		toggleModal,
 		toggleEditModal,
 		toggleViewModal,
+		query,
 	} = useDataSource();
 
 	function onSearch() {}
@@ -84,6 +85,10 @@ export default function () {
 					width={1080}
 				>
 					<DataSourceCreate
+						handleOk={() => {
+							toggleModal(false);
+							query();
+						}}
 						handleClose={() => {
 							toggleModal(false);
 						}}

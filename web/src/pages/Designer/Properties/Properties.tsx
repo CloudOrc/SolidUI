@@ -39,10 +39,10 @@ function Properties() {
 					key: "Data",
 					tab: "Data",
 				},
-				{
-					key: "Events",
-					tab: "Events",
-				},
+				// {
+				// 	key: "Events",
+				// 	tab: "Events",
+				// },
 			],
 		});
 

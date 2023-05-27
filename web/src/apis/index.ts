@@ -18,6 +18,13 @@
 import ApiService from "./service";
 import { SolidModelCreationDataType } from "./types";
 
+export type DataSourceCreationDataType = {
+	dataSourceName: string;
+	dataSourceDesc: string;
+	dataSourceTypeId: string;
+	parameter: string;
+};
+
 let model = {
 	save: <T>(params: SolidModelCreationDataType) =>
 		ApiService.post<T>("/api/v1/models", params, {}),
@@ -48,16 +55,50 @@ let project = {
 
 let datasource = {
 	query: <T>(
-		params: { pageNo: number; pageSize: number } = { pageNo: 1, pageSize: 10 }
+		params: { name?: string; pageNo: number; pageSize: number } = {
+			pageNo: 1,
+			pageSize: 10,
+			name: "",
+		}
 	) =>
 		ApiService.get<T>(
-			`/solidui/datasources?page=${params.pageNo}&size=${params.pageSize}`
+			`/solidui/datasource/info?name=${name}&pageNo=${params.pageNo}&pageSize=${params.pageSize}`
 		),
-	types: <T>() => ApiService.get<T>(`/solidui/datasources/types`),
-	delete: <T>(id: string) => ApiService.delete(`/solidui/datasources/${id}`),
+	get: <T>(id: string) => ApiService.get<T>(`/solidui/datasource/info/${id}`),
+	types: <T>() => ApiService.get<T>(`/solidui/datasource/type/all`),
+	getFormElementByTypeId: <T>(typeId: string) =>
+		ApiService.get<T>(`/solidui/datasource/key/type/${typeId}`),
+	delete: <T>(id: string) =>
+		ApiService.delete(`/solidui/datasource/info/delete/${id}`),
 	update: <T>(id: string, params: any) =>
 		ApiService.put(`/solidui/datasources/${id}`, params),
-	create: <T>(params: any) => ApiService.post(`/solidui/datasources`, params),
+	create: <T>(params: DataSourceCreationDataType) =>
+		ApiService.post(`/solidui/datasource/info/json`, params),
+	all: <T>() => ApiService.get<T>(`/solidui/datasources/all`),
+	test_connect: <T>(params: { dataSourceName: string; typeName: string }) =>
+		ApiService.post(
+			`/solidui/datasource/connect/json?dataSourceName=${params.dataSourceName}&typeName=${params.typeName}`,
+			{}
+		),
+	expire: <T>(id: string) =>
+		ApiService.put(`/solidui/datasource/info/${id}/expire`, {}),
+	dbs: <T>(
+		params: { dataSourceName: string; typeName: string } = {
+			dataSourceName: "",
+			typeName: "",
+		}
+	) =>
+		ApiService.get<T>(
+			`/solidui/metadataQuery/queryDatabases?dataSourceName=${params.dataSourceName}&typeName=${params.typeName}`
+		),
+	querySql: <T>(params: {
+		dataSourceName: string;
+		typeName: string;
+		sql: string;
+	}) =>
+		ApiService.get(
+			`/solidui/metadataQuery/querySql?dataSourceName=${params.dataSourceName}&typeName=${params.typeName}&sql=${params.sql}`
+		),
 };
 
 let Apis = {

@@ -18,20 +18,29 @@
 import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Input, Button, message } from "antd";
 import { Close, DatabaseConfig } from "@icon-park/react";
-import Apis from "@/apis";
+import Apis, { DataSourceCreationDataType } from "@/apis";
+import {
+	DataSourceTypeDataType,
+	DataSourceFormElementDataType,
+	ApiResult,
+} from "@/types";
 import "./DataSource.less";
 
 const { TextArea } = Input;
 
 export interface DataSourceCreateProps {
 	handleClose: () => void;
+	handleOk: () => void;
 }
 
 export default function (props: DataSourceCreateProps) {
 	const [form] = Form.useForm();
-	const [dsTypes, setDsTypes] = useState<any[]>([]);
-	const [dsType, setDsType] = useState<string>();
-	let { handleClose } = props;
+	const [dsTypes, setDsTypes] = useState<DataSourceTypeDataType[]>([]);
+	const [dsType, setDsType] = useState<DataSourceTypeDataType>();
+	const [dsFormElements, setDsFormElements] = useState<
+		DataSourceFormElementDataType[]
+	>([]);
+	let { handleClose, handleOk } = props;
 
 	useEffect(() => {
 		getDataSourceTypes();
@@ -46,18 +55,24 @@ export default function (props: DataSourceCreateProps) {
 		}
 	}
 
-	function handleSelectDsType(item: any) {
-		setDsType(item.key);
+	async function handleSelectDsType(item: DataSourceTypeDataType) {
+		setDsType(item);
+		let res: ApiResult<DataSourceFormElementDataType[]> =
+			await Apis.datasource.getFormElementByTypeId(item.id);
+		if (res.ok) {
+			let data = res.data || [];
+			setDsFormElements(data);
+		}
 	}
 
 	function renderDataSourceItems() {
 		let nodes: React.ReactNode[] = [];
 		dsTypes.forEach((item, idx) => {
-			let selected = dsType === item.key;
+			let selected = dsType?.classifier === item.classifier;
 			nodes.push(
 				<div
 					className={`ds-item ${selected ? "selected" : ""}`}
-					key={item.key}
+					key={`ds_type_${item.id}`}
 					onClick={() => handleSelectDsType(item)}
 				>
 					<span className="ds-item__icon">
@@ -70,7 +85,7 @@ export default function (props: DataSourceCreateProps) {
 							strokeLinecap="square"
 						/>
 					</span>
-					<span className="ds-item__title">{item.title}</span>
+					<span className="ds-item__title">{item.name}</span>
 				</div>
 			);
 		});
@@ -87,9 +102,42 @@ export default function (props: DataSourceCreateProps) {
 				form={form}
 				initialValues={{ layout: "vertical" }}
 				onFinish={async (values) => {
-					let res: any = await Apis.datasource.create(values);
+					let cp = values.params;
+					let connectParams = {} as any;
+					if (null !== cp && undefined !== cp && "" !== cp.trim()) {
+						try {
+							cp.split(",").forEach((item: string) => {
+								let kv = item.split("=");
+								if (kv.length !== 2) {
+									throw new Error("invalid connect params");
+								}
+								connectParams[kv[0]] = kv[1];
+							});
+						} catch (e) {
+							message.error("connect params parsed error");
+							return;
+						}
+					}
+					let dsParameter = {
+						host: values.host,
+						port: values.port,
+						username: values.username,
+						password: values.password,
+						database: values.databaseName,
+						driver: values.driverClassName,
+						params: connectParams,
+					};
+					let params: DataSourceCreationDataType = {
+						dataSourceName: values.title,
+						dataSourceDesc: values.description,
+						dataSourceTypeId: dsType.id,
+						parameter: JSON.stringify(dsParameter),
+					};
+					let res: any = await Apis.datasource.create(params);
 					if (res.ok) {
 						message.success("create datasource success");
+						handleOk();
+					} else {
 						handleClose();
 					}
 				}}
@@ -113,90 +161,8 @@ export default function (props: DataSourceCreateProps) {
 				>
 					<Input placeholder="title" />
 				</Form.Item>
-				<Form.Item
-					label="driver"
-					name={"driver"}
-					required
-					labelCol={{
-						span: 12,
-					}}
-					wrapperCol={{
-						span: 12,
-					}}
-					rules={[
-						{
-							required: true,
-							message: "driver is required",
-						},
-					]}
-				>
-					<Input placeholder="driver" />
-				</Form.Item>
-				<Form.Item
-					label="url"
-					name={"url"}
-					required
-					labelCol={{
-						span: 12,
-					}}
-					wrapperCol={{
-						span: 24,
-					}}
-					rules={[
-						{
-							required: true,
-							message: "url is required",
-						},
-					]}
-				>
-					<Input placeholder="URL" />
-				</Form.Item>
-				<Row gutter={10}>
-					<Col span={12}>
-						<Form.Item
-							label="username"
-							name="username"
-							required
-							labelCol={{
-								span: 24,
-							}}
-							wrapperCol={{
-								span: 24,
-							}}
-							rules={[
-								{
-									required: true,
-									message: "username is required",
-								},
-							]}
-						>
-							<Input placeholder="username" />
-						</Form.Item>
-					</Col>
-
-					<Col span={12}>
-						<Form.Item
-							label="password"
-							name={"password"}
-							labelCol={{
-								span: 24,
-							}}
-							wrapperCol={{
-								span: 24,
-							}}
-							required
-							rules={[
-								{
-									required: true,
-									message: "password is required",
-								},
-							]}
-						>
-							<Input placeholder="password" />
-						</Form.Item>
-					</Col>
-				</Row>
-
+				{dsFormElements &&
+					dsFormElements.map((item, idx) => renderFormItem(item))}
 				<Form.Item
 					label="description"
 					name={"description"}
@@ -214,6 +180,59 @@ export default function (props: DataSourceCreateProps) {
 				</Form.Item>
 			</Form>
 		);
+	}
+
+	function renderFormItem(item: DataSourceFormElementDataType) {
+		switch (item.valueType) {
+			case "TEXT":
+				return (
+					<Form.Item
+						key={`form-item-${item.key}`}
+						label={item.nameEn}
+						name={item.key}
+						required={!!item.require}
+						labelCol={{
+							span: 12,
+						}}
+						wrapperCol={{
+							span: 12,
+						}}
+						rules={[
+							{
+								required: !!item.require,
+								message: `${item.nameEn} is required`,
+							},
+						]}
+					>
+						<Input placeholder={item.nameEn} />
+					</Form.Item>
+				);
+			case "PASSWORD":
+				return (
+					<Form.Item
+						key={`form-item-${item.key}`}
+						label={item.nameEn}
+						name={item.key}
+						required={!!item.require}
+						labelCol={{
+							span: 12,
+						}}
+						wrapperCol={{
+							span: 12,
+						}}
+						rules={[
+							{
+								required: !!item.require,
+								message: `${item.nameEn} is required`,
+							},
+						]}
+					>
+						<Input.Password placeholder={item.nameEn} />
+					</Form.Item>
+				);
+			default:
+				return undefined;
+		}
 	}
 
 	return (

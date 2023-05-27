@@ -138,6 +138,7 @@ function doRequest<T>(
 				let data = res.data;
 				let success = data.success;
 				let code = data.code;
+				let msg = data.msg || "";
 				if (success) {
 					resolve({
 						ok: true,
@@ -150,7 +151,14 @@ function doRequest<T>(
 							ok: false,
 						});
 					} else {
-						reject(res.data);
+						console.warn(
+							`code is ${code}, message is ${msg}, need to handle this error`
+						);
+						message.warning(msg);
+						resolve({
+							ok: false,
+						});
+						// reject(res.data);
 					}
 				}
 			})

@@ -150,3 +150,89 @@ Mock.mock(
 		data: {},
 	})
 );
+
+Mock.mock(
+	/\/solidui\/datasources\/all/,
+	"get",
+	Mock.mock({
+		code: 0,
+		msg: "success",
+		success: true,
+		data: [
+			{
+				id: "1",
+				key: "1",
+				label: "ds1",
+				value: "ds1",
+				children: [
+					{
+						id: "1-1",
+						key: "1-1",
+						label: "table11",
+						value: "table11",
+					},
+					{
+						id: "1-2",
+						key: "1-2",
+						label: "table12",
+						value: "table12",
+					},
+					{
+						id: "1-3",
+						key: "1-3",
+						label: "table13",
+						value: "table13",
+					},
+				],
+			},
+			{
+				id: "2",
+				key: "2",
+				label: "ds2",
+				value: "ds2",
+				children: [
+					{
+						id: "2-1",
+						key: "2-1",
+						label: "table21",
+						value: "table21",
+					},
+					{
+						id: "2-2",
+						key: "2-2",
+						label: "table22",
+						value: "table22",
+					},
+					{
+						id: "2-3",
+						key: "2-3",
+						label: "table23",
+						value: "table23",
+					},
+				],
+			},
+		],
+	})
+);
+
+Mock.mock(
+	/\/solidui\/datasources\/querysql/,
+	"get",
+	Mock.mock({
+		code: 0,
+		msg: "success",
+		success: true,
+		"data|100-200": [
+			{
+				id: "@id",
+				key: "@id",
+				year: "@integer(2010, 2020)",
+				month: "@integer(1, 12)",
+				day: "@integer(1, 30)",
+				week: "@integer(1, 7)",
+				sales: "@integer(100, 10000)",
+				profit: "@integer(100, 100000)",
+			},
+		],
+	})
+);
