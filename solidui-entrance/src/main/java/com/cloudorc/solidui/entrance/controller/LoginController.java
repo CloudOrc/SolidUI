@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
  * login controller
  * API
  */
-@Api(tags = "LOGIN_TAG")
+@Api(tags = "login_tag")
 @RestController
 @RequestMapping("")
 public class LoginController extends BaseController {
@@ -50,7 +50,7 @@ public class LoginController extends BaseController {
     private UserService userService;
 
 
-    @ApiOperation(value = "login", notes = "LOGIN_NOTES")
+    @ApiOperation(value = "login", notes = "login_notes")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "USERNAME", required = true, dataTypeClass = String.class, example = "admin"),
             @ApiImplicitParam(name = "password", value = "PASSWORD", required = true, dataTypeClass = String.class, example = "admin")
@@ -90,7 +90,7 @@ public class LoginController extends BaseController {
      *
      * @return sign out result
      */
-    @ApiOperation(value = "loginOut", notes = "LOGIN_OUT_NOTES")
+    @ApiOperation(value = "loginOut", notes = "login_out_notes")
     @ApiException(LOGIN_OUT_FAILURE)
     @RequestMapping(path = "/loginOut", method = RequestMethod.POST)
     public Result signOut(HttpServletRequest request) {

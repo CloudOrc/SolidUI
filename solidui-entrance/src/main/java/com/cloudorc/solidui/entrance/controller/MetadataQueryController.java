@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.cloudorc.solidui.entrance.enums.Status.*;
 
-@Api(tags = "METADATA_QUERY")
+@Api(tags = "metadata_query")
 @RestController
 @RequestMapping("metadataQuery")
 public class MetadataQueryController extends BaseController {

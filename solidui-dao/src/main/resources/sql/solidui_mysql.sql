@@ -52,9 +52,6 @@ CREATE TABLE `solidui_datasource_info` (
 
 
 
-# 转储表 solidui_datasource_type
-# ------------------------------------------------------------
-
 DROP TABLE IF EXISTS `solidui_datasource_type`;
 
 CREATE TABLE `solidui_datasource_type` (

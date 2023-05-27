@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 
-@Api(tags = "PROJECT_TAG")
+@Api(tags = "project_tag")
 @RestController
 @RequestMapping("projects")
 public class ProjectController extends BaseController{
@@ -53,10 +53,10 @@ public class ProjectController extends BaseController{
      * @param description description
      * @return returns an error if it exists
      */
-    @ApiOperation(value = "create", notes = "CREATE_PROJECT_NOTES")
+    @ApiOperation(value = "create", notes = "create_project_notes")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "projectName", value = "PROJECT_NAME", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "description", value = "PROJECT_DESC", dataTypeClass = String.class)
+            @ApiImplicitParam(name = "projectName", value = "project_name", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "description", value = "project_desc", dataTypeClass = String.class)
     })
     @ResponseStatus(HttpStatus.CREATED)
     @ApiException(CREATE_PROJECT_ERROR)
@@ -79,11 +79,11 @@ public class ProjectController extends BaseController{
      * @param description description
      * @return update result code
      */
-    @ApiOperation(value = "update", notes = "UPDATE_PROJECT_NOTES")
+    @ApiOperation(value = "update", notes = "update_project_notes")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "PROJECT_ID", dataTypeClass = int.class, example = "123456"),
-            @ApiImplicitParam(name = "projectName", value = "PROJECT_NAME", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "description", value = "PROJECT_DESC", dataTypeClass = String.class)
+            @ApiImplicitParam(name = "id", value = "project_id", dataTypeClass = int.class, example = "123456"),
+            @ApiImplicitParam(name = "projectName", value = "project_name", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "description", value = "project_desc", dataTypeClass = String.class)
     })
     @ResponseStatus(HttpStatus.OK)
     @ApiException(UPDATE_PROJECT_ERROR)
@@ -113,11 +113,11 @@ public class ProjectController extends BaseController{
      * @param pageNo    page number
      * @return project list which the login user have permission to see
      */
-    @ApiOperation(value = "queryProjectListPaging", notes = "QUERY_PROJECT_LIST_PAGING_NOTES")
+    @ApiOperation(value = "queryProjectListPaging", notes = "query_project_list_paging_notes")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "searchName", value = "SEARCH_NAME", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "pageSize", value = "PAGE_SIZE", required = true, dataTypeClass = int.class, example = "10"),
-            @ApiImplicitParam(name = "pageNo", value = "PAGE_NO", required = true, dataTypeClass = int.class, example = "1")
+            @ApiImplicitParam(name = "searchName", value = "search_name", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "pageSize", value = "page_size", required = true, dataTypeClass = int.class, example = "10"),
+            @ApiImplicitParam(name = "pageNo", value = "page_no", required = true, dataTypeClass = int.class, example = "1")
     })
     @ResponseStatus(HttpStatus.OK)
     @ApiException(LOGIN_USER_QUERY_PROJECT_LIST_PAGING_ERROR)
@@ -142,9 +142,9 @@ public class ProjectController extends BaseController{
      * @param projectId project id
      * @return delete result id
      */
-    @ApiOperation(value = "delete", notes = "DELETE_PROJECT_BY_ID_NOTES")
+    @ApiOperation(value = "delete", notes = "delete_project_by_id_notes")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "PROJECT_ID", dataTypeClass = int.class, example = "123456")
+            @ApiImplicitParam(name = "id", value = "project_id", dataTypeClass = int.class, example = "123456")
     })
     @ResponseStatus(HttpStatus.OK)
     @ApiException(DELETE_PROJECT_ERROR)

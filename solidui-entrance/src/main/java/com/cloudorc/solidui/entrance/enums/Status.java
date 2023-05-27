@@ -51,6 +51,14 @@ public enum Status {
     QUERY_METADATA_TABLE_ERROR(10067, "query metadata table error", "查询元数据数据库表错误"),
     QUERY_METADATA_SQL_ERROR(10068, "query metadata sql error", "查询数据SQL错误"),
     QUERY_METADATA_CONN_ERROR(10069, "query metadata conn error", "查询数据连接错误"),
+    QUERY_JOB_PAGE_ERROR(10070, "query job page error", "查询场景报错"),
+    CREATE_JOB_PAGE_ERROR(10071, "create job page error", "创建场景报错"),
+    UPDATE_JOB_PAGE_ERROR(10072, "update job page error", "更新场景报错"),
+    DELETE_JOB_PAGE_ERROR(10073, "delete job page error", "删除场景报错"),
+    QUERY_JOB_ERROR(10074, "query job  error", "查询图例报错"),
+    CREATE_JOB_ERROR(10075, "create job  error", "创建图例报错"),
+    UPDATE_JOB_ERROR(10076, "update job  error", "更新图例报错"),
+    DELETE_JOB_ERROR(10077, "delete job  error", "删除图例报错"),
     FAILED(1, "failed", "失败");
 
     private final int code;

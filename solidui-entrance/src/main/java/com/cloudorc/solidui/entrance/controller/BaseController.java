@@ -16,16 +16,10 @@
  */
 package com.cloudorc.solidui.entrance.controller;
 
-import static com.cloudorc.solidui.common.constants.Constants.COMMA;
-import static com.cloudorc.solidui.common.constants.Constants.HTTP_HEADER_UNKNOWN;
-import static com.cloudorc.solidui.common.constants.Constants.HTTP_X_FORWARDED_FOR;
-import static com.cloudorc.solidui.common.constants.Constants.HTTP_X_REAL_IP;
+
 import com.cloudorc.solidui.entrance.constants.Constants;
 import com.cloudorc.solidui.entrance.enums.Status;
 import com.cloudorc.solidui.entrance.utils.Result;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,25 +28,6 @@ import java.util.Map;
  * base controller
  */
 public class BaseController {
-
-    /**
-     * return data list
-     *
-     * @param result result code
-     * @return result code
-     */
-    public Result returnDataList(Map<String, Object> result) {
-        Status status = (Status) result.get(Constants.STATUS);
-        if (status == Status.SUCCESS) {
-            String msg = Status.SUCCESS.getMsg();
-            Object datalist = result.get(Constants.DATA_LIST);
-            return success(msg, datalist);
-        } else {
-            Integer code = status.getCode();
-            String msg = (String) result.get(Constants.MSG);
-            return error(code, msg);
-        }
-    }
 
     /**
      * success
@@ -202,31 +177,5 @@ public class BaseController {
         return result;
     }
 
-
-    /**
-     * get ip address in the http request
-     *
-     * @param request http servlet request
-     * @return client ip address
-     */
-    public static String getClientIpAddress(HttpServletRequest request) {
-        String clientIp = request.getHeader(HTTP_X_FORWARDED_FOR);
-
-        if (StringUtils.isNotEmpty(clientIp) && !clientIp.equalsIgnoreCase(HTTP_HEADER_UNKNOWN)) {
-            int index = clientIp.indexOf(COMMA);
-            if (index != -1) {
-                return clientIp.substring(0, index);
-            } else {
-                return clientIp;
-            }
-        }
-
-        clientIp = request.getHeader(HTTP_X_REAL_IP);
-        if (StringUtils.isNotEmpty(clientIp) && !clientIp.equalsIgnoreCase(HTTP_HEADER_UNKNOWN)) {
-            return clientIp;
-        }
-
-        return request.getRemoteAddr();
-    }
 
 }

@@ -20,8 +20,12 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "JOB_TAG")
+@Api(tags = "job_tag")
 @RestController
 @RequestMapping("job")
 public class JobController extends BaseController {
+
+
+
+
 }

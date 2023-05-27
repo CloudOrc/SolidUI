@@ -42,7 +42,7 @@ import static com.cloudorc.solidui.entrance.enums.Status.*;
 /**
  * data source controller
  */
-@Api(tags = "DATASOURCE_TAG")
+@Api(tags = "datasource_tag")
 @RestController
 @RequestMapping("datasource")
 public class DataSourceController extends BaseController {
@@ -111,7 +111,7 @@ public class DataSourceController extends BaseController {
 
     }
 
-    @ApiOperation(value = "updateDataSourceInJson", notes = "update data source in json")
+    @ApiOperation(value = "updateDataSourceJson", notes = "update data source in json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id"),
             @ApiImplicitParam(name = "createTime", required = true, dataType = "String", value = "create time", example = "1650426189000"),
@@ -147,7 +147,7 @@ public class DataSourceController extends BaseController {
      * @param request
      * @return
      */
-    @ApiOperation(value = "queryInfoByDataSourceId", notes = "get info by data source id")
+    @ApiOperation(value = "queryByDataSourceId", notes = "get info by data source id")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id")
     })
@@ -160,7 +160,7 @@ public class DataSourceController extends BaseController {
         return dataSourceService.queryDataSource(dataSourceId);
     }
 
-    @ApiOperation(value = "queryInfoByDataSourceName", notes = "get info by data source name")
+    @ApiOperation(value = "queryByDataSourceName", notes = "get info by data source name")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name")
     })

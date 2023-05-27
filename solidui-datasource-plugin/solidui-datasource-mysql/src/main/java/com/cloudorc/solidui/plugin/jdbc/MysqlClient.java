@@ -73,7 +73,12 @@ public class MysqlClient extends BaseJdbcClient {
             rs = pstmt.executeQuery();
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
-
+            //获取列名
+            List<String> columnName = new ArrayList<>();
+            for (int i = 1; i < columnCount + 1; i++) {
+                columnName.add(metaData.getColumnName(i));
+            }
+            lists.add(columnName);
             while (rs.next()) {
                 List<String> stringArrayList = new ArrayList<>();
                 for (int i = 1; i < columnCount + 1; i++) {
