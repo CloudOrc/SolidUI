@@ -41,6 +41,7 @@ public enum Status {
     CREATE_DATASOURCE_ERROR(10056, "create datasource error", "创建数据源错误"),
     UPDATE_DATASOURCE_ERROR(10057, "update datasource error", "修改数据源错误"),
     QUERY_DATASOURCE_ERROR(10058, "query datasource error", "查询数据源错误"),
+    DATASOURCE_ALREADY_EXISTS_ERROR(10059, "create datasource error", "数据源已经存在错误"),
     CREATE_DATASOURCE_TYPE_ERROR(10060, "create datasource type key error", "创建数据源类型错误"),
     QUERY_DATASOURCE_TYPE_ERROR(10061, "query datasource type key error", "查询数据源类型错误"),
     CREATE_DATASOURCE_TYPE_KEY_ERROR(10062, "create datasource type key error", "创建数据源键值错误"),
@@ -59,6 +60,7 @@ public enum Status {
     CREATE_JOB_ERROR(10075, "create job  error", "创建图例报错"),
     UPDATE_JOB_ERROR(10076, "update job  error", "更新图例报错"),
     DELETE_JOB_ERROR(10077, "delete job  error", "删除图例报错"),
+    JOB_PAGE_ALREADY_EXISTS_ERROR(10078, "job page already exists error", "场景存在报错"),
     FAILED(1, "failed", "失败");
 
     private final int code;

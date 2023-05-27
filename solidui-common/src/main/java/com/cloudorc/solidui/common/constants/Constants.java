@@ -31,5 +31,11 @@ public final class Constants {
     public static final String ADMIN_NAME = "admin";
 
 
+    public static final Integer JOB_PAGE_LAYOUT_ONE = 1;
+
+    public static final Integer JOB_PAGE_LAYOUT_TWO = 2;
+
+
+    public final static long CLEAN_PERIOD = 3 * 60 * 1000;
 
 }

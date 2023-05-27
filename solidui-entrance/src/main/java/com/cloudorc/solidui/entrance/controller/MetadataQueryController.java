@@ -75,7 +75,7 @@ public class MetadataQueryController extends BaseController {
     @ApiOperation(value = "querySql", notes = "query sql")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name"),
-            @ApiImplicitParam(name = "typeName", required = true, dataType = "String", value = "typeName"),
+            @ApiImplicitParam(name = "typeName", required = true, dataType = "String", value = "type name"),
             @ApiImplicitParam(name = "sql", required = true, dataType = "String", value = "sql")
     })
     @ResponseStatus(HttpStatus.OK)
@@ -88,5 +88,24 @@ public class MetadataQueryController extends BaseController {
             HttpServletRequest request) {
         return metadataQueryService.queryBySql(dataSourceName,sql,typeName);
     }
+
+
+    @ApiOperation(value = "querySql/id", notes = "query sql")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id"),
+            @ApiImplicitParam(name = "typeId", required = true, dataType = "Long", value = "type id"),
+            @ApiImplicitParam(name = "sql", required = true, dataType = "String", value = "sql")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(QUERY_METADATA_SQL_ERROR)
+    @RequestMapping(value = "/querySql/id", method = RequestMethod.GET)
+    public Result querySelectSql(
+            @RequestParam("dataSourceId") Long dataSourceId,
+            @RequestParam("sql") String sql,
+            @RequestParam("typeId") Long typeId,
+            HttpServletRequest request) {
+        return metadataQueryService.queryBySql(dataSourceId,sql,typeId);
+    }
+
 
 }

@@ -51,11 +51,16 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     private DataSourceTypeMapper dataSourceTypeMapper;
 
 
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result createDataSource(DataSource dataSource) throws ServiceException {
          Result<Object> result = new Result<>();
+        DataSource newDataSource = dataSourceMapper.queryByName(dataSource.getDataSourceName(),null);
+        if(newDataSource != null){
+            putMsg(result, Status.DATASOURCE_ALREADY_EXISTS_ERROR);
+            return result;
+        }
+
         if(dataSourceMapper.insertOne(dataSource) > 0){
             putMsg(result, Status.SUCCESS);
         }else{

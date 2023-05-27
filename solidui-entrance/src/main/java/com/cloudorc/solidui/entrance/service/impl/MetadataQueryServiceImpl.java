@@ -1,7 +1,9 @@
 package com.cloudorc.solidui.entrance.service.impl;
 
 import com.cloudorc.solidui.dao.entity.DataSource;
+import com.cloudorc.solidui.dao.entity.DataSourceType;
 import com.cloudorc.solidui.dao.mapper.DataSourceMapper;
+import com.cloudorc.solidui.dao.mapper.DataSourceTypeMapper;
 import com.cloudorc.solidui.entrance.enums.Status;
 import com.cloudorc.solidui.entrance.service.MetadataQueryService;
 import com.cloudorc.solidui.entrance.utils.DataSourceUtils;
@@ -21,6 +23,8 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
     private final Logger logger = LoggerFactory.getLogger(MetadataQueryServiceImpl.class);
     @Autowired
     private DataSourceMapper dataSourceMapper;
+    @Autowired
+    private DataSourceTypeMapper dataSourceTypeMapper;
 
     @Override
     public Result queryDatabasesByDsName(String dataSourceName, String typeName) {
@@ -86,8 +90,14 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
 
     @Override
     public Result queryBySql(String dataSourceName, String sql, String typeName) {
-        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName,null);
         Result<Object> result = new Result<>();
+        if(dataSourceName == null || typeName == null){
+            putMsg(result, Status.QUERY_METADATA_SQL_ERROR);
+            return result;
+        }
+
+        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName,null);
+
         if(dataSource == null) {
             putMsg(result, Status.QUERY_METADATA_SQL_ERROR);
             return result;
@@ -95,6 +105,47 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
 
         try {
             JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(typeName, dataSource);
+            if(jdbcClient != null)  {
+                List<List<String>> selectResult = jdbcClient.getSelectResult(sql);
+                if(CollectionUtils.isEmpty(selectResult)){
+                    putMsg(result, Status.QUERY_METADATA_SQL_ERROR);
+                }else{
+                    putMsg(result, Status.SUCCESS);
+                    result.setData(selectResult);
+                }
+            } else {
+                putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
+            }
+
+        } catch (Exception e) {
+            logger.error("queryBySql error", e);
+            putMsg(result, Status.QUERY_METADATA_SQL_ERROR);
+        }
+
+        return result;
+    }
+
+    @Override
+    public Result queryBySql(Long dataSourceId, String sql, Long typeId) {
+        Result<Object> result = new Result<>();
+        if(dataSourceId == null || typeId == null){
+            putMsg(result, Status.QUERY_METADATA_SQL_ERROR);
+            return result;
+        }
+
+        DataSource dataSource = dataSourceMapper.queryByName(null,dataSourceId);
+
+        if(dataSource == null) {
+            putMsg(result, Status.QUERY_METADATA_SQL_ERROR);
+            return result;
+        }
+        DataSourceType dataSourceType = dataSourceTypeMapper.selectById(typeId);
+        if(dataSourceType == null){
+            putMsg(result, Status.QUERY_DATASOURCE_ERROR);
+            return result;
+        }
+        try {
+            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(dataSourceType.getName(), dataSource);
             if(jdbcClient != null)  {
                 List<List<String>> selectResult = jdbcClient.getSelectResult(sql);
                 if(CollectionUtils.isEmpty(selectResult)){

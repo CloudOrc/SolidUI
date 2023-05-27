@@ -16,16 +16,71 @@
  */
 package com.cloudorc.solidui.entrance.controller;
 
+
+import com.cloudorc.solidui.entrance.exceptions.ApiException;
+import com.cloudorc.solidui.entrance.service.JobService;
+import com.cloudorc.solidui.entrance.utils.Result;
+import com.cloudorc.solidui.entrance.vo.JobElementPageVO;
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+
+import static com.cloudorc.solidui.entrance.enums.Status.*;
 
 @Api(tags = "job_tag")
 @RestController
 @RequestMapping("job")
 public class JobController extends BaseController {
 
+    @Autowired
+    private JobService jobService;
 
+    @ApiOperation(value = "savePage", notes = "save_page_notes")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jobElementPageVO", value = "jobElementPageVO_data", dataTypeClass = JobElementPageVO.class)
+    })
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiException(CREATE_JOB_ERROR)
+    @RequestMapping(path = "/save/page", method = RequestMethod.POST)
+    public Result savePage(@RequestBody JobElementPageVO jobElementPageVO) {
+
+        return jobService.createJob(jobElementPageVO);
+    }
+
+    //updateJob
+    @ApiOperation(value = "updateJob", notes = "update_job_notes")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jobElementPageVO", value = "jobElementPageVO_data", dataTypeClass = JobElementPageVO.class)
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(UPDATE_JOB_ERROR)
+    @RequestMapping(path = "/update/page", method = RequestMethod.PUT)
+    public Result updateJobPage(HttpServletRequest req,
+                                @RequestBody  JobElementPageVO jobElementPageVO){
+
+        return jobService.updateJob(jobElementPageVO);
+    }
+
+    @ApiOperation(value = "queryList", notes = "query_job_notes")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId", value = "projectId", dataTypeClass = int.class, example = "123456"),
+            @ApiImplicitParam(name = "pageId", value = "pageId", dataTypeClass = int.class, example = "123456")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(QUERY_JOB_ERROR)
+    @RequestMapping(path = "/query/page", method = RequestMethod.GET)
+    public Result getJobPage(HttpServletRequest req,
+                             @RequestParam("projectId") Long projectId,
+                             @RequestParam("pageId") Long pageId){
+
+        return jobService.queryJobsByProjectId(projectId,pageId);
+    }
 
 
 }

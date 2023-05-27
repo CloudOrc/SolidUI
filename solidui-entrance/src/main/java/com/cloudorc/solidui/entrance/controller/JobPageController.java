@@ -16,18 +16,14 @@
  */
 package com.cloudorc.solidui.entrance.controller;
 
-import com.cloudorc.solidui.common.utils.LoginUtils;
 import com.cloudorc.solidui.dao.entity.JobPage;
-import com.cloudorc.solidui.entrance.constants.Constants;
-import com.cloudorc.solidui.entrance.enums.Status;
 import com.cloudorc.solidui.entrance.exceptions.ApiException;
-import com.cloudorc.solidui.entrance.service.ProjectService;
+import com.cloudorc.solidui.entrance.service.JobPageService;
 import com.cloudorc.solidui.entrance.utils.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +31,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 import static com.cloudorc.solidui.entrance.enums.Status.*;
-import static com.cloudorc.solidui.entrance.enums.Status.DELETE_PROJECT_ERROR;
 
 @Api(tags = "job_page_tag")
 @RestController
@@ -43,115 +38,72 @@ import static com.cloudorc.solidui.entrance.enums.Status.DELETE_PROJECT_ERROR;
 public class JobPageController extends BaseController {
 
 
-//
-//        @Autowired
-//        private ProjectService projectService;
-//        /**
-//         * create job page
-//         *
-//         * @param projectName project name
-//         * @param description description
-//         * @return returns an error if it exists
-//         */
-//        @ApiOperation(value = "createJobPage", notes = "create_job_page_notes")
-//        @ApiImplicitParams({
-//                @ApiImplicitParam(name = "projectId", value = "project_id", dataTypeClass = long.class),
-//                @ApiImplicitParam(name = "description", value = "project_desc", dataTypeClass = String.class)
-//        })
-//        @ResponseStatus(HttpStatus.CREATED)
-//        @ApiException(CREATE_JOB_PAGE_ERROR)
-//        @RequestMapping(path = "", method = RequestMethod.POST)
-//        public Result createJobPage(HttpServletRequest req,
-//                                    @RequestBody JobPage jobPage) {
-//
-//            return null;
-//        }
-//
-//        /**
-//         * update project
-//         *
-//         * @param projectName project name
-//         * @param description description
-//         * @return update result code
-//         */
-//        @ApiOperation(value = "update", notes = "update_project_notes")
-//        @ApiImplicitParams({
-//                @ApiImplicitParam(name = "id", value = "project_id", dataTypeClass = int.class, example = "123456"),
-//                @ApiImplicitParam(name = "projectName", value = "project_name", dataTypeClass = String.class),
-//                @ApiImplicitParam(name = "description", value = "project_desc", dataTypeClass = String.class)
-//        })
-//        @ResponseStatus(HttpStatus.OK)
-//        @ApiException(UPDATE_PROJECT_ERROR)
-//        @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-//        public Result updateProject(HttpServletRequest req,
-//                                    @PathVariable("id") Integer projectId,
-//                                    @RequestParam("projectName") String projectName,
-//                                    @RequestParam(value = "description", required = false) String description) {
-//
-//            if(StringUtils.isBlank(projectName))   {
-//                return error(Status.UPDATE_PROJECT_ERROR.getCode(),
-//                        Status.UPDATE_PROJECT_ERROR.getMsg());
-//            }
-//
-//            if(projectId == null)   {
-//                return error(Status.UPDATE_PROJECT_ERROR.getCode(),
-//                        Status.UPDATE_PROJECT_ERROR.getMsg());
-//            }
-//            return projectService.updateProject(projectId, projectName, description);
-//        }
-//
-//
-//        /**
-//         * query project list paging
-//         * @param searchName search name
-//         * @param pageSize  page size
-//         * @param pageNo    page number
-//         * @return project list which the login user have permission to see
-//         */
-//        @ApiOperation(value = "queryProjectListPaging", notes = "query_project_list_paging_notes")
-//        @ApiImplicitParams({
-//                @ApiImplicitParam(name = "searchName", value = "search_name", dataTypeClass = String.class),
-//                @ApiImplicitParam(name = "pageSize", value = "page_size", required = true, dataTypeClass = int.class, example = "10"),
-//                @ApiImplicitParam(name = "pageNo", value = "page_no", required = true, dataTypeClass = int.class, example = "1")
-//        })
-//        @ResponseStatus(HttpStatus.OK)
-//        @ApiException(LOGIN_USER_QUERY_PROJECT_LIST_PAGING_ERROR)
-//        @RequestMapping(path = "/queryProjectListPaging", method = RequestMethod.GET)
-//        public Result queryProjectListPaging(HttpServletRequest req,
-//                                             @RequestParam(value = "searchName", required = false) String searchName,
-//                                             @RequestParam(value ="pageSize", required = false) Integer pageSize,
-//                                             @RequestParam(value ="pageNo", required = false) Integer pageNo) {
-//
-//            if (pageSize == null || pageSize <= 0) {
-//                pageSize = Constants.DEFAULT_PAGE_SIZE;
-//            }
-//            if (pageNo == null || pageNo <= 0) {
-//                pageNo = Constants.DEFAULT_PAGE_NO;
-//            }
-//            return projectService.queryProjectListPaging(searchName, pageNo, pageSize);
-//        }
-//
-//        /**
-//         * delete project by id
-//         *
-//         * @param projectId project id
-//         * @return delete result id
-//         */
-//        @ApiOperation(value = "delete", notes = "delete_project_by_id_notes")
-//        @ApiImplicitParams({
-//                @ApiImplicitParam(name = "id", value = "project_id", dataTypeClass = int.class, example = "123456")
-//        })
-//        @ResponseStatus(HttpStatus.OK)
-//        @ApiException(DELETE_PROJECT_ERROR)
-//        @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-//        public Result deleteProject(HttpServletRequest req,
-//                                    @PathVariable("id") Integer projectId) {
-//            if(projectId == null)   {
-//                return error(Status.DELETE_PROJECT_ERROR.getCode(),
-//                        Status.DELETE_PROJECT_ERROR.getMsg());
-//            }
-//            return projectService.deleteProject(projectId);
-//        }
+    @Autowired
+    private JobPageService jobPageService;
+
+    @ApiOperation(value = "create", notes = "create_job_page_notes")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId", value = "project_id", dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "name", value = "job_page_name", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "order", value = "job_page_order", dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "parentId", value = "job_page_parent_id", dataTypeClass = String.class, required = false),
+            @ApiImplicitParam(name = "layout", value = "job_page_layout", dataTypeClass = String.class, required = false)
+    })
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiException(CREATE_JOB_PAGE_ERROR)
+    @RequestMapping(path = "", method = RequestMethod.POST)
+    public Result createJobPage(HttpServletRequest req,
+                                @RequestBody JobPage jobPage){
+
+        return jobPageService.createJobPage(jobPage);
+    }
+
+    //update job page
+    @ApiOperation(value = "update", notes = "update_job_page_notes")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "job_page_id", dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "projectId", value = "project_id", dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "name", value = "job_page_name", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "order", value = "job_page_order", dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "parentId", value = "job_page_parent_id", dataTypeClass = String.class, required = false),
+            @ApiImplicitParam(name = "layout", value = "job_page_layout", dataTypeClass = String.class, required = false)
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(UPDATE_JOB_PAGE_ERROR)
+    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+    public Result updateJobPage(HttpServletRequest req,
+                                @RequestBody JobPage jobPage){
+
+        return jobPageService.updateJobPage(jobPage);
+    }
+
+    //delete job page
+    @ApiOperation(value = "delete", notes = "delete_job_page_notes")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id", dataTypeClass = int.class, example = "123456")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(DELETE_JOB_PAGE_ERROR)
+    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+    public Result deleteJobPage(HttpServletRequest req,
+                                @PathVariable("id") Long id){
+
+        return jobPageService.deleteJobPage(id);
+    }
+
+    //get job page
+    @ApiOperation(value = "queryList", notes = "query_job_page_notes")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId", value = "projectId", dataTypeClass = int.class, example = "123456")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(QUERY_JOB_PAGE_ERROR)
+    @RequestMapping(path = "queryList/{projectId}", method = RequestMethod.GET)
+    public Result getJobPage(HttpServletRequest req,
+                             @PathVariable("projectId") Long projectId){
+
+        return jobPageService.queryJobPagesByProjectId(projectId);
+    }
 
 
 }

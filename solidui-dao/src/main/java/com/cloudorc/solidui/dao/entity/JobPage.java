@@ -37,13 +37,13 @@ public class JobPage {
 
     private String name;
 
-    private Long order;
+    private Integer order;
 
-    private String parentId;
+    private Long parentId;
     /**
      * page layout information
      */
-    private String layout;
+    private Integer layout;
 
     private Date createTime;
 
@@ -73,19 +73,19 @@ public class JobPage {
         this.name = name;
     }
 
-    public Long getOrder() {
+    public Integer getOrder() {
         return order;
     }
 
-    public void setOrder(Long order) {
+    public void setOrder(Integer order) {
         this.order = order;
     }
 
-    public String getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(String parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
@@ -105,11 +105,11 @@ public class JobPage {
         this.updateTime = updateTime;
     }
 
-    public String getLayout() {
+    public Integer getLayout() {
         return layout;
     }
 
-    public void setLayout(String layout) {
+    public void setLayout(Integer layout) {
         this.layout = layout;
     }
 }

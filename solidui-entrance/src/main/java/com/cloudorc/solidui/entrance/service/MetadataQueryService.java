@@ -27,6 +27,8 @@ public interface MetadataQueryService {
 
     Result queryBySql(String dataSourceName,String sql,String typeName);
 
+    Result queryBySql(Long dataSourceId,String sql,Long typeId);
+
     Result queryConnection(String dataSourceName,String typeName);
 
 }
