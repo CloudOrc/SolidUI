@@ -20,10 +20,12 @@ import { useEffect, useState, useRef } from "react";
 import { message, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/lib/table";
-import { Delete, Pencil, PreviewOpen } from "@icon-park/react";
+import { Delete, Pencil, PreviewOpen, Lightning, Time } from "@icon-park/react";
 import Apis from "@/apis";
 import { useUpdate } from "react-use";
 import { useForm } from "antd/lib/form/Form";
+import { ApiResult, DataSourceTypeDataType } from "@/types";
+import { find } from "lodash-es";
 
 const { confirm } = Modal;
 
@@ -33,10 +35,11 @@ type InitialData = {
 
 type DataSourceDataType = {
 	id: string;
-	title: string;
-	type: string;
-	updateUser: string;
-	description: string;
+	dataSourceName: string;
+	dataSourceDesc: string;
+	dataSourceTypeId: number;
+	createTime: string;
+	expire: boolean;
 };
 
 function useDataSource(initialData: InitialData = {}) {
@@ -47,6 +50,7 @@ function useDataSource(initialData: InitialData = {}) {
 	const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
 	const [viewModalOpen, setViewModalOpen] = useState<boolean>(false);
 	const [dataSource, setDataSource] = useState<any>({});
+	const [types, setTypes] = useState<DataSourceTypeDataType[]>([]);
 	const [form] = useForm();
 
 	const [pagination, setPagination] = useState<{
@@ -57,24 +61,32 @@ function useDataSource(initialData: InitialData = {}) {
 
 	const columns: ColumnsType<DataSourceDataType> = [
 		{
-			title: "title",
-			dataIndex: "title",
+			title: "dataSourceName",
+			dataIndex: "dataSourceName",
 			align: "center",
 		},
 		{
-			title: "type",
-			dataIndex: "type",
+			title: "dataSourceTypeId",
+			dataIndex: "dataSourceTypeId",
 			align: "center",
 		},
 		{
-			title: "update user",
-			dataIndex: "updateUser",
+			title: "createTime",
+			dataIndex: "createTime",
 			align: "center",
 		},
 		{
-			title: "description",
-			dataIndex: "description",
+			title: "dataSourceDesc",
+			dataIndex: "dataSourceDesc",
 			align: "center",
+		},
+		{
+			title: "expire",
+			dataIndex: "expire",
+			align: "center",
+			render(value) {
+				return value ? "true" : "false";
+			},
 		},
 		{
 			title: "operation",
@@ -82,7 +94,58 @@ function useDataSource(initialData: InitialData = {}) {
 			align: "center",
 			render(value, record, index) {
 				return (
-					<div>
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+						}}
+					>
+						<Time
+							theme="outline"
+							size="18"
+							fill="#757272"
+							strokeWidth={3}
+							strokeLinejoin="miter"
+							strokeLinecap="square"
+							style={{
+								cursor: "pointer",
+							}}
+							onClick={async () => {
+								console.log("expire...", record.id);
+								let res = await Apis.datasource.expire(record.id);
+								if (res.ok) {
+									message.success("expire success");
+									query();
+								}
+							}}
+						/>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<Lightning
+							theme="outline"
+							size="18"
+							fill="#757272"
+							strokeWidth={3}
+							strokeLinejoin="miter"
+							strokeLinecap="square"
+							style={{
+								cursor: "pointer",
+							}}
+							onClick={async () => {
+								let typeId = record.dataSourceTypeId;
+								let target = find(types, (type) => type.id === typeId + "");
+								if (target) {
+									let res = await Apis.datasource.test_connect({
+										dataSourceName: record.dataSourceName,
+										typeName: target.classifier,
+									});
+									if (res.ok) {
+										message.success("test connection success");
+									}
+								}
+							}}
+						/>
+						&nbsp;&nbsp;&nbsp;&nbsp;
 						<PreviewOpen
 							theme="outline"
 							size="20"
@@ -103,7 +166,6 @@ function useDataSource(initialData: InitialData = {}) {
 							theme="outline"
 							size="18"
 							fill="#757272"
-							// fill="#0070cc"
 							strokeWidth={3}
 							strokeLinejoin="miter"
 							strokeLinecap="square"
@@ -130,7 +192,7 @@ function useDataSource(initialData: InitialData = {}) {
 								confirm({
 									title: "Are you sure delete this item?",
 									icon: <ExclamationCircleOutlined />,
-									content: `${record.title}`,
+									content: `${record.dataSourceName}`,
 									okText: "Yes",
 									okType: "danger",
 									cancelText: "No",
@@ -138,6 +200,7 @@ function useDataSource(initialData: InitialData = {}) {
 										let res = await Apis.datasource.delete(record.id);
 										if (res.ok) {
 											message.success("delete success");
+											query();
 										}
 									},
 									onCancel() {},
@@ -154,12 +217,13 @@ function useDataSource(initialData: InitialData = {}) {
 
 	useEffect(() => {
 		query();
+		queryDataSourceTypes();
 		return () => {};
 	}, []);
 
 	async function query(params: any = { pageNo: 1, pageSize: 10 }) {
 		setLoading(true);
-		let res = await Apis.datasource.query(params);
+		let res: ApiResult<any> = await Apis.datasource.query(params);
 		if (res.ok) {
 			let data = res.data || ({} as any);
 			let current = data.currentPage || 1;
@@ -167,6 +231,7 @@ function useDataSource(initialData: InitialData = {}) {
 			let total = data.total || 0;
 			let records = data.totalList || [];
 			records.forEach((item: any) => {
+				item.key = item.id;
 				popupConverMap.current.set(item.id + "", false);
 			});
 			setDataSources(records || []);
@@ -178,6 +243,15 @@ function useDataSource(initialData: InitialData = {}) {
 		}
 
 		setLoading(false);
+	}
+
+	async function queryDataSourceTypes() {
+		let res: ApiResult<DataSourceTypeDataType[]> =
+			await Apis.datasource.types();
+		if (res.ok) {
+			let types = res.data || [];
+			setTypes(types);
+		}
 	}
 
 	async function create(values: { name: string; description?: string }) {

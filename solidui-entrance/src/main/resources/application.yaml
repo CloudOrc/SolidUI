@@ -55,6 +55,7 @@ spring:
       idle-timeout: 600000
       leak-detection-threshold: 0
       initialization-fail-timeout: 1
+      max-lifetime: 300000
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
