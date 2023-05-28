@@ -36,4 +36,8 @@
         where  `project_id` =#{projectId}
     </select>
 
+    <delete id="deleteByProjectId" parameterType="java.lang.Long">
+        DELETE FROM solidui_job_page WHERE project_id = #{projectId}
+    </delete>
+
 </mapper>

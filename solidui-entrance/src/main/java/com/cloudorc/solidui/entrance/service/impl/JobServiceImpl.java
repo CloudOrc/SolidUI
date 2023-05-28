@@ -1,16 +1,22 @@
 package com.cloudorc.solidui.entrance.service.impl;
 
+import com.cloudorc.solidui.common.constants.Constants;
 import com.cloudorc.solidui.common.utils.JSONUtils;
 import com.cloudorc.solidui.common.utils.Utils;
 import com.cloudorc.solidui.dao.entity.JobElement;
 import com.cloudorc.solidui.dao.entity.JobElementPage;
+import com.cloudorc.solidui.dao.entity.Project;
 import com.cloudorc.solidui.dao.mapper.JobElementMapper;
 import com.cloudorc.solidui.dao.mapper.JobElementPageMapper;
+import com.cloudorc.solidui.dao.mapper.JobPageMapper;
+import com.cloudorc.solidui.dao.mapper.ProjectMapper;
 import com.cloudorc.solidui.entrance.dto.JobElementDTO;
 import com.cloudorc.solidui.entrance.enums.Status;
 import com.cloudorc.solidui.entrance.service.JobService;
 import com.cloudorc.solidui.entrance.utils.Result;
 import com.cloudorc.solidui.entrance.vo.JobElementPageVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,20 +25,45 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class JobServiceImpl extends BaseServiceImpl implements JobService {
+    private final Logger logger = LoggerFactory.getLogger(JobServiceImpl.class);
     @Autowired
     private JobElementPageMapper jobElementPageMapper;
     @Autowired
     private JobElementMapper jobElementMapper;
+    @Autowired
+    private JobPageMapper jobPageMapper;
+    @Autowired
+    private ProjectMapper projectMapper;
 
-    private final static long CLEAN_PERIOD = 3 * 60 * 1000;
+    @PostConstruct
+    public void init() {
+        Utils.defaultScheduler().scheduleWithFixedDelay(this::cleanJobElementPage, Constants.CLEAN_PERIOD, Constants.CLEAN_PERIOD, TimeUnit.MILLISECONDS);
+    }
 
-//    @PostConstruct
-//    public void init() {
-//        Utils.defaultScheduler().scheduleWithFixedDelay()
-//    }
+    @Transactional(rollbackFor = Exception.class)
+    public void cleanJobElementPage(){
+         List<Project> projects = projectMapper.queryProjectList(1);
+         if(projects != null && projects.size() > 0){
+             for(Project project : projects){
+                 // Delete the JobElementPage records associated with the project
+                 jobElementPageMapper.deleteByProjectId(project.getId());
+
+                 // Delete the JobElement record associated with the project
+                 jobElementMapper.deleteByProjectId(project.getId());
+
+                 // Delete the JobPage records associated with the project
+                 jobPageMapper.deleteByProjectId(project.getId());
+
+                 projectMapper.deleteById(project.getId());
+
+                 logger.info("cleanJobElementPage projectId:{}", project.getId());
+             }
+         }
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -169,7 +200,7 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
         }
 
         // Retrieve the list of JobElementPage associated with the projectId and pageId
-        List<JobElementPage> jobElementPages = jobElementPageMapper.selectByProjectIdAndPageId(projectId, pageId);
+        List<JobElementPage> jobElementPages = jobElementPageMapper.selectByProjectIdAndPageId(pageId);
         if (jobElementPages == null || jobElementPages.isEmpty()) {
             putMsg(result, Status.QUERY_JOB_ERROR);
             return result;

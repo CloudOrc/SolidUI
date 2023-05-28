@@ -9,5 +9,7 @@ public interface JobElementPageMapper extends BaseMapper<JobElementPage> {
 
     JobElementPage selectByJobElementId(Long jobElementId);
 
-    List<JobElementPage> selectByProjectIdAndPageId(Long projectId, Long pageId);
+    List<JobElementPage> selectByProjectIdAndPageId(Long pageId);
+
+    int deleteByProjectId(Long projectId);
 }

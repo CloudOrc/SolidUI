@@ -36,6 +36,6 @@ public final class Constants {
     public static final Integer JOB_PAGE_LAYOUT_TWO = 2;
 
 
-    public final static long CLEAN_PERIOD = 3 * 60 * 1000;
+    public final static long CLEAN_PERIOD = 12 * 60 * 60 * 1000;
 
 }

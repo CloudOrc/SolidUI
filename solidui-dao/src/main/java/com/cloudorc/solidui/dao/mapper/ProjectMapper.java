@@ -30,4 +30,6 @@ public interface ProjectMapper extends BaseMapper<Project> {
 
     IPage<Project> queryProjectListPaging(IPage<Project> page,
                                           @Param("searchName") String searchName);
+
+    List<Project> queryProjectList(@Param("status") Integer status);
 }

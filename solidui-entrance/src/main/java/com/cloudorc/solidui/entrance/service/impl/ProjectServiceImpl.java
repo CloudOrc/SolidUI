@@ -61,6 +61,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
         project.setDescription(desc);
         project.setCreateTime(new Date());
         project.setUpdateTime(new Date());
+        project.setStatus(0);
         if(projectMapper.insert(project) > 0){
             putMsg(result, Status.SUCCESS);
         }else{
@@ -80,6 +81,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
         newProject.setProjectName(name);
         newProject.setDescription(desc);
         newProject.setUpdateTime(new Date());
+        newProject.setStatus(0);
         if(projectMapper.updateById(newProject) > 0){
             putMsg(result, Status.SUCCESS);
         }else{
@@ -107,11 +109,13 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
     public Result deleteProject(Integer projectId) {
         Result result = new Result();
         Project project = projectMapper.selectById(projectId);
+
         if (project == null) {
             putMsg(result, Status.PROJECT_NOT_EXISTS_ERROR);
             return result;
         }
-        if(projectMapper.deleteById(projectId) > 0) {
+        project.setStatus(1);
+        if(projectMapper.updateById(project) > 0) {
             putMsg(result, Status.SUCCESS);
         }else{
             putMsg(result, Status.DELETE_PROJECT_ERROR);

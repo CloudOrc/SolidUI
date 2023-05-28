@@ -31,7 +31,7 @@ public class Project {
      * id
      */
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * user name
@@ -63,6 +63,8 @@ public class Project {
      */
     private Date updateTime;
 
+    private Integer status;
+
 
     @Override
     public boolean equals(Object o) {
@@ -84,19 +86,18 @@ public class Project {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id.intValue();
         result = 31 * result + projectName.hashCode();
         return result;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
-
 
     public String getUserName() {
         return userName;
@@ -147,4 +148,11 @@ public class Project {
         this.projectName = projectName;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 }

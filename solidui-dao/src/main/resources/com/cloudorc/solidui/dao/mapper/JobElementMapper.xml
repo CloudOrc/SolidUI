@@ -17,32 +17,13 @@
   -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cloudorc.solidui.dao.mapper.JobElementPageMapper">
+<mapper namespace="com.cloudorc.solidui.dao.mapper.JobElementMapper">
     <sql id="baseSql">
-        `id`,`job_page_id`,`job_element_id` ,`position` , `create_time` , `update_time`
+        `id`,`project_id` ,`name` ,`data` ,`dataType` ,`create_time` ,`update_time`
     </sql>
 
-
-    <select id="selectByJobElementId" resultType="com.cloudorc.solidui.dao.entity.JobElementPage">
-        select
-        <include refid="baseSql"/>
-        from solidui_job_element_page
-        where `job_element_id` =#{jobElementId}
-        limit 1
-    </select>
-
-    <select id="selectByProjectIdAndPageId" resultType="com.cloudorc.solidui.dao.entity.JobElementPage">
-        select
-        <include refid="baseSql"/>
-        from solidui_job_element_page
-        where 1=1   and `job_page_id` =#{pageId}
-
-    </select>
-
     <delete id="deleteByProjectId" parameterType="java.lang.Long">
-        DELETE FROM solidui_job_element_page WHERE job_page_id IN (
-            SELECT id FROM solidui_job_page WHERE project_id = #{projectId}
-        )
+        DELETE FROM solidui_job_element WHERE project_id = #{projectId}
     </delete>
 
 </mapper>

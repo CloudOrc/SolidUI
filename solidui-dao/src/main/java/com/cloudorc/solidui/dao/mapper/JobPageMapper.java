@@ -10,4 +10,6 @@ public interface JobPageMapper extends BaseMapper<JobPage> {
     JobPage queryByName(String name);
 
     List<JobPage> queryJobPageListPaging(Long projectId);
+
+    int deleteByProjectId(Long projectId);
 }

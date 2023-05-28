@@ -25,7 +25,7 @@
         select
         <include refid="baseSql"/>
         from solidui_project
-        where project_name = #{projectName}
+        where project_name = #{projectName}  and status = 0
         limit 1
     </select>
 
@@ -37,6 +37,16 @@
         <if test="searchName!=null and searchName != ''">
             and (project_name LIKE concat('%', #{searchName}, '%')) or (description LIKE concat('%', #{searchName}, '%'))
         </if>
+
+        and status = 0
+
+    </select>
+
+    <select id="queryProjectList" resultType="com.cloudorc.solidui.dao.entity.Project">
+        select
+        <include refid="baseSql"/>
+        from solidui_project
+        where status = #{status}
     </select>
 
 </mapper>
