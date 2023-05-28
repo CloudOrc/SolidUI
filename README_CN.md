@@ -3,7 +3,7 @@
 </h2>
 
 <p align="center">
-  <strong>3D数据可视化原型设计和编辑平台</strong>
+  <strong>AI生成可视化原型设计和编辑平台</strong>
 </p>
 
 
@@ -35,7 +35,7 @@
 [English](README.md) | [中文](README_CN.md)
 
 # 介绍
-3D数据可视化原型设计和编辑平台，支持2D，3D模型，结合LLM(Large Language Model) 快速编辑。
+AI生成可视化原型设计和编辑平台，支持2D，3D模型，结合LLM(Large Language Model) 快速编辑。
 
 ## 核心特点
 
