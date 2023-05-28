@@ -17,6 +17,7 @@
 
 package com.cloudorc.solidui.entrance.dto;
 
+import java.util.Date;
 import java.util.List;
 
 public class JobPageDTO {
@@ -32,11 +33,11 @@ public class JobPageDTO {
      */
     private Integer layout;
 
-    private String createTime;
+    private Date createTime;
 
-    private String updateTime;
+    private Date updateTime;
 
-    private Integer order;
+    private Integer orders;
 
     private List<JobPageDTO> children;
 
@@ -83,28 +84,28 @@ public class JobPageDTO {
         this.layout = layout;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public String getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
-    public Integer getOrder() {
-        return order;
+    public Integer getOrders() {
+        return orders;
     }
 
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setOrders(Integer orders) {
+        this.orders = orders;
     }
 
     public List<JobPageDTO> getChildren() {

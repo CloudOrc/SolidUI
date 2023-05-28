@@ -29,4 +29,6 @@ public interface JobPageMapper extends BaseMapper<JobPage> {
     List<JobPage> queryJobPageListPaging(Long projectId);
 
     int deleteByProjectId(Long projectId);
+
+    List<JobPage> queryJobPageParentIds(Long parentId);
 }

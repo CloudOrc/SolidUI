@@ -45,7 +45,7 @@ public class JobPageController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId", value = "project_id", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "name", value = "job_page_name", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "order", value = "job_page_order", dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "orders", value = "job_page_order", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "parentId", value = "job_page_parent_id", dataTypeClass = String.class, required = false),
             @ApiImplicitParam(name = "layout", value = "job_page_layout", dataTypeClass = String.class, required = false)
     })
@@ -72,8 +72,9 @@ public class JobPageController extends BaseController {
     @ApiException(UPDATE_JOB_PAGE_ERROR)
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
     public Result updateJobPage(HttpServletRequest req,
+                                @PathVariable("id") Long id,
                                 @RequestBody JobPage jobPage){
-
+        jobPage.setId(id);
         return jobPageService.updateJobPage(jobPage);
     }
 

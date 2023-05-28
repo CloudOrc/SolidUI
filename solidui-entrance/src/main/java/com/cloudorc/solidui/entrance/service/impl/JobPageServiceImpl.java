@@ -115,6 +115,13 @@ public class JobPageServiceImpl extends BaseServiceImpl implements JobPageServic
             putMsg(result, Status.QUERY_JOB_PAGE_ERROR);
             return result;
         }
+        Long parentId = jobPage.getId();
+        List<JobPage> jobPages = jobPageMapper.queryJobPageParentIds(parentId);
+        if(!CollectionUtils.isEmpty(jobPages)){
+            putMsg(result, Status.QUERY_JOB_PAGE_ERROR);
+            return result;
+        }
+
         if(jobPageMapper.deleteById(id) > 0){
             putMsg(result, Status.SUCCESS);
         }else{
@@ -150,7 +157,7 @@ public class JobPageServiceImpl extends BaseServiceImpl implements JobPageServic
         // Sort by parentId and order
         List<JobPageDTO> sortedJobPageDTOs = jobPageDTOs.stream()
                 .sorted(Comparator.comparing(JobPageDTO::getParentId, Comparator.nullsFirst(Comparator.naturalOrder()))
-                        .thenComparing(JobPageDTO::getOrder))
+                        .thenComparing(JobPageDTO::getOrders))
                 .collect(Collectors.toList());
 
         // Group job pages into two levels: top-level and second-level

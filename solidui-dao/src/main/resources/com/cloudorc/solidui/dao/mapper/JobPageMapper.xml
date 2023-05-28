@@ -19,7 +19,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cloudorc.solidui.dao.mapper.JobPageMapper">
     <sql id="baseSql">
-        `id`,`project_id` ,`name` ,`order` ,`parent_id` ,`layout`,`create_time` ,`update_time`
+        `id`,`project_id` ,`name` ,`orders` ,`parent_id` ,`layout`,`create_time` ,`update_time`
     </sql>
     <select id="queryByName" resultType="com.cloudorc.solidui.dao.entity.JobPage">
         select
@@ -40,4 +40,10 @@
         DELETE FROM solidui_job_page WHERE project_id = #{projectId}
     </delete>
 
+    <select id="queryJobPageParentIds" resultType="com.cloudorc.solidui.dao.entity.JobPage" >
+        select
+        <include refid="baseSql"/>
+        from solidui_job_page
+        where  `parent_id` = #{parentId}
+    </select>
 </mapper>

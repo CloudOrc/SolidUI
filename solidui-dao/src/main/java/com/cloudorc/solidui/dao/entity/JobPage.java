@@ -37,13 +37,13 @@ public class JobPage {
 
     private String name;
 
-    private Integer order;
-
     private Long parentId;
     /**
      * page layout information
      */
     private Integer layout;
+
+    private Integer orders;
 
     private Date createTime;
 
@@ -73,12 +73,12 @@ public class JobPage {
         this.name = name;
     }
 
-    public Integer getOrder() {
-        return order;
+    public Integer getOrders() {
+        return orders;
     }
 
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setOrders(Integer orders) {
+        this.orders = orders;
     }
 
     public Long getParentId() {
@@ -112,4 +112,6 @@ public class JobPage {
     public void setLayout(Integer layout) {
         this.layout = layout;
     }
+
+
 }
