@@ -19,7 +19,6 @@ SET NAMES utf8mb4;
 
 
 DROP TABLE IF EXISTS `solidui_datasource`;
-
 CREATE TABLE `solidui_datasource` (
                                       `id` int(11) NOT NULL AUTO_INCREMENT,
                                       `datasource_name` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -33,21 +32,6 @@ CREATE TABLE `solidui_datasource` (
                                       `expire` tinyint(1) DEFAULT '0',
                                       PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-
-
-
-DROP TABLE IF EXISTS `solidui_datasource_info`;
-
-CREATE TABLE `solidui_datasource_info` (
-                                           `id` int(11) NOT NULL AUTO_INCREMENT,
-                                           `parameter` varchar(2048) NOT NULL DEFAULT '',
-                                           `comment` varchar(255) NOT NULL DEFAULT '',
-                                           `create_time` datetime NOT NULL,
-                                           `create_user` varchar(255) NOT NULL DEFAULT '',
-                                           `datasource_id` int(11) NOT NULL,
-                                           PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -86,7 +70,6 @@ CREATE TABLE `solidui_datasource_type_key` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
-
 DROP TABLE IF EXISTS `solidui_project`;
 
 CREATE TABLE `solidui_project` (
@@ -101,18 +84,6 @@ CREATE TABLE `solidui_project` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-DROP TABLE IF EXISTS `solidui_user`;
-
-CREATE TABLE `solidui_user` (
-                                `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-                                `user_name` varchar(20) NOT NULL DEFAULT '',
-                                `user_password` varchar(255) NOT NULL DEFAULT '',
-                                `create_time` datetime NOT NULL,
-                                `update_time` datetime NOT NULL,
-                                `queue` varchar(20) DEFAULT NULL,
-                                PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 DROP TABLE IF EXISTS `solidui_job_element`;
 
@@ -121,13 +92,11 @@ CREATE TABLE `solidui_job_element` (
                                        `project_id` int(11) NOT NULL,
                                        `name` varchar(255) NOT NULL DEFAULT '',
                                        `data` varchar(255) NOT NULL DEFAULT '',
-                                       `dataType` varchar(255) NOT NULL DEFAULT '',
+                                       `data_type` varchar(255) NOT NULL DEFAULT '',
                                        `create_time` datetime NOT NULL,
                                        `update_time` datetime NOT NULL,
                                        PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='storage of various elements';
-
-
 
 
 DROP TABLE IF EXISTS `solidui_job_element_page`;
@@ -143,22 +112,33 @@ CREATE TABLE `solidui_job_element_page` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='store between page and element';
 
 
-
-
-
 DROP TABLE IF EXISTS `solidui_job_page`;
 
 CREATE TABLE `solidui_job_page` (
                                     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                                     `project_id` int(11) NOT NULL,
                                     `name` varchar(255) NOT NULL DEFAULT '',
-                                    `order` int(11) NOT NULL,
-                                    `parent_id` int(11) NOT NULL,
-                                    `layout` varchar(255) NOT NULL DEFAULT '',
+                                    `parent_id` int(11) DEFAULT NULL,
+                                    `layout` int(11) NOT NULL,
+                                    `orders` int(11) NOT NULL,
                                     `create_time` datetime NOT NULL,
                                     `update_time` datetime NOT NULL,
                                     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Store page information';
+
+
+
+DROP TABLE IF EXISTS `solidui_user`;
+
+CREATE TABLE `solidui_user` (
+                                `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                                `user_name` varchar(20) NOT NULL DEFAULT '',
+                                `user_password` varchar(255) NOT NULL DEFAULT '',
+                                `create_time` datetime NOT NULL,
+                                `update_time` datetime NOT NULL,
+                                `queue` varchar(20) DEFAULT NULL,
+                                PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
