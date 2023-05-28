@@ -18,8 +18,10 @@
 package com.cloudorc.solidui.entrance.vo;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -33,10 +35,11 @@ public class JobElementPageVO {
     //JobElementPage name id
     @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor // Add this annotation
     public static class Page {
         private String name;
         private Long id;
-
 
         // Getters and setters
     }

@@ -244,7 +244,8 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
         }
         jobElementPageVOs.setViews(views);
         result.setData(jobElementPageVOs);
-        return Result.success();
+        putMsg(result, Status.SUCCESS);
+        return result;
     }
 
 

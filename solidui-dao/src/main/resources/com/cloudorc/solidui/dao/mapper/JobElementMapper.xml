@@ -19,7 +19,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cloudorc.solidui.dao.mapper.JobElementMapper">
     <sql id="baseSql">
-        `id`,`project_id` ,`name` ,`data` ,`dataType` ,`create_time` ,`update_time`
+        `id`,`project_id` ,`name` ,`data` ,`data_type` ,`create_time` ,`update_time`
     </sql>
 
     <delete id="deleteByProjectId" parameterType="java.lang.Long">
