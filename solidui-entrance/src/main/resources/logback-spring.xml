@@ -48,9 +48,6 @@
         </encoder>
     </appender>
 
-<!--    <logger name="org.apache.zookeeper" level="WARN"/>-->
-<!--    <logger name="org.apache.hbase" level="WARN"/>-->
-<!--    <logger name="org.apache.hadoop" level="WARN"/>-->
 
     <root level="INFO">
         <if condition="${DOCKER:-false}">

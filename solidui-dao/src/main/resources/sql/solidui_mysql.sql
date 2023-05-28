@@ -18,7 +18,6 @@
 SET NAMES utf8mb4;
 
 
-
 DROP TABLE IF EXISTS `solidui_datasource`;
 
 CREATE TABLE `solidui_datasource` (
