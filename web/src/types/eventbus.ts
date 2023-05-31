@@ -72,6 +72,10 @@ type OnRemoveViewCompleteEventData = {
 	source: "viewport" | "viewlist";
 };
 
+type onDataSetChangeEventData = {
+	data: any[][];
+} & BaseEventData;
+
 type EventBusType = {
 	onResize: OnResizeEventData;
 	onDrag: { x: number; y: number };
@@ -85,6 +89,7 @@ type EventBusType = {
 	onSelectViewInViewList: OnSelectViewEventData;
 	onRemoveViewComplete: OnRemoveViewCompleteEventData;
 	onUpdateViewPropertyValue: OnUpdateViewPropertyValueEventData;
+	onDataSetChange: onDataSetChangeEventData;
 };
 
 export {
@@ -100,4 +105,5 @@ export {
 	OnSelectViewEventData,
 	OnRemoveViewCompleteEventData,
 	OnUpdateViewPropertyValueEventData,
+	onDataSetChangeEventData,
 };

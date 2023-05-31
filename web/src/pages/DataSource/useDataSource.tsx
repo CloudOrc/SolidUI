@@ -112,7 +112,6 @@ function useDataSource(initialData: InitialData = {}) {
 								cursor: "pointer",
 							}}
 							onClick={async () => {
-								console.log("expire...", record.id);
 								let res = await Apis.datasource.expire(record.id);
 								if (res.ok) {
 									message.success("expire success");

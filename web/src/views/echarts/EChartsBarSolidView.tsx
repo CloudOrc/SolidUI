@@ -36,12 +36,12 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 		super(props);
 	}
 
-	private getSeries(x: any): SeriesOption | undefined {
+	private getSeries(y: any): SeriesOption | undefined {
 		let row0 = this.dataSheet[0];
 		if (!row0) return undefined;
 
 		let xIdx = findIndex(row0, function (o) {
-			return o === x.label;
+			return o === y.label;
 		});
 		if (xIdx === -1) return undefined;
 
@@ -50,14 +50,14 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 			if (idx === 0) return;
 
 			seriesData.push({
-				name: x.label,
+				name: y.label,
 				value: row[xIdx],
 			});
 		});
 
 		return {
 			type: "bar",
-			name: x.label,
+			name: y.label,
 			data: seriesData,
 		};
 	}
@@ -68,11 +68,13 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 		| undefined {
 		let headRow = head(this.dataSheet);
 		if (!headRow) return {};
-		let viewDimensions = get(this.props.viewModel, "data.xs", []) as any[];
-		let headDimension = head(viewDimensions);
-		if (!headDimension) return {};
+		let xs = this.getXs();
+		if (!xs || xs.length === 0) return {};
+		// let viewDimensions = get(this.props.viewModel, "data.xs", []) as any[];
+		// let headDimension = head(viewDimensions);
+		let headDimension = head(xs);
 		let viewDimensionIdx = findIndex(headRow, function (o) {
-			return o === headDimension.label;
+			return o === headDimension!.label;
 		});
 		if (viewDimensionIdx === -1) return {};
 
@@ -97,10 +99,11 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 	}
 
 	protected getSeriesOption(): SeriesOption[] | undefined {
-		let xs = get(this.props.viewModel, "data.ys", []) as any[];
+		// let xs = get(this.props.viewModel, "data.ys", []) as any[];
+		let ys = this.getYs();
 		let seriesList: SeriesOption[] = [];
-		xs.forEach((x) => {
-			let series = this.getSeries(x);
+		ys.forEach((y) => {
+			let series = this.getSeries(y);
 			if (series) {
 				seriesList.push(series);
 			}

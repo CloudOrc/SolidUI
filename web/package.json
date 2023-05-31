@@ -80,6 +80,7 @@
     "react-moveable": "0.46.1",
     "react-router-dom": "6.8.1",
     "react-selecto": "1.22.0",
+    "react-sticky-table": "5.1.11",
     "react-textarea-autosize": "^8.4.1",
     "react-use": "17.4.0",
     "react-window": "1.8.9",

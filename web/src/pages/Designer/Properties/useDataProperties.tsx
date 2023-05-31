@@ -21,7 +21,8 @@ import { message, Modal } from "antd";
 import Apis from "@/apis";
 import { useUpdate } from "react-use";
 import { ApiResult, DataSourceTypeDataType, DataSourceDataType } from "@/types";
-import { find, isNil } from "lodash-es";
+import { find, isNil, cloneDeep } from "lodash-es";
+import { eventbus, mm } from "@/utils";
 
 const { confirm } = Modal;
 
@@ -164,10 +165,19 @@ function useDataProperties(initialData: InitialData = {}) {
 		});
 		if (res.ok) {
 			let data = (res.data || []) as any[];
+			let originData = cloneDeep(data);
 			if (data.length > 0) {
 				let columns = data.shift();
 				setColumns(columns);
 				setRows(data);
+			}
+
+			let view = mm.getCurrentView();
+			if (null !== view && undefined !== view && view.id) {
+				eventbus.emit("onDataSetChange", {
+					id: view.id,
+					data: originData,
+				});
 			}
 		}
 	}

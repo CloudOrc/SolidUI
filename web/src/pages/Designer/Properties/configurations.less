@@ -119,67 +119,74 @@
 		.ds-data-table {
 			position: relative;
 			width: 100%;
+			height: auto;
+			max-height: 360px;
 			margin-top: 10px;
 			overflow: auto;
-			border: 1px solid #000;
+			// border: 1px solid #000;
+			border: 1px solid #E7E7E7;
+
+			.sticky-table-table {
+				width: 100%;
+			}
 		}
 	}
 }
 
-.Grid,
-.List {
-  overflow: hidden;
-}
+// .Grid,
+// .List {
+//   overflow: hidden;
+// }
 
-.Cell {
-  display: inline-block;
-  box-sizing: border-box;
-  width: 150px;
-  height: 32px;
-  // border: 1px solid black;
-	border-bottom: 1px solid #000;
-	border-right: 1px solid #000;
-  vertical-align: top;
-  // padding: 10px;
+// .Cell {
+//   display: inline-block;
+//   box-sizing: border-box;
+//   width: 150px;
+//   height: 32px;
+//   // border: 1px solid black;
+// 	border-bottom: 1px solid #000;
+// 	border-right: 1px solid #000;
+//   vertical-align: top;
+//   // padding: 10px;
 
-	&:last-child {
-		border-right: none;
-	}
-}
+// 	&:last-child {
+// 		border-right: none;
+// 	}
+// }
 
-.Grid .Cell {
-  background-color: lightgray;
-  font-weight: bold;
-	border-bottom: 1px solid #000;
-	border-right: 1px solid #000;
-	word-break: break-all;
+// .Grid .Cell {
+//   background-color: lightgray;
+//   font-weight: bold;
+// 	border-bottom: 1px solid #000;
+// 	border-right: 1px solid #000;
+// 	word-break: break-all;
 
-	&:last-child {
-		border-right: none;
-	}
+// 	&:last-child {
+// 		border-right: none;
+// 	}
 
-}
+// }
 
-.List .Cell {
-	word-break: break-all;
-}
+// .List .Cell {
+// 	word-break: break-all;
+// }
 
-.List .ListItemOdd {
-  background-color: #f5f5f5;
+// .List .ListItemOdd {
+//   background-color: #f5f5f5;
 
-	&:last-child {
-		.Cell {
-			border-bottom: none;
-		}
-	}
-}
+// 	&:last-child {
+// 		.Cell {
+// 			border-bottom: none;
+// 		}
+// 	}
+// }
 
-.List .ListItemEven {
-  background-color: #ffffff;
+// .List .ListItemEven {
+//   background-color: #ffffff;
 
-	&:last-child {
-		.Cell {
-			border-bottom: none;
-		}
-	}
-}
+// 	&:last-child {
+// 		.Cell {
+// 			border-bottom: none;
+// 		}
+// 	}
+// }
