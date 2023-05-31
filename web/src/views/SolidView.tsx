@@ -23,6 +23,7 @@ import {
 	OnResizeEventData,
 	OnReiszeGroupEventData,
 	OnUpdateViewPropertyValueEventData,
+	onDataSetChangeEventData,
 } from "@/types/eventbus";
 
 import { SolidModelDataType, SolidViewDataType } from "@/types/solid";
@@ -47,6 +48,8 @@ export default abstract class SolidView<
 	S extends SolidViewState = SolidViewState
 > extends React.Component<T, S> {
 	dataSheet: any[] = [];
+	xs: { label: string }[] = [];
+	ys: { label: string }[] = [];
 	private viewRef = React.createRef<HTMLDivElement>();
 	private vm: SolidViewDataType;
 	private id: string;
@@ -127,6 +130,7 @@ export default abstract class SolidView<
 			"onUpdateViewPropertyValue",
 			this.handleUpdateViewPropertyValue
 		);
+		this.eventbus.on("onDataSetChange", this.handleDataSetChange);
 	}
 
 	protected handleDrag = (evt: OnDragEventData) => {};
@@ -134,6 +138,29 @@ export default abstract class SolidView<
 	protected handleResize = (evt: OnResizeEventData) => {
 		this.resize();
 	};
+
+	protected handleDataSetChange = (evt: onDataSetChangeEventData) => {
+		if (evt.id === this.id) {
+			this.dataSheet = evt.data || [];
+			this.reRender();
+		}
+	};
+
+	protected getXs(): Array<{ label: string }> {
+		return [
+			{
+				label: this.dataSheet[0][0],
+			},
+		];
+	}
+
+	protected getYs(): { label: string }[] {
+		let ys: { label: string }[] = [];
+		for (let i = 1; i < this.dataSheet.length; i++) {
+			ys.push({ label: this.dataSheet[0][i] });
+		}
+		return ys;
+	}
 
 	protected handleUpdateViewPropertyValue = (
 		evt: OnUpdateViewPropertyValueEventData

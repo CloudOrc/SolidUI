@@ -18,6 +18,12 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Cascader, Button, Input } from "antd";
 import { FixedSizeGrid as Grid, FixedSizeList as List } from "react-window";
+import {
+	StickyTable,
+	Row as TableRow,
+	Cell as TableCell,
+	// @ts-ignore
+} from "react-sticky-table";
 import Apis from "@/apis";
 import { ApiResult, DataSourceCascaderDataType } from "@/types";
 import useDataProperties from "./useDataProperties";
@@ -41,6 +47,9 @@ export default function (props: DataPropertiesPanelProps) {
 	} = useDataProperties();
 	const [previewEnable, setPreviewEnable] = useState<boolean>(false);
 
+	console.log(columns);
+	console.log(rows);
+
 	const dropdownRender = (menus: React.ReactNode) => (
 		<div>
 			{menus}
@@ -50,20 +59,21 @@ export default function (props: DataPropertiesPanelProps) {
 		</div>
 	);
 
-	function renderBodyCells(row: any) {
-		return columns.map((column, columnIndex) => {
-			const value = row[column];
-			return (
-				// <Cell
-				<div className="Cell">value</div>
-				// 	key={columnIndex}
-				// 	columnIndex={columnIndex}
-				// 	rowIndex={rowIndex}
-				// 	value={value}
-				// />
-			);
-		});
+	let rowss = [];
+
+	let cells: TableCell[] = [];
+	for (let i = 0; i < columns.length; i++) {
+		cells.push(<TableCell key={i}>{columns[i]}</TableCell>);
 	}
+	rowss.push(<TableRow key={`table-header-row`}>{cells}</TableRow>);
+
+	rows.forEach((row, index) => {
+		let cells: TableCell[] = [];
+		row.forEach((cell, index) => {
+			cells.push(<TableCell key={index}>{cell}</TableCell>);
+		});
+		rowss.push(<TableRow key={`table-row-${index}`}>{cells}</TableRow>);
+	});
 
 	return (
 		<div className="data-conf">
@@ -78,6 +88,7 @@ export default function (props: DataPropertiesPanelProps) {
 									let option = selectOptions[0];
 									queryTables(option.value as string);
 								}}
+								showSearch
 								changeOnSelect
 								dropdownRender={dropdownRender}
 								placeholder="Please select a datasource"
@@ -123,17 +134,14 @@ export default function (props: DataPropertiesPanelProps) {
 				</div>
 			</div>
 			<div className="ds-data-table">
-				{/* <Grid
-					columnCount={1000}
-					columnWidth={100}
-					height={300}
-					rowCount={1000}
-					rowHeight={35}
-					width={483}
+				<StickyTable
+					headerSticky={1}
+					borderWidth={"1px"}
+					borderColor={"#E7E7E7"}
 				>
-					{Cell}
-				</Grid> */}
-				<Grid
+					{rowss}
+				</StickyTable>
+				{/* <Grid
 					className="Grid"
 					columnCount={columns.length}
 					columnWidth={COLUMN_WIDTH}
@@ -169,7 +177,7 @@ export default function (props: DataPropertiesPanelProps) {
 							</div>
 						)}
 					</List>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);
