@@ -21,12 +21,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.cloudorc.solidui.common.utils.JSONUtils;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.apache.commons.lang3.StringUtils;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
@@ -74,11 +70,6 @@ public class DataSource {
 
     private boolean expire;
 
-    /** Data source type entity */
-    private DataSourceType dataSourceType;
-
-
-    @JsonIgnore private List<DataSourceTypeKey> keyDefinitions = new ArrayList<>();
 
     public DataSource() {
         this.createTime = Calendar.getInstance().getTime();
@@ -152,23 +143,6 @@ public class DataSource {
         this.createUser = createUser;
     }
 
-
-    public DataSourceType getDataSourceType() {
-        return dataSourceType;
-    }
-
-    public void setDataSourceType(DataSourceType dataSourceType) {
-        this.dataSourceType = dataSourceType;
-    }
-
-
-    public List<DataSourceTypeKey> getKeyDefinitions() {
-        return keyDefinitions;
-    }
-
-    public void setKeyDefinitions(List<DataSourceTypeKey> keyDefinitions) {
-        this.keyDefinitions = keyDefinitions;
-    }
 
     public String getLabels() {
         return labels;
