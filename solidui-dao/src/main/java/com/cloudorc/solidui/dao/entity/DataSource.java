@@ -60,8 +60,6 @@ public class DataSource {
     /** Identify from creator */
     private String createIdentify;
 
-    /** Connection parameters */
-    private Map<String, Object> connectParams = new HashMap<>();
     /** Parameter JSON string */
     private String parameter;
 
@@ -72,7 +70,6 @@ public class DataSource {
     private String createUser;
 
     private String labels;
-
 
 
     private boolean expire;
@@ -181,20 +178,6 @@ public class DataSource {
         this.labels = labels;
     }
 
-    public Map<String, Object> getConnectParams() {
-        if (connectParams.isEmpty() && StringUtils.isNotBlank(parameter)) {
-            try {
-                connectParams.putAll(Objects.requireNonNull(JSONUtils.parseObject(parameter, new TypeReference<Map<String, Object>>() {})));
-            } catch (Exception e) {
-                // Ignore
-            }
-        }
-        return connectParams;
-    }
-
-    public void setConnectParams(Map<String, Object> connectParams) {
-        this.connectParams = connectParams;
-    }
 
 
     public boolean isExpire() {

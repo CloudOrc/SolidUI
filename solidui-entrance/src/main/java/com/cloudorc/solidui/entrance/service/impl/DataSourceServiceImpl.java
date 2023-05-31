@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloudorc.solidui.dao.entity.DataSource;
 import com.cloudorc.solidui.dao.mapper.DataSourceMapper;
 import com.cloudorc.solidui.dao.mapper.DataSourceTypeMapper;
+import com.cloudorc.solidui.entrance.dto.DataSourceDTO;
 import com.cloudorc.solidui.entrance.enums.Status;
 import com.cloudorc.solidui.entrance.exceptions.ServiceException;
 import com.cloudorc.solidui.entrance.service.DataSourceService;
@@ -31,6 +32,7 @@ import com.cloudorc.solidui.entrance.utils.Result;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,7 +83,8 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
         if(dataSource == null) {
             putMsg(result, Status.QUERY_DATASOURCE_ERROR);
         }else{
-            DataSourceUtils.mergeParams(dataSource, dataSource.getParameter());
+            DataSourceDTO dataSourceDTO = new DataSourceDTO();
+            BeanUtils.copyProperties(dataSource, dataSourceDTO);
             putMsg(result, Status.SUCCESS);
             result.setData(dataSource);
         }
@@ -100,9 +103,10 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
         if(dataSource == null) {
             putMsg(result, Status.QUERY_DATASOURCE_ERROR);
         }else{
-            DataSourceUtils.mergeParams(dataSource, dataSource.getParameter());
+            DataSourceDTO dataSourceDTO = new DataSourceDTO();
+            BeanUtils.copyProperties(dataSource, dataSourceDTO);
             putMsg(result, Status.SUCCESS);
-            result.setData(dataSource);
+            result.setData(dataSourceDTO);
         }
         return result;
     }

@@ -21,6 +21,7 @@ package com.cloudorc.solidui.entrance.utils;
 import com.cloudorc.solidui.common.constants.Constants;
 import com.cloudorc.solidui.common.utils.JSONUtils;
 import com.cloudorc.solidui.dao.entity.DataSource;
+import com.cloudorc.solidui.entrance.dto.DataSourceDTO;
 import com.cloudorc.solidui.entrance.exceptions.ServiceException;
 import com.cloudorc.solidui.plugin.jdbc.ConnectDTO;
 import com.cloudorc.solidui.plugin.jdbc.JdbcClient;
@@ -71,31 +72,13 @@ public class DataSourceUtils {
     public static JdbcClient queryJdbcClient(String typeName,DataSource dataSource) throws SQLException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         JdbcClient jdbcClient = null;
         JdbcClientFactory jdbcClientFactory = DataSourceUtils.queryJdbcClientFactory(typeName);
-        DataSourceUtils.mergeParams(dataSource, dataSource.getParameter());
-        ConnectDTO connectDTO = jdbcClientFactory.getConnectDTO(dataSource.getConnectParams());
+        DataSourceDTO dataSourceDTO = new DataSourceDTO();
+        dataSourceDTO.setId(dataSource.getId());
+        dataSourceDTO.setParameter(dataSource.getParameter());
+        ConnectDTO connectDTO = jdbcClientFactory.getConnectDTO(dataSourceDTO.getConnectParams());
         if(connectDTO != null) {
              jdbcClient = jdbcClientFactory.createJdbcClient(connectDTO);
         }
         return jdbcClient;
-    }
-
-    public static DataSource mergeParams(DataSource dataSource, String parameter) {
-        dataSource.setParameter(parameter);
-        if (StringUtils.isNotBlank(parameter)) {
-            Map<String, Object> connectParams = new HashMap<>();
-            try {
-                connectParams = Objects.requireNonNull(JSONUtils.parseObject(parameter, new TypeReference<Map<String, Object>>() {}));
-            } catch (ServiceException e) {
-                logger.warn(
-                        "Unrecognized the parameter: "
-                                + parameter
-                                + " in data source, id: ["
-                                + dataSource.getId()
-                                + "]",
-                        e);
-            }
-            dataSource.setConnectParams(connectParams);
-        }
-        return dataSource;
     }
 }

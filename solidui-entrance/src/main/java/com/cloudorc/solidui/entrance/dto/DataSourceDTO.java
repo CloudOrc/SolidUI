@@ -20,10 +20,13 @@ package com.cloudorc.solidui.entrance.dto;
 import com.cloudorc.solidui.common.utils.JSONUtils;
 import com.cloudorc.solidui.dao.entity.DataSourceTypeKey;
 import com.cloudorc.solidui.dao.entity.DataSourceType;
+import com.cloudorc.solidui.entrance.utils.DataSourceUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -35,7 +38,7 @@ import java.util.*;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
 public class DataSourceDTO {
-
+    private final static Logger logger = LoggerFactory.getLogger(DataSourceDTO.class);
     private Long id;
     /** Data source name */
     @NotNull
@@ -175,7 +178,13 @@ public class DataSourceDTO {
             try {
                 connectParams.putAll(Objects.requireNonNull(JSONUtils.parseObject(parameter, Map.class)));
             } catch (Exception e) {
-                // Ignore
+                logger.warn(
+                        "Unrecognized the parameter: "
+                                + parameter
+                                + " in data source, id: ["
+                                + id
+                                + "]",
+                        e);
             }
         }
         return connectParams;
