@@ -277,6 +277,7 @@
                     <charset>${project.build.sourceEncoding}</charset>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <docencoding>${project.build.sourceEncoding}</docencoding>
+                    <excludePackageNames>com.cloudorc.solidui.plugin.jdbc.*</excludePackageNames>
                 </configuration>
                 <executions>
                     <execution>
@@ -474,9 +475,6 @@
                         </goals>
                         <configuration>
                             <ignoredDependencies>
-                                <!-- Because of SpringBoot auto-configurations, the configuration is happening outside of your application code, so Maven believes these dependencies to be unused -->
-                                <!-- Static code analysis tools like (maven-dependency-plugin) can not detect runtime dependencies, so you should instruct them about runtime dependencies -->
-                                <!-- https://stackoverflow.com/questions/37528928/spring-boot-core-dependencies-seen-as-unused-by-maven-dependency-plugin -->
                                 <ignoredDependency>org.springframework*:*</ignoredDependency>
                             </ignoredDependencies>
                             <ignoreNonCompile>true</ignoreNonCompile>

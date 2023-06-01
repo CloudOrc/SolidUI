@@ -15,15 +15,14 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>solidui-datasource-plugin</artifactId>
         <groupId>com.cloudorc.solidui</groupId>
+        <artifactId>solidui-datasource-plugin</artifactId>
         <version>0.1.0</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>solidui-datasource-mysql</artifactId>
 
@@ -33,10 +32,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.cloudorc.solidui</groupId>
-            <artifactId>solidui-spi</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.cloudorc.solidui</groupId>
             <artifactId>solidui-datasource-jdbc</artifactId>

@@ -37,5 +37,10 @@
             <artifactId>solidui-datasource-mysql</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.cloudorc.solidui</groupId>
+            <artifactId>solidui-datasource-doris</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

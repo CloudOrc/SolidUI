@@ -34,10 +34,6 @@
     <dependencies>
         <dependency>
             <groupId>com.cloudorc.solidui</groupId>
-            <artifactId>solidui-spi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.cloudorc.solidui</groupId>
             <artifactId>solidui-datasource-jdbc</artifactId>
             <version>${project.version}</version>
         </dependency>
