@@ -23,7 +23,7 @@
     <version>0.1.0</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
-    <description>3D data visualization prototyping and editing platform</description>
+    <description>AI-generated visualization prototyping and editing platform</description>
 
     <modules>
         <module>solidui-entrance</module>
@@ -97,6 +97,12 @@
             <dependency>
                 <groupId>com.cloudorc.solidui</groupId>
                 <artifactId>solidui-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.cloudorc.solidui</groupId>
+                <artifactId>solidui-datasource-plugin</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

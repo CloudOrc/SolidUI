@@ -18,31 +18,31 @@
 <assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
-    <id>bin</id>
+    <id>solidui-entrance-server</id>
     <formats>
-        <format>tar.gz</format>
         <format>dir</format>
     </formats>
-    <includeBaseDirectory>true</includeBaseDirectory>
-    <baseDirectory>solidui-bin</baseDirectory>
-
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <baseDirectory>entrance-server</baseDirectory>
     <fileSets>
-
         <fileSet>
-            <directory>${basedir}/../solidui-entrance/target/entrance-server</directory>
-            <outputDirectory>entrance-server</outputDirectory>
+            <directory>${basedir}/src/main/resources</directory>
+            <includes>
+                <include>*.yaml</include>
+                <include>*.xml</include>
+            </includes>
+            <outputDirectory>conf</outputDirectory>
         </fileSet>
-
-
         <fileSet>
-            <directory>${basedir}/../solidui-dist/target/solidui-dist-${project.version}</directory>
-            <outputDirectory>.</outputDirectory>
-        </fileSet>
-
-
-        <fileSet>
-            <directory>${basedir}/release-docs</directory>
-            <outputDirectory>.</outputDirectory>
+            <directory>${basedir}/src/main/bin</directory>
+            <outputDirectory>bin</outputDirectory>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
         </fileSet>
     </fileSets>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>libs</outputDirectory>
+        </dependencySet>
+    </dependencySets>
 </assembly>
