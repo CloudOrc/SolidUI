@@ -74,7 +74,13 @@ SolidUI v0.1.0 的完整文档列表，请参见 [SolidUI-Doc](https://github.co
 
 我们创建了一个 issue [[Who is Using SolidUI]](https://github.com/CloudOrc/SolidUI/issues/1) 以便用户反馈和记录谁在使用 SolidUI.  
 
+# 👩‍💻Contributors
 
+Thanks to everyone who contributed PR~ 🎉🎉🎉
+
+<a href="https://github.com/CloudOrc/SolidUI/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=CloudOrc/SolidUI" />
+</a>
 
 # ⭐Star History
 
