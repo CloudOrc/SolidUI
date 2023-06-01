@@ -468,6 +468,39 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--mvn license:add-third-party-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.0.0</version>
+                <executions>
+                    <execution>
+                        <id>license-check</id>
+                        <configuration>
+                            <!--<includedScopes>compile</includedScopes>-->
+                            <licenseMerges>
+                                <licenseMerge>Apache License, Version 2.0|ASF 2.0|Apache 2.0 License|Apache 2.0|Apache 2|Apache License 2.0|Apache License Version 2.0|Apache License Version 2|Apache License v2.0|Apache License|Apache Public License 2.0|Apache Software License - Version 2.0|Apache v2|Apache-2.0|Apache_2_0_license
+                                    Apache|The Apache License, Version 2.0|The Apache Software License, Version 2.0|</licenseMerge>
+                                <licenseMerge>MIT License|The MIT License</licenseMerge>
+                                <licenseMerge>The 3-Clause BSD License|BSD-3-Clause|BSD 3-Clause|New BSD License|BSD 3-Clause License|BSD|3-Clause BSD License|New BSD license|The New BSD License|The BSD 3-Clause License</licenseMerge>
+                                <licenseMerge>The 2-Clause BSD License|BSD-2-Clause|The BSD License|BSD License</licenseMerge>
+                                <licenseMerge>Mozilla Public License Version 1.1|MPL 1.1</licenseMerge>
+                                <licenseMerge>CDDL_1.0|CDDL 1.0</licenseMerge>
+                                <licenseMerge>CDDL_1.0|COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0</licenseMerge>
+                                <licenseMerge>CDDL_1.0|Common_Development_and_Distribution_License_(CDDL)_v1_0</licenseMerge>
+                                <licenseMerge>CDDL_1.0|Common Development and Distribution License (CDDL) v1.0</licenseMerge>
+                                <licenseMerge>CDDL_1.0|CDDL 1.0 license</licenseMerge>
+                                <licenseMerge>CDDL_1.0|CDDL 2</licenseMerge>
+                                <licenseMerge>Eclipse Public License-1|Common_Public_License_Version_1_0</licenseMerge>
+                                <licenseMerge>Eclipse Public License-1|Eclipse_Public_License_-_Version_1_0</licenseMerge>
+                                <licenseMerge>Eclipse Public License-1|EPL 1.0 license</licenseMerge>
+
+                                <licenseMerge>GPL|GNU General Public Library</licenseMerge>
+                            </licenseMerges>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <url>https://github.com/CloudOrc/SolidUI</url>
