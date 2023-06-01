@@ -54,69 +54,41 @@
 
     <build>
         <finalName>solidui-${project.version}</finalName>
-    </build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>solidui-bin</id>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <phase>package</phase>
 
-    <profiles>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-install-plugin</artifactId>
                         <configuration>
-                            <skip>true</skip>
+                            <descriptors>
+                                <descriptor>src/main/assembly/solidui-bin.xml</descriptor>
+                            </descriptors>
+                            <appendAssemblyId>true</appendAssemblyId>
                         </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <phase>package</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>solidui-bin</id>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                                <phase>package</phase>
+                    </execution>
 
-                                <configuration>
-                                    <descriptors>
-                                        <descriptor>src/main/assembly/solidui-bin.xml</descriptor>
-                                    </descriptors>
-                                    <appendAssemblyId>true</appendAssemblyId>
-                                </configuration>
-                            </execution>
+                    <execution>
+                        <id>src</id>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/solidui-src.xml</descriptor>
+                            </descriptors>
+                            <appendAssemblyId>true</appendAssemblyId>
+                        </configuration>
+                    </execution>
 
-                            <execution>
-                                <id>src</id>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                                <phase>package</phase>
-                                <configuration>
-                                    <descriptors>
-                                        <descriptor>src/main/assembly/solidui-src.xml</descriptor>
-                                    </descriptors>
-                                    <appendAssemblyId>true</appendAssemblyId>
-                                </configuration>
-                            </execution>
-
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

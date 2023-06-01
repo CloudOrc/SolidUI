@@ -33,12 +33,10 @@
             <outputDirectory>entrance-server</outputDirectory>
         </fileSet>
 
-
         <fileSet>
             <directory>${basedir}/../solidui-dist/target/solidui-dist-${project.version}</directory>
             <outputDirectory>.</outputDirectory>
         </fileSet>
-
 
         <fileSet>
             <directory>${basedir}/release-docs</directory>
