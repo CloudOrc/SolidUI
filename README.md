@@ -72,3 +72,11 @@ We welcome and look forward to more contributors participating in building Solid
 # Who is using SolidUI
 
 We created an issue [[Who is Using SolidUI]](https://github.com/CloudOrc/SolidUI/issues/1) for user feedback and documentation of who is using SolidUI.
+
+
+# ⭐Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=CloudOrc/SolidUI&type=Date)](https://star-history.com/#CloudOrc/SolidUI&Date)
+
+
+<p align="center"><a href="https://github.com/CloudOrc/SolidUI#"><img src="https://superagi.com/wp-content/uploads/2023/05/backToTopButton.png" alt="Back to top" height="29"/></a></p>

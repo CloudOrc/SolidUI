@@ -75,3 +75,10 @@ SolidUI v0.1.0 的完整文档列表，请参见 [SolidUI-Doc](https://github.co
 我们创建了一个 issue [[Who is Using SolidUI]](https://github.com/CloudOrc/SolidUI/issues/1) 以便用户反馈和记录谁在使用 SolidUI.  
 
 
+
+# ⭐Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=CloudOrc/SolidUI&type=Date)](https://star-history.com/#CloudOrc/SolidUI&Date)
+
+
+<p align="center"><a href="https://github.com/CloudOrc/SolidUI#"><img src="https://superagi.com/wp-content/uploads/2023/05/backToTopButton.png" alt="Back to top" height="29"/></a></p>
