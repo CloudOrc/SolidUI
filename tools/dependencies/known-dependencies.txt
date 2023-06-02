@@ -359,3 +359,8 @@ opentracing-util-0.33.0.jar
 jdom2-2.0.6.1.jar
 jettison-1.1.jar
 stax-api-1.0.1.jar
+log4j-api-2.17.2.jar
+log4j-to-slf4j-2.17.2.jar
+mysql-connector-java-8.0.16.jar
+protobuf-java-3.6.1.jar
+validation-api-2.0.1.Final.jar
