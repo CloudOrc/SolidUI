@@ -35,7 +35,7 @@
 # ----------------------------------------------------------------------------
 
 # A Maven Wrapper script for SolidU
-# Based on the Apache Linkis project's mvnw script
+# Based on the SolidUI project's mvnw script
 
 # Set the default Maven version
 DEFAULT_MAVEN_VERSION="3.6.3"

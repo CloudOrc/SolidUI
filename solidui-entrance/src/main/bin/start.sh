@@ -28,7 +28,7 @@ if [ ! -w "$SOLIDUI_PID_DIR" ] ; then
 fi
 
 if [ "$SOLIDUI_LOG_DIR" = "" ]; then
-  export SOLIDUI_LOG_DIR="$LINKIS_HOME/logs"
+  export SOLIDUI_LOG_DIR="$SOLIDUI_HOME/logs"
 fi
 
 if [ ! -w "$SOLIDUI_LOG_DIR" ] ; then

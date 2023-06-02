@@ -20,7 +20,7 @@
 @echo off
 
 :: A Maven Wrapper script for SolidU
-:: Based on the Apache Linkis project's mvnw.cmd script
+:: Based on the SolidUI project's mvnw.cmd script
 
 setlocal
 
