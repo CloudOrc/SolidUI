@@ -64,6 +64,7 @@
         <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
         <owasp-dependency-check-maven.version>7.1.2</owasp-dependency-check-maven.version>
         <lombok.version>1.18.20</lombok.version>
+        <apache-rat-plugin.version>0.13</apache-rat-plugin.version>
         <skipDepCheck>true</skipDepCheck>
 
     </properties>
@@ -468,6 +469,63 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!--mvn apache-rat:check-->
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <version>${apache-rat-plugin.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*.versionsBackup</exclude>
+                        <exclude>**/.idea/</exclude>
+                        <exclude>**/*.iml</exclude>
+                        <exclude>**/*.txt</exclude>
+                        <exclude>**/*.json</exclude>
+                        <exclude>solidui-web/.editorconfig</exclude>
+                        <exclude>solidui-web/.env</exclude>
+                        <exclude>solidui-web/.eslintignore</exclude>
+                        <exclude>solidui-web/.jshintrc</exclude>
+                        <exclude>solidui-web/.nvmrc</exclude>
+                        <exclude>solidui-web/.browserslistrc</exclude>
+                        <exclude>solidui-web/.npmrc</exclude>
+
+                        <exclude>solidui-web/public/favicon.ico</exclude>
+                        <exclude>solidui-web/dist/**</exclude>
+                        <exclude>solidui-web/node_modules/**</exclude>
+                        <exclude>solidui-web/solidui-*-web-bin.tar.gz</exclude>
+
+                        <exclude>**/*.md</exclude>
+                        <exclude>.git/</exclude>
+                        <exclude>.gitignore</exclude>
+                        <exclude>**/.settings/*</exclude>
+                        <exclude>**/.classpath</exclude>
+                        <exclude>**/.project</exclude>
+                        <exclude>**/target/**</exclude>
+                        <exclude>**/out/**</exclude>
+                        <exclude>**/*.log</exclude>
+                        <exclude>CONTRIBUTING.md</exclude>
+                        <exclude>CONTRIBUTING_CN.md</exclude>
+                        <exclude>DISCLAIMER</exclude>
+                        <exclude>DISCLAIMER</exclude>
+                        <exclude>README.md</exclude>
+                        <exclude>**/META-INF/**</exclude>
+                        <exclude>.github/**</exclude>
+                        <exclude>compiler/**</exclude>
+                        <exclude>**/generated/**</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>rat-validate</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>validate</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!--mvn license:add-third-party-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

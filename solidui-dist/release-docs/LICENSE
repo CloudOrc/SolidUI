@@ -212,7 +212,7 @@ Apache 2.0 licenses
 ========================================================================
 
 The following components are provided under the Apache License. See project link for details.
-The text of each license is the standard Apache 2.0 license.
+The text of each license is also included at licenses/LICENSE-[project].txt.
 
      (Eclipse Public License - v 1.0) (GNU Lesser General Public License) Logback Classic Module (ch.qos.logback:logback-classic:1.2.11 - http://logback.qos.ch/logback-classic)
      (Eclipse Public License - v 1.0) (GNU Lesser General Public License) Logback Core Module (ch.qos.logback:logback-core:1.2.11 - http://logback.qos.ch/logback-core)

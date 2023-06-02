@@ -15,15 +15,34 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.dao.mapper;
+// import * as React from "react";
+// import { SolidEditorContext } from "../SolidEditorContext";
+// import { SOLID_EDITOR_PROPERTIES } from "../utils/const";
 
-import com.cloudorc.solidui.dao.entity.DataSourceType;
+// function connectContext(
+// 	context: React.Context<any>,
+// 	properties: readonly string[]
+// ) {
+// 	return function (Component: any) {
+// 		const prototype = Component.prototype;
 
-import java.util.List;
+// 		Component.contextType = context;
+// 		properties.forEach((name) => {
+// 			Object.defineProperty(prototype, name, {
+// 				get: function () {
+// 					return this.context[name];
+// 				},
+// 				set: function () {
+// 					this.context[name](name);
+// 				},
+// 			});
+// 		});
+// 	};
+// }
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+// const connectEditorContext = connectContext(
+// 	SolidEditorContext,
+// 	SOLID_EDITOR_PROPERTIES
+// );
 
-public interface DataSourceTypeMapper extends BaseMapper<DataSourceType> {
-
-    List<DataSourceType> queryAllTypes();
-}
+// export default connectEditorContext;
