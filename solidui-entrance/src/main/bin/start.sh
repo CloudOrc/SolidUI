@@ -19,10 +19,22 @@ source ~/.bash_profile
 BIN_DIR=$(dirname $0)
 SOLIDUI_HOME=${SOLIDUI_HOME:-$(cd $BIN_DIR/..; pwd)}
 SOLIDUI_PID_DIR="${SOLIDUI_HOME}/pid"
+SOLIDUI_LOG_DIR="${SOLIDUI_HOME}/logs"
+SERVER_NAME="entrance-server"
 
-if [ ! -w "$LINKIS_PID_DIR" ] ; then
-  mkdir -p "$LINKIS_PID_DIR"
+
+if [ ! -w "$SOLIDUI_PID_DIR" ] ; then
+  mkdir -p "$SOLIDUI_PID_DIR"
 fi
+
+if [ "$SOLIDUI_LOG_DIR" = "" ]; then
+  export SOLIDUI_LOG_DIR="$LINKIS_HOME/logs"
+fi
+
+if [ ! -w "$SOLIDUI_LOG_DIR" ] ; then
+  mkdir -p "$SOLIDUI_LOG_DIR"
+fi
+
 
 # set JAVA_HOME
 if [ "$JAVA_HOME" = "" ]; then
@@ -39,7 +51,18 @@ if [[ -f "$SOLIDUI_PID_DIR/solidui.pid" ]]; then
     exit 0
 fi
 
-$JAVA_HOME/bin/java $JAVA_OPTS \
+echo  "=====Java Start Command====="
+nohup $JAVA_HOME/bin/java $JAVA_OPTS \
   -cp "$SOLIDUI_HOME/conf":"$SOLIDUI_HOME/libs/*" \
-  com.cloudorc.solidui.entrance.EntranceApplicationServer &
-echo $! > $SOLIDUI_PID_DIR/solidui.pid
+  com.cloudorc.solidui.entrance.EntranceApplicationServer 2>&1 > $SOLIDUI_LOG_DIR/${SERVER_NAME}.out &
+
+
+pid=$!
+sleep 2
+if [[ -z "${pid}" ]]; then
+    echo "server $SERVER_NAME start failed!"
+    exit 1
+else
+    echo "server $SERVER_NAME start succeeded!"
+    echo $pid > $SOLIDUI_PID_DIR/solidui.pid
+fi
