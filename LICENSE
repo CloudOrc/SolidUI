@@ -214,3 +214,10 @@ Apache 2.0 licenses
 The following components are provided under the Apache License. See project link for details.
 The text of each license is the standard Apache 2.0 license.
 
+The files:
+    .mvn/wrapper/MavenWrapperDownloader.java
+    .mvn/wrapper/maven-wrapper.properties
+    mvnw
+    mvnw.cmd
+Are provided from the Github Project: https://github.com/takari/maven-wrapper
+which is distributed under the Apache 2.0 license.
