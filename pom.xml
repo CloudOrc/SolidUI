@@ -560,6 +560,20 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.jasig.maven</groupId>
+                <artifactId>maven-notice-plugin</artifactId>
+                <version>1.1.0</version>
+                <configuration>
+                    <generateChildNotices>true</generateChildNotices>
+                    <noticeTemplate>https://source.jasig.org/licenses/NOTICE.template</noticeTemplate>
+                    <licenseMapping>
+                        <param>https://source.jasig.org/licenses/license-mappings.xml</param>
+                    </licenseMapping>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
     <url>https://github.com/CloudOrc/SolidUI</url>

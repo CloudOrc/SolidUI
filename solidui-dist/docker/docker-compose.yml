@@ -1,0 +1,68 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+version: "3.8"
+
+services:
+  solidui-entrance:
+    build:
+      context: ../../solidui-entrance
+      dockerfile: Dockerfile-backend
+    command: /bin/start.sh
+    volumes:
+      - solidui-logs:/opt/solidui/logs
+    networks:
+      - solidui
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: solidui
+      MYSQL_USER: solidui
+      MYSQL_PASSWORD: solidui
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - solidui
+#
+#  solidui-web:
+#    build:
+#      context: ../../solidui-web
+#      dockerfile: Dockerfile-frontend
+#    networks:
+#      - solidui
+#
+#  nginx:
+#    image: nginx:latest
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - ./nginx.conf:/etc/nginx/nginx.conf
+#    depends_on:
+#      - solidui-web
+#    networks:
+#      - solidui
+
+networks:
+  solidui:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  solidui-logs:

@@ -1,5 +1,180 @@
-SolidUI
-Copyright 2022 The Apache Software Foundation
+Licensed to Apereo under one or more contributor license
+agreements. See the NOTICE file distributed with this work
+for additional information regarding copyright ownership.
+Apereo licenses this file to you under the Apache License,
+Version 2.0 (the "License"); you may not use this file
+except in compliance with the License.  You may obtain a
+copy of the License at the following location:
 
-This product includes software developed at
-The Apache Software Foundation (http://www.apache.org/).
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+
+This project includes:
+  Apache Commons BeanUtils under Apache License, Version 2.0
+  Apache Commons Codec under Apache License, Version 2.0
+  Apache Commons Collections under Apache License, Version 2.0
+  Apache Commons IO under Apache License, Version 2.0
+  Apache Commons Lang under Apache License, Version 2.0
+  Apache HttpClient under Apache License, Version 2.0
+  Apache HttpCore under Apache License, Version 2.0
+  Apache Log4j API under Apache License, Version 2.0
+  Apache Log4j to SLF4J Adapter under Apache License, Version 2.0
+  asm under BSD-3-Clause
+  ASM based accessors helper used by json-smart under The Apache Software License, Version 2.0
+  AspectJ Weaver under Eclipse Public License - v 2.0
+  AssertJ fluent assertions under Apache License, Version 2.0
+  Auto Common Libraries under Apache 2.0
+  AutoService under Apache 2.0
+  AutoService Processor under Apache 2.0
+  Bean Validation API under Apache License 2.0
+  Byte Buddy (without dependencies) under Apache License, Version 2.0
+  Byte Buddy agent under Apache License, Version 2.0
+  Checker Qual under The MIT License
+  ClassGraph under The MIT License (MIT)
+  ClassMate under Apache License, Version 2.0
+  Commons Logging under The Apache Software License, Version 2.0
+  commons-compiler under BSD-3-Clause
+  error-prone annotations under Apache 2.0
+  FindBugs-jsr305 under The Apache Software License, Version 2.0
+  Guava InternalFutureFailureAccess and InternalFutures under The Apache Software License, Version 2.0
+  Guava ListenableFuture only under The Apache Software License, Version 2.0
+  guava-retrying under The Apache Software License, Version 2.0
+  Guava: Google Core Libraries for Java under Apache License, Version 2.0
+  H2 Database Engine under MPL 2.0 or EPL 1.0
+  Hamcrest under BSD License 3
+  Hamcrest Core under New BSD License
+  Hibernate Validator Engine under Apache License 2.0
+  HikariCP under The Apache Software License, Version 2.0
+  IntelliJ IDEA Annotations under The Apache Software License, Version 2.0
+  J2ObjC Annotations under The Apache Software License, Version 2.0
+  Jackson datatype: jdk8 under The Apache Software License, Version 2.0
+  Jackson datatype: JSR310 under The Apache Software License, Version 2.0
+  Jackson-annotations under The Apache Software License, Version 2.0
+  Jackson-core under The Apache Software License, Version 2.0
+  jackson-databind under The Apache Software License, Version 2.0
+  Jackson-module-parameter-names under The Apache Software License, Version 2.0
+  JaCoCo :: Agent under Eclipse Public License 2.0
+  Jakarta Activation API jar under EDL 1.0
+  Jakarta Annotations API under EPL 2.0 or GPL2 w/ CPE
+  Jakarta Bean Validation API under Apache License 2.0
+  Jakarta Servlet under EPL 2.0 or GPL2 w/ CPE
+  Jakarta WebSocket - Server API under Eclipse Public License 2.0 or GNU General Public License, version 2 with the GNU Classpath Exception
+  Jakarta XML Binding API under Eclipse Distribution License - v 1.0
+  janino under New BSD License
+  Javassist under MPL 1.1 or LGPL 2.1 or Apache License 2.0
+  JBoss Logging 3 under Apache License, version 2.0
+  Jetty :: Continuation under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: Http Utility under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: IO Utility under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: Security under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: Server Core under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: Servlet Handling under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: Utilities under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: Utilities :: Ajax(JSON) under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: Utility Servlets and Filters under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: Webapp Application Support under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: XML utilities under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty Server under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty Utilities under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  JSON library from Android SDK under Apache License 2.0
+  JSON Small and Fast Parser under The Apache Software License, Version 2.0
+  JSONassert under The Apache Software License, Version 2.0
+  JSQLParser library under GNU Library or Lesser General Public License (LGPL) V2.1 or The Apache Software License, Version 2.0
+  JUL to SLF4J bridge under MIT License
+  JUnit under Eclipse Public License 1.0
+  JUnit Jupiter (Aggregator) under Eclipse Public License v2.0
+  JUnit Jupiter API under Eclipse Public License v2.0
+  JUnit Jupiter Engine under Eclipse Public License v2.0
+  JUnit Jupiter Params under Eclipse Public License v2.0
+  JUnit Platform Commons under Eclipse Public License v2.0
+  JUnit Platform Engine API under Eclipse Public License v2.0
+  JUnit Vintage Engine under Eclipse Public License v2.0
+  Kotlin Stdlib under The Apache License, Version 2.0
+  Kotlin Stdlib Common under The Apache License, Version 2.0
+  Kotlin Stdlib Jdk7 under The Apache License, Version 2.0
+  Kotlin Stdlib Jdk8 under The Apache License, Version 2.0
+  Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
+  Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
+  MapStruct Core under The Apache Software License, Version 2.0
+  mockito-core under The MIT License
+  mockito-junit-jupiter under The MIT License
+  mybatis under The Apache Software License, Version 2.0
+  mybatis-plus under The Apache License, Version 2.0
+  mybatis-spring under The Apache Software License, Version 2.0
+  MySQL Connector/J under The GNU General Public License, v2 with FOSS exception
+  Objenesis under Apache License, Version 2.0
+  org.apiguardian:apiguardian-api under The Apache License, Version 2.0
+  org.opentest4j:opentest4j under The Apache License, Version 2.0
+  org.xmlunit:xmlunit-core under The Apache Software License, Version 2.0
+  PowerMock under The Apache Software License, Version 2.0
+  project ':json-path' under The Apache Software License, Version 2.0
+  Project Lombok under The MIT License
+  Protocol Buffers [Core] under 3-Clause BSD License
+  Servlet Specification API under Apache License Version 2.0
+  servlet-api under Commons Development and Distribution License, Version 1.0
+  SLF4J API Module under MIT License
+  SnakeYAML under Apache License, Version 2.0
+  solidui under Apache License 2.0
+  solidui-bom under Apache License 2.0
+  solidui-common under Apache License 2.0
+  solidui-dao under Apache License 2.0
+  solidui-datasource-all under Apache License 2.0
+  solidui-datasource-doris under Apache License 2.0
+  solidui-datasource-jdbc under Apache License 2.0
+  solidui-datasource-mysql under Apache License 2.0
+  solidui-datasource-plugin under Apache License 2.0
+  solidui-dist under Apache License 2.0
+  solidui-entrance under Apache License 2.0
+  solidui-service under Apache License 2.0
+  solidui-spi under Apache License 2.0
+  Spring AOP under Apache License, Version 2.0
+  Spring Beans under Apache License, Version 2.0
+  Spring Commons Logging Bridge under Apache License, Version 2.0
+  Spring Context under Apache License, Version 2.0
+  Spring Core under Apache License, Version 2.0
+  Spring Expression Language (SpEL) under Apache License, Version 2.0
+  Spring JDBC under Apache License, Version 2.0
+  Spring LDAP Core under The Apache Software License, Version 2.0
+  Spring Plugin - Core under Apache License, Version 2.0
+  Spring Plugin - Metadata Extension under Apache License, Version 2.0
+  Spring TestContext Framework under Apache License, Version 2.0
+  Spring Transaction under Apache License, Version 2.0
+  Spring Web under Apache License, Version 2.0
+  Spring Web MVC under Apache License, Version 2.0
+  spring-boot under Apache License, Version 2.0
+  spring-boot-actuator under Apache License, Version 2.0
+  spring-boot-autoconfigure under Apache License, Version 2.0
+  spring-boot-configuration-processor under Apache License, Version 2.0
+  spring-boot-starter under Apache License, Version 2.0
+  spring-boot-starter-aop under Apache License, Version 2.0
+  spring-boot-starter-jdbc under Apache License, Version 2.0
+  spring-boot-starter-jetty under Apache License, Version 2.0
+  spring-boot-starter-json under Apache License, Version 2.0
+  spring-boot-starter-logging under Apache License, Version 2.0
+  spring-boot-starter-test under Apache License, Version 2.0
+  spring-boot-starter-web under Apache License, Version 2.0
+  spring-boot-test under Apache License, Version 2.0
+  spring-boot-test-autoconfigure under Apache License, Version 2.0
+  springfox-bean-validators under The Apache Software License, Version 2.0
+  springfox-boot-starter under The Apache Software License, Version 2.0
+  springfox-core under The Apache Software License, Version 2.0
+  springfox-data-rest under The Apache Software License, Version 2.0
+  springfox-oas under The Apache Software License, Version 2.0
+  springfox-schema under The Apache Software License, Version 2.0
+  springfox-spi under The Apache Software License, Version 2.0
+  springfox-spring-web under The Apache Software License, Version 2.0
+  springfox-spring-webflux under The Apache Software License, Version 2.0
+  springfox-spring-webmvc under The Apache Software License, Version 2.0
+  springfox-swagger-common under The Apache Software License, Version 2.0
+  springfox-swagger-ui under The Apache Software License, Version 2.0
+  springfox-swagger2 under The Apache Software License, Version 2.0
+  swagger-annotations under Apache License 2.0
+  swagger-models under Apache License 2.0
+  tomcat-embed-el under Apache License, Version 2.0
+
