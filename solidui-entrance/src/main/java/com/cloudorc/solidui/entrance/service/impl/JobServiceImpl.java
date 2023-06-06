@@ -237,8 +237,7 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
         // Retrieve the list of JobElementPage associated with the projectId and pageId
         List<JobElementPage> jobElementPages = jobElementPageMapper.selectByProjectIdAndPageId(pageId);
         if (jobElementPages == null || jobElementPages.isEmpty()) {
-            putMsg(result, Status.QUERY_JOB_ERROR);
-            return result;
+            return Result.success();
         }
 
         JobElementPageVO jobElementPageVOs = new JobElementPageVO();
