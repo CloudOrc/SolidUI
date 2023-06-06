@@ -110,8 +110,7 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
 
         List<JobElementPageVO.View> views = jobElementPageVO.getViews();
         if (views == null || views.size() == 0) {
-            putMsg(result, Status.CREATE_JOB_ERROR);
-            return result;
+            return Result.success();
         }
 
         // views for JobElementDTO
@@ -166,7 +165,7 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
         }
 
         JobElementPageVO.Page page = jobElementPageVO.getPage();
-        if (page == null) {
+        if (page == null || page.getId() == null) {
             putMsg(result, Status.UPDATE_JOB_ERROR);
             return result;
         }
@@ -175,81 +174,51 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
             putMsg(result, Status.UPDATE_JOB_ERROR);
             return result;
         }
-
+        Long pageId = page.getId();
+        List<JobElementPage> jobElementPages = jobElementPageMapper.selectByProjectIdAndPageId(pageId);
+        if (!jobElementPages.isEmpty()) {
+            for (JobElementPage ep : jobElementPages) {
+                jobElementMapper.deleteById(ep.getJobElementId());
+                jobElementPageMapper.deleteById(ep.getId());
+            }
+        }
         // Omitting the validation of project ID and other properties, as you have already done this in the createJob
         // method
         List<JobElementPageVO.View> views = jobElementPageVO.getViews();
         if (views == null || views.isEmpty()) {
-            putMsg(result, Status.UPDATE_JOB_ERROR);
-            return result;
+            return Result.success();
         }
 
         // Iterate through views and update JobElement and JobElementPage
         for (JobElementPageVO.View view : views) {
             // Retrieve JobElement
-            JobElement jobElement = jobElementMapper.selectById(view.getId());
-            if (jobElement == null) {
-                // Update JobElement data
-                jobElement = new JobElement();
-                jobElement.setProjectId(projectId);
-                jobElement.setDataType(view.getType());
-                jobElement.setName(view.getTitle());
-                jobElement.setCreateTime(new Date());
-                jobElement.setUpdateTime(new Date());
-                JobElementDTO.DataView dataView = deepCopyViewToDataView(view);
-                String data = JSONUtils.toJsonString(dataView);
-                jobElement.setData(data);
-                if (jobElementMapper.insert(jobElement) > 0) {
 
-                    JobElementPage jobElementPage = new JobElementPage();
-                    jobElementPage.setJobPageId(page.getId());
-                    jobElementPage.setJobElementId(jobElement.getId());
-                    jobElementPage.setCreateTime(new Date());
-                    jobElementPage.setUpdateTime(new Date());
-                    jobElementPage.setPosition(JSONUtils.toJsonString(size));
-                    if (jobElementPageMapper.insert(jobElementPage) <= 0) {
-                        putMsg(result, Status.UPDATE_JOB_ERROR);
-                        return result;
-                    }
+            JobElement jobElement = new JobElement();
+            jobElement.setProjectId(projectId);
+            jobElement.setDataType(view.getType());
+            jobElement.setName(view.getTitle());
+            jobElement.setCreateTime(new Date());
+            jobElement.setUpdateTime(new Date());
+            JobElementDTO.DataView dataView = deepCopyViewToDataView(view);
+            String data = JSONUtils.toJsonString(dataView);
+            jobElement.setData(data);
+            if (jobElementMapper.insert(jobElement) > 0) {
 
-                } else {
+                JobElementPage jobElementPage = new JobElementPage();
+                jobElementPage.setJobPageId(page.getId());
+                jobElementPage.setJobElementId(jobElement.getId());
+                jobElementPage.setCreateTime(new Date());
+                jobElementPage.setUpdateTime(new Date());
+                jobElementPage.setPosition(JSONUtils.toJsonString(size));
+                if (jobElementPageMapper.insert(jobElementPage) <= 0) {
                     putMsg(result, Status.UPDATE_JOB_ERROR);
                     return result;
                 }
 
             } else {
-                // Update JobElement data
-                jobElement.setDataType(view.getType());
-                jobElement.setName(view.getTitle());
-                jobElement.setUpdateTime(new Date());
-                JobElementDTO.DataView dataView = deepCopyViewToDataView(view);
-                String data = JSONUtils.toJsonString(dataView);
-                jobElement.setData(data);
-
-                // Update JobElement record
-                if (jobElementMapper.updateById(jobElement) <= 0) {
-                    putMsg(result, Status.UPDATE_JOB_ERROR);
-                    return result;
-                }
-
-                // Retrieve JobElementPage associated with JobElement
-                JobElementPage jobElementPage = jobElementPageMapper.selectByJobElementId(jobElement.getId());
-                if (jobElementPage == null) {
-                    putMsg(result, Status.UPDATE_JOB_ERROR);
-                    return result;
-                }
-
-                // Update JobElementPage data
-                jobElementPage.setUpdateTime(new Date());
-                jobElementPage.setPosition(JSONUtils.toJsonString(jobElementPageVO.getSize()));
-
-                // Update JobElementPage record
-                if (jobElementPageMapper.updateById(jobElementPage) <= 0) {
-                    putMsg(result, Status.UPDATE_JOB_ERROR);
-                    return result;
-                }
+                putMsg(result, Status.UPDATE_JOB_ERROR);
+                return result;
             }
-
         }
 
         return Result.success();

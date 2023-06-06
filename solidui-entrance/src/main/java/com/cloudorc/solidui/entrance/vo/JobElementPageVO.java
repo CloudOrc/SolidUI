@@ -17,42 +17,45 @@
 
 package com.cloudorc.solidui.entrance.vo;
 
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 public class JobElementPageVO {
+
     private Long projectId;
     private Page page;
     private Size size;
     private List<View> views;
 
-    //JobElementPage name id
+    // JobElementPage name id
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor // Add this annotation
     public static class Page {
+
         private String name;
         private Long id;
 
         // Getters and setters
     }
-    //JobElementPage position
+    // JobElementPage position
     @Data
     public static class Size {
-        private double width;
-        private double height;
+
+        private String width;
+        private String height;
 
     }
-    //JobElementPage views
+    // JobElementPage views
     @Data
     public static class View {
+
         private Long id;
         private String title;
         private Position position;
@@ -64,13 +67,15 @@ public class JobElementPageVO {
         // Getters and setters
         @lombok.Data
         public static class Position {
-            private double top;
-            private double left;
+
+            private String top;
+            private String left;
 
             // Getters and setters
         }
         @lombok.Data
         public static class Data {
+
             private Long dataSourceId;
             private Long dataSourceTypeId;
             private String sql;

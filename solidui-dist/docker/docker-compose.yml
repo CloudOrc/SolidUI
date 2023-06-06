@@ -20,7 +20,7 @@ services:
   solidui-entrance:
     build:
       context: ../../solidui-entrance
-      dockerfile: Dockerfile-backend
+      dockerfile: Dockerfile
     command: /bin/start.sh
     volumes:
       - solidui-logs:/opt/solidui/logs

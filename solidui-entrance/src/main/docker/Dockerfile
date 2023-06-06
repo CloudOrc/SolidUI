@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# 使用官方的 OpenJDK 8 镜像作为基础镜像
 FROM openjdk:8-jdk as builder
 
 ENV DOCKER true

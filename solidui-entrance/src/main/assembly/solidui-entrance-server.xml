@@ -39,6 +39,12 @@
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
+        <fileSet>
+            <directory>${basedir}/src/main/docker</directory>
+            <outputDirectory>docker</outputDirectory>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
     </fileSets>
     <dependencySets>
         <dependencySet>

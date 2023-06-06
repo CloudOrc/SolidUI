@@ -24,7 +24,7 @@
         <format>dir</format>
     </formats>
     <includeBaseDirectory>true</includeBaseDirectory>
-    <baseDirectory>solidui-bin</baseDirectory>
+    <baseDirectory>${project.build.finalName}-bin</baseDirectory>
 
     <fileSets>
 
