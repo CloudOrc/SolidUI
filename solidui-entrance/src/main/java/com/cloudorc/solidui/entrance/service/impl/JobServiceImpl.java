@@ -178,8 +178,8 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
         List<JobElementPage> jobElementPages = jobElementPageMapper.selectByProjectIdAndPageId(pageId);
         if (!jobElementPages.isEmpty()) {
             for (JobElementPage ep : jobElementPages) {
-                jobElementMapper.deleteById(ep.getJobElementId());
                 jobElementPageMapper.deleteById(ep.getId());
+                jobElementMapper.deleteById(ep.getJobElementId());
             }
         }
         // Omitting the validation of project ID and other properties, as you have already done this in the createJob
