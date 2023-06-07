@@ -30,6 +30,8 @@
             <includes>
                 <include>*.yaml</include>
                 <include>*.xml</include>
+                <include>application-h2.properties</include>
+                <include>*.sql</include>
             </includes>
             <outputDirectory>conf</outputDirectory>
         </fileSet>
