@@ -60,6 +60,7 @@
     "webpack-merge": "5.8.0"
   },
   "dependencies": {
+    "@cfcs/core": "^0.1.0",
     "@icon-park/react": "^1.4.2",
     "@scena/react-guides": "0.22.3",
     "antd": "4.24.7",

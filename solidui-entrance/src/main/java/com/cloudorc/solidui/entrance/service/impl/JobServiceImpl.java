@@ -33,6 +33,7 @@ import com.cloudorc.solidui.entrance.utils.Result;
 import com.cloudorc.solidui.entrance.vo.JobElementPageVO;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -226,8 +227,9 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
 
     @Override
     public Result queryJobsByProjectId(Long projectId, Long pageId) {
+        JobElementPageVO jobElementPageVOs = new JobElementPageVO();
+        jobElementPageVOs.setProjectId(projectId);
         Result result = new Result();
-
         // Validate input parameters
         if (projectId == null || pageId == null) {
             putMsg(result, Status.QUERY_JOB_ERROR);
@@ -238,10 +240,12 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
         List<JobElementPage> jobElementPages = jobElementPageMapper.selectByProjectIdAndPageId(pageId);
         if (jobElementPages == null || jobElementPages.isEmpty()) {
             return Result.success();
+//            jobElementPageVOs.setViews(Collections.emptyList());
+//            result.setData(jobElementPageVOs);
+//            putMsg(result, Status.SUCCESS);
+//            return result;
         }
 
-        JobElementPageVO jobElementPageVOs = new JobElementPageVO();
-        jobElementPageVOs.setProjectId(projectId);
         boolean first = true;
         List<JobElementPageVO.View> views = new ArrayList<>();
         for (JobElementPage jobElementPage : jobElementPages) {
@@ -288,9 +292,12 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
         JobElementPageVO.View.Data newData = null;
         if (view.getData() != null) {
             newData = new JobElementPageVO.View.Data();
+            newData.setDataSourceName(view.getData().getDataSourceName());
             newData.setDataSourceId(view.getData().getDataSourceId());
             newData.setDataSourceTypeId(view.getData().getDataSourceTypeId());
+            newData.setDataSourceTypeName(view.getData().getDataSourceTypeName());
             newData.setSql(view.getData().getSql());
+            newData.setTable(view.getData().getTable());
         }
 
         // copy DataView

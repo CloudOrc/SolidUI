@@ -77,9 +77,11 @@ public class JobElementPageVO {
         public static class Data {
 
             private Long dataSourceId;
+            private String dataSourceName;
             private Long dataSourceTypeId;
+            private String dataSourceTypeName;
             private String sql;
-
+            private String table;
         }
 
     }

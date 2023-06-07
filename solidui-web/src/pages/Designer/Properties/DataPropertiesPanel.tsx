@@ -27,6 +27,7 @@ import {
 import Apis from "@/apis";
 import { ApiResult, DataSourceCascaderDataType } from "@/types";
 import useDataProperties from "./useDataProperties";
+import { mm } from "@/utils";
 
 const { TextArea } = Input;
 
@@ -37,18 +38,20 @@ export interface DataPropertiesPanelProps {}
 
 export default function (props: DataPropertiesPanelProps) {
 	const {
+		loading,
 		columns,
 		rows,
 		dataSources,
 		dataSourceOptions,
+		selectedDataSourceOptions,
+		changeDsSelections,
 		queryTables,
 		querySql,
 		changeSql,
 	} = useDataProperties();
-	const [previewEnable, setPreviewEnable] = useState<boolean>(false);
 
-	console.log(columns);
-	console.log(rows);
+	let view = mm.getCurrentView();
+	let data = view?.data || ({} as any);
 
 	const dropdownRender = (menus: React.ReactNode) => (
 		<div>
@@ -83,14 +86,15 @@ export default function (props: DataPropertiesPanelProps) {
 						<Col span={4}>datasource:</Col>
 						<Col span={16}>
 							<Cascader
+								loading={loading}
 								options={dataSourceOptions}
+								value={selectedDataSourceOptions}
 								loadData={(selectOptions) => {
 									let option = selectOptions[0];
 									queryTables(option.value as string);
 								}}
+								onChange={changeDsSelections}
 								showSearch
-								changeOnSelect
-								dropdownRender={dropdownRender}
 								placeholder="Please select a datasource"
 								size="small"
 								style={{
@@ -105,7 +109,11 @@ export default function (props: DataPropertiesPanelProps) {
 								style={{
 									width: "100%",
 								}}
-								disabled={!previewEnable}
+								disabled={
+									data.sql === undefined ||
+									data.sql == null ||
+									"" === data.sql.trim()
+								}
 								onClick={querySql}
 							>
 								Preview
@@ -119,14 +127,11 @@ export default function (props: DataPropertiesPanelProps) {
 						<Col span={20}>
 							<TextArea
 								rows={7}
+								value={view?.data.sql || ""}
 								placeholder="Please input sql code"
 								maxLength={1024}
 								onChange={(e) => {
-									let value = e.target.value;
-									changeSql(value || "");
-									setPreviewEnable(
-										null !== value && undefined !== value && "" !== value.trim()
-									);
+									changeSql(e.target.value || "");
 								}}
 							/>
 						</Col>

@@ -122,9 +122,10 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 	}
 
 	protected getGridOption(): GridComponentOption | GridComponentOption[] {
+		let baseGridOptions = super.getGridOption();
 		let vm = this.props.viewModel as any;
 		let option = vm.option || {};
-		return option.grid || {};
+		return { ...baseGridOptions, ...option.grid };
 	}
 
 	protected getTooltipOption():

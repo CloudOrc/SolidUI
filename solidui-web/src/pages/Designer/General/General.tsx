@@ -15,17 +15,26 @@
  * limitations under the License.
  */
 
-import React, { useEffect, useState } from "react";
-import { Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import React from "react";
+import { Button, Modal } from "antd";
+import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { Delete } from "@icon-park/react";
 import useGeneral from "./useGeneral";
 import { mm } from "@/utils";
+
+const confirm = Modal.confirm;
 
 import "./general.less";
 
 function General() {
-	const { loading, toggleScene, createScene, createPage, selectPage } =
-		useGeneral();
+	const {
+		loading,
+		toggleScene,
+		createScene,
+		createPage,
+		selectPage,
+		deletePage,
+	} = useGeneral();
 	let scenes = mm.getScenes();
 
 	function renderScenes() {
@@ -91,6 +100,9 @@ function General() {
 						className={`expander__body-item ${selectedCls}`}
 						key={`${page.id}`}
 						onClick={() => selectPage(page)}
+						style={{
+							position: "relative",
+						}}
 					>
 						<span className="expander__body-item-icon">
 							<svg
@@ -127,6 +139,38 @@ function General() {
 							</svg>
 						</span>
 						<span className="expander__body-item-title">{page.title}</span>
+						<Delete
+							className="expander__body-item-delete"
+							theme="outline"
+							size="14"
+							fill="#757272"
+							strokeWidth={3}
+							strokeLinejoin="miter"
+							strokeLinecap="square"
+							style={{
+								position: "absolute",
+								top: 0,
+								right: 16,
+								bottom: 0,
+								// display: "flex",
+								alignItems: "center",
+							}}
+							onClick={(e) => {
+								e.stopPropagation();
+								e.preventDefault();
+
+								confirm({
+									title: "Confirm",
+									icon: <ExclamationCircleOutlined />,
+									content: "Do you want to delete this page?",
+									okText: "Yes",
+									cancelText: "Cancel",
+									onOk: async () => {
+										deletePage(page);
+									},
+								});
+							}}
+						/>
 					</div>
 				);
 			});

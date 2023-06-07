@@ -16,10 +16,15 @@
  */
 
 import React from "react";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { eventbus, mm } from "@/utils/index";
 import Apis from "@/apis";
+import {
+	ProjectPageViewsCreationDataType,
+	PageViewCreationDataType,
+} from "@/apis/types";
 import "./header.less";
+import { isNil, startsWith } from "lodash-es";
 
 function Header() {
 	return (
@@ -51,13 +56,63 @@ function Header() {
 						size="small"
 						onClick={async () => {
 							let model = mm.getPrepareSavingModel();
-							console.log(model);
-							console.log(JSON.stringify(model));
+							let page = mm.getCurrentPage();
 
-							let result = await Apis.model.save(model!);
-							if (result.ok) {
-								//// mock
-								localStorage.setItem("__MODEL__", JSON.stringify(model));
+							if (isNil(model) || isNil(page)) {
+								return;
+							}
+							let views = page.views || [];
+							let _views: PageViewCreationDataType[] = [];
+							views.forEach((view) => {
+								let v: any = {
+									title: view.title,
+									position: {
+										top: view.position.top + "",
+										left: view.position.left + "",
+									},
+									size: {
+										width: view.size.width + "",
+										height: view.size.height + "",
+									},
+									type: view.type,
+									data: {
+										dataSourceId: `${view.data.dataSourceId || ""}`,
+										dataSourceName: `${view.data.dataSourceName || ""}`,
+										dataSourceTypeId: `${view.data.dataSourceTypeId || ""}`,
+										dataSourceTypeName: `${view.data.dataSourceTypeName || ""}`,
+										sql: view.data.sql || "",
+										table: view.data.table || "",
+									},
+								};
+								if (null !== view.options && undefined !== view.options) {
+									v.options = view.options;
+								}
+								if (!startsWith(view.id, "visual")) {
+									v.id = view.id;
+								}
+								_views.push(v);
+							});
+							let data: ProjectPageViewsCreationDataType = {
+								projectId: model.id,
+								page: {
+									id: page.id,
+									name: page.title,
+								},
+								// TODO
+								size: {
+									width: "",
+									height: "",
+								},
+								views: _views,
+							};
+							let res;
+							// if (_views.length > 0) {
+							res = await Apis.model.updateProjectPageViews(data);
+							// } else {
+							// res = await Apis.model.saveProjectPageViews(data);
+							// }
+							if (res.ok) {
+								message.success("Save success");
 							}
 						}}
 					>

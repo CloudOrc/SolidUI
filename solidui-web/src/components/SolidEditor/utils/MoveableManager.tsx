@@ -30,6 +30,7 @@ import {
 	DelteButtonViewable,
 	DelteButtonViewableProps,
 } from "../ables/DeleteButtonViewable";
+import { isNaN } from "lodash-es";
 import { eventbus, mm } from "@/utils";
 
 @connectEditorContext
@@ -132,7 +133,11 @@ export default class MoveableManager extends React.PureComponent<{
 					if (null === view || undefined === view) {
 						return;
 					}
-					e.set(view.frame.translate);
+
+					// e.set(view.frame.translate || []);
+					let t = view.position.top || 0;
+					let l = view.position.left || 0;
+					e.set([t, l]);
 				}}
 				onDrag={(e) => {
 					// let deltaX = e.delta[0];
@@ -143,23 +148,29 @@ export default class MoveableManager extends React.PureComponent<{
 					// e.target.style.left = `${newLeft}px`;
 					// e.target.style.top = `${newTop}px`;
 					let id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
+
 					if (null === id || undefined === id) {
 						return;
 					}
 					let view = mm.getView(id);
+
 					if (null === view || undefined === view) {
 						return;
 					}
-					// moveableData.onDrag(e);
-					view.frame.translate = e.beforeTranslate;
-					// frame.translate = e.beforeTranslate;
-					// view.position = {
-					// 	// top: newTop,
-					// 	top: e.beforeTranslate[1],
-					// 	// left: newLeft,
-					// 	left: e.beforeTranslate[0],
-					// };
-					e.target.style.transform = `translate(${e.beforeTranslate[0]}px, ${e.beforeTranslate[1]}px) rotate(${view.frame.rotate}deg)`;
+					let rotate = view.frame.rotate || 0;
+
+					let moveT = isNaN(e.beforeTranslate[0])
+						? parseFloat(view.position.top.toString())
+						: parseFloat(e.beforeTranslate[0].toString());
+					let moveL = isNaN(e.beforeTranslate[1])
+						? parseFloat(view.position.left.toString())
+						: parseFloat(e.beforeTranslate[1].toString());
+
+					view.position = {
+						left: moveL,
+						top: moveT,
+					};
+					e.target.style.transform = `translate(${moveT}px, ${moveL}px) rotate(${rotate}deg)`;
 				}}
 				onDragGroupStart={moveableData.onDragGroupStart}
 				onDragGroup={moveableData.onDragGroup}

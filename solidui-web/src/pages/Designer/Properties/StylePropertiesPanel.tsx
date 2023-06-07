@@ -16,20 +16,21 @@
  */
 
 import React from "react";
-import StyleTitleProperties from "./styles/StyleTitleProperties";
-import StyleBasicProperties from "./styles/StyleBasicProperties";
+import StyleProperties from "./styles/StyleProperties";
 
 export interface StylePropertiesPanelProps {}
 
 export default function (props: StylePropertiesPanelProps) {
 	return (
 		<>
+			<StyleProperties />
+			{/*
 			<StyleTitleProperties />
-			<StyleBasicProperties
+			 <StyleBasicProperties
 				style={{
 					top: "-1px",
 				}}
-			/>
+			/> */}
 		</>
 	);
 }

@@ -122,7 +122,13 @@ export default class EChartsBaseSolidView<
 		| GridComponentOption
 		| GridComponentOption[]
 		| undefined {
-		return {};
+		return {
+			containLabel: true,
+			left: 20,
+			right: 20,
+			top: 20,
+			bottom: 20,
+		};
 	}
 
 	protected getXAxisOption():
@@ -181,7 +187,6 @@ export default class EChartsBaseSolidView<
 			visualMap: this.getVisualMapOption(),
 			dataset: this.getDatasetOption(),
 		};
-
 		return options;
 	}
 

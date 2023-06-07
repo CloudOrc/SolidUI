@@ -130,6 +130,10 @@
 
 			&:hover {
 				background-color: @hoverBgColor;
+
+				.expander__body-item-delete {
+					display: flex;
+				}
 			}
 
 			&.selected {
@@ -152,6 +156,10 @@
 				margin-left: 6px;
 				color: rgba(0, 0, 0, 0.65);
 				font-size: 12px;
+			}
+
+			.expander__body-item-delete {
+				display: none;
 			}
 		}
 	}

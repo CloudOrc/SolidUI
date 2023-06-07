@@ -24,3 +24,15 @@ export interface ProjectDataType {
 	createTime: string;
 	updateTime: string;
 }
+
+export interface ProjectPageDataType {
+	id: string;
+	name: string;
+	layout: string;
+	parentId: string;
+	orders: number;
+	projectId: string;
+	children: ProjectPageDataType[];
+	createTime: string;
+	updateTime: string;
+}

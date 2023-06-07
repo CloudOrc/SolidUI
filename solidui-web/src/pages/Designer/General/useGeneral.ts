@@ -16,9 +16,13 @@
  */
 
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { eventbus, mm } from "@/utils";
 import { SolidScenaDataType, SolidPageDataType } from "@/types/solid";
 import { find, cloneDeep, isNil } from "lodash-es";
+import Apis from "@/apis";
+import { ProjectPageViewsResultData } from "@/apis/types/resp";
+import { ApiResult, SolidViewDataType } from "@/types";
 import { useUpdate } from "react-use";
 
 interface StatefulSolidSceneDataType extends SolidScenaDataType {
@@ -31,10 +35,12 @@ interface StatefulSolidPageDataType extends SolidPageDataType {
 
 function useGeneral() {
 	const forceUpdate = useUpdate();
+	const params = useParams();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [scenes, setScenes] = useState<StatefulSolidSceneDataType[]>([]);
 	const [pages, setPages] = useState<StatefulSolidPageDataType[]>([]);
 	const [page, setPage] = useState<SolidPageDataType>();
+	const idRef = React.useRef<string>();
 
 	useEffect(() => {
 		eventbus.on("onModelLoad", (evt) => {
@@ -43,6 +49,7 @@ function useGeneral() {
 				_scene_.open = false;
 			});
 			setScenes(_scenes_);
+			// setScenes([]);
 		});
 
 		return () => {
@@ -50,44 +57,77 @@ function useGeneral() {
 		};
 	}, []);
 
-	function createScene() {
+	useEffect(() => {
+		if (isNil(params.id)) {
+			return;
+		}
+
+		idRef.current = params.id;
+	}, [params.id]);
+
+	async function createScene() {
+		// TODO
+		let res = await Apis.model.createPage({
+			projectId: idRef.current || "",
+			name: "页面1",
+			parentId: "6",
+			layout: "",
+			orders: 1,
+		});
 		let newScene = mm.createScene() as StatefulSolidSceneDataType;
 		if (undefined === newScene) {
 			return;
 		}
-		// newScene.open = false;
-		// let newPage = mm.createPage(newScene.id);
 		let _scenes_ = mm.getScenes() as StatefulSolidSceneDataType[];
 		_scenes_.forEach((_scene_) => {
 			_scene_.open = false;
 		});
-		// _scenes_.push(newScene);
 		setScenes(_scenes_);
 		forceUpdate();
 	}
 
-	function createPage(scene: StatefulSolidSceneDataType) {
-		let newPage = mm.createPage(scene.id) as StatefulSolidPageDataType;
-		if (undefined === newPage) {
+	async function createPage(scene: StatefulSolidSceneDataType) {
+		let res = await Apis.model.createPage({
+			projectId: idRef.current || "",
+			name: "new_page",
+			parentId: scene.id,
+			layout: "",
+			orders: 1,
+		});
+
+		if (res.ok) {
+			// let newPage = mm.createPage(scene.id) as StatefulSolidPageDataType;
+			// if (undefined === newPage) {
+			// 	return;
+			// }
+			let data = res.data || ({} as any);
+			data.selected = false;
+			let _pages_ = mm.getPages() as StatefulSolidPageDataType[];
+			_pages_.forEach((_page_) => {
+				_page_.selected = false;
+			});
+			mm.addPage(data);
+		}
+		forceUpdate();
+	}
+
+	async function deletePage(page: SolidPageDataType) {
+		if (!page || !page.id) {
 			return;
 		}
-		newPage.selected = false;
-		let _pages_ = mm.getPages() as StatefulSolidPageDataType[];
-		_pages_.forEach((_page_) => {
-			_page_.selected = false;
-		});
-		// _pages_.push(newPage);
-		// setPages(_pages_);
+		let res = await Apis.model.deletePage(page.id);
+		console.log(res);
+		if (res.ok) {
+			if (page.parentId === "0") {
+				mm.removeScene(page);
+			} else {
+				mm.removePage(page);
+			}
+		}
 		forceUpdate();
 	}
 
 	function toggleScene(scene: StatefulSolidSceneDataType) {
-		// let clonedScenes = cloneDeep(scenes);
-		// let ts = find(clonedScenes, (s) => s.id === scene.id);
-		// if (ts) {
-		// 	ts.open = !ts.open;
-		// }
-		// setScenes(clonedScenes);
 		let selectedScene = mm.getScene(scene.id);
 		if (selectedScene) {
 			selectedScene.selected = !selectedScene.selected;
@@ -95,23 +135,40 @@ function useGeneral() {
 		forceUpdate();
 	}
 
-	function selectPage(page: SolidPageDataType) {
-		// let selectedPage = mm.getPage(page.id) as StatefulSolidPageDataType;
-		// if (null === selectedPage || undefined === selectedPage) {
-		// 	return;
-		// }
-		// selectedPage.selected = true;
-		let pages = mm.getPages();
-		pages.forEach((p) => {
-			if (p.id === page.id) {
-				p.selected = true;
-			} else {
-				p.selected = false;
-			}
-		});
-		mm.selectPage(page.id);
-		eventbus.emit("onSelectPage", { id: page.id, page: page });
-		forceUpdate();
+	async function selectPage(page: SolidPageDataType) {
+		let currentPage = mm.getCurrentPage();
+		if (currentPage && currentPage.id === page.id) {
+			return;
+		}
+
+		let model = mm.getModel();
+		if (isNil(model)) {
+			return;
+		}
+		let res: ApiResult<ProjectPageViewsResultData> =
+			await Apis.model.queryViews(model.id, page.id);
+		if (res.ok) {
+			let pages = mm.getPages();
+			pages.forEach((p) => {
+				if (p.id === page.id) {
+					p.selected = true;
+				} else {
+					p.selected = false;
+				}
+			});
+			mm.selectPage(page.id);
+			let views = res.data?.views || [];
+			views.forEach((v) => {
+				v.id = `${v.id}`;
+				v.frame = {
+					// translate: [0, 0, 0, 0],
+					translate: [v.position.top, v.position.left, 0, 0],
+				};
+			});
+			mm.setViews(views);
+			eventbus.emit("onSelectPage", { id: page.id, page: page });
+			forceUpdate();
+		}
 	}
 
 	return {
@@ -121,6 +178,7 @@ function useGeneral() {
 		createPage,
 		toggleScene,
 		selectPage,
+		deletePage,
 	};
 }
 
