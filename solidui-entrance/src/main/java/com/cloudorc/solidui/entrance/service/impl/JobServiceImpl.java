@@ -240,10 +240,6 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
         List<JobElementPage> jobElementPages = jobElementPageMapper.selectByProjectIdAndPageId(pageId);
         if (jobElementPages == null || jobElementPages.isEmpty()) {
             return Result.success();
-//            jobElementPageVOs.setViews(Collections.emptyList());
-//            result.setData(jobElementPageVOs);
-//            putMsg(result, Status.SUCCESS);
-//            return result;
         }
 
         boolean first = true;
