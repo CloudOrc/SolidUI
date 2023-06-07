@@ -13,8 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-FROM openjdk:8-jdk as builder
+FROM eclipse-temurin:8-jre
 
 ENV DOCKER true
 ENV TZ Asia/Shanghai
@@ -22,8 +21,13 @@ ENV SOLIDUI_HOME /opt/solidui
 
 WORKDIR $SOLIDUI_HOME
 
-ADD ./target/entrance-server $SOLIDUI_HOME
+COPY ./bin/* $SOLIDUI_HOME/bin/
+
+COPY ./conf/* $SOLIDUI_HOME/conf/
+
+COPY ./libs/* $SOLIDUI_HOME/libs/
+
 
 EXPOSE 12345 12345
 
-CMD [ "/bin/bash", "./bin/start.sh" ]
+CMD [ "/bin/sh", "-c", "$SOLIDUI_HOME/bin/docker-start.sh" ]

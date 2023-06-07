@@ -12,18 +12,39 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 source /etc/profile
-source ~/.bash_profile
-
 BIN_DIR=$(dirname $0)
 SOLIDUI_HOME=${SOLIDUI_HOME:-$(cd $BIN_DIR/..; pwd)}
 SOLIDUI_PID_DIR="${SOLIDUI_HOME}/pid"
+SOLIDUI_LOG_DIR="${SOLIDUI_HOME}/logs"
+SERVER_NAME="entrance-server"
 
-if [[ ! -f "$SOLIDUI_PID_DIR/solidui.pid" ]]; then
-    echo "solidui is not running!"
+if [ ! -w "$SOLIDUI_PID_DIR" ] ; then
+  mkdir -p "$SOLIDUI_PID_DIR"
+fi
+
+if [ "$SOLIDUI_LOG_DIR" = "" ]; then
+  export SOLIDUI_LOG_DIR="$SOLIDUI_HOME/logs"
+fi
+
+if [ ! -w "$SOLIDUI_LOG_DIR" ] ; then
+  mkdir -p "$SOLIDUI_LOG_DIR"
+fi
+
+# set JAVA_HOME
+if [ "$JAVA_HOME" = "" ]; then
+  export JAVA_HOME=/opt/local/java
+fi
+
+# set JAVA_OPTS
+if [ "$JAVA_OPTS" = "" ]; then
+  export JAVA_OPTS="-server -Xmx2g -Xms2g -Xmn1g"
+fi
+
+# shellcheck disable=SC2039
+if [[ -f "$SOLIDUI_PID_DIR/solidui.pid" ]]; then
+    echo "solidui is already running!"
     exit 0
 fi
 
-kill -15 `cat $SOLIDUI_PID_DIR/solidui.pid`
-rm -f $SOLIDUI_PID_DIR/solidui.pid
+echo  "=====Java Start Command====="
