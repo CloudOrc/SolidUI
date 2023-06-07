@@ -33,7 +33,6 @@ import com.cloudorc.solidui.entrance.utils.Result;
 import com.cloudorc.solidui.entrance.vo.JobElementPageVO;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
