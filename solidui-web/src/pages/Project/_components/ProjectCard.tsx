@@ -50,8 +50,8 @@ export default function (props: ProjectCardProps) {
 		handleDelete,
 	} = props;
 
-	async function handleEdit() {
-		navigate("/dashboard");
+	async function handleEdit(item: ProjectDataType) {
+		navigate(`/dashboard/${item.id}`);
 	}
 
 	async function __handleDelete() {
@@ -168,7 +168,7 @@ export default function (props: ProjectCardProps) {
 									style={{
 										width: 64,
 									}}
-									onClick={handleEdit}
+									onClick={() => handleEdit(item)}
 								>
 									Edit
 								</Button>

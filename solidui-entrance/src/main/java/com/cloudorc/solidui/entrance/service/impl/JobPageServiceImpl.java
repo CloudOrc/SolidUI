@@ -76,6 +76,7 @@ public class JobPageServiceImpl extends BaseServiceImpl implements JobPageServic
         jobPage.setUpdateTime(new Date());
 
         if(jobPageMapper.insert(jobPage) > 0){
+            result.setData(jobPage);
             putMsg(result, Status.SUCCESS);
         }else{
             putMsg(result, Status.CREATE_JOB_PAGE_ERROR);

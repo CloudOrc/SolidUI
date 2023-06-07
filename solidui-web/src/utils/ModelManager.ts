@@ -23,7 +23,7 @@ import {
 } from "@/types/solid";
 import { eventbus } from "@/utils";
 import { OnSelectViewEventData } from "@/types/eventbus";
-import { isNil, set, unset, forEach, isEmpty } from "lodash-es";
+import { isNil, set, unset, forEach, isEmpty, remove } from "lodash-es";
 
 class ModelManager {
 	private model?: SolidModelDataType;
@@ -122,6 +122,7 @@ class ModelManager {
 		let _id = new Date().getTime();
 		let page: SolidPageDataType = {
 			id: "page_" + _id,
+			parentId: "",
 			title: "Page_" + _id,
 			views: [],
 		};
@@ -129,6 +130,18 @@ class ModelManager {
 		this.pageMap.set(page.id, page);
 		this.pages.push(page);
 		return page;
+	}
+
+	public addPage(page: SolidPageDataType): void {
+		let sceneId = page.parentId;
+		if (sceneId) {
+			let scene = this.getScene(sceneId);
+			if (scene) {
+				scene.pages!.push(page);
+				this.pageMap.set(page.id, page);
+				this.pages.push(page);
+			}
+		}
 	}
 
 	public getScenes(): SolidScenaDataType[] {
@@ -180,6 +193,29 @@ class ModelManager {
 		this.views.push(view);
 	}
 
+	public addViews(views: SolidViewDataType[]): void {
+		if (isNil(this.currentPage)) {
+			return;
+		}
+		forEach(views, (item) => {
+			this.currentPage!.views.push(item);
+			this.viewMap.set(`${item.id}`, item);
+			this.views.push(item);
+		});
+	}
+
+	public setViews(views: SolidViewDataType[]): void {
+		if (isNil(this.currentPage)) {
+			return;
+		}
+		this.currentPage.views = [];
+		forEach(views, (item) => {
+			this.currentPage!.views.push(item);
+			this.viewMap.set(`${item.id}`, item);
+			this.views.push(item);
+		});
+	}
+
 	public removeView(id: string): void {
 		if (isNil(this.currentPage)) {
 			return;
@@ -205,6 +241,19 @@ class ModelManager {
 			});
 		}
 		return this.model;
+	}
+
+	public removePage(page: SolidPageDataType): void {
+		this.pageMap.delete(page.id);
+		remove(this.pages, (item) => item.id === page.id);
+		if (this.currentPage && this.currentPage.id === page.id) {
+			this.currentPage = undefined;
+		}
+	}
+
+	public removeScene(scene: SolidScenaDataType): void {
+		this.sceneMap.delete(scene.id);
+		remove(this.scenes, (item) => item.id === scene.id);
 	}
 }
 

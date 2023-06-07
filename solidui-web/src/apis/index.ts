@@ -15,8 +15,13 @@
  * limitations under the License.
  */
 
+import { param } from "jquery";
 import ApiService from "./service";
-import { SolidModelCreationDataType } from "./types";
+import {
+	SolidModelCreationDataType,
+	PageCreationDataType,
+	ProjectPageViewsCreationDataType,
+} from "./types";
 
 export type DataSourceCreationDataType = {
 	dataSourceName: string;
@@ -28,6 +33,22 @@ export type DataSourceCreationDataType = {
 let model = {
 	save: <T>(params: SolidModelCreationDataType) =>
 		ApiService.post<T>("/api/v1/models", params, {}),
+	getProject: <T>(projectId: string) =>
+		ApiService.get<T>(`/solidui/project/${projectId}`),
+	createPage: <T>(params: PageCreationDataType) => {
+		return ApiService.post<T>("/solidui/job/page", params, {});
+	},
+	queryPages: <T>(projectId: string) =>
+		ApiService.get<T>(`/solidui/job/page/queryList/${projectId}`),
+	queryViews: <T>(projectId: string, pageId: string) =>
+		ApiService.get<T>(
+			`/solidui/job/query/page?projectId=${projectId}&pageId=${pageId}`
+		),
+	saveProjectPageViews: <T>(params: ProjectPageViewsCreationDataType) =>
+		ApiService.post(`/solidui/job/save/page`, params),
+	updateProjectPageViews: <T>(params: ProjectPageViewsCreationDataType) =>
+		ApiService.put(`/solidui/job/update/page`, params),
+	deletePage: <T>(id: string) => ApiService.delete(`/solidui/job/page/${id}`),
 };
 
 let images = {
@@ -96,7 +117,7 @@ let datasource = {
 		typeName: string;
 		sql: string;
 	}) =>
-		ApiService.get(
+		ApiService.get<T>(
 			`/solidui/metadataQuery/querySql?dataSourceName=${params.dataSourceName}&typeName=${params.typeName}&sql=${params.sql}`
 		),
 };

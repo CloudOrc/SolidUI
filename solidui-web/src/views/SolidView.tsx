@@ -28,6 +28,8 @@ import {
 
 import { SolidModelDataType, SolidViewDataType } from "@/types/solid";
 import { set, cloneDeep } from "lodash-es";
+import Apis from "@/apis";
+import { ApiResult } from "@/types";
 
 export interface SolidViewProps {
 	id: string;
@@ -109,14 +111,22 @@ export default abstract class SolidView<
 	};
 
 	private readonly fetchData = async () => {
-		// let viewModel = this.props.viewModel;
-		// let viewModel = this.state.viewModel;
 		let viewModel = this.vm;
 		let data = viewModel.data || {};
-		let remote = data.remote;
-		if (!remote) {
+		let dsId = data.dataSourceId;
+		let sql = data.sql;
+		if (!dsId || !sql) {
 			this.dataSheet = viewModel.data.dataset || [];
 			return;
+		}
+
+		let res: ApiResult<any[][]> = await Apis.datasource.querySql({
+			dataSourceName: data.dataSourceName,
+			typeName: data.dataSourceTypeName,
+			sql: sql,
+		});
+		if (res.ok) {
+			this.dataSheet = res.data || [];
 		}
 	};
 

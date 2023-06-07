@@ -33,15 +33,14 @@ type InitialData = {
 function useProperties(initialData: InitialData) {
 	const forceUpdate = useUpdate();
 	const [propertyKey, setPropertyKey] = useState<
-		"top" | "scene" | "page" | "view"
-	>("top");
+		"top" | "scene" | "page" | "view" | "none"
+	>("page");
 	const [currentTabKey, setCurrentTabKey] = useState<string>("Style");
 	let mainRef = React.createRef<HTMLDivElement>();
 	let asideRef = React.createRef<HTMLDivElement>();
 
 	useEffect(() => {
 		eventbus.on("onSelectViewInViewList", handleSelectViewEvent);
-
 		eventbus.on("onSelectViewInViewport", handleSelectViewEvent);
 
 		return () => {

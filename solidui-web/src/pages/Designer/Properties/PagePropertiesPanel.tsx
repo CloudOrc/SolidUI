@@ -16,9 +16,23 @@
  */
 
 import React from "react";
+import { LeftRightExpander, PropertyElement, InputText } from "@/components";
+import { mm } from "@/utils";
 
 export interface PagePropertiesPanelProps {}
 
 export default function (props: PagePropertiesPanelProps) {
-	return <>Page Properties</>;
+	return (
+		<>
+			<LeftRightExpander expanded={true} showCheckbox={false} title="Page">
+				<PropertyElement label="Width" labelWidth={50}>
+					<InputText value={"100"} />
+				</PropertyElement>
+
+				<PropertyElement label="Height" labelWidth={50}>
+					<InputText value={"200"} />
+				</PropertyElement>
+			</LeftRightExpander>
+		</>
+	);
 }

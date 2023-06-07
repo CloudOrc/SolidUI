@@ -18,3 +18,44 @@
 import { SolidModelDataType } from "@/types";
 
 export interface SolidModelCreationDataType extends SolidModelDataType {}
+
+export type PageCreationDataType = {
+	layout: string;
+	name: string;
+	orders: number;
+	parentId: string;
+	projectId: string;
+};
+
+export type ProjectPageViewsCreationDataType = {
+	projectId: string;
+	page: {
+		id: string;
+		name: string;
+	};
+	size: {
+		width: string;
+		height: string;
+	};
+	views: Array<PageViewCreationDataType>;
+};
+
+export type PageViewCreationDataType = {
+	id?: string;
+	title: string;
+	position: {
+		top: string;
+		left: string;
+	};
+	size: {
+		width: string;
+		height: string;
+	};
+	type: string;
+	options: string;
+	data: {
+		dataSourceId: string;
+		dataSourceTypeId: string;
+		sql: string;
+	};
+};

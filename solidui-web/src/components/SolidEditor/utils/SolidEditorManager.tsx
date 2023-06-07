@@ -117,13 +117,15 @@ export default class SolidEditorManager {
 					// top: `${vm.position.top}px`,
 					// left: `${vm.position.left}px`,
 					position: "absolute",
-					transform: `translate(${vm.frame.translate[0]}px, ${vm.frame.translate[1]}px)`,
+					// transform: `translate(${vm.frame.translate[0]}px, ${vm.frame.translate[1]}px)`,
+					transform: `translate(${vm.position.top}px, ${vm.position.left}px)`,
 				};
-				if (!view.data.remote) {
+				// if (!view.data.remote) {
+				if (!vm.data.dataSourceId || !vm.data.sql) {
 					let localVM = builder.createModel();
 					vm.data = localVM.data;
 				}
-
+				// console.log("handleSelectPagexxxx", view);
 				this.editor.appendJSXsOnly([
 					{
 						id: view.id,

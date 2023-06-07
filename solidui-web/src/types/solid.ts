@@ -18,8 +18,8 @@
 import React from "react";
 
 interface SolidComponentFrameDataType {
-	translate: number[];
-	rotate: number;
+	translate?: number[];
+	rotate?: number;
 	backgroundColor?: string;
 	backgroundImage?: string;
 }
@@ -51,6 +51,7 @@ export interface SolidScenaDataType {
 
 export interface SolidPageDataType {
 	id: string;
+	parentId: string;
 	title: string;
 	frame?: SolidComponentFrameDataType;
 	style?: React.CSSProperties;
@@ -81,7 +82,12 @@ interface SolidViewDataDataType {
 	title: string;
 	remote: boolean;
 	dataset?: any[];
-	dsId?: string;
+	dataSourceId: string;
+	dataSourceName: string;
+	dataSourceTypeId: string;
+	dataSourceTypeName: string;
+	// dsId?: string;
+	// dsTypeId?: string;
 	table?: string;
 	xs?: SolidViewDataDataXAxisType[];
 	ys?: SolidViewDataDataYAxisType[];

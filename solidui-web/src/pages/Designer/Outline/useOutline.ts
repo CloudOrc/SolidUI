@@ -18,18 +18,13 @@
 import React, { useEffect, useState } from "react";
 import { eventbus, mm } from "@/utils";
 import {
-	SolidScenaDataType,
-	SolidPageDataType,
-	SolidViewDataType,
-} from "@/types/solid";
-import { find, cloneDeep, isNil } from "lodash-es";
-import {
 	OnSelectPageEventData,
 	OnModelLoadEventData,
 	OnSelectViewEventData,
 	OnDrawEventData,
 	OnDrawCompleteEventData,
 	OnRemoveViewCompleteEventData,
+	OnUpdateViewPropertyValueEventData,
 } from "@/types";
 import { useUpdate } from "react-use";
 
@@ -47,7 +42,6 @@ function useOutline() {
 		viewStatesMap.current.forEach((viewState) => {
 			viewState.selected = false;
 		});
-		forceUpdate();
 		forceUpdate();
 	}
 
@@ -72,6 +66,12 @@ function useOutline() {
 		}
 	}
 
+	function __handleUpdateViewPropertyValue(
+		evt: OnUpdateViewPropertyValueEventData
+	) {
+		forceUpdate();
+	}
+
 	function selectViewById(id: string) {
 		let view = mm.getView(id);
 		if (view) {
@@ -89,6 +89,7 @@ function useOutline() {
 		eventbus.on("onSelectViewInViewport", __handleSelectViewInViewport);
 		eventbus.on("onDrawComplete", __handleDrawComplete);
 		eventbus.on("onRemoveViewComplete", __handleRemoveViewComplete);
+		eventbus.on("onUpdateViewPropertyValue", __handleUpdateViewPropertyValue);
 
 		return () => {
 			eventbus.off("onModelLoad", __handleModelLoad);
