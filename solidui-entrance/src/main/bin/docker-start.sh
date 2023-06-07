@@ -17,8 +17,7 @@
 
 BIN_DIR=$(dirname $0)
 SOLIDUI_HOME=${SOLIDUI_HOME:-$(cd $BIN_DIR/..; pwd)}
-export JAVA_OPTS="-server -Xmx2g -Xms2g -Xmn1g"
-
+export JAVA_OPTS="-server -Xmx2g -Xms2g -Xmn1g -Dspring.profiles.active=h2"
 
 $JAVA_HOME/bin/java $JAVA_OPTS \
   -cp "$SOLIDUI_HOME/conf":"$SOLIDUI_HOME/libs/*" \

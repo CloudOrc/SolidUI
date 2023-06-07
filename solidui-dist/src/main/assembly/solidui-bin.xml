@@ -42,5 +42,10 @@
             <directory>${basedir}/release-docs</directory>
             <outputDirectory>.</outputDirectory>
         </fileSet>
+
+        <fileSet>
+            <directory>${basedir}/docker</directory>
+            <outputDirectory>docker</outputDirectory>
+        </fileSet>
     </fileSets>
 </assembly>
