@@ -31,7 +31,7 @@
                 <include>*.yaml</include>
                 <include>*.xml</include>
                 <include>application-h2.properties</include>
-                <include>*.sql</include>
+                <include>/sql/h2/*.sql</include>
             </includes>
             <outputDirectory>conf</outputDirectory>
         </fileSet>

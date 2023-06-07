@@ -46,15 +46,15 @@ CREATE TABLE solidui_datasource_type (
 DROP TABLE IF EXISTS solidui_datasource_type_key;
 
 CREATE TABLE solidui_datasource_type_key (
-                                             id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                                             data_source_type_id int(11) NOT NULL,
-                                             key varchar(32) NOT NULL,
+                                             id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                             data_source_type_id int NOT NULL,
+                                             "key" varchar(32) NOT NULL,
                                              name varchar(32) NOT NULL,
                                              name_en varchar(32) NOT NULL,
                                              default_value varchar(50) DEFAULT NULL,
                                              value_type varchar(50) NOT NULL,
                                              scope varchar(50) DEFAULT NULL,
-                                             require tinyint(1) DEFAULT '0',
+                                             require BOOLEAN DEFAULT FALSE,
                                              description varchar(200) DEFAULT NULL,
                                              description_en varchar(200) DEFAULT NULL,
                                              value_regex varchar(200) DEFAULT NULL,

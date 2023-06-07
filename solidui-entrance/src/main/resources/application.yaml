@@ -79,3 +79,7 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+
+logging:
+  level:
+    org.mybatis.spring: DEBUG
