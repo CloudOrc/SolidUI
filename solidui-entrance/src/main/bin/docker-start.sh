@@ -14,18 +14,13 @@
 # limitations under the License.
 
 # Include common script
-. "$(dirname "$0")/common.sh"
 
-nohup $JAVA_HOME/bin/java $JAVA_OPTS \
+BIN_DIR=$(dirname $0)
+SOLIDUI_HOME=${SOLIDUI_HOME:-$(cd $BIN_DIR/..; pwd)}
+export JAVA_OPTS="-server -Xmx2g -Xms2g -Xmn1g"
+
+
+$JAVA_HOME/bin/java $JAVA_OPTS \
   -cp "$SOLIDUI_HOME/conf":"$SOLIDUI_HOME/libs/*" \
-  com.cloudorc.solidui.entrance.EntranceApplicationServer 2>&1 > $SOLIDUI_LOG_DIR/${SERVER_NAME}.out &
+  com.cloudorc.solidui.entrance.EntranceApplicationServer
 
-pid=$!
-sleep 2
-if [[ -z "${pid}" ]]; then
-    echo "server $SERVER_NAME start failed!"
-    exit 1
-else
-    echo "server $SERVER_NAME start succeeded!"
-    echo $pid > $SOLIDUI_PID_DIR/solidui.pid
-fi
