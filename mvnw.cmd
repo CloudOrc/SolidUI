@@ -38,7 +38,7 @@ set "MAVEN_HOME=%DIR%\.mvn\wrapper\maven-%MAVEN_VERSION%"
 if not exist "%MAVEN_HOME%" (
   echo Downloading Maven %MAVEN_VERSION%...
   mkdir "%MAVEN_HOME%"
-  powershell -Command "& {(New-Object System.Net.WebClient).DownloadFile('https://apache.osuosl.org/maven/maven-3/%MAVEN_VERSION%/binaries/apache-maven-%MAVEN_VERSION%-bin.tar.gz','%DIR%\.mvn\wrapper\apache-maven-%MAVEN_VERSION%-bin.tar.gz')}"
+  powershell -Command "& {(New-Object System.Net.WebClient).DownloadFile('https://downloads.apache.org/maven/maven-3/%MAVEN_VERSION%/binaries/apache-maven-%MAVEN_VERSION%-bin.tar.gz','%DIR%\.mvn\wrapper\apache-maven-%MAVEN_VERSION%-bin.tar.gz')}"
   tar -xzf "%MAVEN_HOME%\..\apache-maven-%MAVEN_VERSION%-bin.tar.gz" -C "%MAVEN_HOME%\.."
   move "%MAVEN_HOME%\..\apache-maven-%MAVEN_VERSION%" "%MAVEN_HOME%"
   del "%MAVEN_HOME%\..\apache-maven-%MAVEN_VERSION%-bin.tar.gz"

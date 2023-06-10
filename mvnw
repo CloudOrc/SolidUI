@@ -54,7 +54,7 @@ MAVEN_HOME="${DIR}/.mvn/wrapper/maven-${MAVEN_VERSION}"
 if [ ! -d "${MAVEN_HOME}" ]; then
     echo "Downloading Maven ${MAVEN_VERSION}..."
     mkdir -p "${MAVEN_HOME}"
-    curl -L "https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz" | tar -xz -C "${MAVEN_HOME}" --strip-components=1
+    curl -L "https://downloads.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz" | tar -xz -C "${MAVEN_HOME}" --strip-components=1
 fi
 
 # Run Maven with the provided arguments
