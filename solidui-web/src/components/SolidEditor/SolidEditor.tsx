@@ -188,7 +188,7 @@ export default class SolidEditor extends React.PureComponent<
 		let infos = this.getViewport().getViewportInfos();
 		let ids: string[] = [];
 		infos.forEach((info) => {
-			ids.push(info.id);
+			info.id && ids.push(info.id);
 		});
 		let elems = this.getViewport().getElements(ids);
 		this.removeElements(this.getViewport().getElements(ids));

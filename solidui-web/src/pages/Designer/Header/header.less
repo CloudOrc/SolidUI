@@ -32,7 +32,8 @@
     top: 0;
     left: 0;
     bottom: 0;
-    min-width: 1244px;
+		right: 0;
+		min-width: 1244px;
     user-select: none;
 		background: @bgColor;
 		border-bottom: 1px solid @bgColor;
@@ -91,15 +92,23 @@
     }
 
     .header-center {
-
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 300px;
+			width: 500px;
+			display: flex;
+			align-items: center;
     }
 
     .header-right {
 			position: absolute;
-			right: 0;
+			right: 20px;
 			top: 0;
 			bottom: 0;
-			width: 200px;
+			width: auto;
+			// width: 200px;
+			max-width: 200px;
 			display: flex;
 			align-items: center;
     }

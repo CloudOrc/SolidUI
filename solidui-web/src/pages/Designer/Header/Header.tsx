@@ -16,7 +16,8 @@
  */
 
 import React from "react";
-import { Button, message } from "antd";
+import { Button, Tooltip, message } from "antd";
+import { ChartHistogramTwo } from "@icon-park/react";
 import { eventbus, mm } from "@/utils/index";
 import Apis from "@/apis";
 import {
@@ -35,21 +36,27 @@ function Header() {
 					<div className="logo-text">SolidUI</div>
 					<div className="version">v0.1.0</div>
 					<div className="split-line"></div>
-					<div className="left-main">
-						<Button
-							type="primary"
-							size="small"
+					<div className="left-main"></div>
+				</div>
+				<div className="header-center">
+					<Tooltip title="Bar Chart">
+						<ChartHistogramTwo
+							theme="two-tone"
+							size="32"
+							fill={["#379aff", "#4890f3"]}
+							strokeLinejoin="bevel"
+							strokeLinecap="square"
+							style={{
+								cursor: "pointer",
+							}}
 							onClick={() => {
 								eventbus.emit("onDraw", {
 									viewType: "echarts_bar",
 								});
 							}}
-						>
-							Bar
-						</Button>
-					</div>
+						/>
+					</Tooltip>
 				</div>
-				<div className="header-center"></div>
 				<div className="header-right">
 					<Button
 						type="primary"

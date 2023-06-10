@@ -108,7 +108,8 @@ export default class MoveableManager extends React.PureComponent<{
 					return `${v}px`;
 				}}
 				// Roundable
-				roundable={selectedTargets.length > 1 ? false : true}
+				roundable={false}
+				// roundable={selectedTargets.length > 1 ? false : true}
 				roundClickable={false}
 				isDisplayShadowRoundControls={true}
 				minRoundControls={[1, 0]}

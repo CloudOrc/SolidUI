@@ -91,16 +91,29 @@ class ModelManager {
 		}
 	}
 
-	public createScene(): SolidScenaDataType | undefined {
+	// public createScene(): SolidScenaDataType | undefined {
+	// 	if (isNil(this.model)) {
+	// 		return undefined;
+	// 	}
+	// 	let _id = new Date().getTime();
+	// 	let scene: SolidScenaDataType = {
+	// 		id: "scene_" + _id,
+	// 		title: "Scene_" + _id,
+	// 		pages: [],
+	// 	};
+	// 	this.sceneMap.set(scene.id, scene);
+	// 	this.scenes.push(scene);
+	// 	if (this.model.scenas) {
+	// 		this.model.scenas.push(scene);
+	// 	} else {
+	// 		set(this.model, "scenas", [scene]);
+	// 	}
+	// 	return scene;
+	// }
+	public addScene(scene: SolidScenaDataType) {
 		if (isNil(this.model)) {
-			return undefined;
+			return;
 		}
-		let _id = new Date().getTime();
-		let scene: SolidScenaDataType = {
-			id: "scene_" + _id,
-			title: "Scene_" + _id,
-			pages: [],
-		};
 		this.sceneMap.set(scene.id, scene);
 		this.scenes.push(scene);
 		if (this.model.scenas) {
@@ -108,40 +121,50 @@ class ModelManager {
 		} else {
 			set(this.model, "scenas", [scene]);
 		}
-		return scene;
 	}
 
-	public createPage(id: string): SolidPageDataType | undefined {
+	// public createPage(id: string): SolidPageDataType | undefined {
+	// 	if (isNil(this.model)) {
+	// 		return undefined;
+	// 	}
+	// 	let scene = this.getScene(id);
+	// 	if (isNil(scene)) {
+	// 		return undefined;
+	// 	}
+	// 	let _id = new Date().getTime();
+	// 	let page: SolidPageDataType = {
+	// 		id: "page_" + _id,
+	// 		parentId: "",
+	// 		title: "Page_" + _id,
+	// 		views: [],
+	// 	};
+	// 	scene.pages!.push(page);
+	// 	this.pageMap.set(page.id, page);
+	// 	this.pages.push(page);
+	// 	return page;
+	// }
+
+	public addPage(page: SolidPageDataType): void {
 		if (isNil(this.model)) {
-			return undefined;
+			return;
 		}
-		let scene = this.getScene(id);
+		let scene = this.getScene(page.parentId);
 		if (isNil(scene)) {
-			return undefined;
+			return;
 		}
-		let _id = new Date().getTime();
-		let page: SolidPageDataType = {
-			id: "page_" + _id,
-			parentId: "",
-			title: "Page_" + _id,
-			views: [],
-		};
+
 		scene.pages!.push(page);
 		this.pageMap.set(page.id, page);
 		this.pages.push(page);
-		return page;
-	}
-
-	public addPage(page: SolidPageDataType): void {
-		let sceneId = page.parentId;
-		if (sceneId) {
-			let scene = this.getScene(sceneId);
-			if (scene) {
-				scene.pages!.push(page);
-				this.pageMap.set(page.id, page);
-				this.pages.push(page);
-			}
-		}
+		// let sceneId = page.parentId;
+		// if (sceneId) {
+		// 	let scene = this.getScene(sceneId);
+		// 	if (scene) {
+		// 		scene.pages!.push(page);
+		// 		this.pageMap.set(page.id, page);
+		// 		this.pages.push(page);
+		// 	}
+		// }
 	}
 
 	public getScenes(): SolidScenaDataType[] {

@@ -19,10 +19,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { eventbus, mm } from "@/utils";
 import { SolidScenaDataType, SolidPageDataType } from "@/types/solid";
-import { find, cloneDeep, isNil } from "lodash-es";
+import { isNil } from "lodash-es";
 import Apis from "@/apis";
-import { ProjectPageViewsResultData } from "@/apis/types/resp";
-import { ApiResult, SolidViewDataType } from "@/types";
+import {
+	ProjectPageViewsResultData,
+	CreatedSceneResponseDataType,
+	CreatedPageResponseDataType,
+} from "@/apis/types/resp";
+import { ApiResult } from "@/types";
 import { useUpdate } from "react-use";
 
 interface StatefulSolidSceneDataType extends SolidScenaDataType {
@@ -49,7 +53,6 @@ function useGeneral() {
 				_scene_.open = false;
 			});
 			setScenes(_scenes_);
-			// setScenes([]);
 		});
 
 		return () => {
@@ -66,47 +69,62 @@ function useGeneral() {
 	}, [params.id]);
 
 	async function createScene() {
-		// TODO
-		let res = await Apis.model.createPage({
-			projectId: idRef.current || "",
-			name: "页面1",
-			parentId: "6",
-			layout: "",
-			orders: 1,
-		});
-		let newScene = mm.createScene() as StatefulSolidSceneDataType;
-		if (undefined === newScene) {
-			return;
+		let res: ApiResult<CreatedSceneResponseDataType> =
+			await Apis.model.createPage({
+				projectId: idRef.current || "",
+				name: "场景",
+				layout: "",
+				orders: 1,
+			});
+		if (res.ok) {
+			let data = res.data;
+			if (isNil(data)) {
+				forceUpdate();
+				return;
+			}
+			mm.addScene({
+				id: data.id,
+				title: data.name,
+				pages: [],
+				selected: false,
+			});
+			let _scenes_ = mm.getScenes() as StatefulSolidSceneDataType[];
+			_scenes_.forEach((_scene_) => {
+				_scene_.open = false;
+			});
+			setScenes(_scenes_);
 		}
-		let _scenes_ = mm.getScenes() as StatefulSolidSceneDataType[];
-		_scenes_.forEach((_scene_) => {
-			_scene_.open = false;
-		});
-		setScenes(_scenes_);
 		forceUpdate();
 	}
 
 	async function createPage(scene: StatefulSolidSceneDataType) {
-		let res = await Apis.model.createPage({
-			projectId: idRef.current || "",
-			name: "new_page",
-			parentId: scene.id,
-			layout: "",
-			orders: 1,
-		});
+		let res: ApiResult<CreatedPageResponseDataType> =
+			await Apis.model.createPage({
+				projectId: idRef.current || "",
+				name: "页面",
+				parentId: scene.id,
+				layout: "",
+				orders: 1,
+			});
 
 		if (res.ok) {
-			// let newPage = mm.createPage(scene.id) as StatefulSolidPageDataType;
-			// if (undefined === newPage) {
-			// 	return;
-			// }
-			let data = res.data || ({} as any);
-			data.selected = false;
+			let data = res.data;
+			if (isNil(data)) {
+				forceUpdate();
+				return;
+			}
+			mm.addPage({
+				id: data.id,
+				title: data.name,
+				views: [],
+				selected: false,
+				parentId: data?.parentId || "",
+			});
+
 			let _pages_ = mm.getPages() as StatefulSolidPageDataType[];
 			_pages_.forEach((_page_) => {
 				_page_.selected = false;
 			});
-			mm.addPage(data);
 		}
 		forceUpdate();
 	}

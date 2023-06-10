@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -142,7 +143,9 @@ public class JobPageServiceImpl extends BaseServiceImpl implements JobPageServic
         // query job pages by project id
         List<JobPage> jobPages = jobPageMapper.queryJobPageListPaging(projectId);
         if(CollectionUtils.isEmpty(jobPages)){
-            putMsg(result, Status.QUERY_JOB_PAGE_ERROR);
+            result.setData(Collections.emptyList());
+            putMsg(result, Status.SUCCESS);
+//            putMsg(result, Status.QUERY_JOB_PAGE_ERROR);
             return result;
         }
 

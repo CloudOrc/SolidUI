@@ -29,3 +29,19 @@ export type ProjectPageViewsResultData = {
 	};
 	views: SolidViewDataType[];
 };
+
+export type CreatedSceneResponseDataType = {
+	id: string;
+	projectId: string;
+	name: string;
+	parentId?: string;
+	orders: number;
+};
+
+export type CreatedPageResponseDataType = {
+	id: string;
+	projectId: string;
+	name: string;
+	parentId?: string;
+	orders: number;
+};

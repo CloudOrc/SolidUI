@@ -19,8 +19,18 @@ import React from "react";
 
 export default function () {
 	return (
-		<div>
-			<div>Home Introduction</div>
+		<div
+			style={{
+				position: "relative",
+				width: "100%",
+				height: "100%",
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+				fontSize: "32px",
+			}}
+		>
+			<div>Welcome to SolidUI</div>
 		</div>
 	);
 }

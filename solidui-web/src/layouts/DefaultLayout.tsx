@@ -19,12 +19,11 @@ import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import type { MenuProps } from "antd";
 import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
-import { Menu } from "antd";
+import { Menu, Dropdown, Button, Avatar } from "antd";
+import Apis from "@/apis";
 import "./DefaultLayout.less";
 
 type MenuItem = Required<MenuProps>["items"][number];
-
-export interface DefaultLayoutProps {}
 
 function getItem(
 	label: React.ReactNode,
@@ -47,6 +46,8 @@ const items: MenuItem[] = [
 	getItem("Datasource", "/datasource", <DesktopOutlined />),
 ];
 
+export interface DefaultLayoutProps {}
+
 export default function () {
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -68,7 +69,62 @@ export default function () {
 
 	return (
 		<div className="solidui-layout default">
-			<header className="solidui-header">header</header>
+			<header className="solidui-header">
+				<div
+					className="header-main"
+					style={{
+						right: 0,
+					}}
+				>
+					<div className="header-left">
+						<div className="logo"></div>
+						<div className="logo-text">SolidUI</div>
+						<div className="version">v0.1.0</div>
+					</div>
+					<div
+						className="header-right"
+						style={{
+							right: 20,
+							width: "auto",
+						}}
+					>
+						<Dropdown
+							menu={{
+								items: [
+									{
+										key: "logout",
+										label: <div>logout</div>,
+									},
+								],
+								style: {
+									width: 100,
+								},
+								onClick: async () => {
+									let res = await Apis.user.logout();
+									if (res.ok) {
+										navigate("/login");
+									}
+									console.log(res);
+								},
+							}}
+							placement="bottom"
+							// placement="bottomLeft"
+						>
+							<Avatar
+								style={{
+									backgroundColor: "#0070cc",
+									verticalAlign: "middle",
+									cursor: "pointer",
+								}}
+								shape="square"
+								size="large"
+							>
+								admin
+							</Avatar>
+						</Dropdown>
+					</div>
+				</div>
+			</header>
 			<section className="solidui-bottom">
 				<aside className="solidui-aside">
 					<Menu

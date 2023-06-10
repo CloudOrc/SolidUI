@@ -23,7 +23,7 @@ export type PageCreationDataType = {
 	layout: string;
 	name: string;
 	orders: number;
-	parentId: string;
+	parentId?: string;
 	projectId: string;
 };
 

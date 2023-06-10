@@ -59,6 +59,7 @@ let images = {
 let user = {
 	login: <T>(params: { username: string; password: string }) =>
 		ApiService.get<T>("/solidui/login", params),
+	logout: <T>() => ApiService.post<T>("/solidui/loginOut"),
 };
 
 let project = {
