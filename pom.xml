@@ -34,6 +34,7 @@
         <module>solidui-dist</module>
         <module>solidui-spi</module>
         <module>solidui-datasource-plugin</module>
+        <module>solidui-web</module>
     </modules>
 
     <properties>
@@ -482,18 +483,18 @@
                         <exclude>**/*.iml</exclude>
                         <exclude>**/*.txt</exclude>
                         <exclude>**/*.json</exclude>
-                        <exclude>solidui-web/.editorconfig</exclude>
-                        <exclude>solidui-web/.env</exclude>
-                        <exclude>solidui-web/.eslintignore</exclude>
-                        <exclude>solidui-web/.jshintrc</exclude>
-                        <exclude>solidui-web/.nvmrc</exclude>
-                        <exclude>solidui-web/.browserslistrc</exclude>
-                        <exclude>solidui-web/.npmrc</exclude>
+                        <exclude>**/.editorconfig</exclude>
+                        <exclude>**/.env</exclude>
+                        <exclude>**/.eslintignore</exclude>
+                        <exclude>**/.jshintrc</exclude>
+                        <exclude>**/.nvmrc</exclude>
+                        <exclude>**/.browserslistrc</exclude>
+                        <exclude>**/.npmrc</exclude>
 
-                        <exclude>solidui-web/public/favicon.ico</exclude>
-                        <exclude>solidui-web/dist/**</exclude>
-                        <exclude>solidui-web/node_modules/**</exclude>
-                        <exclude>solidui-web/solidui-*-web-bin.tar.gz</exclude>
+                        <exclude>**/public/favicon.ico</exclude>
+                        <exclude>**/dist/**</exclude>
+                        <exclude>**/node_modules/**</exclude>
+                        <exclude>**/solidui-*-web-bin.tar.gz</exclude>
 
                         <exclude>**/*.md</exclude>
                         <exclude>.git/</exclude>

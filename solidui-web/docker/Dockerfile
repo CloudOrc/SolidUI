@@ -13,25 +13,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+FROM openresty/openresty:1.19.9.1-4-alpine
 
-version: "3.8"
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-services:
-  solidui-entrance:
-    image: ${HUB}/solidui-entrance:${TAG}
-    container_name: solidui-entrance
-    ports:
-      - "12345:12345"
-    networks:
-      - solidui
-  solidui-web:
-    image: ${HUB}/solidui-web:${TAG}
-    container_name: solidui-web
-    ports:
-      - "8099:8099"
-    networks:
-      - solidui
+COPY ./dist /usr/local/openresty/nginx/html
+COPY ./docker/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 
-networks:
-  solidui:
-    driver: bridge
+
+EXPOSE 8099 8099
+ENTRYPOINT ["nginx"]
+CMD ["-g","daemon off;"]
+

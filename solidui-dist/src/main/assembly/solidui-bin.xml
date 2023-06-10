@@ -39,6 +39,16 @@
         </fileSet>
 
         <fileSet>
+            <directory>${basedir}/../solidui-web/dist</directory>
+            <outputDirectory>solidui-web/dist</outputDirectory>
+        </fileSet>
+
+        <fileSet>
+            <directory>${basedir}/../solidui-web/docker</directory>
+            <outputDirectory>solidui-web/docker</outputDirectory>
+        </fileSet>
+
+        <fileSet>
             <directory>${basedir}/release-docs</directory>
             <outputDirectory>.</outputDirectory>
         </fileSet>

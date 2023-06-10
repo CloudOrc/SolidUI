@@ -53,9 +53,9 @@
                 <exclude>*.gpg</exclude>
 
                 <!-- node ignore -->
-                <exclude>**/web/dist/**</exclude>
-                <exclude>**/web/node/**</exclude>
-                <exclude>**/web/node_modules/**</exclude>
+                <exclude>**/solidui-web/dist/**</exclude>
+                <exclude>**/solidui-web/node/**</exclude>
+                <exclude>**/solidui-web/node_modules/**</exclude>
 
                 <!-- eclipse ignore -->
                 <exclude>**/.settings/**</exclude>
