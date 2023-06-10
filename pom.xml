@@ -494,6 +494,7 @@
                         <exclude>**/public/favicon.ico</exclude>
                         <exclude>**/dist/**</exclude>
                         <exclude>**/node_modules/**</exclude>
+                        <exclude>**/node/**</exclude>
                         <exclude>**/solidui-*-web-bin.tar.gz</exclude>
 
                         <exclude>**/*.md</exclude>

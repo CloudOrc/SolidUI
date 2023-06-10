@@ -38,14 +38,27 @@
             <outputDirectory>.</outputDirectory>
         </fileSet>
 
-        <fileSet>
-            <directory>${basedir}/../solidui-web/dist</directory>
-            <outputDirectory>solidui-web/dist</outputDirectory>
-        </fileSet>
+<!--        <fileSet>-->
+<!--            <directory>${basedir}/../solidui-web/dist</directory>-->
+<!--            <outputDirectory>solidui-web/dist</outputDirectory>-->
+<!--        </fileSet>-->
+
+<!--        <fileSet>-->
+<!--            <directory>${basedir}/../solidui-web/docker</directory>-->
+<!--            <outputDirectory>solidui-web/docker</outputDirectory>-->
+<!--        </fileSet>-->
 
         <fileSet>
-            <directory>${basedir}/../solidui-web/docker</directory>
-            <outputDirectory>solidui-web/docker</outputDirectory>
+            <directory>${basedir}/../solidui-web</directory>
+            <outputDirectory>solidui-web</outputDirectory>
+            <includes>
+                <include>install.sh</include>
+                <include>config.sh</include>
+                <include>docker/*</include>
+                <include>dist/**/*</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
         </fileSet>
 
         <fileSet>
