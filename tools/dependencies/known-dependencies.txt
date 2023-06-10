@@ -364,3 +364,7 @@ log4j-to-slf4j-2.17.2.jar
 mysql-connector-java-8.0.16.jar
 protobuf-java-3.6.1.jar
 validation-api-2.0.1.Final.jar
+byte-buddy-1.12.13.jar
+error_prone_annotations-2.11.0.jar
+jsr305-3.0.2.jar
+snakeyaml-1.30.jar
