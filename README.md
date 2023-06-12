@@ -81,9 +81,11 @@ Thanks to everyone who contributed PR~ 🎉🎉🎉
 <img src="https://contrib.rocks/image?repo=CloudOrc/SolidUI" />
 </a>
 
-# ⭐Star History
+# Thanks And Support
 
-[![Star History Chart](https://api.star-history.com/svg?repos=CloudOrc/SolidUI&type=Date)](https://star-history.com/#CloudOrc/SolidUI&Date)
+We are very grateful for your support and recognition of our project and development work. In open source software development, we deeply know that user and community feedback and support are crucial. Our project has provided a README and Issue system to facilitate user deployment and problem solving, while also helping to increase project activity. We will prioritize issues raised in the issues.
 
+If you are interested in the community, welcome to participate (code, documentation, use), welcome to participate in any form.
 
-<p align="center"><a href="https://github.com/CloudOrc/SolidUI#"><img src="https://superagi.com/wp-content/uploads/2023/05/backToTopButton.png" alt="Back to top" height="29"/></a></p>
+If you feel that the SolidUI project is valuable to you and are willing to support our development work, please give the project a little star or [sponsor us](https://afdian.net/a/solidui).
+

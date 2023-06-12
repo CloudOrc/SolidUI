@@ -74,7 +74,7 @@ SolidUI v0.1.0 的完整文档列表，请参见 [SolidUI-Doc](https://github.co
 
 我们创建了一个 issue [[Who is Using SolidUI]](https://github.com/CloudOrc/SolidUI/issues/1) 以便用户反馈和记录谁在使用 SolidUI.  
 
-# 👩‍💻Contributors
+# Contributors
 
 Thanks to everyone who contributed PR~ 🎉🎉🎉
 
@@ -82,9 +82,10 @@ Thanks to everyone who contributed PR~ 🎉🎉🎉
 <img src="https://contrib.rocks/image?repo=CloudOrc/SolidUI" />
 </a>
 
-# ⭐Star History
+# 感谢与赞助
 
-[![Star History Chart](https://api.star-history.com/svg?repos=CloudOrc/SolidUI&type=Date)](https://star-history.com/#CloudOrc/SolidUI&Date)
+我们非常感谢您对我们项目和开发工作的支持和认可。在开源软件开发过程中，我们深知用户和社区的反馈与支持是至关重要的。我们的项目已经提供了 README 和 Issue 系统，方便用户进行部署和解决问题，同时也有助于提升项目的活跃度。我们会优先关注 issue 中提出的问题。
 
+如果您对于社区有兴趣，欢迎参与（代码，文档，使用），欢迎任何形式参与。
 
-<p align="center"><a href="https://github.com/CloudOrc/SolidUI#"><img src="https://superagi.com/wp-content/uploads/2023/05/backToTopButton.png" alt="Back to top" height="29"/></a></p>
+如果您觉得 SolidUI 项目对您有价值，并愿意支持我们的开发工作，请为项目点个小星星或[赞助我们](https://afdian.net/a/solidui) 。
