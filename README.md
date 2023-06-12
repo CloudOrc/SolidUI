@@ -73,7 +73,7 @@ We welcome and look forward to more contributors participating in building Solid
 
 We created an issue [[Who is Using SolidUI]](https://github.com/CloudOrc/SolidUI/issues/1) for user feedback and documentation of who is using SolidUI.
 
-# 👩‍💻Contributors
+# Contributors
 
 Thanks to everyone who contributed PR~ 🎉🎉🎉
 
