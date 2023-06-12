@@ -47,6 +47,15 @@ AI生成可视化原型设计和编辑平台，支持2D，3D模型，结合LLM(L
 * 支持Large Language Model
 * 容器化部署
 
+
+# 快速开始
+
+为了快速体验
+
+从 [standalone](https://github.com/CloudOrc/SolidUI-Doc/tree/main/zh_CN/部署文档/整体部署/README_STANDALONE.md) 开始
+
+从 [Docker](https://github.com/CloudOrc/SolidUI-Doc/tree/main/zh_CN/部署文档/整体部署/README_DOCKER.md) 开始
+
 # 文档
 SolidUI v0.1.0 的完整文档列表，请参见 [SolidUI-Doc](https://github.com/CloudOrc/SolidUI-Doc/tree/main/zh_CN)
 

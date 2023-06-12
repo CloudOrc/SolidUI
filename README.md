@@ -47,6 +47,14 @@
 * Support Large Language Model
 * Containerized deployment
 
+# QuickStart
+
+For quick experience
+
+Want to start with [standalone](https://github.com/CloudOrc/SolidUI-Doc/tree/main/en_US/Deployment_Documentation/OverallDeployment/README_STANDALONE.md)
+Want to start with [Docker](https://github.com/CloudOrc/SolidUI-Doc/tree/main/en_US/Deployment_Documentation/OverallDeployment/README_DOCKER.md)
+
+
 # Document
 For a complete list of documentation for SolidUI v0.1.0, see [SolidUI-Doc](https://github.com/CloudOrc/SolidUI-Doc/tree/main/en_US)
 
