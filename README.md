@@ -51,7 +51,7 @@
 
 For quick experience
 
-Want to start with [standalone](https://github.com/CloudOrc/SolidUI-Doc/tree/main/en_US/Deployment_Documentation/OverallDeployment/README_STANDALONE.md)
+Want to start with [Standalone](https://github.com/CloudOrc/SolidUI-Doc/tree/main/en_US/Deployment_Documentation/OverallDeployment/README_STANDALONE.md)
 
 Want to start with [Docker](https://github.com/CloudOrc/SolidUI-Doc/tree/main/en_US/Deployment_Documentation/OverallDeployment/README_DOCKER.md)
 
