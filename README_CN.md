@@ -67,6 +67,7 @@ SolidUI v0.1.0 的完整文档列表，请参见 [SolidUI-Doc](https://github.co
 # 联系我们
 
 - 对 SolidUI 的任何问题和建议，可以提交 issue，以便跟踪处理和经验沉淀共享
+- [twitter](https://twitter.com/dlimeng192048)  
 - [bilibili](https://space.bilibili.com/472576729) (in Chinese)
 - [slack](https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA)
 - 可以扫描下面的二维码，加入我们的微信群，以获得更快速的响应 (in Chinese)
