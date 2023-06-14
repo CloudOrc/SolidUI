@@ -58,8 +58,8 @@
             <if test="dataSourceTypeId != null and dataSourceTypeId > 0">
                 <![CDATA[AND `datasource_type_id` = #{dataSourceTypeId}]]>
             </if>
-            <if test="expire != null and expire != ''">
-                <![CDATA[AND d.`expire` = false]]>
+            <if test="expire != null">
+                <![CDATA[AND `expire` = #{expire}]]>
             </if>
         </where>
         <![CDATA[ ORDER BY create_time DESC ]]>
