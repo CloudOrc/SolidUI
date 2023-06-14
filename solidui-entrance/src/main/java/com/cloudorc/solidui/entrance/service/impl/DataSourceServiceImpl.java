@@ -17,8 +17,6 @@
 
 package com.cloudorc.solidui.entrance.service.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloudorc.solidui.dao.entity.DataSource;
 import com.cloudorc.solidui.dao.mapper.DataSourceMapper;
 import com.cloudorc.solidui.dao.mapper.DataSourceTypeMapper;
@@ -28,6 +26,7 @@ import com.cloudorc.solidui.entrance.exceptions.ServiceException;
 import com.cloudorc.solidui.entrance.service.DataSourceService;
 import com.cloudorc.solidui.entrance.utils.PageInfo;
 import com.cloudorc.solidui.entrance.utils.Result;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,13 +35,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import java.util.List;
 
 /**
  * data source service impl
  */
 @Service
 public class DataSourceServiceImpl extends BaseServiceImpl implements DataSourceService {
+
     private final Logger logger = LoggerFactory.getLogger(DataSourceServiceImpl.class);
 
     @Autowired
@@ -51,20 +54,19 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     @Autowired
     private DataSourceTypeMapper dataSourceTypeMapper;
 
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result createDataSource(DataSource dataSource) throws ServiceException {
-         Result<Object> result = new Result<>();
-        DataSource newDataSource = dataSourceMapper.queryByName(dataSource.getDataSourceName(),null);
-        if(newDataSource != null){
+        Result<Object> result = new Result<>();
+        DataSource newDataSource = dataSourceMapper.queryByName(dataSource.getDataSourceName(), null);
+        if (newDataSource != null) {
             putMsg(result, Status.DATASOURCE_ALREADY_EXISTS_ERROR);
             return result;
         }
 
-        if(dataSourceMapper.insertOne(dataSource) > 0){
+        if (dataSourceMapper.insertOne(dataSource) > 0) {
             putMsg(result, Status.SUCCESS);
-        }else{
+        } else {
             putMsg(result, Status.CREATE_DATASOURCE_ERROR);
         }
         return result;
@@ -73,15 +75,15 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     @Override
     public Result queryDataSource(Long dataSourceId) {
         Result<Object> result = new Result<>();
-        if(dataSourceId == null) {
+        if (dataSourceId == null) {
             putMsg(result, Status.QUERY_DATASOURCE_ERROR);
             return result;
         }
 
-        DataSource dataSource = dataSourceMapper.queryByName(null,dataSourceId);
-        if(dataSource == null) {
+        DataSource dataSource = dataSourceMapper.queryByName(null, dataSourceId);
+        if (dataSource == null) {
             putMsg(result, Status.QUERY_DATASOURCE_ERROR);
-        }else{
+        } else {
             DataSourceDTO dataSourceDTO = new DataSourceDTO();
             BeanUtils.copyProperties(dataSource, dataSourceDTO);
             putMsg(result, Status.SUCCESS);
@@ -93,15 +95,15 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     @Override
     public Result queryDataSource(String dataSourceName) {
         Result<Object> result = new Result<>();
-        if(StringUtils.isBlank(dataSourceName)){
+        if (StringUtils.isBlank(dataSourceName)) {
             putMsg(result, Status.QUERY_DATASOURCE_ERROR);
             return result;
         }
 
-        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName,null);
-        if(dataSource == null) {
+        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName, null);
+        if (dataSource == null) {
             putMsg(result, Status.QUERY_DATASOURCE_ERROR);
-        }else{
+        } else {
             DataSourceDTO dataSourceDTO = new DataSourceDTO();
             BeanUtils.copyProperties(dataSource, dataSourceDTO);
             putMsg(result, Status.SUCCESS);
@@ -113,15 +115,15 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     @Override
     public Result existDataSource(Long dataSourceId) {
         Result<Object> result = new Result<>();
-        if(dataSourceId == null){
+        if (dataSourceId == null) {
             putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
             return result;
         }
 
         DataSource dataSource = dataSourceMapper.selectById(dataSourceId);
-        if(dataSource == null) {
+        if (dataSource == null) {
             putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
-        }else{
+        } else {
             int affect = dataSourceMapper.expireOne(dataSource.getId());
             if (affect > 0) {
                 putMsg(result, Status.SUCCESS);
@@ -134,11 +136,13 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     }
 
     @Override
-    public Result queryDataSourceByPage(String dataSourceName, Long dataSourceTypeId, Integer pageNo, Integer pageSize) {
+    public Result queryDataSourceByPage(String dataSourceName, Long dataSourceTypeId, Boolean expire, Integer pageNo,
+                                        Integer pageSize) {
         Result<Object> result = new Result<>();
         PageInfo<DataSource> pageInfo = new PageInfo<>(pageNo, pageSize);
         Page<DataSource> page = new Page<>(pageNo, pageSize);
-        IPage<DataSource> dataSourceIPage = dataSourceMapper.queryDataSourceByPage(page, dataSourceName, dataSourceTypeId);
+        IPage<DataSource> dataSourceIPage =
+                dataSourceMapper.queryDataSourceByPage(page, dataSourceName, dataSourceTypeId, expire);
         List<DataSource> dataSourceList = dataSourceIPage.getRecords();
         pageInfo.setTotal((int) dataSourceIPage.getTotal());
         pageInfo.setTotalList(dataSourceList);
@@ -151,12 +155,12 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     @Transactional(rollbackFor = Exception.class)
     public Result deleteDataSource(Long dataSourceId) {
         Result<Object> result = new Result<>();
-        if(dataSourceId == null) {
+        if (dataSourceId == null) {
             putMsg(result, Status.DELETE_DATASOURCE_ERROR);
         }
-        if(dataSourceMapper.deleteById(dataSourceId) > 0) {
+        if (dataSourceMapper.deleteById(dataSourceId) > 0) {
             putMsg(result, Status.SUCCESS);
-        }else{
+        } else {
             putMsg(result, Status.DELETE_DATASOURCE_ERROR);
         }
         return result;
@@ -166,18 +170,17 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     @Transactional(rollbackFor = Exception.class)
     public Result updateDataSource(DataSource dataSource) {
         Result<Object> result = new Result<>();
-        DataSource newDataSource = dataSourceMapper.queryByName(null,dataSource.getId());
-        if(newDataSource == null) {
-            putMsg(result,Status.UPDATE_DATASOURCE_ERROR);
+        DataSource newDataSource = dataSourceMapper.queryByName(null, dataSource.getId());
+        if (newDataSource == null) {
+            putMsg(result, Status.UPDATE_DATASOURCE_ERROR);
             return result;
         }
-        if(dataSourceMapper.updateOne(dataSource) > 0) {
+        if (dataSourceMapper.updateOne(dataSource) > 0) {
             putMsg(result, Status.SUCCESS);
-        }else{
+        } else {
             putMsg(result, Status.UPDATE_DATASOURCE_ERROR);
         }
         return result;
     }
-
 
 }

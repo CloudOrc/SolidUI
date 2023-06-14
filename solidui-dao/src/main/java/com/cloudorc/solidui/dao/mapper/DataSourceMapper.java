@@ -32,7 +32,8 @@ public interface DataSourceMapper extends BaseMapper<DataSource> {
 
     IPage<DataSource> queryDataSourceByPage(IPage<DataSource> page,
                                             @Param("dataSourceName") String dataSourceName,
-                                            @Param("dataSourceTypeId") Long dataSourceTypeId);
+                                            @Param("dataSourceTypeId") Long dataSourceTypeId,
+                                            @Param("expire") Boolean expire);
 
     int updateOne(DataSource dataSource);
 

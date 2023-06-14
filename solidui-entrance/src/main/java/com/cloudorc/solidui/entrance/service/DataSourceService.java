@@ -21,6 +21,7 @@ import com.cloudorc.solidui.entrance.exceptions.ServiceException;
 import com.cloudorc.solidui.entrance.utils.Result;
 
 public interface DataSourceService {
+
     /**
      * create data source info
      * @param dataSource
@@ -38,7 +39,8 @@ public interface DataSourceService {
 
     Result existDataSource(Long dataSourceId);
 
-    Result queryDataSourceByPage(String dataSourceName, Long dataSourceTypeId, Integer pageNo, Integer pageSize);
+    Result queryDataSourceByPage(String dataSourceName, Long dataSourceTypeId, Boolean expire, Integer pageNo,
+                                 Integer pageSize);
 
     Result deleteDataSource(Long dataSourceId);
 
