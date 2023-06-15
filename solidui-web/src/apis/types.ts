@@ -17,7 +17,7 @@
 
 import { SolidModelDataType } from "@/types";
 
-export interface SolidModelCreationDataType extends SolidModelDataType {}
+export type SolidModelCreationDataType = SolidModelDataType;
 
 export type PageCreationDataType = {
 	layout: string;

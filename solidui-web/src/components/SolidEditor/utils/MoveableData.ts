@@ -62,11 +62,11 @@ export default class MoveableData extends MoveableHelper {
 	}
 	public getProperties(properties: string[][], defaultValues: any[]) {
 		const frames = this.getSelectedFrames();
-		const memory = this.memory;
+		const { memory } = this;
 
 		if (!frames.length) {
 			return properties.map(
-				(property, i) => memory.get(property.join("///")) || defaultValues[i]
+				(property, i) => memory.get(property.join("///")) || defaultValues[i],
 			);
 		}
 
@@ -77,7 +77,7 @@ export default class MoveableData extends MoveableHelper {
 		});
 	}
 	private setValue(
-		callback: (frame: Frame, target: HTMLElement | SVGElement) => void
+		callback: (frame: Frame, target: HTMLElement | SVGElement) => void,
 	) {
 		const targets = this.getSelectedTargets();
 

@@ -34,10 +34,10 @@ import {
 import SolidView, { SolidViewProps } from "../SolidView";
 import { defaultTheme } from "@/assets/themes";
 
-export interface EChartsBaseSolidViewProps extends SolidViewProps {}
+export type EChartsBaseSolidViewProps = SolidViewProps;
 
 export default class EChartsBaseSolidView<
-	T extends EChartsBaseSolidViewProps
+	T extends EChartsBaseSolidViewProps,
 > extends SolidView<T> {
 	ecRef: React.RefObject<HTMLDivElement>;
 	ecInstance?: ECharts;
@@ -90,8 +90,8 @@ export default class EChartsBaseSolidView<
 		window.removeEventListener("resize", this.resize);
 	}
 
-	//// ------------------------------------------------------------------
-	//// protected methods
+	/// / ------------------------------------------------------------------
+	/// / protected methods
 	protected getTitleOption(): TitleComponentOption {
 		return {
 			show: true,
@@ -172,8 +172,8 @@ export default class EChartsBaseSolidView<
 		return [];
 	}
 
-	//////// ------------------------------------------------------------------
-	//////// private methods
+	/// ///// ------------------------------------------------------------------
+	/// ///// private methods
 	private buildOption(): EChartsOption {
 		let options: EChartsOption = {
 			title: this.getTitleOption(),
@@ -196,7 +196,7 @@ export default class EChartsBaseSolidView<
 		}
 
 		let that = this;
-		this.resizeTimer = setTimeout(function () {
+		this.resizeTimer = setTimeout(() => {
 			that.ecInstance && that.ecInstance.resize();
 		}, 50);
 	}

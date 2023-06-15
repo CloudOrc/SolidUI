@@ -31,12 +31,12 @@ export default function (props: SwitchProps) {
 		<div className="lingc-switch">
 			<div className="switch-box">
 				<span
-					className={`switch-span ${checked ? "on" : "off"}`}
-					onClick={() => {
+  className={`switch-span ${checked ? "on" : "off"}`}
+  onClick={() => {
 						setChecked(!checked);
 						props.onChange && props.onChange(!checked);
 					}}
-				></span>
+				/>
 			</div>
 		</div>
 	);

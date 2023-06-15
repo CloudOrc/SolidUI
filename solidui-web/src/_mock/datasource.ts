@@ -16,6 +16,7 @@
  */
 
 import Mock from "mockjs";
+
 const types = [
 	"mysql",
 	"sqlserver",
@@ -55,7 +56,7 @@ Mock.mock(
 				},
 			],
 		},
-	})
+	}),
 );
 
 Mock.mock(
@@ -115,7 +116,7 @@ Mock.mock(
 				description: "HTTP",
 			},
 		],
-	})
+	}),
 );
 
 Mock.mock(
@@ -126,7 +127,7 @@ Mock.mock(
 		msg: "success",
 		success: true,
 		data: {},
-	})
+	}),
 );
 
 Mock.mock(
@@ -137,7 +138,7 @@ Mock.mock(
 		msg: "success",
 		success: true,
 		data: {},
-	})
+	}),
 );
 
 Mock.mock(
@@ -148,7 +149,7 @@ Mock.mock(
 		msg: "success",
 		success: true,
 		data: {},
-	})
+	}),
 );
 
 Mock.mock(
@@ -212,7 +213,7 @@ Mock.mock(
 				],
 			},
 		],
-	})
+	}),
 );
 
 Mock.mock(
@@ -234,5 +235,5 @@ Mock.mock(
 				profit: "@integer(100, 100000)",
 			},
 		],
-	})
+	}),
 );

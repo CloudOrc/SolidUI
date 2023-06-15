@@ -24,27 +24,27 @@ export { default as PropertyElement } from "./PropertyElement/PropertyElement";
 export type { SwitchProps } from "./Switch/Switch";
 export { default as Switch } from "./Switch/Switch";
 
-//// Radio
+/// / Radio
 export type { ButtonGroupRadioProps } from "./Radio/ButtonGroupRadio";
 export { default as ButtonGroupRadio } from "./Radio/ButtonGroupRadio";
 
-//// Slider
+/// / Slider
 export { default as Slider } from "./Slider/Slider";
 
-//// InputNumber
+/// / InputNumber
 export { default as InputNumber } from "./InputNumber/InputNumber";
 
-//// InputText
+/// / InputText
 export { default as InputText } from "./InputText/InputText";
 
-//// InputColor
+/// / InputColor
 export { default as InputColor } from "./InputColor/InputColor";
 
-//// InputTextArea
+/// / InputTextArea
 export { default as InputTextArea } from "./InputTextArea/InputTextArea";
 
-//// InputUpload
+/// / InputUpload
 export { default as InputUpload } from "./InputUpload/InputUpload";
 
-//// Select
+/// / Select
 export { default as Select } from "./Select/Select";

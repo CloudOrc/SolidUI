@@ -71,7 +71,7 @@ export default function (props: ProjectCardProps) {
 				size: "small",
 			},
 			onOk() {
-				handleDelete(item.id + "");
+				handleDelete(`${item.id}`);
 			},
 			// onCancel() {
 			// 	console.log("Cancel");
@@ -82,13 +82,13 @@ export default function (props: ProjectCardProps) {
 	let clazzName = classNames("solidui-card__project", className);
 	return (
 		<div
-			className={clazzName}
-			style={style}
-			onMouseEnter={(e) => {
-				handleMouseEnter && handleMouseEnter(e, item.id + "");
+  className={clazzName}
+  style={style}
+  onMouseEnter={(e) => {
+				handleMouseEnter && handleMouseEnter(e, `${item.id}`);
 			}}
-			onMouseLeave={(e) => {
-				handleMouseLeave && handleMouseLeave(e, item.id + "");
+  onMouseLeave={(e) => {
+				handleMouseLeave && handleMouseLeave(e, `${item.id}`);
 			}}
 		>
 			<div className="card-content">
@@ -97,64 +97,64 @@ export default function (props: ProjectCardProps) {
 					<div className="content-mask">
 						<div className="mask-icons">
 							<Space
-								style={{
+  style={{
 									marginTop: 50,
 								}}
 							>
 								<Pic
-									className="solidui-icon-btn"
-									theme="outline"
-									size="18"
-									fill="#f1f1f1"
-									strokeWidth={2}
-									strokeLinejoin="miter"
-									strokeLinecap="square"
+  className="solidui-icon-btn"
+  theme="outline"
+  size="18"
+  fill="#f1f1f1"
+  strokeWidth={2}
+  strokeLinejoin="miter"
+  strokeLinecap="square"
 								/>
 								<Copy
-									className="solidui-icon-btn"
-									theme="outline"
-									size="18"
-									fill="#f1f1f1"
-									strokeWidth={2}
-									strokeLinejoin="miter"
-									strokeLinecap="square"
+  className="solidui-icon-btn"
+  theme="outline"
+  size="18"
+  fill="#f1f1f1"
+  strokeWidth={2}
+  strokeLinejoin="miter"
+  strokeLinecap="square"
 								/>
 								<Lightning
-									className="solidui-icon-btn"
-									theme="outline"
-									size="18"
-									fill="#f1f1f1"
-									strokeWidth={2}
-									strokeLinejoin="miter"
-									strokeLinecap="square"
+  className="solidui-icon-btn"
+  theme="outline"
+  size="18"
+  fill="#f1f1f1"
+  strokeWidth={2}
+  strokeLinejoin="miter"
+  strokeLinecap="square"
 								/>
 								<Delete
-									className="solidui-icon-btn"
-									theme="outline"
-									size="18"
-									fill="#f1f1f1"
-									strokeWidth={2}
-									strokeLinejoin="miter"
-									strokeLinecap="square"
-									onClick={__handleDelete}
+  className="solidui-icon-btn"
+  theme="outline"
+  size="18"
+  fill="#f1f1f1"
+  strokeWidth={2}
+  strokeLinejoin="miter"
+  strokeLinecap="square"
+  onClick={__handleDelete}
 								/>
 								<Export
-									className="solidui-icon-btn"
-									theme="outline"
-									size="18"
-									fill="#f1f1f1"
-									strokeWidth={2}
-									strokeLinejoin="miter"
-									strokeLinecap="square"
+  className="solidui-icon-btn"
+  theme="outline"
+  size="18"
+  fill="#f1f1f1"
+  strokeWidth={2}
+  strokeLinejoin="miter"
+  strokeLinecap="square"
 								/>
 							</Space>
 						</div>
 						<div className="mask-btns">
 							<Space size={8}>
 								<Button
-									type="primary"
-									size="small"
-									style={{
+  type="primary"
+  size="small"
+  style={{
 										width: 64,
 										backgroundColor: "#6c6c6c",
 										borderColor: "#6c6c6c",
@@ -163,12 +163,12 @@ export default function (props: ProjectCardProps) {
 									Preview
 								</Button>
 								<Button
-									type="primary"
-									size="small"
-									style={{
+  type="primary"
+  size="small"
+  style={{
 										width: 64,
 									}}
-									onClick={() => handleEdit(item)}
+  onClick={() => handleEdit(item)}
 								>
 									Edit
 								</Button>
@@ -180,9 +180,9 @@ export default function (props: ProjectCardProps) {
 
 			<div className="card-bottom">
 				<Row
-					wrap={false}
-					align={"middle"}
-					style={{
+  wrap={false}
+  align={"middle"}
+  style={{
 						height: "100%",
 					}}
 				>

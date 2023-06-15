@@ -47,7 +47,7 @@ function Outline() {
 						selectView(view.id);
 					}}
 				>
-					<span className="eblock"></span>
+					<span className="eblock" />
 					<i
 						className="bi-font bi-chart-column"
 						style={{
@@ -67,7 +67,7 @@ function Outline() {
 							<i className="bi-font bi-lock" />
 						</Tooltip>
 					</div>
-				</li>
+				</li>,
 			);
 		});
 		return nodes;

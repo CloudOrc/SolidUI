@@ -20,7 +20,7 @@ import React from "react";
 export default function () {
 	return (
 		<div
-			style={{
+  style={{
 				position: "relative",
 				width: "100%",
 				height: "100%",

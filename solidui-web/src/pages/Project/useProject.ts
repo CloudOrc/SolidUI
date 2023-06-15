@@ -27,7 +27,6 @@ type InitialData = {
 
 function useProject(InitialData: InitialData = {}) {
 	const forceUpdate = useUpdate();
-	const navigate = useNavigate();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [projects, setProjects] = useState<any[]>([]);
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -56,13 +55,13 @@ function useProject(InitialData: InitialData = {}) {
 			let total = data.total || 0;
 			let records = data.totalList || [];
 			records.forEach((item: any) => {
-				popupConverMap.current.set(item.id + "", false);
+				popupConverMap.current.set(`${item.id}`, false);
 			});
 			setProjects(records || []);
 			setPagination({
-				current: current,
-				size: size,
-				total: total,
+				current,
+				size,
+				total,
 			});
 		}
 		setLoading(false);

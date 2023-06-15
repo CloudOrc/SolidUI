@@ -65,7 +65,7 @@ export const DelteButtonViewable = {
         :host:after {
             transform: translate(-50%, -50%) rotate(-45deg);
         }
-        `
+        `,
 		);
 		return (
 			<SolidEditorContext.Consumer key="delete-button-viewer">

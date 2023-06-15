@@ -26,7 +26,7 @@ Mock.mock(
 		data: {
 			id: "@id",
 			title: "@title",
-			url: '@image("256x256", "#50B347", "#FFF", "png", "Mock.js")',
+			url: "@image(\"256x256\", \"#50B347\", \"#FFF\", \"png\", \"Mock.js\")",
 		},
-	})
+	}),
 );

@@ -18,9 +18,8 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import classNames from "classnames";
-import { isFinite, isInteger, toNumber } from "lodash";
+import { isFinite, isInteger, toNumber, parseInt } from "lodash";
 import Slider, { SliderProps } from "../Slider/Slider";
-import { parseInt } from "lodash";
 import "./InputNumber.less";
 
 export interface DatNumberProps extends Omit<SliderProps, "onUpdate"> {

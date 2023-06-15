@@ -28,6 +28,6 @@ if (root) {
 	createRoot(root).render(
 		<ConfigProvider>
 			<App />
-		</ConfigProvider>
+		</ConfigProvider>,
 	);
 }

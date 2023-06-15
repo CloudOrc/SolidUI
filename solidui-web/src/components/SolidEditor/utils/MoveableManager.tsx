@@ -58,8 +58,8 @@ export default class MoveableManager extends React.PureComponent<{
 			return this.renderViewportMoveable();
 		}
 
-		const moveableData = this.moveableData;
-		const memory = this.memory;
+		const { moveableData } = this;
+		const { memory } = this;
 
 		const elementGuidelines = [
 			document.querySelector(".editor-viewport"),
@@ -73,8 +73,8 @@ export default class MoveableManager extends React.PureComponent<{
 				ables={[DimensionViewable, DelteButtonViewable]}
 				ref={this.moveable}
 				targets={selectedTargets}
-				dimensionViewable={true}
-				deleteButtonViewable={true}
+				dimensionViewable
+				deleteButtonViewable
 				zoom={1 / zoom}
 				throttleResize={1}
 				passDragArea={selectedMenu === "Text"}
@@ -83,7 +83,7 @@ export default class MoveableManager extends React.PureComponent<{
 				// keepRatio={selectedTargets.length > 1 ? true : isShift}
 				keepRatio={false}
 				// Snapable
-				snappable={true}
+				snappable
 				bounds={{
 					position: "css",
 					left: 0,
@@ -92,7 +92,7 @@ export default class MoveableManager extends React.PureComponent<{
 					bottom: 0,
 				}}
 				snapThreshold={5}
-				snapGap={true}
+				snapGap
 				elementGuidelines={elementGuidelines}
 				elementSnapDirections={{
 					top: true,
@@ -102,8 +102,8 @@ export default class MoveableManager extends React.PureComponent<{
 					center: true,
 					middle: true,
 				}}
-				isDisplaySnapDigit={true}
-				isDisplayInnerSnapDigit={true}
+				isDisplaySnapDigit
+				isDisplayInnerSnapDigit
 				snapDistFormat={(v, type) => {
 					return `${v}px`;
 				}}
@@ -111,10 +111,10 @@ export default class MoveableManager extends React.PureComponent<{
 				roundable={false}
 				// roundable={selectedTargets.length > 1 ? false : true}
 				roundClickable={false}
-				isDisplayShadowRoundControls={true}
+				isDisplayShadowRoundControls
 				minRoundControls={[1, 0]}
 				maxRoundControls={[1, 0]}
-				roundRelative={true}
+				roundRelative
 				roundPadding={13}
 				onRound={(e) => {
 					moveableData.onRound(e);
@@ -123,15 +123,15 @@ export default class MoveableManager extends React.PureComponent<{
 				verticalGuidelines={verticalGuidelines}
 				horizontalGuidelines={horizontalGuidelines}
 				// Drag
-				draggable={true}
+				draggable
 				// onDragStart={moveableData.onDragStart}
 				onDragStart={(e) => {
 					let id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
-					if (null === id || undefined === id) {
+					if (id === null || undefined === id) {
 						return;
 					}
 					let view = mm.getView(id);
-					if (null === view || undefined === view) {
+					if (view === null || undefined === view) {
 						return;
 					}
 
@@ -150,12 +150,12 @@ export default class MoveableManager extends React.PureComponent<{
 					// e.target.style.top = `${newTop}px`;
 					let id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
 
-					if (null === id || undefined === id) {
+					if (id === null || undefined === id) {
 						return;
 					}
 					let view = mm.getView(id);
 
-					if (null === view || undefined === view) {
+					if (view === null || undefined === view) {
 						return;
 					}
 					let rotate = view.frame.rotate || 0;
@@ -210,27 +210,27 @@ export default class MoveableManager extends React.PureComponent<{
 				onScaleGroupStart={moveableData.onScaleGroupStart}
 				onScaleGroup={moveableData.onScaleGroup}
 				// Resize
-				resizable={true}
+				resizable
 				onResizeStart={moveableData.onResizeStart}
 				onResize={(e) => {
 					moveableData.onResize(e);
 				}}
 				onResizeEnd={(e) => {
 					let id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
-					if (null === id || undefined === id) {
+					if (id === null || undefined === id) {
 						return;
 					}
 					if (e.lastEvent === null || e.lastEvent === undefined) {
 						return;
 					}
 					let view = mm.getView(id);
-					if (null === view || undefined === view) {
+					if (view === null || undefined === view) {
 						return;
 					}
 					let w = e.lastEvent.boundingWidth;
 					let h = e.lastEvent.boundingHeight;
 					view.size = { ...view.size, width: w, height: h };
-					eventbus.emit("onResize", { id: id, width: w, height: h });
+					eventbus.emit("onResize", { id, width: w, height: h });
 				}}
 				onResizeGroupStart={moveableData.onResizeGroupStart}
 				onResizeGroup={moveableData.onResizeGroup}
@@ -245,7 +245,7 @@ export default class MoveableManager extends React.PureComponent<{
 						let w = evts[i].lastEvent.boundingWidth;
 						let h = evts[i].lastEvent.boundingHeight;
 						let tid = t.getAttribute(SOLIDUI_ELEMENT_ID);
-						if (null === tid || undefined === tid) {
+						if (tid === null || undefined === tid) {
 							continue;
 						}
 						eventData[tid] = { width: w, height: h };
@@ -253,7 +253,7 @@ export default class MoveableManager extends React.PureComponent<{
 					eventbus.emit("onResizeGroup", eventData);
 				}}
 				// Rotate
-				rotatable={true}
+				rotatable
 				onRotateStart={moveableData.onRotateStart}
 				onRotate={moveableData.onRotate}
 				onRotateGroupStart={moveableData.onRotateGroupStart}
@@ -300,7 +300,7 @@ export default class MoveableManager extends React.PureComponent<{
 				}}
 				onRenderGroupStart={(e) => {
 					e.datas.prevDatas = e.targets.map((target) =>
-						moveableData.getFrame(target).get()
+						moveableData.getFrame(target).get(),
 					);
 				}}
 				onRenderGroup={(e) => {
@@ -324,23 +324,23 @@ export default class MoveableManager extends React.PureComponent<{
 					// 	infos,
 					// });
 				}}
-			></Moveable>
+			/>
 		);
 	}
 	public renderViewportMoveable() {
-		const moveableData = this.moveableData;
+		const { moveableData } = this;
 		const viewport = this.getViewport();
 		const target = viewport ? viewport.viewportRef.current! : null;
 
 		return (
 			<Moveable
 				ref={this.moveable}
-				rotatable={true}
+				rotatable
 				target={target}
 				origin={false}
 				onRotateStart={moveableData.onRotateStart}
 				onRotate={moveableData.onRotate}
-			></Moveable>
+			/>
 		);
 	}
 	public componentDidMount() {}

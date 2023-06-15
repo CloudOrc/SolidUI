@@ -23,18 +23,18 @@ export const SolidEditorContext = createContext<SolidEditor | null>(null);
 
 function connectContext(
 	context: React.Context<any>,
-	properties: readonly string[]
+	properties: readonly string[],
 ) {
 	return function (Component: any) {
-		const prototype = Component.prototype;
+		const { prototype } = Component;
 
 		Component.contextType = context;
 		properties.forEach((name) => {
 			Object.defineProperty(prototype, name, {
-				get: function () {
+				get() {
 					return this.context[name];
 				},
-				set: function () {
+				set() {
 					this.context[name](name);
 				},
 			});
@@ -44,5 +44,5 @@ function connectContext(
 
 export const connectEditorContext = connectContext(
 	SolidEditorContext,
-	SOLID_EDITOR_PROPERTIES
+	SOLID_EDITOR_PROPERTIES,
 );

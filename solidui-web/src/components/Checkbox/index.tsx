@@ -37,7 +37,7 @@ export default function (props: CheckboxProps) {
 			"cursor-pointer": true,
 			active: checked,
 		},
-		props.className
+		props.className,
 	);
 
 	useEffect(() => {
@@ -56,7 +56,7 @@ export default function (props: CheckboxProps) {
 
 	return (
 		<div className={_classNames} onClick={handleChecked} style={props.style}>
-			<div className="solid-checkbox__main"></div>
+			<div className="solid-checkbox__main" />
 		</div>
 	);
 }

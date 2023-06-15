@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import TopPropertiesPanel from "./TopPropertiesPanel";
 import ScenePropertiesPanel from "./ScenePropertiesPanel";
 import PagePropertiesPanel from "./PagePropertiesPanel";
@@ -55,12 +55,12 @@ function Properties() {
 			return <PagePropertiesPanel />;
 		} else if (propertyKey === "view") {
 			return (
-				<>
+				<Fragment>
 					<header className="conf-header">{renderTabs()}</header>
 					<main className="conf-main" ref={mainRef}>
 						{renderPanel()}
 					</main>
-				</>
+				</Fragment>
 			);
 		}
 		return undefined;

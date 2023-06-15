@@ -112,7 +112,7 @@ export default class SolidEditor extends React.PureComponent<
 
 	public setZoom = (zoom: number) => {
 		this.setState({
-			zoom: zoom,
+			zoom,
 		});
 	};
 
@@ -130,15 +130,15 @@ export default class SolidEditor extends React.PureComponent<
 
 	public appendJSXsOnly(
 		jsxs: ElementInfo[],
-		isRestore?: boolean
+		isRestore?: boolean,
 	): Promise<AddedInfo> {
 		const viewport = this.getViewport();
 		const indexesList = viewport.getSortedIndexesList(
-			this.getSelectedTargets()
+			this.getSelectedTargets(),
 		);
 		const indexesListLength = indexesList.length;
 		let appendIndex = -1;
-		let scopeId: string = "";
+		let scopeId = "";
 
 		if (!isRestore && indexesListLength) {
 			const indexes = indexesList[indexesListLength - 1];
@@ -158,15 +158,15 @@ export default class SolidEditor extends React.PureComponent<
 
 	public appendJSXs(
 		jsxs: ElementInfo[],
-		isRestore?: boolean
+		isRestore?: boolean,
 	): Promise<Array<HTMLElement | SVGElement>> {
 		const viewport = this.getViewport();
 		const indexesList = viewport.getSortedIndexesList(
-			this.getSelectedTargets()
+			this.getSelectedTargets(),
 		);
 		const indexesListLength = indexesList.length;
 		let appendIndex = -1;
-		let scopeId: string = "";
+		let scopeId = "";
 
 		if (!isRestore && indexesListLength) {
 			const indexes = indexesList[indexesListLength - 1];
@@ -197,7 +197,7 @@ export default class SolidEditor extends React.PureComponent<
 	public clear(): Promise<RemovedInfo> {
 		let root = this.getViewport().getInfo("viewport");
 		let targets: Array<HTMLElement | SVGElement> = [];
-		if (null !== root && undefined !== root && root.children) {
+		if (root !== null && undefined !== root && root.children) {
 			root.children.forEach((child) => {
 				if (child.el) {
 					targets.push(child.el);
@@ -214,7 +214,7 @@ export default class SolidEditor extends React.PureComponent<
 						},
 						() => {
 							resolve(removed);
-						}
+						},
 					);
 				});
 			});
@@ -283,7 +283,7 @@ export default class SolidEditor extends React.PureComponent<
 
 	public setSelectedTargets(
 		targets: Array<HTMLElement | SVGElement>,
-		isRestore?: boolean
+		isRestore?: boolean,
 	) {
 		targets = targets.filter((target) => {
 			return targets.every((parnetTarget) => {
@@ -317,7 +317,7 @@ export default class SolidEditor extends React.PureComponent<
 	};
 
 	private checkBlur() {
-		const activeElement = document.activeElement;
+		const { activeElement } = document;
 		if (activeElement) {
 			(activeElement as HTMLElement).blur();
 		}
@@ -331,7 +331,7 @@ export default class SolidEditor extends React.PureComponent<
 
 	public removeElements(
 		targets: Array<HTMLElement | SVGElement>,
-		isRestore?: boolean
+		isRestore?: boolean,
 	) {
 		const viewport = this.getViewport();
 		// const frameMap = this.removeFrames(targets);
@@ -342,7 +342,7 @@ export default class SolidEditor extends React.PureComponent<
 
 		if (indexesListLength) {
 			const lastInfo = viewport.getInfoByIndexes(
-				indexesList[indexesListLength - 1]
+				indexesList[indexesListLength - 1],
 			);
 			const nextInfo = viewport.getNextInfo(lastInfo.id!);
 
@@ -383,7 +383,7 @@ export default class SolidEditor extends React.PureComponent<
 			frame: IObject<any>;
 			frameOrder: IObject<any>;
 		}> = {};
-		const moveableData = this.moveableData;
+		const { moveableData } = this;
 		const viewport = this.getViewport();
 
 		targets.forEach(function removeFrame(target) {
@@ -442,14 +442,14 @@ export default class SolidEditor extends React.PureComponent<
 						infiniteViewer.current!.scrollCenter();
 					}}
 				/>
-				<div className={"editor-zoom-btn"}></div>
+				<div className={"editor-zoom-btn"} />
 				<Guides
 					ref={horizontalGuides}
 					type="horizontal"
 					className={"editor-guides guides-horizontal"}
 					snapThreshold={5}
 					snaps={horizontalSnapGuides}
-					displayDragPos={true}
+					displayDragPos
 					dragPosFormat={(v) => `${v}px`}
 					zoom={zoom}
 					unit={unit}
@@ -472,7 +472,7 @@ export default class SolidEditor extends React.PureComponent<
 					className={"editor-guides guides-vertical"}
 					snapThreshold={5}
 					snaps={verticalSnapGuides}
-					displayDragPos={true}
+					displayDragPos
 					dragPosFormat={(v) => `${v}px`}
 					zoom={zoom}
 					unit={unit}
@@ -487,16 +487,14 @@ export default class SolidEditor extends React.PureComponent<
 					// backgroundColor="#E6E5E6"
 					backgroundColor="#F6F6F6"
 					textColor="#D1D1D1"
-					// backgroundColor={"#6B6B6C"}
-					// textColor="#EAECEE"
 				/>
 
 				<InfiniteViewer
 					ref={infiniteViewer}
 					className="editor-viewer"
 					zoom={zoom}
-					useWheelScroll={true}
-					useForceWheel={true}
+					useWheelScroll
+					useForceWheel
 					pinchThreshold={50}
 					onScroll={(e) => {
 						horizontalGuides.current!.scroll(e.scrollLeft);
@@ -510,7 +508,7 @@ export default class SolidEditor extends React.PureComponent<
 					onDrag={(e) => {
 						console.log(e);
 					}}
-					usePinch={true}
+					usePinch
 					onPinch={(e) => {
 						eventbus.emit("onZoom", { zoom: e.zoom });
 						this.setState({
@@ -549,9 +547,9 @@ export default class SolidEditor extends React.PureComponent<
 					selectableTargets={[`.editor-viewport [${SOLIDUI_ELEMENT_ID}]`]}
 					hitRate={0}
 					ratio={0}
-					selectByClick={true}
+					selectByClick
 					selectFromInside={false}
-					continueSelectWithoutDeselect={true}
+					continueSelectWithoutDeselect
 					toggleContinueSelectWithoutDeselect={["x"]}
 					continueSelect={false}
 					toggleContinueSelect={["shift"]}
@@ -594,8 +592,8 @@ export default class SolidEditor extends React.PureComponent<
 					onSelectStart={(e) => {}}
 					onSelectEnd={(e) => {
 						let selected = e.selected || [];
-						let isDragStart = e.isDragStart;
-						let inputEvent = e.inputEvent;
+						let { isDragStart } = e;
+						let { inputEvent } = e;
 						if (isDragStart) {
 							inputEvent.preventDefault();
 						}
@@ -613,7 +611,7 @@ export default class SolidEditor extends React.PureComponent<
 						// 	e.direction[1] * 10
 						// );
 					}}
-				></Selecto>
+				/>
 			</div>
 		);
 	}

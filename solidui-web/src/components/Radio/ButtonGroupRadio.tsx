@@ -32,10 +32,10 @@ export default function (props: ButtonGroupRadioProps) {
 			return (
 				<label className="group-choose-btn" key={`key_${item.value}`}>
 					<input
-						type="radio"
-						value={item.value}
-						checked={value === item.value}
-						onChange={(e) => {
+  type="radio"
+  value={item.value}
+  checked={value === item.value}
+  onChange={(e) => {
 							setValue(e.target.value);
 							item.onChange && item.onChange(e.target.value);
 						}}
@@ -48,8 +48,8 @@ export default function (props: ButtonGroupRadioProps) {
 
 	return (
 		<div
-			className="group-choose"
-			style={{
+  className="group-choose"
+  style={{
 				width: 178,
 			}}
 		>

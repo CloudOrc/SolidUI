@@ -15,12 +15,10 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import EChartsBaseSolidView, {
 	EChartsBaseSolidViewProps,
 } from "./EChartsBaseSolidView";
 import {
-	EChartsOption,
 	SeriesOption,
 	XAXisComponentOption,
 	LegendComponentOption,
@@ -29,7 +27,7 @@ import {
 } from "echarts";
 import { findIndex, get, head } from "lodash-es";
 
-export interface SolidEChartsLineViewProps extends EChartsBaseSolidViewProps {}
+export type SolidEChartsLineViewProps = EChartsBaseSolidViewProps;
 
 export default class EChartsLineSolidView extends EChartsBaseSolidView<SolidEChartsLineViewProps> {
 	constructor(props: SolidEChartsLineViewProps) {
@@ -42,7 +40,7 @@ export default class EChartsLineSolidView extends EChartsBaseSolidView<SolidECha
 		if (!row0) return undefined;
 
 		// 2.
-		let measureIdx = findIndex(row0, function (o) {
+		let measureIdx = findIndex(row0, (o) => {
 			return o === measure.label;
 		});
 		if (measureIdx === -1) return undefined;
@@ -74,11 +72,11 @@ export default class EChartsLineSolidView extends EChartsBaseSolidView<SolidECha
 		let viewDimensions = get(
 			this.props.viewModel,
 			"metadata.viewDimensions",
-			[]
+			[],
 		) as any[];
 		let headDimension = head(viewDimensions);
 		if (!headDimension) return {};
-		let viewDimensionIdx = findIndex(headRow, function (o) {
+		let viewDimensionIdx = findIndex(headRow, (o) => {
 			return o === headDimension.label;
 		});
 		if (viewDimensionIdx === -1) return {};
@@ -96,7 +94,6 @@ export default class EChartsLineSolidView extends EChartsBaseSolidView<SolidECha
 		let option = vm.option || {};
 
 		return {
-			// @ts-ignore
 			type: "category",
 			data: xAxisData,
 			...option.xAxis,
@@ -106,7 +103,7 @@ export default class EChartsLineSolidView extends EChartsBaseSolidView<SolidECha
 	protected getSeriesOption(): SeriesOption[] | undefined {
 		let measures = get(this.props.viewModel, "metadata.measures", []) as any[];
 		let seriesList: SeriesOption[] = [];
-		measures.forEach((item, idx) => {
+		measures.forEach((item) => {
 			let series = this.getSeries(item);
 			if (series) {
 				seriesList.push(series);

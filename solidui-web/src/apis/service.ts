@@ -42,13 +42,13 @@ instance.interceptors.request.use(
 		let token = localStorage.getItem("token");
 		if (token) {
 			// @ts-ignore
-			config.headers["Authorization"] = `Bearer ${token}`;
+			config.headers.Authorization = `Bearer ${token}`;
 		}
 		return config;
 	},
 	(error) => {
 		return Promise.reject(error);
-	}
+	},
 );
 
 instance.interceptors.response.use(
@@ -62,13 +62,13 @@ instance.interceptors.response.use(
 			window.location.href = "/login";
 		}
 		return Promise.reject(error);
-	}
+	},
 );
 
 function doGet<T>(
 	url: string,
 	params: any = {},
-	config: AxiosRequestConfig = {}
+	config: AxiosRequestConfig = {},
 ): Promise<AxiosResultType<Result<T>>> {
 	return instance.get(url, {
 		params,
@@ -79,7 +79,7 @@ function doGet<T>(
 function doPost<T>(
 	url: string,
 	data: any = {},
-	config: AxiosRequestConfig = {}
+	config: AxiosRequestConfig = {},
 ): Promise<AxiosResultType<Result<T>>> {
 	return instance.post(url, data, {
 		...config,
@@ -89,7 +89,7 @@ function doPost<T>(
 function doPut<T>(
 	url: string,
 	data: any = {},
-	config: AxiosRequestConfig = {}
+	config: AxiosRequestConfig = {},
 ): Promise<AxiosResultType<Result<T>>> {
 	return instance.put(url, data, {
 		...config,
@@ -99,7 +99,7 @@ function doPut<T>(
 function doDelete<T>(
 	url: string,
 	data: any = {},
-	config: AxiosRequestConfig = {}
+	config: AxiosRequestConfig = {},
 ): Promise<AxiosResultType<Result<T>>> {
 	return instance.delete(url, {
 		data,
@@ -111,7 +111,7 @@ function doRequest<T>(
 	method: HttpMethod,
 	url: string,
 	data: any = {},
-	config: AxiosRequestConfig = {}
+	config: AxiosRequestConfig = {},
 ): Promise<ApiResult<T>> {
 	let response: Promise<AxiosResultType<Result<T>>>;
 	switch (method) {
@@ -135,31 +135,29 @@ function doRequest<T>(
 	return new Promise<ApiResult<T>>((resolve, reject) => {
 		return response
 			.then((res) => {
-				let data = res.data;
-				let success = data.success;
-				let code = data.code;
+				let { data } = res;
+				let { success } = data;
+				let { code } = data;
 				let msg = data.msg || "";
 				if (success) {
 					resolve({
 						ok: true,
 						data: data.data,
 					});
+				} else if (code === ErrorCode.FAILED) {
+					message.warning(data.msg);
+					resolve({
+						ok: false,
+					});
 				} else {
-					if (code === ErrorCode.FAILED) {
-						message.warning(data.msg);
-						resolve({
-							ok: false,
-						});
-					} else {
-						console.warn(
-							`code is ${code}, message is ${msg}, need to handle this error`
-						);
-						message.warning(msg);
-						resolve({
-							ok: false,
-						});
-						// reject(res.data);
-					}
+					console.warn(
+						`code is ${code}, message is ${msg}, need to handle this error`,
+					);
+					message.warning(msg);
+					resolve({
+						ok: false,
+					});
+					// reject(res.data);
 				}
 			})
 			.catch((err) => {
@@ -176,19 +174,19 @@ const service = {
 	post: <T>(
 		url: string,
 		data: any = {},
-		config: AxiosRequestConfig = {}
+		config: AxiosRequestConfig = {},
 		// headers: AxiosRequestHeaders = {}
 	) => doRequest<T>("post", url, data, config),
 	put: <T>(
 		url: string,
 		data: any = {},
-		config: AxiosRequestConfig = {}
+		config: AxiosRequestConfig = {},
 		// headers: AxiosRequestHeaders
 	) => doRequest<T>("put", url, data, config),
 	delete: <T>(
 		url: string,
 		data: any = {},
-		config: AxiosRequestConfig = {}
+		config: AxiosRequestConfig = {},
 		// headers: AxiosRequestHeaders
 	) => doRequest<T>("delete", url, data, config),
 };

@@ -83,7 +83,7 @@ class ModelManager {
 				for (let x = 0; x < scenes[m].pages![n].views.length; x++) {
 					this.viewMap.set(
 						scenes[m].pages![n].views[x].id,
-						scenes[m].pages![n].views[x]
+						scenes[m].pages![n].views[x],
 					);
 					this.views.push(scenes[m].pages![n].views[x]);
 				}

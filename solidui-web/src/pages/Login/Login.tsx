@@ -45,46 +45,46 @@ export default function () {
 				<div className="login-container">
 					<div className="login-title">
 						<img
-							className="logo"
-							src={LogoPng}
-							alt="SolidUI"
-							width={55}
-							height={55}
+  className="logo"
+  src={LogoPng}
+  alt="SolidUI"
+  width={55}
+  height={55}
 						/>
 						<h3 className="text">SolidUI</h3>
 					</div>
 					<div className="login-form">
 						<Form
-							name="basic"
-							initialValues={{
+  name="basic"
+  initialValues={{
 								username: "admin",
 								password: "",
 							}}
-							onFinish={handleLogin}
+  onFinish={handleLogin}
 							// onFinishFailed={onFinishFailed}
-							autoComplete="off"
-							layout="vertical"
-							style={{
+  autoComplete="off"
+  layout="vertical"
+  style={{
 								position: "relative",
 								width: "100%",
 							}}
 						>
 							<Form.Item
-								label="Username"
-								name="username"
-								rules={[
+  label="Username"
+  name="username"
+  rules={[
 									{ required: true, message: "Please input your username!" },
 								]}
-								style={{
+  style={{
 									height: 50,
 								}}
-								wrapperCol={{
+  wrapperCol={{
 									span: 24,
 								}}
 							>
 								<Input
-									placeholder="username"
-									style={{
+  placeholder="username"
+  style={{
 										backgroundColor: "#F5F9FC",
 										border: "none",
 										borderRadius: 6,
@@ -94,34 +94,34 @@ export default function () {
 							</Form.Item>
 
 							<Form.Item
-								label="Password"
-								name="password"
-								rules={[
+  label="Password"
+  name="password"
+  rules={[
 									{ required: true, message: "Please input your password!" },
 								]}
-								style={{
+  style={{
 									marginTop: 40,
 								}}
 							>
 								<Input.Password
-									className="login-password"
-									placeholder="password"
-									iconRender={(visible) =>
-										visible ? (
+  className="login-password"
+  placeholder="password"
+  iconRender={(visible) =>
+										(visible ? (
 											<EyeTwoTone
-												style={{
+  style={{
 													fontSize: 16,
 												}}
 											/>
 										) : (
 											<EyeInvisibleOutlined
-												style={{
+  style={{
 													fontSize: 16,
 												}}
 											/>
-										)
+										))
 									}
-									style={{
+  style={{
 										backgroundColor: "#F5F9FC",
 										border: "none",
 										borderRadius: 6,
@@ -131,15 +131,15 @@ export default function () {
 							</Form.Item>
 
 							<Form.Item
-								style={{
+  style={{
 									height: 50,
 									marginTop: 40,
 								}}
 							>
 								<Button
-									htmlType="submit"
-									type="primary"
-									style={{
+  htmlType="submit"
+  type="primary"
+  style={{
 										width: "100%",
 										backgroundColor: "#4B9FF7",
 										color: "#fff",

@@ -88,7 +88,7 @@ function Slider({
 	const widthBackground = clamp(
 		((stateValue - min) * 100) / (max - min),
 		0,
-		100
+		100,
 	);
 
 	const _style: React.CSSProperties = {
@@ -99,16 +99,16 @@ function Slider({
 
 	return (
 		<span
-			className={classNames(`${prefixCls}-slider`, className)}
-			style={_style}
-			onClick={handleClick}
-			onMouseDown={handleMouseDown}
-			role="slider"
-			tabIndex={0}
-			aria-valuenow={stateValue}
-			aria-valuemin={min}
-			aria-valuemax={max}
-			ref={sliderRef}
+  className={classNames(`${prefixCls}-slider`, className)}
+  style={_style}
+  onClick={handleClick}
+  onMouseDown={handleMouseDown}
+  role="slider"
+  tabIndex={0}
+  aria-valuenow={stateValue}
+  aria-valuemin={min}
+  aria-valuemax={max}
+  ref={sliderRef}
 		/>
 	);
 }

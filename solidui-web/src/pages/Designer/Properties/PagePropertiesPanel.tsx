@@ -24,7 +24,7 @@ export interface PagePropertiesPanelProps {}
 export default function (props: PagePropertiesPanelProps) {
 	return (
 		<>
-			<LeftRightExpander expanded={true} showCheckbox={false} title="Page">
+			<LeftRightExpander expanded showCheckbox={false} title="Page">
 				<PropertyElement label="Width" labelWidth={50}>
 					<InputText value={"100"} />
 				</PropertyElement>

@@ -41,8 +41,8 @@ export default class ViewFactory {
 
 	public getBuilder(type: string): SolidViewBuilder | undefined {
 		const builder = this.pool.get(type);
-		if (undefined === builder || null === builder) {
-			console.warn("can't found solid view builder, type = " + type);
+		if (undefined === builder || builder === null) {
+			console.warn(`can't found solid view builder, type = ${type}`);
 			return undefined;
 		}
 		return builder;

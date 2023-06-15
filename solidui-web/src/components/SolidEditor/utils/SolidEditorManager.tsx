@@ -70,7 +70,7 @@ export default class SolidEditorManager {
 			message.warn("please select one page before draw view");
 			return;
 		}
-		let viewType = event.viewType;
+		let { viewType } = event;
 		let builder = this.factory.getBuilder(viewType);
 		if (builder === undefined) {
 			return;
@@ -162,7 +162,7 @@ export default class SolidEditorManager {
 		}
 	}
 
-	//// ------------------ internal communcation methods ------------------
+	/// / ------------------ internal communcation methods ------------------
 	public _internal_select_view(id: string) {
 		eventbus.emit("onSelectViewInViewport", { id });
 	}

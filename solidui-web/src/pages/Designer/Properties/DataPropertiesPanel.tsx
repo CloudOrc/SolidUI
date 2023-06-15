@@ -56,7 +56,7 @@ export default function (props: DataPropertiesPanelProps) {
 	const dropdownRender = (menus: React.ReactNode) => (
 		<div>
 			{menus}
-			{/* Custom dropdown*/}
+			{/* Custom dropdown */}
 			{/* <Divider style={{ margin: 0 }} /> */}
 			{/* <div style={{ padding: 8 }}>The footer is not very short.</div> */}
 		</div>
@@ -68,7 +68,7 @@ export default function (props: DataPropertiesPanelProps) {
 	for (let i = 0; i < columns.length; i++) {
 		cells.push(<TableCell key={i}>{columns[i]}</TableCell>);
 	}
-	rowss.push(<TableRow key={`table-header-row`}>{cells}</TableRow>);
+	rowss.push(<TableRow key={"table-header-row"}>{cells}</TableRow>);
 
 	rows.forEach((row, index) => {
 		let cells: TableCell[] = [];
@@ -112,7 +112,7 @@ export default function (props: DataPropertiesPanelProps) {
 								disabled={
 									data.sql === undefined ||
 									data.sql == null ||
-									"" === data.sql.trim()
+									data.sql.trim() === ""
 								}
 								onClick={querySql}
 							>

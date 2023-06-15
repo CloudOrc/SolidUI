@@ -47,7 +47,7 @@ export interface SolidViewState {
 
 export default abstract class SolidView<
 	T extends SolidViewProps,
-	S extends SolidViewState = SolidViewState
+	S extends SolidViewState = SolidViewState,
 > extends React.Component<T, S> {
 	dataSheet: any[] = [];
 	xs: { label: string }[] = [];
@@ -75,16 +75,16 @@ export default abstract class SolidView<
 		this.fetchData = this.fetchData.bind(this);
 	}
 
-	//// ------------------------------------------------------------------
-	//// abstract methods
+	/// / ------------------------------------------------------------------
+	/// / abstract methods
 	protected abstract renderView(): React.ReactNode;
 	protected abstract baseViewDidMount(): void;
 	protected abstract baseViewWillUnmount(): void;
 	protected abstract reRender(): void;
 	protected abstract resize(): void;
 
-	//// ------------------------------------------------------------------
-	//// protected methods
+	/// / ------------------------------------------------------------------
+	/// / protected methods
 	protected renderTitle(): React.ReactNode {
 		// let viewModel = this.props.viewModel;
 		// let viewModel = this.state.viewModel;
@@ -92,8 +92,8 @@ export default abstract class SolidView<
 		let options = viewModel.options || {};
 		let title = options.title || {};
 		let style = title.style || {};
-		let show = title.show;
-		if (!!show) {
+		let { show } = title;
+		if (show) {
 			return (
 				<div className="solid-view-title" style={style}>
 					{title.text}
@@ -103,8 +103,8 @@ export default abstract class SolidView<
 		return null;
 	}
 
-	//// ------------------------------------------------------------------
-	//// private methods
+	/// / ------------------------------------------------------------------
+	/// / private methods
 	private readonly fetchDataAndReRender = async () => {
 		await this.fetchData();
 		this.reRender();
@@ -114,7 +114,7 @@ export default abstract class SolidView<
 		let viewModel = this.vm;
 		let data = viewModel.data || {};
 		let dsId = data.dataSourceId;
-		let sql = data.sql;
+		let { sql } = data;
 		if (!dsId || !sql) {
 			this.dataSheet = viewModel.data.dataset || [];
 			return;
@@ -123,7 +123,7 @@ export default abstract class SolidView<
 		let res: ApiResult<any[][]> = await Apis.datasource.querySql({
 			dataSourceName: data.dataSourceName,
 			typeName: data.dataSourceTypeName,
-			sql: sql,
+			sql,
 		});
 		if (res.ok) {
 			this.dataSheet = res.data || [];
@@ -138,7 +138,7 @@ export default abstract class SolidView<
 		this.eventbus.on("onResizeGroup", this.handleResizeGroup);
 		this.eventbus.on(
 			"onUpdateViewPropertyValue",
-			this.handleUpdateViewPropertyValue
+			this.handleUpdateViewPropertyValue,
 		);
 		this.eventbus.on("onDataSetChange", this.handleDataSetChange);
 	}
@@ -173,7 +173,7 @@ export default abstract class SolidView<
 	}
 
 	protected handleUpdateViewPropertyValue = (
-		evt: OnUpdateViewPropertyValueEventData
+		evt: OnUpdateViewPropertyValueEventData,
 	) => {
 		if (this.id === evt.id) {
 			let clonedVM = cloneDeep(this.vm);
@@ -198,7 +198,7 @@ export default abstract class SolidView<
 	async componentDidUpdate(
 		prevProps: Readonly<T>,
 		prevState: Readonly<{}>,
-		snapshot?: any
+		snapshot?: any,
 	) {
 		// let viewModel = this.state.viewModel;
 		let viewModel = this.vm;
@@ -214,7 +214,6 @@ export default abstract class SolidView<
 	render() {
 		let { viewModel, className, style, eventbus, scenaAttrs, ...restProps } =
 			this.props;
-
 		return (
 			<div
 				className={className}

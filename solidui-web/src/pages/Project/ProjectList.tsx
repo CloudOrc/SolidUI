@@ -46,55 +46,55 @@ export default function () {
 					New Project
 					<span className="solidui-modal__close-btn">
 						<Close
-							theme="outline"
-							size="16"
-							fill="rgba(0, 0, 0, 0.65)"
-							strokeWidth={2}
-							strokeLinejoin="miter"
-							strokeLinecap="square"
-							onClick={() => {
+  theme="outline"
+  size="16"
+  fill="rgba(0, 0, 0, 0.65)"
+  strokeWidth={2}
+  strokeLinejoin="miter"
+  strokeLinecap="square"
+  onClick={() => {
 								toggleModal(false);
 							}}
 						/>
 					</span>
 				</div>
 				<div
-					className="solidui-modal__content"
-					style={{
+  className="solidui-modal__content"
+  style={{
 						height: 100,
 					}}
 				>
 					<div className="modal-content__form">
 						<Form
-							layout={"vertical"}
-							form={form}
-							initialValues={{ layout: "vertical" }}
-							onFinish={(values) => {
+  layout={"vertical"}
+  form={form}
+  initialValues={{ layout: "vertical" }}
+  onFinish={(values) => {
 								create(values);
 							}}
 						>
 							<Form.Item
-								label="Project Name"
-								name="name"
-								required
-								rules={[
+  label="Project Name"
+  name="name"
+  required
+  rules={[
 									{
 										required: true,
 										message: "Please input project name",
 									},
 								]}
 							>
-								<Input placeholder="project name" autoFocus={true} />
+								<Input placeholder="project name" autoFocus />
 							</Form.Item>
 						</Form>
 					</div>
 				</div>
 				<div className="solidui-modal__footer">
 					<Button
-						type="default"
-						size="small"
-						style={{ marginRight: 10 }}
-						onClick={() => toggleModal(false)}
+  type="default"
+  size="small"
+  style={{ marginRight: 10 }}
+  onClick={() => toggleModal(false)}
 					>
 						Cancel
 					</Button>
@@ -110,27 +110,27 @@ export default function () {
 		let nodes: React.ReactNode[] = [];
 		projects &&
 			projects.forEach((project) => {
-				let popup = popupConverMap.current.get(project.id + "");
+				let popup = popupConverMap.current.get(`${project.id}`);
 				nodes.push(
 					<ProjectCard
-						className="project-item"
-						key={`project-item-${project.id}`}
-						popup={popup}
-						item={project}
-						handleMouseEnter={(e, id) => {
+  className="project-item"
+  key={`project-item-${project.id}`}
+  popup={popup}
+  item={project}
+  handleMouseEnter={(e, id) => {
 							e.stopPropagation();
 							e.preventDefault();
 							toggleCover(id, true);
 						}}
-						handleMouseLeave={(e, id) => {
+  handleMouseLeave={(e, id) => {
 							e.stopPropagation();
 							e.preventDefault();
 							toggleCover(id, false);
 						}}
-						handleDelete={(id) => {
+  handleDelete={(id) => {
 							del(id);
 						}}
-					/>
+					/>,
 				);
 			});
 		return nodes;
@@ -142,17 +142,17 @@ export default function () {
 				<div className="projects-header">
 					<div className="form-filter">
 						<Search
-							placeholder="input search text"
-							onSearch={onSearch}
-							enterButton
-							style={{
+  placeholder="input search text"
+  onSearch={onSearch}
+  enterButton
+  style={{
 								width: 300,
 								marginRight: 10,
 							}}
 						/>
 						<Button
-							type="primary"
-							onClick={() => {
+  type="primary"
+  onClick={() => {
 								toggleModal(true);
 							}}
 						>
@@ -169,12 +169,12 @@ export default function () {
 			</div>
 
 			<Modal
-				title={null}
-				footer={null}
-				closable={false}
-				bodyStyle={{ padding: 0 }}
-				open={modalOpen}
-				modalRender={(modal: any) => modal}
+  title={null}
+  footer={null}
+  closable={false}
+  bodyStyle={{ padding: 0 }}
+  open={modalOpen}
+  modalRender={(modal: any) => modal}
 			>
 				{renderModalContent()}
 			</Modal>

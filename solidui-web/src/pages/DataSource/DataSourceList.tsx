@@ -23,7 +23,7 @@ import DataSourceView from "./_components/DataSourceView";
 import useDataSource from "./useDataSource";
 import "./DataSourceList.less";
 
-const Search = Input.Search;
+const { Search } = Input;
 
 export default function () {
 	const {

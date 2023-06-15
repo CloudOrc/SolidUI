@@ -23,6 +23,7 @@ import Home from "@/pages/Home/Home";
 import ProjectList from "../pages/Project/ProjectList";
 import DataSourceList from "@/pages/DataSource/DataSourceList";
 import Dashboard from "../pages/Designer/Designer";
+import Preview from "@/pages/Designer/Preview";
 
 const routes: RouteObject[] = [
 	{
@@ -50,6 +51,10 @@ const routes: RouteObject[] = [
 	{
 		path: "/dashboard/:id",
 		element: <Dashboard />,
+	},
+	{
+		path: "/preview/:id",
+		element: <Preview />,
 	},
 ];
 

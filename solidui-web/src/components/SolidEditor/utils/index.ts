@@ -29,6 +29,7 @@ import {
 	isNumber,
 	isObject,
 } from "@daybrush/utils";
+
 export const PREFIX = "visual-";
 
 export function prefixNames(prefix: string, ...classNames: string[]) {
@@ -37,8 +38,7 @@ export function prefixNames(prefix: string, ...classNames: string[]) {
 			className
 				.split(" ")
 				.map((name) => (name ? `${prefix}${name}` : ""))
-				.join(" ")
-		)
+				.join(" "))
 		.join(" ");
 }
 
@@ -73,8 +73,8 @@ export function getContentElement(el: HTMLElement): HTMLElement | null {
 }
 
 export function getVisualAttrs(el: HTMLElement | SVGElement) {
-	const attributes = el.attributes;
-	const length = attributes.length;
+	const { attributes } = el;
+	const { length } = attributes;
 	const attrs: IObject<any> = {};
 
 	for (let i = 0; i < length; ++i) {
@@ -94,9 +94,9 @@ export function updateElements(infos: ElementInfo[]) {
 		const id = info.id!;
 
 		const target = document.querySelector<HTMLElement>(
-			`[${SOLIDUI_ELEMENT_ID}="${id}"]`
+			`[${SOLIDUI_ELEMENT_ID}="${id}"]`,
 		)!;
-		if (null === target || undefined === target) {
+		if (target === null || undefined === target) {
 			return { ...info };
 		}
 		const attrs = info.attrs || {};
@@ -133,7 +133,7 @@ export function checkImageLoaded(el: HTMLElement | SVGElement): Promise<any> {
 		return Promise.all(
 			[].slice
 				.call(el.querySelectorAll("img"))
-				.map((el) => checkImageLoaded(el))
+				.map((el) => checkImageLoaded(el)),
 		);
 	}
 	return new Promise((resolve) => {
@@ -161,7 +161,7 @@ export function setMoveMatrix(frame: Frame, moveMatrix: number[]) {
 		frame.set(
 			"transform",
 			transformOrders[0],
-			matrix3d(moveMatrix, prevMatrix)
+			matrix3d(moveMatrix, prevMatrix),
 		);
 	} else if (frame.has("transform", "matrix3d")) {
 		let num = 1;
@@ -177,21 +177,21 @@ export function setMoveMatrix(frame: Frame, moveMatrix: number[]) {
 
 export function getOffsetOriginMatrix(
 	el: HTMLElement | SVGElement,
-	container: HTMLElement
+	container: HTMLElement,
 ) {
 	const stack = getElementInfo(el, container);
 	const origin = stack.targetOrigin;
 	const translation = fromTranslation(
 		[origin[0], origin[1], origin[2] || 0],
-		4
+		4,
 	);
 
 	return matrix3d(stack.offsetMatrix as any, translation);
 }
 
 export function getScenaAttrs(el: HTMLElement | SVGElement) {
-	const attributes = el.attributes;
-	const length = attributes.length;
+	const { attributes } = el;
+	const { length } = attributes;
 	const attrs: IObject<any> = {};
 
 	for (let i = 0; i < length; ++i) {

@@ -20,13 +20,10 @@ import {
 	LeftRightExpander,
 	PropertyElement,
 	Switch,
-	Slider,
 	InputNumber,
-	InputText,
 	InputTextArea,
 	InputColor,
 	ButtonGroupRadio,
-	InputUpload,
 	Select,
 } from "@/components";
 import { useUpdate } from "react-use";
@@ -45,7 +42,7 @@ function getPropertyValue(propertyKey: string) {
 
 function updateViewAndEmitEvent(
 	propertyKey: string,
-	propertyValue: any
+	propertyValue: any,
 ): Promise<any> {
 	let view = mm.getCurrentView();
 	if (view) {
@@ -67,7 +64,7 @@ export default function (props: TitleStylePropertiesProps) {
 	const forceUpdate = useUpdate();
 	return (
 		<LeftRightExpander
-			expanded={true}
+			expanded
 			checked={getPropertyValue("options.title.show")}
 			onChecked={(checked) => {
 				updateViewAndEmitEvent("options.title.show", checked).then(() => {
@@ -122,7 +119,7 @@ export default function (props: TitleStylePropertiesProps) {
 						updateViewAndEmitEvent("options.title.style.color", value).then(
 							() => {
 								forceUpdate();
-							}
+							},
 						);
 					}}
 				/>
@@ -134,7 +131,7 @@ export default function (props: TitleStylePropertiesProps) {
 					onChange={(value) => {
 						updateViewAndEmitEvent(
 							"options.title.style.backgroundColor",
-							value
+							value,
 						).then(() => {
 							forceUpdate();
 						});

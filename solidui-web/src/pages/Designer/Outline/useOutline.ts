@@ -46,7 +46,7 @@ function useOutline() {
 	}
 
 	function __handleModelLoad(evt: OnModelLoadEventData) {
-		let model = evt.model;
+		let { model } = evt;
 	}
 
 	function __handleSelectViewInViewport(evt: OnSelectViewEventData) {
@@ -58,7 +58,7 @@ function useOutline() {
 	}
 
 	function __handleRemoveViewComplete(evt: OnRemoveViewCompleteEventData) {
-		if ("viewlist" !== evt.source) {
+		if (evt.source !== "viewlist") {
 			viewStatesMap.current.forEach((viewState) => {
 				viewState.selected = false;
 			});
@@ -67,7 +67,7 @@ function useOutline() {
 	}
 
 	function __handleUpdateViewPropertyValue(
-		evt: OnUpdateViewPropertyValueEventData
+		evt: OnUpdateViewPropertyValueEventData,
 	) {
 		forceUpdate();
 	}

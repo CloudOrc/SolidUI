@@ -53,20 +53,20 @@ export default function (props: DataSourceEditProps) {
 	async function load(id: string) {
 		let res: ApiResult<DataSourceGetDataType> = await Apis.datasource.get(id);
 		if (res.ok) {
-			let data = res.data;
+			let { data } = res;
 			if (data === null || data === undefined) {
 				return;
 			}
-			let dataSourceTypeId = data.dataSourceTypeId;
+			let { dataSourceTypeId } = data;
 			let res2: ApiResult<DataSourceFormElementDataType[]> =
-				await Apis.datasource.getFormElementByTypeId(dataSourceTypeId + "");
+				await Apis.datasource.getFormElementByTypeId(`${dataSourceTypeId}`);
 			if (res2.ok) {
 				let data2 = res2.data || [];
 				setDsFormElements(data2);
 				setDataSourceTypeId(dataSourceTypeId);
 				let params = data.connectParams.params || {};
 				let paramsStr = map(params, (value, key) => `${key}=${value}`).join(
-					","
+					",",
 				);
 				form.setFieldsValue({
 					id: data.id,
@@ -94,7 +94,7 @@ export default function (props: DataSourceEditProps) {
 				onFinish={async (values) => {
 					let cp = values.params;
 					let connectParams = {} as any;
-					if (null !== cp && undefined !== cp && "" !== cp.trim()) {
+					if (cp !== null && undefined !== cp && cp.trim() !== "") {
 						try {
 							cp.split(",").forEach((item: string) => {
 								let kv = item.split("=");
@@ -120,7 +120,7 @@ export default function (props: DataSourceEditProps) {
 					let params: any = {
 						dataSourceName: values.title,
 						dataSourceDesc: values.description,
-						dataSourceTypeId: dataSourceTypeId,
+						dataSourceTypeId,
 						parameter: JSON.stringify(dsParameter),
 					};
 					let res = await Apis.datasource.update(values.id, params);
@@ -227,7 +227,7 @@ export default function (props: DataSourceEditProps) {
 		}
 	}
 
-	if (null === item || undefined === item) {
+	if (item === null || undefined === item) {
 		return null;
 	}
 

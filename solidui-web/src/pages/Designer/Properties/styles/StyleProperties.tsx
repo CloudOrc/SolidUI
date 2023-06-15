@@ -38,7 +38,7 @@ export default function () {
 	}
 
 	return (
-		<LeftRightExpander expanded={true} showCheckbox={false} title="View">
+		<LeftRightExpander expanded showCheckbox={false} title="View">
 			<PropertyElement label="Title" labelWidth={50}>
 				<InputText
 					value={mm.getCurrentView()?.title || ""}

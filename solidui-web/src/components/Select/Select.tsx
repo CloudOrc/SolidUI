@@ -36,12 +36,12 @@ export default function (props: SelectProps) {
 			let { value, label } = item;
 			nodes.push(
 				<Select.Option
-					key={index}
-					value={value}
-					className="solid-select__option"
+  key={index}
+  value={value}
+  className="solid-select__option"
 				>
 					<div className="select-option__item">{label}</div>
-				</Select.Option>
+				</Select.Option>,
 			);
 		});
 		return nodes;
@@ -53,22 +53,22 @@ export default function (props: SelectProps) {
 
 	return (
 		<Select
-			className="solid-select"
-			value={value}
-			showSearch={showSearch}
+  className="solid-select"
+  value={value}
+  showSearch={showSearch}
 			// showArrow
 			// allowClear
 			// @ts-ignore
 			// multiple={false}
-			dropdownStyle={{
+  dropdownStyle={{
 				zIndex: 200,
 				borderColor: "rgba(0, 0, 0, 0.25)",
 			}}
-			dropdownRender={renderDropdown}
+  dropdownRender={renderDropdown}
 			// optionLabelProp="displayLabel"
 			// labelInValue={true}
 			// loading={true}
-			clearIcon
+  clearIcon
 		>
 			{renderOptions()}
 		</Select>

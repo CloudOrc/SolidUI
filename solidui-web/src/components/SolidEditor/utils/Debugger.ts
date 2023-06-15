@@ -24,7 +24,7 @@ export default class Debugger {
 		console.log(
 			"%c Scena Debugger:",
 			"padding: 1px; background: #4af; color: #fff;",
-			...args
+			...args,
 		);
 	}
 }

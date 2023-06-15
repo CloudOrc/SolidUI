@@ -28,7 +28,7 @@ import { ApiResult, ProjectPageDataType, SolidScenaDataType } from "@/types";
 
 function Dashboard() {
 	const params = useParams();
-	let id = params.id;
+	let { id } = params;
 
 	React.useEffect(() => {
 		// let modelStr = localStorage.getItem("__MODEL__");
@@ -47,7 +47,7 @@ function Dashboard() {
 
 	async function load() {
 		let res: ApiResult<ProjectPageDataType[]> = await Apis.model.queryPages(
-			id || ""
+			id || "",
 		);
 		if (res.ok) {
 			let data = res.data || [];

@@ -61,9 +61,9 @@ function useProperties(initialData: InitialData) {
 					let active = currentTabKey === tabItemData.key;
 					return (
 						<li
-							key={tabItemData.key}
-							className={`conf-header__tabs-item ${active ? "active" : ""}`}
-							onClick={() => handleTabChange(tabItemData.key)}
+  key={tabItemData.key}
+  className={`conf-header__tabs-item ${active ? "active" : ""}`}
+  onClick={() => handleTabChange(tabItemData.key)}
 						>
 							{tabItemData.tab}
 						</li>

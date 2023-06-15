@@ -15,21 +15,19 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import EChartsBaseSolidView, {
 	EChartsBaseSolidViewProps,
 } from "./EChartsBaseSolidView";
 import {
-	EChartsOption,
 	SeriesOption,
 	XAXisComponentOption,
 	LegendComponentOption,
 	GridComponentOption,
 	TooltipComponentOption,
 } from "echarts";
-import { findIndex, get, head } from "lodash-es";
+import { findIndex, head } from "lodash-es";
 
-export interface SolidEChartsBarViewProps extends EChartsBaseSolidViewProps {}
+export type SolidEChartsBarViewProps = EChartsBaseSolidViewProps;
 
 export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChartsBarViewProps> {
 	constructor(props: SolidEChartsBarViewProps) {
@@ -40,7 +38,7 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 		let row0 = this.dataSheet[0];
 		if (!row0) return undefined;
 
-		let xIdx = findIndex(row0, function (o) {
+		let xIdx = findIndex(row0, (o) => {
 			return o === y.label;
 		});
 		if (xIdx === -1) return undefined;
@@ -73,7 +71,7 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 		// let viewDimensions = get(this.props.viewModel, "data.xs", []) as any[];
 		// let headDimension = head(viewDimensions);
 		let headDimension = head(xs);
-		let viewDimensionIdx = findIndex(headRow, function (o) {
+		let viewDimensionIdx = findIndex(headRow, (o) => {
 			return o === headDimension!.label;
 		});
 		if (viewDimensionIdx === -1) return {};
@@ -91,7 +89,6 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 		let option = vm.option || {};
 
 		return {
-			// @ts-ignore
 			type: "category",
 			data: xAxisData,
 			...option.xAxis,

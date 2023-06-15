@@ -23,7 +23,7 @@ import color from "react-color/lib/helpers/color";
 export interface ColorPickerFieldsProps {
 	onChange?: (
 		{ value, source }: any,
-		event: React.ChangeEvent<HTMLInputElement>
+		event: React.ChangeEvent<HTMLInputElement>,
 	) => void;
 	hex?: string;
 }
@@ -31,7 +31,7 @@ export interface ColorPickerFieldsProps {
 function ColorPickerFields({ hex, onChange }: ColorPickerFieldsProps) {
 	function handleChange(
 		value: any,
-		event: React.ChangeEvent<HTMLInputElement>
+		event: React.ChangeEvent<HTMLInputElement>,
 	) {
 		if (color.isValidHex(value)) {
 			onChange &&
@@ -40,7 +40,7 @@ function ColorPickerFields({ hex, onChange }: ColorPickerFieldsProps) {
 						hex: value,
 						source: "hex",
 					},
-					event
+					event,
 				);
 		}
 	}

@@ -25,7 +25,7 @@ Mock.mock(
 	Mock.mock({
 		code: 0,
 		message: "success",
-	})
+	}),
 );
 // const model: SolidModelDataType = {
 // 	id: "1",

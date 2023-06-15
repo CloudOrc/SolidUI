@@ -15,18 +15,11 @@
  * limitations under the License.
  */
 
-import EventEmitter from "@scena/event-emitter";
-import { IObject } from "@daybrush/utils";
-
-class EventBus extends EventEmitter {
-	private eventMap: IObject<number> = {};
-	requestTrigger(name: string, params: IObject<any> = {}) {
-		const { eventMap } = this;
-		cancelAnimationFrame(eventMap[name] || 0);
-
-		eventMap[name] = requestAnimationFrame(() => {
-			this.trigger(name, params);
-		});
-	}
+#preview {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #fff;
 }
-export default EventBus;

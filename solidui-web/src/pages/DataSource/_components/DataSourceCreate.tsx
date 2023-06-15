@@ -86,14 +86,14 @@ export default function (props: DataSourceCreateProps) {
 						/>
 					</span>
 					<span className="ds-item__title">{item.name}</span>
-				</div>
+				</div>,
 			);
 		});
 		return nodes;
 	}
 
 	function renderDataSourceCreationForm() {
-		if (null === dsType || undefined === dsType) {
+		if (dsType === null || undefined === dsType) {
 			return undefined;
 		}
 		return (
@@ -104,7 +104,7 @@ export default function (props: DataSourceCreateProps) {
 				onFinish={async (values) => {
 					let cp = values.params;
 					let connectParams = {} as any;
-					if (null !== cp && undefined !== cp && "" !== cp.trim()) {
+					if (cp !== null && undefined !== cp && cp.trim() !== "") {
 						try {
 							cp.split(",").forEach((item: string) => {
 								let kv = item.split("=");

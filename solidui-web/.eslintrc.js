@@ -15,18 +15,47 @@
  * limitations under the License.
  */
 
-import EventEmitter from "@scena/event-emitter";
-import { IObject } from "@daybrush/utils";
-
-class EventBus extends EventEmitter {
-	private eventMap: IObject<number> = {};
-	requestTrigger(name: string, params: IObject<any> = {}) {
-		const { eventMap } = this;
-		cancelAnimationFrame(eventMap[name] || 0);
-
-		eventMap[name] = requestAnimationFrame(() => {
-			this.trigger(name, params);
-		});
-	}
+module.exports = {
+  root: true,
+  env: {
+    browser: true,
+    es2021: true,
+  },
+  extends: [
+    'ali/react',
+    'plugin:@typescript-eslint/recommended',
+  ],
+  overrides: [
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  plugins: [
+    '@typescript-eslint',
+  ],
+  rules: {
+		"@typescript-eslint/no-explicit-any": "off",
+		"no-tabs": "off",
+    "indent": "off",
+		"prefer-const": "off",
+    'linebreak-style': [
+      'error',
+      'unix',
+    ],
+		"react/jsx-indent": [2, "tab"],
+		"import/no-unresolved": "off",
+    quotes: [
+      'error',
+      'double',
+    ],
+    semi: [
+      'error',
+      'always',
+    ],
+  },
+  settings: {
+    'import/ignore': ['node_modules'],
+  },
 }
-export default EventBus;

@@ -15,8 +15,7 @@
  * limitations under the License.
  */
 
-import React from "react";
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { message, Modal } from "antd";
 import Apis from "@/apis";
 import { useUpdate } from "react-use";
@@ -128,15 +127,15 @@ function useDataProperties(initialData: InitialData = {}) {
 				setSelectedDataSourceOptions(optionVals);
 
 				let target = find(records, (d) => d.id === viewData.dataSourceId);
-				if (null === target || undefined === target) {
+				if (target === null || undefined === target) {
 					setLoading(false);
 					return;
 				}
 				let dsType = find(
 					dataSourceTypes,
-					(d) => d.id === target?.dataSourceTypeId + ""
+					(d) => d.id === `${target?.dataSourceTypeId}`,
 				);
-				if (null === dsType || undefined === dsType) {
+				if (dsType === null || undefined === dsType) {
 					setLoading(false);
 					return;
 				}
@@ -183,17 +182,17 @@ function useDataProperties(initialData: InitialData = {}) {
 
 	async function queryTables(id: string) {
 		let target = find(dataSources, (d) => d.id === id);
-		if (null === target || undefined === target) {
+		if (target === null || undefined === target) {
 			return;
 		}
 		let dsType = find(
 			dataSourceTypes,
-			(d) => d.id === target?.dataSourceTypeId + ""
+			(d) => d.id === `${target?.dataSourceTypeId}`,
 		);
-		if (null === dsType || undefined === dsType) {
+		if (dsType === null || undefined === dsType) {
 			return;
 		}
-		dsTypeIdRef.current = target?.dataSourceTypeId + "";
+		dsTypeIdRef.current = `${target?.dataSourceTypeId}`;
 		let res: ApiResult<any> = await Apis.datasource.dbs({
 			dataSourceName: target.dataSourceName,
 			typeName: dsType.classifier,
@@ -213,7 +212,7 @@ function useDataProperties(initialData: InitialData = {}) {
 				});
 			});
 
-			//// dataSourceId
+			/// / dataSourceId
 			if (mm.getCurrentView()) {
 				mm.getCurrentView()!.data.dataSourceId = id;
 				mm.getCurrentView()!.data.dataSourceName = target.dataSourceName;
@@ -231,7 +230,7 @@ function useDataProperties(initialData: InitialData = {}) {
 
 	async function querySql() {
 		let view = mm.getCurrentView();
-		if (null === view || undefined === view) {
+		if (view === null || undefined === view) {
 			return;
 		}
 		let data = view.data || ({} as any);
@@ -253,7 +252,7 @@ function useDataProperties(initialData: InitialData = {}) {
 			}
 
 			let view = mm.getCurrentView();
-			if (null !== view && undefined !== view && view.id) {
+			if (view !== null && undefined !== view && view.id) {
 				eventbus.emit("onDataSetChange", {
 					id: view.id,
 					data: originData,
@@ -273,7 +272,7 @@ function useDataProperties(initialData: InitialData = {}) {
 	async function changeDsSelections(value: any[], selectOptions: any[]) {
 		setSelectedDataSourceOptions(value);
 		if (
-			null !== selectOptions &&
+			selectOptions !== null &&
 			undefined !== selectOptions &&
 			selectOptions.length === 2 &&
 			mm.getCurrentView()

@@ -93,7 +93,7 @@ function Scena() {
 				<SolidEditor
 					width={width}
 					height={height}
-					debug={true}
+					debug
 					ref={editorRef}
 					zoom={zoom}
 				/>

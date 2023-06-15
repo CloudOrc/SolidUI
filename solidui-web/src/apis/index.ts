@@ -42,12 +42,12 @@ let model = {
 		ApiService.get<T>(`/solidui/job/page/queryList/${projectId}`),
 	queryViews: <T>(projectId: string, pageId: string) =>
 		ApiService.get<T>(
-			`/solidui/job/query/page?projectId=${projectId}&pageId=${pageId}`
+			`/solidui/job/query/page?projectId=${projectId}&pageId=${pageId}`,
 		),
 	saveProjectPageViews: <T>(params: ProjectPageViewsCreationDataType) =>
-		ApiService.post(`/solidui/job/save/page`, params),
+		ApiService.post("/solidui/job/save/page", params),
 	updateProjectPageViews: <T>(params: ProjectPageViewsCreationDataType) =>
-		ApiService.put(`/solidui/job/update/page`, params),
+		ApiService.put("/solidui/job/update/page", params),
 	deletePage: <T>(id: string) => ApiService.delete(`/solidui/job/page/${id}`),
 };
 
@@ -64,7 +64,7 @@ let user = {
 
 let project = {
 	query: <T>(
-		params: { pageNo: number; pageSize: number } = { pageNo: 1, pageSize: 10 }
+		params: { pageNo: number; pageSize: number } = { pageNo: 1, pageSize: 10 },
 	) => ApiService.get<T>("/solidui/projects/queryProjectListPaging", params),
 	create: <T>(params: { projectName: string; description?: string }) =>
 		ApiService.post<T>("/solidui/projects", params, {
@@ -81,13 +81,13 @@ let datasource = {
 			pageNo: 1,
 			pageSize: 10,
 			name: "",
-		}
+		},
 	) =>
 		ApiService.get<T>(
-			`/solidui/datasource/info?name=${name}&pageNo=${params.pageNo}&pageSize=${params.pageSize}`
+			`/solidui/datasource/info?name=${name}&pageNo=${params.pageNo}&pageSize=${params.pageSize}`,
 		),
 	get: <T>(id: string) => ApiService.get<T>(`/solidui/datasource/info/${id}`),
-	types: <T>() => ApiService.get<T>(`/solidui/datasource/type/all`),
+	types: <T>() => ApiService.get<T>("/solidui/datasource/type/all"),
 	getFormElementByTypeId: <T>(typeId: string) =>
 		ApiService.get<T>(`/solidui/datasource/key/type/${typeId}`),
 	delete: <T>(id: string) =>
@@ -95,12 +95,12 @@ let datasource = {
 	update: <T>(id: string, params: any) =>
 		ApiService.put(`/solidui/datasources/${id}`, params),
 	create: <T>(params: DataSourceCreationDataType) =>
-		ApiService.post(`/solidui/datasource/info/json`, params),
-	all: <T>() => ApiService.get<T>(`/solidui/datasources/all`),
+		ApiService.post("/solidui/datasource/info/json", params),
+	all: <T>() => ApiService.get<T>("/solidui/datasources/all"),
 	test_connect: <T>(params: { dataSourceName: string; typeName: string }) =>
 		ApiService.post(
 			`/solidui/datasource/connect/json?dataSourceName=${params.dataSourceName}&typeName=${params.typeName}`,
-			{}
+			{},
 		),
 	expire: <T>(id: string) =>
 		ApiService.put(`/solidui/datasource/info/${id}/expire`, {}),
@@ -108,10 +108,10 @@ let datasource = {
 		params: { dataSourceName: string; typeName: string } = {
 			dataSourceName: "",
 			typeName: "",
-		}
+		},
 	) =>
 		ApiService.get<T>(
-			`/solidui/metadataQuery/queryDatabases?dataSourceName=${params.dataSourceName}&typeName=${params.typeName}`
+			`/solidui/metadataQuery/queryDatabases?dataSourceName=${params.dataSourceName}&typeName=${params.typeName}`,
 		),
 	querySql: <T>(params: {
 		dataSourceName: string;
@@ -119,7 +119,7 @@ let datasource = {
 		sql: string;
 	}) =>
 		ApiService.get<T>(
-			`/solidui/metadataQuery/querySql?dataSourceName=${params.dataSourceName}&typeName=${params.typeName}&sql=${params.sql}`
+			`/solidui/metadataQuery/querySql?dataSourceName=${params.dataSourceName}&typeName=${params.typeName}&sql=${params.sql}`,
 		),
 };
 

@@ -15,8 +15,7 @@
  * limitations under the License.
  */
 
-import React from "react";
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { message, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/lib/table";
@@ -132,7 +131,7 @@ function useDataSource(initialData: InitialData = {}) {
 							}}
 							onClick={async () => {
 								let typeId = record.dataSourceTypeId;
-								let target = find(types, (type) => type.id === typeId + "");
+								let target = find(types, (type) => type.id === `${typeId}`);
 								if (target) {
 									let res = await Apis.datasource.test_connect({
 										dataSourceName: record.dataSourceName,
@@ -231,13 +230,13 @@ function useDataSource(initialData: InitialData = {}) {
 			let records = data.totalList || [];
 			records.forEach((item: any) => {
 				item.key = item.id;
-				popupConverMap.current.set(item.id + "", false);
+				popupConverMap.current.set(`${item.id}`, false);
 			});
 			setDataSources(records || []);
 			setPagination({
-				current: current,
-				size: size,
-				total: total,
+				current,
+				size,
+				total,
 			});
 		}
 

@@ -48,26 +48,26 @@ export default function (props: DataSourceViewProps) {
 
 	useEffect(() => {
 		if (item) {
-			load(item.id + "");
+			load(`${item.id}`);
 		}
 	}, [item]);
 
 	async function load(id: string) {
 		let res: ApiResult<DataSourceGetDataType> = await Apis.datasource.get(id);
 		if (res.ok) {
-			let data = res.data;
+			let { data } = res;
 			if (data === null || data === undefined) {
 				return;
 			}
-			let dataSourceTypeId = data.dataSourceTypeId;
+			let { dataSourceTypeId } = data;
 			let res2: ApiResult<DataSourceFormElementDataType[]> =
-				await Apis.datasource.getFormElementByTypeId(dataSourceTypeId + "");
+				await Apis.datasource.getFormElementByTypeId(`${dataSourceTypeId}`);
 			if (res2.ok) {
 				let data2 = res2.data || [];
 				setDsFormElements(data2);
 				let params = data.connectParams.params || {};
 				let paramsStr = map(params, (value, key) => `${key}=${value}`).join(
-					","
+					",",
 				);
 				form.setFieldsValue({
 					id: data.id,
@@ -186,7 +186,7 @@ export default function (props: DataSourceViewProps) {
 		}
 	}
 
-	if (null === item || undefined === item) {
+	if (item === null || undefined === item) {
 		return null;
 	}
 

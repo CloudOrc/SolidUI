@@ -24,7 +24,7 @@ import { Hue, Saturation } from "react-color/lib/components/common";
 import { CustomPicker } from "react-color";
 import "./ColorPicker.less";
 
-export interface ColorPickerProps /*extends CustomPickerProps<any>*/ {
+export interface ColorPickerProps /* extends CustomPickerProps<any> */ {
 	prefixCls?: string;
 	className?: string;
 	style?: React.CSSProperties;
@@ -49,7 +49,7 @@ function ColorPicker(props: ColorPickerProps) {
 		<div className={classNames(`${prefixCls}-colorpicker`, className)}>
 			<div className="saturation-wrap">
 				<Saturation
-					//@ts-ignore
+					// @ts-ignore
 					hsl={hsl}
 					hsv={hsv}
 					className="saturation"
@@ -66,9 +66,9 @@ function ColorPicker(props: ColorPickerProps) {
 						<div className="hue-wrap">
 							<Hue
 								className="hue"
-								//@ts-ignore
+								// @ts-ignore
 								hsl={hsl}
-								//@ts-ignore
+								// @ts-ignore
 								pointer={Pointer}
 								onChange={onChange}
 							/>

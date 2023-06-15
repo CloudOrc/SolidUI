@@ -16,26 +16,109 @@
  */
 
 import React from "react";
-import { Button, Modal } from "antd";
+import { Button, Modal, Form, Input } from "antd";
 import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
-import { Delete } from "@icon-park/react";
+import { Delete, Close } from "@icon-park/react";
 import useGeneral from "./useGeneral";
+import { SolidScenaDataType } from "@/types/solid";
 import { mm } from "@/utils";
 
-const confirm = Modal.confirm;
-
 import "./general.less";
+
+const { confirm } = Modal;
 
 function General() {
 	const {
 		loading,
+		form,
+		modalOpen,
 		toggleScene,
 		createScene,
 		createPage,
 		selectPage,
 		deletePage,
+		toggleModal,
 	} = useGeneral();
 	let scenes = mm.getScenes();
+
+	let type = React.useRef<"scene" | "page">();
+	let sceneRef = React.useRef<SolidScenaDataType>();
+
+	function renderModalContent() {
+		return (
+			<div className="solidui-modal">
+				<div className="solidui-modal__header">
+					New Scene
+					<span className="solidui-modal__close-btn">
+						<Close
+							theme="outline"
+							size="16"
+							fill="rgba(0, 0, 0, 0.65)"
+							strokeWidth={2}
+							strokeLinejoin="miter"
+							strokeLinecap="square"
+							onClick={() => {
+								toggleModal(false);
+							}}
+						/>
+					</span>
+				</div>
+				<div
+					className="solidui-modal__content"
+					style={{
+						height: 100,
+					}}
+				>
+					<div className="modal-content__form">
+						<Form
+							layout={"vertical"}
+							form={form}
+							initialValues={{ layout: "vertical" }}
+							onFinish={(values) => {
+								let title = values.title || "";
+								if (type.current && type.current === "scene") {
+									createScene(title);
+								} else if (
+									type.current &&
+									type.current === "page" &&
+									sceneRef.current
+								) {
+									createPage(sceneRef.current, title);
+								}
+							}}
+						>
+							<Form.Item
+								label="title"
+								name="title"
+								required
+								rules={[
+									{
+										required: true,
+										message: "Please input name",
+									},
+								]}
+							>
+								<Input placeholder="title" autoFocus />
+							</Form.Item>
+						</Form>
+					</div>
+				</div>
+				<div className="solidui-modal__footer">
+					<Button
+						type="default"
+						size="small"
+						style={{ marginRight: 10 }}
+						onClick={() => toggleModal(false)}
+					>
+						Cancel
+					</Button>
+					<Button type="primary" size="small" onClick={() => form.submit()}>
+						Save
+					</Button>
+				</div>
+			</div>
+		);
+	}
 
 	function renderScenes() {
 		let kids: React.ReactNode[] = [];
@@ -61,7 +144,7 @@ function General() {
 								<path
 									d="M4.50009 6L-5.24537e-07 1.26364e-06L9 4.76837e-07L4.50009 6Z"
 									fill="currentcolor"
-								></path>
+								/>
 							</svg>
 							<div
 								style={{
@@ -77,14 +160,17 @@ function General() {
 								onClick={(e) => {
 									e.stopPropagation();
 									e.preventDefault();
-									createPage(scene);
+									sceneRef.current = scene;
+									type.current = "page";
+									toggleModal(true);
+									// createPage(scene);
 								}}
 							/>
 						</div>
 						{pages.length > 0 ? (
 							<div className="expander__body">{renderPages(pages)}</div>
 						) : undefined}
-					</section>
+					</section>,
 				);
 			});
 		return kids;
@@ -94,7 +180,7 @@ function General() {
 		let kids: React.ReactNode[] = [];
 		pages &&
 			pages.forEach((page) => {
-				let selectedCls = !!page.selected ? "selected" : "";
+				let selectedCls = page.selected ? "selected" : "";
 				kids.push(
 					<div
 						className={`expander__body-item ${selectedCls}`}
@@ -171,7 +257,7 @@ function General() {
 								});
 							}}
 						/>
-					</div>
+					</div>,
 				);
 			});
 		return kids;
@@ -196,7 +282,10 @@ function General() {
 					className="btn__scene-create"
 					icon={<PlusOutlined />}
 					type="text"
-					onClick={createScene}
+					onClick={() => {
+						type.current = "scene";
+						toggleModal(true);
+					}}
 				/>
 			</div>
 
@@ -228,6 +317,17 @@ function General() {
 					</div>
 				</div>
 			</div>
+
+			<Modal
+				title={null}
+				footer={null}
+				closable={false}
+				bodyStyle={{ padding: 0 }}
+				open={modalOpen}
+				modalRender={(modal: any) => modal}
+			>
+				{renderModalContent()}
+			</Modal>
 		</div>
 	);
 }

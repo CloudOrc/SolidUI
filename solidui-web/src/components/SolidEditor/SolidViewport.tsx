@@ -49,7 +49,7 @@ export default class SolidViewport extends React.PureComponent<{
 	public components: Record<string, SolidViewComponent> = {};
 	public jsxs: Record<string, SolidViewJSXElement> = {};
 	public viewport: ElementInfo = {
-		jsx: <div></div>,
+		jsx: <div />,
 		name: "Viewport",
 		id: "viewport",
 		children: [],
@@ -75,7 +75,7 @@ export default class SolidViewport extends React.PureComponent<{
 	}
 
 	public getSortedIndexesList(
-		targets: Array<string | HTMLElement | SVGElement | number[]>
+		targets: Array<string | HTMLElement | SVGElement | number[]>,
 	) {
 		const indexesList = targets.map((target) => {
 			if (Array.isArray(target)) {
@@ -132,7 +132,7 @@ export default class SolidViewport extends React.PureComponent<{
 	}
 
 	public setInfo(id: string, info: ElementInfo) {
-		const ids = this.ids;
+		const { ids } = this;
 		ids[id] = info;
 	}
 
@@ -157,7 +157,7 @@ export default class SolidViewport extends React.PureComponent<{
 
 	public getIndex(id: string | HTMLElement) {
 		const indexes = this.getIndexes(id);
-		const length = indexes.length;
+		const { length } = indexes;
 		return length ? indexes[length - 1] : -1;
 	}
 
@@ -173,7 +173,7 @@ export default class SolidViewport extends React.PureComponent<{
 	}
 
 	public removeTargets(
-		targets: Array<HTMLElement | SVGElement>
+		targets: Array<HTMLElement | SVGElement>,
 	): Promise<RemovedInfo> {
 		const removedChildren = this.getSortedTargets(targets)
 			.map((target) => {
@@ -198,7 +198,7 @@ export default class SolidViewport extends React.PureComponent<{
 	public appendJSXs(
 		jsxs: ElementInfo[],
 		appendIndex: number,
-		scopeId?: string
+		scopeId?: string,
 	): Promise<AddedInfo> {
 		const jsxInfos = this.registerChildren(jsxs, scopeId);
 		jsxInfos.forEach((info, i) => {
@@ -234,7 +234,7 @@ export default class SolidViewport extends React.PureComponent<{
 	public registerChildren(jsxs: ElementInfo[], parentScopeId?: string) {
 		return jsxs.map((info) => {
 			const id = info.id || this.makeId();
-			const jsx = info.jsx;
+			const { jsx } = info;
 			const children = info.children || [];
 			const scopeId = parentScopeId || info.scopeId || "viewport";
 			let componentId = "";
@@ -266,9 +266,9 @@ export default class SolidViewport extends React.PureComponent<{
 
 	public unregisterChildren(
 		children: ElementInfo[],
-		isChild?: boolean
+		isChild?: boolean,
 	): ElementInfo[] {
-		const ids = this.ids;
+		const { ids } = this;
 
 		return children.slice(0).map((info) => {
 			const target = info.el!;
@@ -292,7 +292,7 @@ export default class SolidViewport extends React.PureComponent<{
 	}
 
 	public render() {
-		const style = this.props.style;
+		const { style } = this.props;
 		return (
 			<div
 				className={"editor-viewport-container"}
@@ -313,7 +313,7 @@ export default class SolidViewport extends React.PureComponent<{
 
 	private __renderChildren(children: ElementInfo[]): SolidViewJSXElement[] {
 		return children.map((info) => {
-			const jsx = info.jsx;
+			const { jsx } = info;
 			const nextChildren = info.children!;
 			const renderedChildren = this.__renderChildren(nextChildren);
 			const id = info.id!;
@@ -326,7 +326,7 @@ export default class SolidViewport extends React.PureComponent<{
 				return React.createElement(
 					jsx,
 					props,
-					...renderedChildren
+					...renderedChildren,
 				) as SolidViewJSXElement;
 			} else if (isVisualFunction(jsx)) {
 				props.scenaElementId = id;
@@ -334,7 +334,7 @@ export default class SolidViewport extends React.PureComponent<{
 				return React.createElement(
 					jsx,
 					props,
-					...renderedChildren
+					...renderedChildren,
 				) as SolidViewJSXElement;
 			} else if (isString(jsx.type)) {
 				props[SOLIDUI_ELEMENT_ID] = id;
@@ -349,7 +349,7 @@ export default class SolidViewport extends React.PureComponent<{
 				jsx,
 				{ ...jsx.props, ...props },
 				...(isArray(jsxChildren) ? jsxChildren : [jsxChildren]),
-				...this.__renderChildren(nextChildren)
+				...this.__renderChildren(nextChildren),
 			) as SolidViewJSXElement;
 		});
 	}

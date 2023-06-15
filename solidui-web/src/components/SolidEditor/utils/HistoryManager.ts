@@ -31,12 +31,12 @@ export default class HistoryManager {
 	public registerType(
 		type: string,
 		undo: RestoreCallback,
-		redo: RestoreCallback
+		redo: RestoreCallback,
 	) {
 		this.types[type] = { undo, redo };
 	}
 	public addAction(type: string, props: IObject<any>) {
-		this.editor.console.log(`Add History:`, type, props);
+		this.editor.console.log("Add History:", type, props);
 		this.undoStack.push({
 			type,
 			props,
@@ -51,7 +51,7 @@ export default class HistoryManager {
 		}
 		this.editor.console.log(
 			`Undo History: ${undoAction.type}`,
-			undoAction.props
+			undoAction.props,
 		);
 		this.types[undoAction.type].undo(undoAction.props, this.editor);
 		this.redoStack.push(undoAction);
@@ -64,7 +64,7 @@ export default class HistoryManager {
 		}
 		this.editor.console.log(
 			`Redo History: ${redoAction.type}`,
-			redoAction.props
+			redoAction.props,
 		);
 		this.types[redoAction.type].redo(redoAction.props, this.editor);
 		this.undoStack.push(redoAction);

@@ -28,7 +28,7 @@ export const DimensionViewable = {
 	},
 	events: {},
 	render(moveable: MoveableManagerInterface) {
-		const zoom = moveable.props.zoom;
+		const { zoom } = moveable.props;
 		const rect = moveable.getRect();
 
 		return (

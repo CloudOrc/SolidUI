@@ -32,11 +32,11 @@ function Header() {
 		<header className="header">
 			<div className="header-main">
 				<div className="header-left">
-					<div className="logo"></div>
+					<div className="logo" />
 					<div className="logo-text">SolidUI</div>
 					<div className="version">v0.1.0</div>
-					<div className="split-line"></div>
-					<div className="left-main"></div>
+					<div className="split-line" />
+					<div className="left-main" />
 				</div>
 				<div className="header-center">
 					<Tooltip title="Bar Chart">
@@ -74,12 +74,12 @@ function Header() {
 								let v: any = {
 									title: view.title,
 									position: {
-										top: view.position.top + "",
-										left: view.position.left + "",
+										top: `${view.position.top}`,
+										left: `${view.position.left}`,
 									},
 									size: {
-										width: view.size.width + "",
-										height: view.size.height + "",
+										width: `${view.size.width}`,
+										height: `${view.size.height}`,
 									},
 									type: view.type,
 									data: {
@@ -91,7 +91,7 @@ function Header() {
 										table: view.data.table || "",
 									},
 								};
-								if (null !== view.options && undefined !== view.options) {
+								if (view.options !== null && undefined !== view.options) {
 									v.options = view.options;
 								}
 								if (!startsWith(view.id, "visual")) {

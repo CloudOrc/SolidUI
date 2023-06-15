@@ -16,6 +16,7 @@
  */
 
 import React, { useEffect, useState } from "react";
+import { Form, message } from "antd";
 import { useParams } from "react-router-dom";
 import { eventbus, mm } from "@/utils";
 import { SolidScenaDataType, SolidPageDataType } from "@/types/solid";
@@ -40,10 +41,12 @@ interface StatefulSolidPageDataType extends SolidPageDataType {
 function useGeneral() {
 	const forceUpdate = useUpdate();
 	const params = useParams();
+	const [form] = Form.useForm();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [scenes, setScenes] = useState<StatefulSolidSceneDataType[]>([]);
 	const [pages, setPages] = useState<StatefulSolidPageDataType[]>([]);
 	const [page, setPage] = useState<SolidPageDataType>();
+	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const idRef = React.useRef<string>();
 
 	useEffect(() => {
@@ -68,16 +71,16 @@ function useGeneral() {
 		idRef.current = params.id;
 	}, [params.id]);
 
-	async function createScene() {
+	async function createScene(title: string) {
 		let res: ApiResult<CreatedSceneResponseDataType> =
 			await Apis.model.createPage({
 				projectId: idRef.current || "",
-				name: "场景",
+				name: title,
 				layout: "",
 				orders: 1,
 			});
 		if (res.ok) {
-			let data = res.data;
+			let { data } = res;
 			if (isNil(data)) {
 				forceUpdate();
 				return;
@@ -93,22 +96,24 @@ function useGeneral() {
 				_scene_.open = false;
 			});
 			setScenes(_scenes_);
+			message.success("create scene ok");
+			toggleModal(false);
 		}
 		forceUpdate();
 	}
 
-	async function createPage(scene: StatefulSolidSceneDataType) {
+	async function createPage(scene: StatefulSolidSceneDataType, title: string) {
 		let res: ApiResult<CreatedPageResponseDataType> =
 			await Apis.model.createPage({
 				projectId: idRef.current || "",
-				name: "页面",
+				name: title,
 				parentId: scene.id,
 				layout: "",
 				orders: 1,
 			});
 
 		if (res.ok) {
-			let data = res.data;
+			let { data } = res;
 			if (isNil(data)) {
 				forceUpdate();
 				return;
@@ -125,6 +130,8 @@ function useGeneral() {
 			_pages_.forEach((_page_) => {
 				_page_.selected = false;
 			});
+			message.success("create page ok");
+			toggleModal(false);
 		}
 		forceUpdate();
 	}
@@ -134,7 +141,6 @@ function useGeneral() {
 			return;
 		}
 		let res = await Apis.model.deletePage(page.id);
-		console.log(res);
 		if (res.ok) {
 			if (page.parentId === "0") {
 				mm.removeScene(page);
@@ -184,19 +190,26 @@ function useGeneral() {
 				};
 			});
 			mm.setViews(views);
-			eventbus.emit("onSelectPage", { id: page.id, page: page });
+			eventbus.emit("onSelectPage", { id: page.id, page });
 			forceUpdate();
 		}
 	}
 
+	async function toggleModal(open: boolean) {
+		setModalOpen(open);
+	}
+
 	return {
 		loading,
+		form,
 		scenes,
 		createScene,
 		createPage,
 		toggleScene,
 		selectPage,
 		deletePage,
+		modalOpen,
+		toggleModal,
 	};
 }
 

@@ -118,7 +118,7 @@ export default function (props: LeftRgithExpanderProps) {
 				</div>
 				{showCheckbox ? (
 					<div className="flex-horizontal-layout v-middle h-right right-node">
-						<div className="node-text"></div>
+						<div className="node-text" />
 						<Checkbox
 							checked={checked}
 							onChange={(checked) => {

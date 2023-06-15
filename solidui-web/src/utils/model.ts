@@ -24,7 +24,7 @@ import { isNil } from "lodash-es";
 
 export function getPage(
 	model: SolidModelDataType,
-	id: string
+	id: string,
 ): SolidPageDataType | undefined {
 	if (isNil(model) || isNil(id)) {
 		return undefined;

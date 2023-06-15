@@ -43,7 +43,7 @@ export default function (props: PropertyElementProps) {
 	} = props;
 
 	let _style: React.CSSProperties = {
-		height: height,
+		height,
 		margin: "0 25px",
 		...style,
 	};
@@ -72,9 +72,9 @@ export default function (props: PropertyElementProps) {
 		{
 			"property-element": true,
 			// ["h-tape-layout"]: true,
-			["relative"]: true,
+			relative: true,
 		},
-		className
+		className,
 	);
 
 	return (
