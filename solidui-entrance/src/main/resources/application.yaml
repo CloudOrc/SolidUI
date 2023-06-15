@@ -43,9 +43,9 @@ spring:
     basename: i18n/messages
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://117.68.113.63:3306/solidui?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/solidui?useSSL=false&useUnicode=true&characterEncoding=UTF-8
     username: root
-    password: SolidUI@123
+    password: root
     hikari:
       connection-test-query: select 1
       minimum-idle: 5
