@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.common.utils;
+package com.cloudorc.solidui.entrance;
 
 
+import com.cloudorc.solidui.common.utils.EncryptionUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
