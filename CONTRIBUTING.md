@@ -51,11 +51,11 @@ git checkout origin/dev
 git merge --no-ff upstream/dev
 ```
 
-If remote branch has a new branch `dev-1.0`, you need to synchronize this branch to the local repository, then push to your own repository.
+If remote branch has a new branch `dev`, you need to synchronize this branch to the local repository, then push to your own repository.
 
 ```sh
-git checkout -b dev-1.0 upstream/dev-1.0
-git push --set-upstream origin dev-1.0
+git checkout -b dev upstream/dev
+git push --set-upstream origin dev
 ```
 
 ## Create your feature branch
