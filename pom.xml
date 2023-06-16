@@ -490,6 +490,7 @@
                         <exclude>**/.nvmrc</exclude>
                         <exclude>**/.browserslistrc</exclude>
                         <exclude>**/.npmrc</exclude>
+                        <exclude>**/.prettierrc</exclude>
 
                         <exclude>**/public/favicon.ico</exclude>
                         <exclude>**/dist/**</exclude>
