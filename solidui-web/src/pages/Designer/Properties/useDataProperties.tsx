@@ -98,6 +98,7 @@ function useDataProperties(initialData: InitialData = {}) {
 			let res2: ApiResult<DataSourceDataType> = await Apis.datasource.query({
 				pageNo: 1,
 				pageSize: 10000,
+				expire: false,
 			});
 			if (res2.ok) {
 				let data = res2.data || ({} as any);

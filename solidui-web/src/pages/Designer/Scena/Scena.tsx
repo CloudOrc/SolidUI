@@ -111,7 +111,7 @@ function Scena() {
 					justifyContent: "space-between",
 				}}
 			>
-				<div className="cu-b-l">left</div>
+				<div className="cu-b-l"></div>
 				<div className="cu-b-r" style={{}}>
 					<div className="cu-b-r-nav">
 						<div className="cu-b-zoom-container">

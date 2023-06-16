@@ -71,25 +71,33 @@ export default function () {
 		<div className="solidui-layout default">
 			<header className="solidui-header">
 				<div
-  className="header-main"
-  style={{
+					className="header-main"
+					style={{
 						right: 0,
 					}}
 				>
-					<div className="header-left">
+					<div
+						className="header-left"
+						onClick={() => {
+							navigate("/");
+						}}
+						style={{
+							cursor: "pointer",
+						}}
+					>
 						<div className="logo" />
 						<div className="logo-text">SolidUI</div>
 						<div className="version">v0.1.0</div>
 					</div>
 					<div
-  className="header-right"
-  style={{
+						className="header-right"
+						style={{
 							right: 20,
 							width: "auto",
 						}}
 					>
 						<Dropdown
-  menu={{
+							menu={{
 								items: [
 									{
 										key: "logout",
@@ -107,16 +115,16 @@ export default function () {
 									console.log(res);
 								},
 							}}
-  placement="bottom"
+							placement="bottom"
 						>
 							<Avatar
-  style={{
+								style={{
 									backgroundColor: "#0070cc",
 									verticalAlign: "middle",
 									cursor: "pointer",
 								}}
-  shape="square"
-  size="large"
+								shape="square"
+								size="large"
 							>
 								admin
 							</Avatar>
@@ -127,15 +135,15 @@ export default function () {
 			<section className="solidui-bottom">
 				<aside className="solidui-aside">
 					<Menu
-  selectedKeys={selectKeys}
-  mode="inline"
-  theme="light"
-  style={{
+						selectedKeys={selectKeys}
+						mode="inline"
+						theme="light"
+						style={{
 							height: "100%",
 						}}
-  inlineCollapsed={collapse}
-  items={items}
-  onClick={handleMenuClick}
+						inlineCollapsed={collapse}
+						items={items}
+						onClick={handleMenuClick}
 					/>
 				</aside>
 

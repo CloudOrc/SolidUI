@@ -45,6 +45,10 @@ function useProject(InitialData: InitialData = {}) {
 		return () => {};
 	}, []);
 
+	async function handleSearch(value: string) {
+		query({ pageNo: 1, pageSize: 10, searchName: value });
+	}
+
 	async function query(params: any = { pageNo: 1, pageSize: 10 }) {
 		setLoading(true);
 		let res = await Apis.project.query(params);
@@ -106,6 +110,7 @@ function useProject(InitialData: InitialData = {}) {
 		resetForm,
 		toggleModal,
 		query,
+		handleSearch,
 		create,
 		del,
 		toggleCover,

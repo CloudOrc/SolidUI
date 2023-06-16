@@ -219,7 +219,9 @@ function useDataSource(initialData: InitialData = {}) {
 		return () => {};
 	}, []);
 
-	async function query(params: any = { pageNo: 1, pageSize: 10 }) {
+	async function query(
+		params: any = { pageNo: 1, pageSize: 10, expire: false },
+	) {
 		setLoading(true);
 		let res: ApiResult<any> = await Apis.datasource.query(params);
 		if (res.ok) {

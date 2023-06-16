@@ -64,22 +64,32 @@ export default function (props: DataSourceEditProps) {
 				let data2 = res2.data || [];
 				setDsFormElements(data2);
 				setDataSourceTypeId(dataSourceTypeId);
-				let params = data.connectParams.params || {};
-				let paramsStr = map(params, (value, key) => `${key}=${value}`).join(
-					",",
-				);
+				const params = JSON.parse(data.parameter || "{}");
+				// let params = data.connectParams.params || {};
+				// let params = data.p
+				// const connectParams = params.params;
+				let paramsStr = map(
+					params.params || {},
+					(value, key) => `${key}=${value}`,
+				).join(",");
 				form.setFieldsValue({
 					id: data.id,
+					dataSourceTypeId: id,
 					title: data.dataSourceName,
 					description: data.dataSourceDesc,
-					host: data.connectParams.host,
-					port: data.connectParams.port,
-					dataSourceTypeId: id,
-					driverClassName: data.connectParams.driver,
-					username: data.connectParams.username,
-					password: data.connectParams.password,
 					params: paramsStr,
-					databaseName: data.connectParams.database || "",
+					host: params.host,
+					port: params.port,
+					driverClassName: params.driver,
+					username: params.username,
+					password: params.password,
+					databaseName: params.database || "",
+					// host: data.connectParams.host,
+					// port: data.connectParams.port,
+					// driverClassName: data.connectParams.driver,
+					// username: data.connectParams.username,
+					// password: data.connectParams.password,
+					// databaseName: data.connectParams.database || "",
 				});
 			}
 		}
@@ -110,7 +120,7 @@ export default function (props: DataSourceEditProps) {
 					}
 					let dsParameter = {
 						host: values.host,
-						port: values.port,
+						port: parseInt(values.port || "3306"),
 						username: values.username,
 						password: values.password,
 						database: values.databaseName,
@@ -123,7 +133,9 @@ export default function (props: DataSourceEditProps) {
 						dataSourceTypeId,
 						parameter: JSON.stringify(dsParameter),
 					};
+					console.log("aaaaaa");
 					let res = await Apis.datasource.update(values.id, params);
+					console.log(res);
 					if (res.ok) {
 						message.success("update success");
 						handleClose();
@@ -153,8 +165,7 @@ export default function (props: DataSourceEditProps) {
 					<Input placeholder="title" />
 				</Form.Item>
 
-				{dsFormElements &&
-					dsFormElements.map((item, idx) => renderFormItem(item))}
+				{dsFormElements && dsFormElements.map((item) => renderFormItem(item))}
 				<Form.Item
 					label="description"
 					name={"description"}

@@ -16,8 +16,10 @@
  */
 
 import React from "react";
-import { Button, Tooltip, message } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Button, Tooltip, Drawer, message } from "antd";
 import { ChartHistogramTwo } from "@icon-park/react";
+import PreviewPopup from "../Preview/PreviewPopup";
 import { eventbus, mm } from "@/utils/index";
 import Apis from "@/apis";
 import {
@@ -28,12 +30,70 @@ import "./header.less";
 import { isNil, startsWith } from "lodash-es";
 
 function Header() {
+	const navigate = useNavigate();
+	const [previewVisible, setPreviewVisible] = React.useState(false);
+
+	function renderPreviewPopup() {
+		if (!previewVisible) {
+			return;
+		}
+
+		return (
+			<Drawer
+				title=""
+				placement={"top"}
+				closable={true}
+				onClose={() => {}}
+				open={previewVisible}
+				key={"top"}
+				footer={undefined}
+				height={"100vh"}
+			>
+				<div
+					style={{
+						position: "absolute",
+						top: 5,
+						right: 5,
+						width: 24,
+						height: 24,
+						zIndex: 1000,
+					}}
+				>
+					<Button
+						style={{
+							background: "red",
+							fontSize: 12,
+							color: "#fff",
+							border: "1px solid red",
+						}}
+						size="small"
+						onClick={() => {
+							setPreviewVisible(false);
+						}}
+					>
+						X
+					</Button>
+				</div>
+				<PreviewPopup
+					projectId={mm.getModel()?.id || ""}
+					pageId={mm.getCurrentPage()?.id || ""}
+				/>
+			</Drawer>
+		);
+	}
+
+	function renderHome() {
+		navigate("/");
+	}
+
 	return (
 		<header className="header">
 			<div className="header-main">
 				<div className="header-left">
-					<div className="logo" />
-					<div className="logo-text">SolidUI</div>
+					<div className="logo" onClick={renderHome} />
+					<div className="logo-text" onClick={renderHome}>
+						SolidUI
+					</div>
 					<div className="version">v0.1.0</div>
 					<div className="split-line" />
 					<div className="left-main" />
@@ -58,6 +118,24 @@ function Header() {
 					</Tooltip>
 				</div>
 				<div className="header-right">
+					<Button
+						type="primary"
+						size="small"
+						style={{
+							marginRight: 10,
+						}}
+						onClick={() => {
+							const page = mm.getCurrentPage();
+							let project = mm.getModel();
+							if (isNil(project) || isNil(page)) {
+								message.warn("please select a page first");
+								return;
+							}
+							setPreviewVisible(true);
+						}}
+					>
+						Preview
+					</Button>
 					<Button
 						type="primary"
 						size="small"
@@ -112,12 +190,7 @@ function Header() {
 								},
 								views: _views,
 							};
-							let res;
-							// if (_views.length > 0) {
-							res = await Apis.model.updateProjectPageViews(data);
-							// } else {
-							// res = await Apis.model.saveProjectPageViews(data);
-							// }
+							let res = await Apis.model.updateProjectPageViews(data);
 							if (res.ok) {
 								message.success("Save success");
 							}
@@ -127,6 +200,7 @@ function Header() {
 					</Button>
 				</div>
 			</div>
+			{renderPreviewPopup()}
 		</header>
 	);
 }

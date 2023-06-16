@@ -65,22 +65,38 @@ export default function (props: DataSourceViewProps) {
 			if (res2.ok) {
 				let data2 = res2.data || [];
 				setDsFormElements(data2);
-				let params = data.connectParams.params || {};
-				let paramsStr = map(params, (value, key) => `${key}=${value}`).join(
-					",",
-				);
+				// let params = data.connectParams.params || {};
+				// let paramsStr = map(params, (value, key) => `${key}=${value}`).join(
+				// 	",",
+				// );
+
+				const params = JSON.parse(data.parameter || "{}");
+				// let params = data.connectParams.params || {};
+				// let params = data.p
+				// const connectParams = params.params;
+				let paramsStr = map(
+					params.params || {},
+					(value, key) => `${key}=${value}`,
+				).join(",");
+
 				form.setFieldsValue({
 					id: data.id,
 					title: data.dataSourceName,
 					description: data.dataSourceDesc,
-					host: data.connectParams.host,
-					port: data.connectParams.port,
 					dataSourceTypeId: id,
-					driverClassName: data.connectParams.driver,
-					username: data.connectParams.username,
-					password: data.connectParams.password,
 					params: paramsStr,
-					databaseName: data.connectParams.database || "",
+					// host: data.connectParams.host,
+					// port: data.connectParams.port,
+					// driverClassName: data.connectParams.driver,
+					// username: data.connectParams.username,
+					// password: data.connectParams.password,
+					// databaseName: data.connectParams.database || "",
+					host: params.host,
+					port: params.port,
+					driverClassName: params.driver,
+					username: params.username,
+					password: params.password,
+					databaseName: params.database || "",
 				});
 			}
 		}

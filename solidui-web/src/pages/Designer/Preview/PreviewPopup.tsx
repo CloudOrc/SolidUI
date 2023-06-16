@@ -16,15 +16,9 @@
  */
 
 import React, { useEffect } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
-import { Cascader } from "antd";
+import { useSearchParams } from "react-router-dom";
 import Apis from "@/apis";
-import {
-	ApiResult,
-	ProjectPageDataType,
-	SolidScenaDataType,
-	SolidViewDataType,
-} from "@/types";
+import { ApiResult, ProjectPageDataType, SolidViewDataType } from "@/types";
 import { ProjectPageViewsResultData } from "@/apis/types/resp";
 import SolidViewFactory from "@/views/SolidViewFactory";
 import mitt from "mitt";
@@ -39,8 +33,13 @@ interface Option {
 const factory = new SolidViewFactory();
 const eventbus = mitt();
 
-export default function Preview() {
-	const params = useParams();
+export interface PreviewPopupProps {
+	projectId: string;
+	pageId?: string;
+}
+
+export default function PreviewPopup(props: PreviewPopupProps) {
+	let { projectId, pageId } = props;
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [scenePageOptions, setScenePageOptions] = React.useState<Option[]>([]);
 	const [selectedScenePageOption, setSelectedScenePageOption] = React.useState<
@@ -49,18 +48,13 @@ export default function Preview() {
 	const [views, setViews] = React.useState<SolidViewDataType[]>([]);
 
 	useEffect(() => {
-		load();
-	}, []);
+		load(projectId, pageId);
+	}, [projectId, pageId]);
 
-	async function load() {
-		const id = params.id;
-		const pageId = searchParams.get("pageId");
-
-		// const projectId = params.projectId;
-		// const pageId = params.pageId;
-		if (id) {
+	async function load(projectId: string, pageId?: string) {
+		if (projectId) {
 			let res: ApiResult<ProjectPageDataType[]> = await Apis.model.queryPages(
-				id,
+				projectId,
 			);
 			if (res.ok) {
 				let data = res.data || [];
@@ -88,7 +82,7 @@ export default function Preview() {
 					}
 				}
 				if (pageId) {
-					await queryViews(id, pageId);
+					await queryViews(projectId, pageId);
 				}
 				setScenePageOptions(scenes);
 			}
@@ -97,12 +91,6 @@ export default function Preview() {
 
 	async function onChange(value: string[]) {
 		if (value && value[0] && value[1]) {
-			// let res: ApiResult<ProjectPageViewsResultData> =
-			// 	await Apis.model.queryViews(value[0], value[1]);
-			// if (res.ok) {
-			// 	let data = res.data;
-			// 	setViews(data?.views || []);
-			// }
 			queryViews(value[0], value[1]);
 		}
 	}
@@ -150,12 +138,11 @@ export default function Preview() {
 	return (
 		<div id="preview">
 			{renderViews()}
-			<div
+			{/* <div
 				style={{
 					position: "absolute",
 					top: 5,
-					left: 5,
-					// right: 5,
+					right: 5,
 				}}
 			>
 				<Cascader
@@ -164,8 +151,12 @@ export default function Preview() {
 					// @ts-ignore
 					onChange={onChange}
 					placeholder="select scene & page"
+					style={{
+						marginRight: 28,
+						marginTop: 1,
+					}}
 				/>
-			</div>
+			</div> */}
 		</div>
 	);
 }

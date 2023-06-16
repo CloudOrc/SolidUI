@@ -120,7 +120,7 @@ export default function (props: DataSourceCreateProps) {
 					}
 					let dsParameter = {
 						host: values.host,
-						port: values.port,
+						port: parseInt(values.port || "3306"),
 						username: values.username,
 						password: values.password,
 						database: values.databaseName,

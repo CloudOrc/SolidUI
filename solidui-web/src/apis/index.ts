@@ -64,7 +64,11 @@ let user = {
 
 let project = {
 	query: <T>(
-		params: { pageNo: number; pageSize: number } = { pageNo: 1, pageSize: 10 },
+		params: { pageNo: number; pageSize: number; searchName: string } = {
+			pageNo: 1,
+			pageSize: 10,
+			searchName: "",
+		},
 	) => ApiService.get<T>("/solidui/projects/queryProjectListPaging", params),
 	create: <T>(params: { projectName: string; description?: string }) =>
 		ApiService.post<T>("/solidui/projects", params, {
@@ -77,14 +81,20 @@ let project = {
 
 let datasource = {
 	query: <T>(
-		params: { name?: string; pageNo: number; pageSize: number } = {
+		params: {
+			name?: string;
+			pageNo: number;
+			pageSize: number;
+			expire: boolean;
+		} = {
 			pageNo: 1,
 			pageSize: 10,
 			name: "",
+			expire: false,
 		},
 	) =>
 		ApiService.get<T>(
-			`/solidui/datasource/info?name=${name}&pageNo=${params.pageNo}&pageSize=${params.pageSize}`,
+			`/solidui/datasource/info?name=${name}&pageNo=${params.pageNo}&pageSize=${params.pageSize}&expire=${params.expire}`,
 		),
 	get: <T>(id: string) => ApiService.get<T>(`/solidui/datasource/info/${id}`),
 	types: <T>() => ApiService.get<T>("/solidui/datasource/type/all"),
@@ -92,8 +102,10 @@ let datasource = {
 		ApiService.get<T>(`/solidui/datasource/key/type/${typeId}`),
 	delete: <T>(id: string) =>
 		ApiService.delete(`/solidui/datasource/info/delete/${id}`),
+	// update: <T>(id: string, params: any) =>
+	// ApiService.put(`/solidui/datasources/${id}/info`, params),
 	update: <T>(id: string, params: any) =>
-		ApiService.put(`/solidui/datasources/${id}`, params),
+		ApiService.put(`/solidui/datasource/info/${id}/json`, params),
 	create: <T>(params: DataSourceCreationDataType) =>
 		ApiService.post("/solidui/datasource/info/json", params),
 	all: <T>() => ApiService.get<T>("/solidui/datasources/all"),
