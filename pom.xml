@@ -409,7 +409,7 @@
                     </pom>
                     <markdown>
                         <includes>
-                            <include>**/*.md</include>
+                            <include>*.md</include>
                         </includes>
                         <flexmark />
                     </markdown>
