@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Form, message } from "antd";
 import { useParams } from "react-router-dom";
 import { eventbus, mm } from "@/utils";
@@ -32,10 +32,12 @@ import { useUpdate } from "react-use";
 
 interface StatefulSolidSceneDataType extends SolidScenaDataType {
 	open?: boolean;
+	editing?: boolean;
 }
 
 interface StatefulSolidPageDataType extends SolidPageDataType {
 	selected?: boolean;
+	editing?: boolean;
 }
 
 function useGeneral() {
@@ -44,10 +46,19 @@ function useGeneral() {
 	const [form] = Form.useForm();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [scenes, setScenes] = useState<StatefulSolidSceneDataType[]>([]);
-	const [pages, setPages] = useState<StatefulSolidPageDataType[]>([]);
-	const [page, setPage] = useState<SolidPageDataType>();
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const idRef = React.useRef<string>();
+
+	const pageEditingModelMap = useRef<
+		Map<
+			string,
+			{
+				editing: boolean;
+				oldName: string;
+				newName: string;
+			}
+		>
+	>(new Map());
 
 	useEffect(() => {
 		eventbus.on("onModelLoad", (evt) => {
@@ -98,6 +109,7 @@ function useGeneral() {
 			setScenes(_scenes_);
 			message.success("create scene ok");
 			toggleModal(false);
+			form.resetFields();
 		}
 		forceUpdate();
 	}
@@ -132,6 +144,7 @@ function useGeneral() {
 			});
 			message.success("create page ok");
 			toggleModal(false);
+			form.resetFields();
 		}
 		forceUpdate();
 	}
@@ -148,6 +161,7 @@ function useGeneral() {
 				mm.removePage(page);
 			}
 		}
+		setScenes(mm.getScenes());
 		forceUpdate();
 	}
 
@@ -199,6 +213,58 @@ function useGeneral() {
 		setModalOpen(open);
 	}
 
+	async function edit(
+		entity: StatefulSolidPageDataType | StatefulSolidSceneDataType,
+	) {
+		pageEditingModelMap.current &&
+			pageEditingModelMap.current.forEach((v, k) => {
+				if (v) {
+					pageEditingModelMap.current.set(k, {
+						editing: false,
+						oldName: entity.title,
+						newName: entity.title,
+					});
+				}
+			});
+		pageEditingModelMap.current.set(entity.id, {
+			editing: true,
+			oldName: entity.title,
+			newName: entity.title,
+		});
+
+		forceUpdate();
+	}
+
+	async function handleEditingInputKeyDown(
+		event: React.KeyboardEvent<HTMLInputElement>,
+		entity: StatefulSolidPageDataType | StatefulSolidSceneDataType,
+	) {
+		const selectEntity = pageEditingModelMap.current.get(entity.id);
+		if (isNil(selectEntity)) {
+			return;
+		}
+		if (event.keyCode === 27) {
+			// esc
+			if (selectEntity) {
+				selectEntity.editing = false;
+				selectEntity.newName = "";
+				selectEntity.oldName = "";
+			}
+			forceUpdate();
+		} else if (event.keyCode === 13) {
+			// enter
+			const res = await Apis.page.rename(entity.id, {
+				name: selectEntity.newName,
+			});
+			if (res.ok) {
+				message.success("rename ok");
+				entity.title = selectEntity.newName;
+				selectEntity.editing = false;
+				forceUpdate();
+			}
+		}
+	}
+
 	return {
 		loading,
 		form,
@@ -210,6 +276,9 @@ function useGeneral() {
 		deletePage,
 		modalOpen,
 		toggleModal,
+		edit,
+		pageEditingModelMap,
+		handleEditingInputKeyDown,
 	};
 }
 

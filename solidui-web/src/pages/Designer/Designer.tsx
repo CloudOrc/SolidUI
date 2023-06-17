@@ -56,6 +56,7 @@ function Dashboard() {
 				for (let i = 0; i < data.length; i++) {
 					let scene: SolidScenaDataType & { open?: boolean; pages: any[] } = {
 						id: data[i].id,
+						parentId: data[i].parentId,
 						title: data[i].name,
 						pages: [],
 						open: false,
@@ -64,6 +65,7 @@ function Dashboard() {
 						for (let j = 0; j < data[i].children.length; j++) {
 							scene.pages.push({
 								id: data[i].children[j].id,
+								parentId: data[i].children[j].parentId,
 								title: data[i].children[j].name,
 								views: [],
 							});

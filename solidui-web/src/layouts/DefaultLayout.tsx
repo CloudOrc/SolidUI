@@ -17,6 +17,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useCookie } from "react-use";
 import type { MenuProps } from "antd";
 import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
 import { Menu, Dropdown, Button, Avatar } from "antd";
@@ -51,11 +52,18 @@ export interface DefaultLayoutProps {}
 export default function () {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const [value, updateCookie, deleteCookie] = useCookie(
+		"solidui_user_session_ticket_id_v1",
+	);
 
 	const [selectKeys, setSelectKeys] = useState<string[]>(["home"]);
 	const [collapse, setCollapse] = useState<boolean>(false);
 
 	useEffect(() => {
+		if (null === value || undefined === value || "" === value) {
+			navigate("/login");
+			return;
+		}
 		let { pathname } = location;
 		setSelectKeys([pathname]);
 		return () => {};
@@ -110,9 +118,9 @@ export default function () {
 								onClick: async () => {
 									let res = await Apis.user.logout();
 									if (res.ok) {
+										deleteCookie();
 										navigate("/login");
 									}
-									console.log(res);
 								},
 							}}
 							placement="bottom"
