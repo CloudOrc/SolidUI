@@ -44,6 +44,7 @@ module.exports = {
         test: /\.css$/,
         include: [
           path.resolve(__dirname, '../src'),
+					path.resolve(__dirname, '../node_modules/@szhsin/react-menu')
           // path.resolve(__dirname, '../node_modules/antd')
         ],
         use: [

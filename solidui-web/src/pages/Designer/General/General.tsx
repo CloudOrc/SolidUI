@@ -15,21 +15,26 @@
  * limitations under the License.
  */
 
-import React from "react";
+import React, { useState } from "react";
 import { Button, Modal, Form, Input } from "antd";
 import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
-import { Delete, Close } from "@icon-park/react";
+import { ControlledMenu, MenuItem } from "@szhsin/react-menu";
+import { useUpdate } from "react-use";
+import { Close } from "@icon-park/react";
 import useGeneral from "./useGeneral";
-import { SolidScenaDataType } from "@/types/solid";
+import { SolidPageDataType, SolidScenaDataType } from "@/types/solid";
 import { mm } from "@/utils";
-
+import "@szhsin/react-menu/dist/index.css";
 import "./general.less";
+import { isNil } from "lodash-es";
 
 const { confirm } = Modal;
 
 function General() {
+	const [contextMenuOpen, setContextMenuOpen] = useState<boolean>();
+	const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
+	const forceUpdate = useUpdate();
 	const {
-		loading,
 		form,
 		modalOpen,
 		toggleScene,
@@ -38,17 +43,21 @@ function General() {
 		selectPage,
 		deletePage,
 		toggleModal,
+		edit,
+		pageEditingModelMap,
+		handleEditingInputKeyDown,
 	} = useGeneral();
 	let scenes = mm.getScenes();
 
 	let type = React.useRef<"scene" | "page">();
 	let sceneRef = React.useRef<SolidScenaDataType>();
+	let pageRef = React.useRef<SolidPageDataType>();
 
 	function renderModalContent() {
 		return (
 			<div className="solidui-modal">
 				<div className="solidui-modal__header">
-					New Scene
+					{type.current === "page" ? " New Page" : "New Scene"}
 					<span className="solidui-modal__close-btn">
 						<Close
 							theme="outline"
@@ -181,6 +190,9 @@ function General() {
 		pages &&
 			pages.forEach((page) => {
 				let selectedCls = page.selected ? "selected" : "";
+				let editingModel = pageEditingModelMap.current.get(page.id);
+				// console.log(`${page.id} -> ${editingModel?.editing}`);
+				let editing = editingModel?.editing;
 				kids.push(
 					<div
 						className={`expander__body-item ${selectedCls}`}
@@ -188,6 +200,12 @@ function General() {
 						onClick={() => selectPage(page)}
 						style={{
 							position: "relative",
+						}}
+						onContextMenu={(e) => {
+							e.preventDefault();
+							setAnchorPoint({ x: e.clientX, y: e.clientY });
+							setContextMenuOpen(true);
+							pageRef.current = page;
 						}}
 					>
 						<span className="expander__body-item-icon">
@@ -224,39 +242,33 @@ function General() {
 								/>
 							</svg>
 						</span>
-						<span className="expander__body-item-title">{page.title}</span>
-						<Delete
-							className="expander__body-item-delete"
-							theme="outline"
-							size="14"
-							fill="#757272"
-							strokeWidth={3}
-							strokeLinejoin="miter"
-							strokeLinecap="square"
-							style={{
-								position: "absolute",
-								top: 0,
-								right: 16,
-								bottom: 0,
-								// display: "flex",
-								alignItems: "center",
-							}}
-							onClick={(e) => {
-								e.stopPropagation();
-								e.preventDefault();
-
-								confirm({
-									title: "Confirm",
-									icon: <ExclamationCircleOutlined />,
-									content: "Do you want to delete this page?",
-									okText: "Yes",
-									cancelText: "Cancel",
-									onOk: async () => {
-										deletePage(page);
-									},
-								});
-							}}
-						/>
+						<span className="expander__body-item-title">
+							{/* {page.title} */}
+							{editing ? (
+								<input
+									value={editingModel?.newName || ""}
+									style={{
+										height: 22,
+										outline: "none",
+										fontSize: 12,
+										border: "1px solid #4cc3ed",
+									}}
+									autoFocus={true}
+									onChange={(e) => {
+										const val = e.target.value || "";
+										editingModel!.newName = val;
+										forceUpdate();
+									}}
+									onKeyDown={(e) => handleEditingInputKeyDown(e, page)}
+									onClick={(e) => {
+										e.stopPropagation();
+										e.preventDefault();
+									}}
+								/>
+							) : (
+								page.title
+							)}
+						</span>
 					</div>,
 				);
 			});
@@ -272,7 +284,6 @@ function General() {
 						height: "38px",
 						width: "100%",
 						fontSize: "14px",
-						// color: "#fff",
 						lineHeight: "38px",
 					}}
 				>
@@ -328,6 +339,41 @@ function General() {
 			>
 				{renderModalContent()}
 			</Modal>
+
+			<ControlledMenu
+				anchorPoint={anchorPoint}
+				direction="right"
+				state={contextMenuOpen ? "open" : "closed"}
+				onClose={() => setContextMenuOpen(false)}
+			>
+				<MenuItem
+					onClick={(e) => {
+						const page = pageRef.current;
+						if (isNil(page)) return;
+						confirm({
+							title: "Confirm",
+							icon: <ExclamationCircleOutlined />,
+							content: `Do you want to delete page [${page.title}] ?`,
+							okText: "Yes",
+							cancelText: "Cancel",
+							onOk: async () => {
+								deletePage(page);
+							},
+						});
+					}}
+				>
+					Delete
+				</MenuItem>
+				<MenuItem
+					onClick={() => {
+						const page = pageRef.current;
+						if (isNil(page)) return;
+						edit(page);
+					}}
+				>
+					Rename
+				</MenuItem>
+			</ControlledMenu>
 		</div>
 	);
 }

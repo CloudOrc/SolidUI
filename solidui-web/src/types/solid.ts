@@ -42,6 +42,7 @@ export interface SolidModelDataType {
 
 export interface SolidScenaDataType {
 	id: string;
+	parentId: string;
 	title: string;
 	pages?: SolidPageDataType[];
 

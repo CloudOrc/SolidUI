@@ -79,6 +79,11 @@ let project = {
 	delete: <T>(id: string) => ApiService.delete(`/solidui/projects/${id}`),
 };
 
+let page = {
+	rename: <T>(id: string, params: { name: string }) =>
+		ApiService.put<T>(`/solidui/job/page/${id}`, params),
+};
+
 let datasource = {
 	query: <T>(
 		params: {
@@ -140,6 +145,7 @@ let Apis = {
 	images,
 	user,
 	project,
+	page,
 	datasource,
 };
 

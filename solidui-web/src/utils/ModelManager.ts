@@ -23,7 +23,7 @@ import {
 } from "@/types/solid";
 import { eventbus } from "@/utils";
 import { OnSelectViewEventData } from "@/types/eventbus";
-import { isNil, set, unset, forEach, isEmpty, remove } from "lodash-es";
+import { isNil, set, unset, forEach, isEmpty, remove, find } from "lodash-es";
 
 class ModelManager {
 	private model?: SolidModelDataType;
@@ -267,6 +267,14 @@ class ModelManager {
 	}
 
 	public removePage(page: SolidPageDataType): void {
+		const thisPage = find(this.pages, (item) => item.id === page.id);
+		if (!thisPage) {
+			return;
+		}
+		const scene = find(this.scenes, (item) => item.id === thisPage.parentId);
+		if (scene) {
+			scene.pages && remove(scene.pages, (item) => item.id === page.id);
+		}
 		this.pageMap.delete(page.id);
 		remove(this.pages, (item) => item.id === page.id);
 		if (this.currentPage && this.currentPage.id === page.id) {
