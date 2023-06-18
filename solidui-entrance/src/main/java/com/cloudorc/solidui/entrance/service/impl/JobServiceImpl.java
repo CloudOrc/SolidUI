@@ -251,7 +251,7 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
             // Retrieve the associated JobElement
             jobElementId = jobElementPage.getJobElementId();
             if (jobElementId != null && jobElementId > 0) {
-                jobElement = jobElementMapper.selectById(jobElementPage.getJobElementId());
+                jobElement = jobElementMapper.selectById(jobElementId);
             }
 
             if (first) {
