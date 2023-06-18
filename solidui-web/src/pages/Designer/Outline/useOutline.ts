@@ -47,6 +47,7 @@ function useOutline() {
 
 	function __handleModelLoad(evt: OnModelLoadEventData) {
 		let { model } = evt;
+		forceUpdate();
 	}
 
 	function __handleSelectViewInViewport(evt: OnSelectViewEventData) {

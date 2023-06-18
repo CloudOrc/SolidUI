@@ -220,10 +220,15 @@ function useDataSource(initialData: InitialData = {}) {
 	}, []);
 
 	async function query(
-		params: any = { pageNo: 1, pageSize: 10, expire: false },
+		params: any = { pageNo: 1, pageSize: 10, expire: false, name: "" },
 	) {
 		setLoading(true);
-		let res: ApiResult<any> = await Apis.datasource.query(params);
+		let res: ApiResult<any> = await Apis.datasource.query({
+			pageNo: params.pageNo,
+			pageSize: params.pageSize,
+			expire: params.expire,
+			name: params.name,
+		});
 		if (res.ok) {
 			let data = res.data || ({} as any);
 			let current = data.currentPage || 1;
@@ -294,6 +299,15 @@ function useDataSource(initialData: InitialData = {}) {
 		setViewModalOpen(open);
 	}
 
+	async function handleSearch(value: string) {
+		query({
+			pageNo: 1,
+			pageSize: 10,
+			expire: false,
+			name: value,
+		});
+	}
+
 	return {
 		loading,
 		modalOpen,
@@ -313,6 +327,7 @@ function useDataSource(initialData: InitialData = {}) {
 		dataSources,
 		pagination,
 		popupConverMap,
+		handleSearch,
 	};
 }
 

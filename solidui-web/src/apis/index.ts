@@ -77,6 +77,8 @@ let project = {
 			},
 		}),
 	delete: <T>(id: string) => ApiService.delete(`/solidui/projects/${id}`),
+	update: <T>(id: string, name: string) =>
+		ApiService.put(`/solidui/projects/${id}?projectName=${name}`),
 };
 
 let page = {
@@ -87,7 +89,7 @@ let page = {
 let datasource = {
 	query: <T>(
 		params: {
-			name?: string;
+			name: string;
 			pageNo: number;
 			pageSize: number;
 			expire: boolean;
@@ -99,7 +101,7 @@ let datasource = {
 		},
 	) =>
 		ApiService.get<T>(
-			`/solidui/datasource/info?name=${name}&pageNo=${params.pageNo}&pageSize=${params.pageSize}&expire=${params.expire}`,
+			`/solidui/datasource/info?name=${params.name}&pageNo=${params.pageNo}&pageSize=${params.pageSize}&expire=${params.expire}`,
 		),
 	get: <T>(id: string) => ApiService.get<T>(`/solidui/datasource/info/${id}`),
 	types: <T>() => ApiService.get<T>("/solidui/datasource/type/all"),

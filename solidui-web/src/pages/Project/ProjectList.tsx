@@ -38,6 +38,7 @@ export default function ProjectList() {
 		del,
 		toggleModal,
 		handleSearch,
+		query,
 	} = useProject();
 
 	function renderModalContent() {
@@ -130,6 +131,9 @@ export default function ProjectList() {
 						}}
 						handleDelete={(id) => {
 							del(id);
+						}}
+						onUpdate={() => {
+							query();
 						}}
 					/>,
 				);

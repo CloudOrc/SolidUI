@@ -31,17 +31,6 @@ function Dashboard() {
 	let { id } = params;
 
 	React.useEffect(() => {
-		// let modelStr = localStorage.getItem("__MODEL__");
-		// if (
-		// 	undefined === modelStr ||
-		// 	null === modelStr ||
-		// 	"undefined" === modelStr
-		// ) {
-		// 	modelStr = "{}";
-		// }
-		// let model = JSON.parse(modelStr);
-		// mm.attach(model);
-		// eventbus.emit("onModelLoad", { model });
 		load();
 	}, []);
 

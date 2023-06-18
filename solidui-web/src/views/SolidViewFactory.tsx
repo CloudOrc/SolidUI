@@ -26,7 +26,7 @@ export default class ViewFactory {
 
 	public constructor() {
 		this.init(() => {
-			console.log("load view components ok");
+			// console.log("load view components ok");
 		});
 	}
 

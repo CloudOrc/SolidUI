@@ -20,7 +20,10 @@ import { Slider } from "antd";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import SolidEditor from "@/components/SolidEditor/SolidEditor";
 import EChartsBarSolidView from "@/views/echarts/EChartsBarSolidView";
-import { OnZoomEventData } from "@/types/eventbus";
+import {
+	OnZoomEventData,
+	onPageSizeValueChangeEventData,
+} from "@/types/eventbus";
 import { SolidViewDataType } from "@/types/solid";
 import { eventbus, genId } from "@/utils";
 
@@ -38,7 +41,6 @@ function Scena() {
 	const [zoom, setZoom] = useState(1);
 	const areaTopRef = useRef<HTMLDivElement>(null);
 
-	let thick = 24;
 	const editorRef = React.createRef<SolidEditor>();
 
 	function getZoomValue(zoom: number) {
@@ -48,18 +50,21 @@ function Scena() {
 
 	useLayoutEffect(() => {
 		if (editorRef.current) {
-			let container = editorRef.current.getInfiniteViewer().getContainer();
-			let infiniteViewContainerRect = container.getBoundingClientRect();
-			let infiniteWidth = infiniteViewContainerRect.width;
-			let infiniteHeight = infiniteViewContainerRect.height;
+			// TODO zoom disabled
+			// let container = editorRef.current.getInfiniteViewer().getContainer();
+			// let infiniteViewContainerRect = container.getBoundingClientRect();
+			// let infiniteWidth = infiniteViewContainerRect.width;
+			// let infiniteHeight = infiniteViewContainerRect.height;
 
-			let wRatio = (infiniteWidth - 50) / width;
-			let hRatio = (infiniteHeight - 50) / height;
-			let ratio = Math.min(wRatio, hRatio);
-			let roundRatio = Math.floor(ratio * 100);
-			let zoom = roundRatio / 100;
-			setZoom(zoom);
-			editorRef.current.setZoom(zoom);
+			// let wRatio = (infiniteWidth - 50) / width;
+			// let hRatio = (infiniteHeight - 50) / height;
+			// let ratio = Math.min(wRatio, hRatio);
+			// let roundRatio = Math.floor(ratio * 100);
+			// let zoom = roundRatio / 100;
+			// setZoom(zoom);
+			// editorRef.current.setZoom(zoom);
+
+			setZoom(1);
 		}
 
 		editorRef.current && editorRef.current.getInfiniteViewer()?.scrollCenter();
@@ -67,11 +72,22 @@ function Scena() {
 
 	useEffect(() => {
 		eventbus.on("onZoom", onZoom);
-
+		eventbus.on("onPageWidthChange", handleWidthChange);
+		eventbus.on("onPageHeightChange", handleHeightChange);
 		return () => {
 			eventbus.off("onZoom", onZoom);
+			eventbus.off("onPageWidthChange", handleWidthChange);
+			eventbus.off("onPageHeightChange", handleHeightChange);
 		};
 	}, []);
+
+	function handleWidthChange(evt: onPageSizeValueChangeEventData) {
+		setWidth(evt.value);
+	}
+
+	function handleHeightChange(evt: onPageSizeValueChangeEventData) {
+		setHeight(evt.value);
+	}
 
 	function onZoom(data: OnZoomEventData) {
 		setZoom(data.zoom);

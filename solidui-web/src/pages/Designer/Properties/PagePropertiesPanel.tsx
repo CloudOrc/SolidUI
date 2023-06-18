@@ -16,8 +16,8 @@
  */
 
 import React from "react";
-import { LeftRightExpander, PropertyElement, InputText } from "@/components";
-import { mm } from "@/utils";
+import { LeftRightExpander, PropertyElement, InputNumber } from "@/components";
+import { eventbus } from "@/utils";
 
 export interface PagePropertiesPanelProps {}
 
@@ -26,11 +26,31 @@ export default function (props: PagePropertiesPanelProps) {
 		<>
 			<LeftRightExpander expanded showCheckbox={false} title="Page">
 				<PropertyElement label="Width" labelWidth={50}>
-					<InputText value={"100"} />
+					<InputNumber
+						value={1024}
+						min={800}
+						step={1}
+						max={4200}
+						onUpdateValue={(value) => {
+							eventbus.emit("onPageWidthChange", {
+								value: value,
+							});
+						}}
+					/>
 				</PropertyElement>
 
 				<PropertyElement label="Height" labelWidth={50}>
-					<InputText value={"200"} />
+					<InputNumber
+						value={768}
+						min={400}
+						step={1}
+						max={3600}
+						onUpdateValue={(value) => {
+							eventbus.emit("onPageHeightChange", {
+								value: value,
+							});
+						}}
+					/>
 				</PropertyElement>
 			</LeftRightExpander>
 		</>

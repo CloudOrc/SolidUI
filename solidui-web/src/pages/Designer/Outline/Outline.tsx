@@ -57,7 +57,7 @@ function Outline() {
 						}}
 					/>
 					<span className="text">{view.title}</span>
-					<div className="act act-eye">
+					{/* <div className="act act-eye">
 						<Tooltip title="hide">
 							<i className="bi-font bi-eye" />
 						</Tooltip>
@@ -66,7 +66,7 @@ function Outline() {
 						<Tooltip title="lock">
 							<i className="bi-font bi-lock" />
 						</Tooltip>
-					</div>
+					</div> */}
 				</li>,
 			);
 		});

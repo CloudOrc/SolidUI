@@ -53,7 +53,19 @@ class ModelManager {
 
 	public attach(model: SolidModelDataType): void {
 		this.model = model;
+		this.__clear();
 		this.__config(model);
+	}
+
+	private __clear() {
+		this.currentPage = undefined;
+		this.currentView = undefined;
+		this.sceneMap.clear();
+		this.pageMap.clear();
+		this.viewMap.clear();
+		this.scenes = [];
+		this.pages = [];
+		this.views = [];
 	}
 
 	private __config(model: SolidModelDataType) {
@@ -91,25 +103,6 @@ class ModelManager {
 		}
 	}
 
-	// public createScene(): SolidScenaDataType | undefined {
-	// 	if (isNil(this.model)) {
-	// 		return undefined;
-	// 	}
-	// 	let _id = new Date().getTime();
-	// 	let scene: SolidScenaDataType = {
-	// 		id: "scene_" + _id,
-	// 		title: "Scene_" + _id,
-	// 		pages: [],
-	// 	};
-	// 	this.sceneMap.set(scene.id, scene);
-	// 	this.scenes.push(scene);
-	// 	if (this.model.scenas) {
-	// 		this.model.scenas.push(scene);
-	// 	} else {
-	// 		set(this.model, "scenas", [scene]);
-	// 	}
-	// 	return scene;
-	// }
 	public addScene(scene: SolidScenaDataType) {
 		if (isNil(this.model)) {
 			return;
@@ -123,27 +116,6 @@ class ModelManager {
 		}
 	}
 
-	// public createPage(id: string): SolidPageDataType | undefined {
-	// 	if (isNil(this.model)) {
-	// 		return undefined;
-	// 	}
-	// 	let scene = this.getScene(id);
-	// 	if (isNil(scene)) {
-	// 		return undefined;
-	// 	}
-	// 	let _id = new Date().getTime();
-	// 	let page: SolidPageDataType = {
-	// 		id: "page_" + _id,
-	// 		parentId: "",
-	// 		title: "Page_" + _id,
-	// 		views: [],
-	// 	};
-	// 	scene.pages!.push(page);
-	// 	this.pageMap.set(page.id, page);
-	// 	this.pages.push(page);
-	// 	return page;
-	// }
-
 	public addPage(page: SolidPageDataType): void {
 		if (isNil(this.model)) {
 			return;
@@ -156,15 +128,6 @@ class ModelManager {
 		scene.pages!.push(page);
 		this.pageMap.set(page.id, page);
 		this.pages.push(page);
-		// let sceneId = page.parentId;
-		// if (sceneId) {
-		// 	let scene = this.getScene(sceneId);
-		// 	if (scene) {
-		// 		scene.pages!.push(page);
-		// 		this.pageMap.set(page.id, page);
-		// 		this.pages.push(page);
-		// 	}
-		// }
 	}
 
 	public getScenes(): SolidScenaDataType[] {

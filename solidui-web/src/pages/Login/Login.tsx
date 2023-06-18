@@ -63,7 +63,7 @@ export default function () {
 						<Form
 							name="basic"
 							initialValues={{
-								username: "admin",
+								username: "",
 								password: "",
 							}}
 							onFinish={handleLogin}

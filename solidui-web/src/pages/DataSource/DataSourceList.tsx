@@ -38,9 +38,8 @@ export default function () {
 		toggleEditModal,
 		toggleViewModal,
 		query,
+		handleSearch,
 	} = useDataSource();
-
-	function onSearch() {}
 
 	return (
 		<div className="solidui-datasources">
@@ -49,7 +48,7 @@ export default function () {
 					<div className="form-filter">
 						<Search
 							placeholder="input search text"
-							onSearch={onSearch}
+							onSearch={handleSearch}
 							enterButton
 							style={{
 								width: 300,

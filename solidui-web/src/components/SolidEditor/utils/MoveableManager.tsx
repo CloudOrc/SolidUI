@@ -271,7 +271,7 @@ export default class MoveableManager extends React.PureComponent<{
 						this.getSelecto().clickTarget(e.inputEvent, e.inputTarget);
 						let id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
 						if (id) {
-							this.getEditorManager()._internal_select_view(id);
+							eventbus.emit("onSelectViewInViewport", { id });
 						}
 					}
 				}}

@@ -98,6 +98,7 @@ function useGeneral() {
 			}
 			mm.addScene({
 				id: data.id,
+				parentId: data.parentId || "",
 				title: data.name,
 				pages: [],
 				selected: false,

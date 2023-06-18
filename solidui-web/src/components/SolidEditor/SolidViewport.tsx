@@ -45,6 +45,7 @@ export default class SolidViewport extends React.PureComponent<{
 	children: any;
 	style: IObject<any>;
 	onBlur: (e: any) => any;
+	// onRef: (ref: any) => void;
 }> {
 	public components: Record<string, SolidViewComponent> = {};
 	public jsxs: Record<string, SolidViewJSXElement> = {};
@@ -59,6 +60,14 @@ export default class SolidViewport extends React.PureComponent<{
 	};
 
 	public viewportRef = React.createRef<HTMLDivElement>();
+
+	// componentDidMount(): void {
+	// 	this.props.onRef && this.props.onRef(this.viewport);
+	// }
+
+	// componentWillUnmount(): void {
+	// 	this.props.onRef && this.props.onRef(null);
+	// }
 
 	public makeId(ids: Record<string, any> = this.ids) {
 		while (true) {

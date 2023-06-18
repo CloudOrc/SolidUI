@@ -66,7 +66,6 @@ function useDataProperties(initialData: InitialData = {}) {
 		load();
 
 		eventbus.on("onSelectViewInViewList", handleSelectViewEvent);
-
 		eventbus.on("onSelectViewInViewport", handleSelectViewEvent);
 
 		return () => {
@@ -118,6 +117,8 @@ function useDataProperties(initialData: InitialData = {}) {
 				setDataSourceOptions(dataSourceOptions);
 				setDataSourceTypes(dataSourceTypes);
 				setDataSources(records || []);
+				setColumns([]);
+				setRows([]);
 				let optionVals = [];
 				if (viewData.dataSourceId) {
 					optionVals.push(viewData.dataSourceId);

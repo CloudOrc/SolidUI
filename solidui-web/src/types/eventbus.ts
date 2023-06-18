@@ -76,6 +76,10 @@ type onDataSetChangeEventData = {
 	data: any[][];
 } & BaseEventData;
 
+type onPageSizeValueChangeEventData = {
+	value: number;
+};
+
 type EventBusType = {
 	onResize: OnResizeEventData;
 	onDrag: { x: number; y: number };
@@ -90,6 +94,8 @@ type EventBusType = {
 	onRemoveViewComplete: OnRemoveViewCompleteEventData;
 	onUpdateViewPropertyValue: OnUpdateViewPropertyValueEventData;
 	onDataSetChange: onDataSetChangeEventData;
+	onPageWidthChange: onPageSizeValueChangeEventData;
+	onPageHeightChange: onPageSizeValueChangeEventData;
 };
 
 export {
@@ -106,4 +112,5 @@ export {
 	OnRemoveViewCompleteEventData,
 	OnUpdateViewPropertyValueEventData,
 	onDataSetChangeEventData,
+	onPageSizeValueChangeEventData,
 };

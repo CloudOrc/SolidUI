@@ -146,43 +146,6 @@ export default function (props: DataPropertiesPanelProps) {
 				>
 					{rowss}
 				</StickyTable>
-				{/* <Grid
-					className="Grid"
-					columnCount={columns.length}
-					columnWidth={COLUMN_WIDTH}
-					height={ROW_HEIGHT}
-					rowCount={1}
-					rowHeight={ROW_HEIGHT}
-					width={COLUMN_WIDTH * columns.length}
-				>
-					{({ columnIndex, style }) => (
-						<div className="Cell" style={style}>
-							{columns[columnIndex]}
-						</div>
-					)}
-				</Grid>
-				<div className="table-body">
-					<List
-						className="List"
-						height={ROW_HEIGHT * rows.length}
-						itemCount={rows.length}
-						itemSize={ROW_HEIGHT}
-						width={COLUMN_WIDTH * columns.length}
-					>
-						{({ index, style }) => (
-							<div
-								style={style}
-								className={index % 2 ? "ListItemOdd" : "ListItemEven"}
-							>
-								{rows[index].map((cell, columnIndex) => (
-									<div key={columnIndex} className="Cell">
-										{cell}
-									</div>
-								))}
-							</div>
-						)}
-					</List>
-				</div> */}
 			</div>
 		</div>
 	);

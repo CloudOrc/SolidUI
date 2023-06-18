@@ -19,32 +19,30 @@ import React from "react";
 import InfiniteViewer from "react-infinite-viewer";
 import Guides from "@scena/react-guides";
 import Selecto from "react-selecto";
+import { message } from "antd";
 // import mitt from "mitt";
 
 import SolidViewport from "./SolidViewport";
 import SolidEditorManager from "./utils/SolidEditorManager";
+import SolidViewFactory from "@/views/SolidViewFactory";
 import MoveableManager from "./utils/MoveableManager";
 import MoveableData from "./utils/MoveableData";
 import Debugger from "./utils/Debugger";
 import Memory from "./utils/Memory";
 import { SOLIDUI_ELEMENT_ID } from "./utils/const";
-import {
-	prefix,
-	getIds,
-	checkImageLoaded,
-	getOffsetOriginMatrix,
-	setMoveMatrix,
-} from "./utils";
+import { prefix, getIds } from "./utils";
 
 import { SolidEditorContext } from "./SolidEditorContext";
-
+import {
+	OnDrawEventData,
+	OnModelLoadEventData,
+	OnSelectPageEventData,
+	OnSelectViewEventData,
+} from "@/types/eventbus";
 import { invert, matrix3d } from "@scena/matrix";
 import { IObject } from "@daybrush/utils";
 import { AddedInfo, ElementInfo, RemovedInfo } from "./utils/types";
-// import { EventBusType } from "@/types";
-
-// import "@/assets/styles/solideditor.less";
-import { eventbus } from "@/utils";
+import { eventbus, mm } from "@/utils";
 import "./style/index.less";
 
 export interface SolidEditorState {
@@ -71,6 +69,11 @@ export default class SolidEditor extends React.PureComponent<
 	SolidEditorProps,
 	Partial<SolidEditorState>
 > {
+	constructor(props: SolidEditorProps) {
+		super(props);
+		this.clear = this.clear.bind(this);
+	}
+
 	public state: SolidEditorState = {
 		selectedTargets: [],
 		horizontalGuides: [],
@@ -79,11 +82,11 @@ export default class SolidEditor extends React.PureComponent<
 		// zoom: this.props.zoom ? this.props.zoom : 1,
 		selectedMenu: "MoveTool",
 	};
-
 	public memory = new Memory();
 	public console = new Debugger();
 	public moveableData = new MoveableData(this.memory);
-	public manager = new SolidEditorManager(this);
+	// public manager = new SolidEditorManager(this);
+	public factory = new SolidViewFactory();
 
 	public editorRef = React.createRef<HTMLDivElement>();
 	public horizontalGuides = React.createRef<Guides>();
@@ -92,15 +95,117 @@ export default class SolidEditor extends React.PureComponent<
 	public viewport = React.createRef<SolidViewport>();
 	public selecto = React.createRef<Selecto>();
 	public moveableManager = React.createRef<MoveableManager>();
-	// public eventbus = mitt<EventBusType>();
+
+	componentDidMount(): void {
+		eventbus.on("onSelectPage", this.handleSelectPage);
+		eventbus.on("onDraw", this.handleOnDraw);
+		eventbus.on("onSelectViewInViewList", this.handleSelectViewinViewList);
+	}
+
+	componentDidUpdate(
+		prevProps: Readonly<SolidEditorProps>,
+		prevState: Readonly<Partial<SolidEditorState>>,
+		snapshot?: any,
+	): void {}
+
+	componentWillUnmount(): void {
+		eventbus.off("onSelectPage", this.handleSelectPage);
+		eventbus.off("onDraw", this.handleOnDraw);
+		eventbus.off("onSelectViewInViewList", this.handleSelectViewinViewList);
+	}
+
+	public handleSelectViewinViewList = (event: OnSelectViewEventData) => {
+		let view = mm.getView(event.id);
+		if (view) {
+			this.selectTarget(view.id);
+		}
+	};
+
+	public handleOnDraw = (event: OnDrawEventData) => {
+		if (!mm.getCurrentPage()) {
+			message.warn("please select one page before draw view");
+			return;
+		}
+		let { viewType } = event;
+		let builder = this.factory.getBuilder(viewType);
+		if (builder === undefined) {
+			return;
+		}
+		let SolidViewComponent = builder.getComponentType();
+		let vm = builder.createModel();
+		let _style: React.CSSProperties = {
+			...vm.style,
+			width: `${vm.size.width}px`,
+			height: `${vm.size.height}px`,
+		};
+		this.appendJSX({
+			id: vm.id,
+			jsx: <SolidViewComponent viewModel={vm} style={_style} />,
+			name: builder.getTitle(),
+		}).then(() => {
+			mm.addView(vm);
+			eventbus.emit("onDrawComplete", { id: vm.id });
+		});
+	};
+
+	public handleSelectPage = (event: OnSelectPageEventData) => {
+		let pageId = event.id;
+		let page = mm.getPage(pageId);
+		this.clear().then((removed) => {
+			let views = page?.views || [];
+			views.forEach((view) => {
+				let builder = this.factory.getBuilder(view.type);
+				if (builder === undefined) {
+					return;
+				}
+				let SolidViewComponent = builder.getComponentType();
+				let { style, ...vm } = view;
+				let _style: React.CSSProperties = {
+					...style,
+					width: `${vm.size.width}px`,
+					height: `${vm.size.height}px`,
+					// top: `${vm.position.top}px`,
+					// left: `${vm.position.left}px`,
+					position: "absolute",
+					// transform: `translate(${vm.frame.translate[0]}px, ${vm.frame.translate[1]}px)`,
+					transform: `translate(${vm.position.top}px, ${vm.position.left}px)`,
+				};
+				// if (!view.data.remote) {
+				if (!vm.data.dataSourceId || !vm.data.sql) {
+					let localVM = builder.createModel();
+					vm.data = localVM.data;
+				}
+				this.appendJSXsOnly([
+					{
+						id: view.id,
+						// jsx: (
+						// 	<div style={_style}>
+						// 		<SolidViewComponent viewModel={vm} />
+						// 	</div>
+						// ),
+						jsx: <SolidViewComponent viewModel={vm} style={_style} />,
+						// frame: vm.frame,
+						name: builder.getTitle(),
+					},
+				]);
+
+				// this.editor.appendJSX({
+				// 	id: view.id,
+				// 	jsx: <SolidViewComponent viewModel={vm} style={_style} />,
+				// 	// frame: vm.frame,
+				// 	name: builder.getTitle(),
+				// });
+			});
+		});
+	};
 
 	public getViewport = () => {
 		return this.viewport.current!;
 	};
 
-	public getEditorManager = () => {
-		return this.manager;
-	};
+	// public getEditorManager = () => {
+	// 	return this.manager;
+	// };
 
 	public getSelecto = () => {
 		return this.selecto.current!;
@@ -218,6 +323,7 @@ export default class SolidEditor extends React.PureComponent<
 					);
 				});
 			});
+		// return Promise.resolve([]);
 	}
 
 	public removeByIds(ids: string[], isRestore?: boolean) {
@@ -422,7 +528,6 @@ export default class SolidEditor extends React.PureComponent<
 		} = this;
 
 		const { selectedMenu, selectedTargets, zoom } = state;
-		// console.log("this state zoom = ", zoom);
 
 		const { width, height } = this.props;
 
@@ -502,12 +607,8 @@ export default class SolidEditor extends React.PureComponent<
 						verticalGuides.current!.scroll(e.scrollTop);
 						verticalGuides.current!.scrollGuides(e.scrollLeft);
 					}}
-					onDragStart={(e) => {
-						console.log(e);
-					}}
-					onDrag={(e) => {
-						console.log(e);
-					}}
+					onDragStart={(e) => {}}
+					onDrag={(e) => {}}
 					usePinch
 					onPinch={(e) => {
 						eventbus.emit("onZoom", { zoom: e.zoom });
@@ -515,15 +616,12 @@ export default class SolidEditor extends React.PureComponent<
 							zoom: e.zoom,
 						});
 					}}
-					onPinchStart={(e) => {
-						console.log(e);
-					}}
+					onPinchStart={(e) => {}}
 				>
 					<SolidViewport
 						ref={this.viewport}
-						onBlur={() => {
-							console.log("onBlur");
-						}}
+						// onRef={(ref) => (this.viewport = ref)}
+						onBlur={() => {}}
 						style={{
 							width: `${width}px`,
 							height: `${height}px`,
@@ -615,21 +713,4 @@ export default class SolidEditor extends React.PureComponent<
 			</div>
 		);
 	}
-
-	// static getDerivedStateFromProps(
-	// 	nextProps: SolidEditorProps,
-	// 	prevState: SolidEditorState
-	// ) {
-
-	// 	if (nextProps.zoom) {
-	// 		console.log(nextProps, prevState);
-	// 		if (nextProps.zoom !== prevState.zoom) {
-	// 			return {
-	// 				...prevState,
-	// 				zoom: nextProps.zoom,
-	// 			};
-	// 		}
-	// 	}
-	// 	return null;
-	// }
 }
