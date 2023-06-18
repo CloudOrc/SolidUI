@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useSearchParams } from "react-router-dom";
 import { Button, Tooltip, Drawer, message } from "antd";
 import { ChartHistogramTwo } from "@icon-park/react";
 import PreviewPopup from "../Preview/PreviewPopup";
@@ -28,10 +28,13 @@ import {
 } from "@/apis/types";
 import "./header.less";
 import { isNil, startsWith } from "lodash-es";
+import { useEffect } from "react";
 
-function Header() {
+function Header(props:any) {
 	const navigate = useNavigate();
+	const [searchParams, setSearchParams] = useSearchParams();
 	const [previewVisible, setPreviewVisible] = React.useState(false);
+	const [title,setTitle] = React.useState("")
 
 	function renderPreviewPopup() {
 		if (!previewVisible) {
@@ -86,6 +89,13 @@ function Header() {
 		navigate("/");
 	}
 
+	useEffect(()=>{
+		const projectName = searchParams.get("projectName");
+		if(projectName !== null){
+			setTitle(projectName)
+		}
+	},[])
+
 	return (
 		<header className="header">
 			<div className="header-main">
@@ -96,7 +106,7 @@ function Header() {
 					</div>
 					<div className="version">v0.1.0</div>
 					<div className="split-line" />
-					<div className="left-main" />
+					<div className="left-main"><span style={{marginLeft:"10px"}}>{title}</span></div>
 				</div>
 				<div className="header-center">
 					<Tooltip title="Bar Chart">

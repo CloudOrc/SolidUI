@@ -76,7 +76,7 @@ export default function (props: ProjectCardProps) {
 	// const editingProject = React.useRef<ProjectDataType>();
 
 	async function handleEdit(item: ProjectDataType) {
-		navigate(`/dashboard/${item.id}`);
+		navigate(`/dashboard/${item.id}?projectName=${item.projectName}`);
 	}
 
 	async function __handleDelete() {
