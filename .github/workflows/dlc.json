@@ -7,5 +7,10 @@
     200,
     401,
     403
+  ],
+  "ignorePatterns": [
+    {
+      "pattern": "https://twitter.com/dlimeng192048"
+    }
   ]
 }
