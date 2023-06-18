@@ -110,6 +110,11 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
 
         List<JobElementPageVO.View> views = jobElementPageVO.getViews();
         if (views == null || views.size() == 0) {
+
+            if (this.saveJobElementPage(page.getId(), 0L, size) <= 0) {
+                putMsg(result, Status.CREATE_JOB_ERROR);
+                return result;
+            }
             return Result.success();
         }
 
@@ -127,13 +132,7 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
             jobElement.setData(data);
             if (jobElementMapper.insert(jobElement) > 0) {
 
-                JobElementPage jobElementPage = new JobElementPage();
-                jobElementPage.setJobPageId(page.getId());
-                jobElementPage.setJobElementId(jobElement.getId());
-                jobElementPage.setCreateTime(new Date());
-                jobElementPage.setUpdateTime(new Date());
-                jobElementPage.setPosition(JSONUtils.toJsonString(size));
-                if (jobElementPageMapper.insert(jobElementPage) <= 0) {
+                if (this.saveJobElementPage(page.getId(), jobElement.getId(), size) <= 0) {
                     putMsg(result, Status.CREATE_JOB_ERROR);
                     return result;
                 }
@@ -179,13 +178,22 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
         if (!jobElementPages.isEmpty()) {
             for (JobElementPage ep : jobElementPages) {
                 jobElementPageMapper.deleteById(ep.getId());
-                jobElementMapper.deleteById(ep.getJobElementId());
+                Long jobElementId = ep.getJobElementId();
+                if (ep.getJobElementId() != null && ep.getJobElementId() > 0) {
+                    jobElementMapper.deleteById(jobElementId);
+                }
+
             }
         }
         // Omitting the validation of project ID and other properties, as you have already done this in the createJob
         // method
         List<JobElementPageVO.View> views = jobElementPageVO.getViews();
         if (views == null || views.isEmpty()) {
+
+            if (this.saveJobElementPage(page.getId(), 0L, size) <= 0) {
+                putMsg(result, Status.UPDATE_JOB_ERROR);
+                return result;
+            }
             return Result.success();
         }
 
@@ -204,13 +212,7 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
             jobElement.setData(data);
             if (jobElementMapper.insert(jobElement) > 0) {
 
-                JobElementPage jobElementPage = new JobElementPage();
-                jobElementPage.setJobPageId(page.getId());
-                jobElementPage.setJobElementId(jobElement.getId());
-                jobElementPage.setCreateTime(new Date());
-                jobElementPage.setUpdateTime(new Date());
-                jobElementPage.setPosition(JSONUtils.toJsonString(size));
-                if (jobElementPageMapper.insert(jobElementPage) <= 0) {
+                if (this.saveJobElementPage(page.getId(), jobElement.getId(), size) <= 0) {
                     putMsg(result, Status.UPDATE_JOB_ERROR);
                     return result;
                 }
@@ -243,13 +245,15 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
 
         boolean first = true;
         List<JobElementPageVO.View> views = new ArrayList<>();
+        JobElement jobElement = null;
+        Long jobElementId = null;
         for (JobElementPage jobElementPage : jobElementPages) {
             // Retrieve the associated JobElement
-            JobElement jobElement = jobElementMapper.selectById(jobElementPage.getJobElementId());
-            if (jobElement == null) {
-                putMsg(result, Status.QUERY_JOB_ERROR);
-                return result;
+            jobElementId = jobElementPage.getJobElementId();
+            if (jobElementId != null && jobElementId > 0) {
+                jobElement = jobElementMapper.selectById(jobElementPage.getJobElementId());
             }
+
             if (first) {
                 jobElementPageVOs.setPage(JobElementPageVO.Page.builder().id(jobElementPage.getJobPageId()).build());
                 jobElementPageVOs
@@ -323,5 +327,16 @@ public class JobServiceImpl extends BaseServiceImpl implements JobService {
         view.setOptions(dataView.getOptions());
         view.setData(dataView.getData());
         views.add(view);
+    }
+
+    private int saveJobElementPage(Long jobPageId, Long jobElementId, JobElementPageVO.Size size) {
+
+        JobElementPage jobElementPage = new JobElementPage();
+        jobElementPage.setJobPageId(jobPageId);
+        jobElementPage.setJobElementId(jobElementId);
+        jobElementPage.setCreateTime(new Date());
+        jobElementPage.setUpdateTime(new Date());
+        jobElementPage.setPosition(JSONUtils.toJsonString(size));
+        return jobElementPageMapper.insert(jobElementPage);
     }
 }
