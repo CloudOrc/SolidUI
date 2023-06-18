@@ -497,6 +497,7 @@
                         <exclude>**/node_modules/**</exclude>
                         <exclude>**/node/**</exclude>
                         <exclude>**/solidui-*-web-bin.tar.gz</exclude>
+                        <exclude>**/ui-licenses/**</exclude>
 
                         <exclude>**/*.md</exclude>
                         <exclude>.git/</exclude>
