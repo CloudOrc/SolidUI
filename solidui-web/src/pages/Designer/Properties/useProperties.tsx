@@ -34,7 +34,7 @@ function useProperties(initialData: InitialData) {
 	const forceUpdate = useUpdate();
 	const [propertyKey, setPropertyKey] = useState<
 		"top" | "scene" | "page" | "view" | "none"
-	>("page");
+	>("none");
 	const [currentTabKey, setCurrentTabKey] = useState<string>("Style");
 	let mainRef = React.createRef<HTMLDivElement>();
 	let asideRef = React.createRef<HTMLDivElement>();
@@ -42,12 +42,25 @@ function useProperties(initialData: InitialData) {
 	useEffect(() => {
 		eventbus.on("onSelectViewInViewList", handleSelectViewEvent);
 		eventbus.on("onSelectViewInViewport", handleSelectViewEvent);
+		eventbus.on("onSelectPage", handleSelectPage);
+		eventbus.on("onModelLoad", handleModelLoad);
 
 		return () => {
 			eventbus.off("onSelectViewInViewList", handleSelectViewEvent);
 			eventbus.off("onSelectViewInViewport", handleSelectViewEvent);
+			eventbus.off("onSelectPage", handleSelectPage);
 		};
 	}, []);
+
+	function handleModelLoad() {
+		setPropertyKey("top");
+		forceUpdate();
+	}
+
+	function handleSelectPage() {
+		setPropertyKey("page");
+		forceUpdate();
+	}
 
 	function handleSelectViewEvent(data: OnSelectViewEventData) {
 		setPropertyKey("view");
@@ -61,9 +74,9 @@ function useProperties(initialData: InitialData) {
 					let active = currentTabKey === tabItemData.key;
 					return (
 						<li
-  key={tabItemData.key}
-  className={`conf-header__tabs-item ${active ? "active" : ""}`}
-  onClick={() => handleTabChange(tabItemData.key)}
+							key={tabItemData.key}
+							className={`conf-header__tabs-item ${active ? "active" : ""}`}
+							onClick={() => handleTabChange(tabItemData.key)}
 						>
 							{tabItemData.tab}
 						</li>

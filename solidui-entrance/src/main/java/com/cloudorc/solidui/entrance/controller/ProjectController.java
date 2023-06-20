@@ -16,11 +16,6 @@
  */
 package com.cloudorc.solidui.entrance.controller;
 
-import static com.cloudorc.solidui.entrance.enums.Status.CREATE_PROJECT_ERROR;
-import static com.cloudorc.solidui.entrance.enums.Status.DELETE_PROJECT_ERROR;
-import static com.cloudorc.solidui.entrance.enums.Status.LOGIN_USER_QUERY_PROJECT_LIST_PAGING_ERROR;
-import static com.cloudorc.solidui.entrance.enums.Status.UPDATE_PROJECT_ERROR;
-
 import com.cloudorc.solidui.common.utils.LoginUtils;
 import com.cloudorc.solidui.entrance.constants.Constants;
 import com.cloudorc.solidui.entrance.enums.Status;
@@ -37,6 +32,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static com.cloudorc.solidui.entrance.enums.Status.*;
 
 
 @Api(tags = "project_tag")
@@ -156,5 +153,27 @@ public class ProjectController extends BaseController{
                     Status.DELETE_PROJECT_ERROR.getMsg());
         }
         return projectService.deleteProject(projectId);
+    }
+
+    /**
+     * get project by id
+     *
+     * @param projectId project id
+     * @return delete result id
+     */
+    @ApiOperation(value = "get", notes = "get_project_by_id_notes")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "project_id", dataTypeClass = int.class, example = "123456")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(PROJECT_NOT_EXISTS_ERROR)
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    public Result getProject(HttpServletRequest req,
+                                @PathVariable("id") Integer projectId) {
+        if(projectId == null)   {
+            return error(Status.PROJECT_NOT_EXISTS_ERROR.getCode(),
+                    Status.PROJECT_NOT_EXISTS_ERROR.getMsg());
+        }
+        return projectService.getProject(projectId);
     }
 }

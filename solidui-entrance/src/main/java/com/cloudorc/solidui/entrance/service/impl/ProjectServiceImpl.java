@@ -122,4 +122,18 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
         }
         return result;
     }
+
+    @Override
+    public Result getProject(Integer projectId) {
+        Result result = new Result();
+        Project project = projectMapper.selectById(projectId);
+
+        if (project == null) {
+            putMsg(result, Status.PROJECT_NOT_EXISTS_ERROR);
+            return result;
+        }
+        putMsg(result, Status.SUCCESS);
+        result.setData(project);
+        return result;
+    }
 }

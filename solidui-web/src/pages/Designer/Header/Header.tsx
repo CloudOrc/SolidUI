@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { useNavigate,useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button, Tooltip, Drawer, message } from "antd";
 import { ChartHistogramTwo } from "@icon-park/react";
 import PreviewPopup from "../Preview/PreviewPopup";
@@ -30,11 +30,11 @@ import "./header.less";
 import { isNil, startsWith } from "lodash-es";
 import { useEffect } from "react";
 
-function Header(props:any) {
+function Header(props: any) {
 	const navigate = useNavigate();
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [previewVisible, setPreviewVisible] = React.useState(false);
-	const [title,setTitle] = React.useState("")
+	const [title, setTitle] = React.useState("");
 
 	function renderPreviewPopup() {
 		if (!previewVisible) {
@@ -89,12 +89,12 @@ function Header(props:any) {
 		navigate("/");
 	}
 
-	useEffect(()=>{
+	useEffect(() => {
 		const projectName = searchParams.get("projectName");
-		if(projectName !== null){
-			setTitle(projectName)
+		if (projectName !== null) {
+			setTitle(projectName);
 		}
-	},[])
+	}, []);
 
 	return (
 		<header className="header">
@@ -106,7 +106,9 @@ function Header(props:any) {
 					</div>
 					<div className="version">v0.1.0</div>
 					<div className="split-line" />
-					<div className="left-main"><span style={{marginLeft:"10px"}}>{title}</span></div>
+					<div className="left-main">
+						<span style={{ marginLeft: "10px" }}>{title}</span>
+					</div>
 				</div>
 				<div className="header-center">
 					<Tooltip title="Bar Chart">
@@ -193,10 +195,9 @@ function Header(props:any) {
 									id: page.id,
 									name: page.title,
 								},
-								// TODO
 								size: {
-									width: "",
-									height: "",
+									width: page.size.width,
+									height: page.size.height,
 								},
 								views: _views,
 							};

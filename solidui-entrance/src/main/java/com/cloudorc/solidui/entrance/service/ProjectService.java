@@ -27,4 +27,6 @@ public interface ProjectService {
     Result queryProjectListPaging(String searchName, Integer pageNo, Integer pageSize);
 
     Result deleteProject(Integer projectId);
+
+    Result getProject(Integer projectId);
 }

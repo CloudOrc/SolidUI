@@ -20,14 +20,21 @@ import { useState, useEffect } from "react";
 import classNames from "classnames";
 import "./InputText.less";
 
-export interface DatStringProps {
+export interface InputTextProps {
 	className?: string;
 	style?: React.CSSProperties;
 	value?: string;
+	disabled?: boolean;
 	onChange?: (value: string) => void;
 }
 
-function DatString({ className, style, value = "", onChange }: DatStringProps) {
+function InputText({
+	className,
+	style,
+	value = "",
+	disabled = false,
+	onChange,
+}: InputTextProps) {
 	const [stateValue, setStateValue] = useState(value);
 
 	useEffect(() => {
@@ -53,6 +60,10 @@ function DatString({ className, style, value = "", onChange }: DatStringProps) {
 		...style,
 	};
 
+	if (disabled) {
+		_style.cursor = "not-allowed";
+	}
+
 	return (
 		<div
 			className={classNames("solid-elem", "solid-input-text", className)}
@@ -64,9 +75,10 @@ function DatString({ className, style, value = "", onChange }: DatStringProps) {
 				value={stateValue}
 				style={{ width: `${inputWidth}%` }}
 				onChange={handleChange}
+				disabled={disabled}
 			/>
 		</div>
 	);
 }
 
-export default DatString;
+export default InputText;

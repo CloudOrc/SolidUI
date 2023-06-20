@@ -98,6 +98,7 @@ function useDataProperties(initialData: InitialData = {}) {
 				pageNo: 1,
 				pageSize: 10000,
 				expire: false,
+				name: "",
 			});
 			if (res2.ok) {
 				let data = res2.data || ({} as any);

@@ -16,11 +16,7 @@
  */
 
 import React from "react";
-import {
-	createBrowserRouter,
-	createHashRouter,
-	RouterProvider,
-} from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import routes from "./routes";
 
 const router = createHashRouter(routes);

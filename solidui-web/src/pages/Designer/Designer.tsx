@@ -25,6 +25,7 @@ import { eventbus, mm } from "@/utils";
 import Apis from "@/apis";
 import "../../assets/styles/designer.less";
 import { ApiResult, ProjectPageDataType, SolidScenaDataType } from "@/types";
+import { ProjectDataType } from "@/apis/types/resp";
 
 function Dashboard() {
 	const params = useParams();
@@ -63,17 +64,26 @@ function Dashboard() {
 					scenes.push(scene);
 				}
 			}
-			const model = {
-				id: id || "",
-				title: "project",
-				scenas: scenes,
-				size: { width: 1920, height: 1080 },
-				frame: {},
-				style: {},
-			};
 
-			mm.attach(model);
-			eventbus.emit("onModelLoad", { model });
+			const res2: ApiResult<ProjectDataType> = await Apis.project.load(
+				id || "",
+			);
+			if (res2.ok) {
+				const data = res2.data;
+				const model = {
+					id: id || "",
+					title: data?.projectName || "",
+					description: data?.description || "",
+					createUser: data?.userName || "",
+					createTime: data?.createTime || "",
+					scenas: scenes,
+					size: { width: 0, height: 0 },
+					frame: {},
+					style: {},
+				};
+				mm.attach(model);
+				eventbus.emit("onModelLoad", { model });
+			}
 		}
 	}
 

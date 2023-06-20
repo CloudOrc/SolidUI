@@ -21,11 +21,13 @@ import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import SolidEditor from "@/components/SolidEditor/SolidEditor";
 import EChartsBarSolidView from "@/views/echarts/EChartsBarSolidView";
 import {
+	OnSelectPageEventData,
 	OnZoomEventData,
 	onPageSizeValueChangeEventData,
 } from "@/types/eventbus";
 import { SolidViewDataType } from "@/types/solid";
 import { eventbus, genId } from "@/utils";
+import { isNil } from "lodash-es";
 
 type View = {
 	top: number;
@@ -64,6 +66,7 @@ function Scena() {
 			// setZoom(zoom);
 			// editorRef.current.setZoom(zoom);
 
+			// TODO, set default zoom to 1
 			setZoom(1);
 		}
 
@@ -72,14 +75,26 @@ function Scena() {
 
 	useEffect(() => {
 		eventbus.on("onZoom", onZoom);
+		eventbus.on("onSelectPage", handleSelectPage);
 		eventbus.on("onPageWidthChange", handleWidthChange);
 		eventbus.on("onPageHeightChange", handleHeightChange);
 		return () => {
 			eventbus.off("onZoom", onZoom);
 			eventbus.off("onPageWidthChange", handleWidthChange);
 			eventbus.off("onPageHeightChange", handleHeightChange);
+			eventbus.off("onSelectPage", handleSelectPage);
 		};
 	}, []);
+
+	function handleSelectPage(evt: OnSelectPageEventData) {
+		const page = evt.page;
+		if (isNil(page)) {
+			return;
+		}
+
+		setWidth(page.size.width);
+		setHeight(page.size.height);
+	}
 
 	function handleWidthChange(evt: onPageSizeValueChangeEventData) {
 		setWidth(evt.value);

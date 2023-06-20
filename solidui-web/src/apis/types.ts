@@ -34,8 +34,8 @@ export type ProjectPageViewsCreationDataType = {
 		name: string;
 	};
 	size: {
-		width: string;
-		height: string;
+		width: number;
+		height: number;
 	};
 	views: Array<PageViewCreationDataType>;
 };

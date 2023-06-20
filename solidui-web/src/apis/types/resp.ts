@@ -45,3 +45,11 @@ export type CreatedPageResponseDataType = {
 	parentId?: string;
 	orders: number;
 };
+
+export type ProjectDataType = {
+	id: string;
+	projectName: string;
+	userName: string;
+	createTime: string;
+	description?: string;
+};

@@ -102,6 +102,10 @@ function useGeneral() {
 				title: data.name,
 				pages: [],
 				selected: false,
+				size: {
+					width: 1024,
+					height: 768,
+				},
 			});
 			let _scenes_ = mm.getScenes() as StatefulSolidSceneDataType[];
 			_scenes_.forEach((_scene_) => {
@@ -137,6 +141,10 @@ function useGeneral() {
 				views: [],
 				selected: false,
 				parentId: data?.parentId || "",
+				size: {
+					width: 1024,
+					height: 768,
+				},
 			});
 
 			let _pages_ = mm.getPages() as StatefulSolidPageDataType[];
@@ -187,6 +195,7 @@ function useGeneral() {
 		let res: ApiResult<ProjectPageViewsResultData> =
 			await Apis.model.queryViews(model.id, page.id);
 		if (res.ok) {
+			const data = res.data;
 			let pages = mm.getPages();
 			pages.forEach((p) => {
 				if (p.id === page.id) {
@@ -194,6 +203,10 @@ function useGeneral() {
 				} else {
 					p.selected = false;
 				}
+				p.size = {
+					width: data?.size.width || 1024,
+					height: data?.size.height || 768,
+				};
 			});
 			mm.selectPage(page.id);
 			let views = res.data?.views || [];

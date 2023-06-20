@@ -79,6 +79,8 @@ let project = {
 	delete: <T>(id: string) => ApiService.delete(`/solidui/projects/${id}`),
 	update: <T>(id: string, name: string) =>
 		ApiService.put(`/solidui/projects/${id}?projectName=${name}`),
+
+	load: <T>(id: string) => ApiService.get<T>(`/solidui/projects/${id}`),
 };
 
 let page = {

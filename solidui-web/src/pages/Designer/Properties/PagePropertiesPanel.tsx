@@ -15,23 +15,56 @@
  * limitations under the License.
  */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LeftRightExpander, PropertyElement, InputNumber } from "@/components";
-import { eventbus } from "@/utils";
+import { Spin } from "antd";
+import { mm, eventbus } from "@/utils";
+import { OnSelectPageEventData } from "@/types";
+import { isNil } from "lodash-es";
 
 export interface PagePropertiesPanelProps {}
 
 export default function (props: PagePropertiesPanelProps) {
+	const [size, setSize] = useState<{ width: number; height: number }>();
+
+	useEffect(() => {
+		eventbus.on("onSelectPage", handleSelectPage);
+		const page = mm.getCurrentPage();
+		setSize({
+			width: page?.size.width || 1024,
+			height: page?.size.height || 768,
+		});
+	}, []);
+
+	function handleSelectPage(evt: OnSelectPageEventData) {
+		const page = evt.page;
+		if (isNil(page)) {
+			return;
+		}
+		setSize({
+			width: page?.size.width || 1024,
+			height: page?.size.height || 768,
+		});
+	}
+
 	return (
-		<>
+		<Spin spinning={false}>
 			<LeftRightExpander expanded showCheckbox={false} title="Page">
 				<PropertyElement label="Width" labelWidth={50}>
 					<InputNumber
-						value={1024}
+						value={size?.width || 1024}
 						min={800}
 						step={1}
 						max={4200}
 						onUpdateValue={(value) => {
+							const page = mm.getCurrentPage();
+							if (isNil(page)) {
+								return;
+							}
+							page.size = {
+								width: value,
+								height: page.size.height,
+							};
 							eventbus.emit("onPageWidthChange", {
 								value: value,
 							});
@@ -41,11 +74,19 @@ export default function (props: PagePropertiesPanelProps) {
 
 				<PropertyElement label="Height" labelWidth={50}>
 					<InputNumber
-						value={768}
+						value={size?.height || 768}
 						min={400}
 						step={1}
 						max={3600}
 						onUpdateValue={(value) => {
+							const page = mm.getCurrentPage();
+							if (isNil(page)) {
+								return;
+							}
+							page.size = {
+								width: page.size.width,
+								height: value,
+							};
 							eventbus.emit("onPageHeightChange", {
 								value: value,
 							});
@@ -53,6 +94,6 @@ export default function (props: PagePropertiesPanelProps) {
 					/>
 				</PropertyElement>
 			</LeftRightExpander>
-		</>
+		</Spin>
 	);
 }
