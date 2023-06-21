@@ -40,10 +40,13 @@
 ## Core Features
 
 * Minimalist process, concise design
-* Integration of multiple 2D legends
+* Various 2D legends
+* Various 3D legends
 * Various 3D scenes
-* Support webgl
-* Support olap
+* Support multiple data sources
+* Support Huggingface space
+* Support plug-in robot
+* Support SolidUI-Model
 * Support Large Language Model
 * Containerized deployment
 

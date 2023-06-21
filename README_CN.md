@@ -41,9 +41,12 @@ AI生成可视化原型设计和编辑平台，支持2D，3D模型，结合LLM(L
 
 * 极简流程，简洁设计
 * 多种2D图例
-* 多种3D场景
-* 支持webgl
-* 支持olap
+* 多种3D图例
+* 多种3D场景  
+* 支持多种数据源
+* 支持Huggingface space
+* 支持插件机器人
+* 支持SolidUI-Model  
 * 支持Large Language Model
 * 容器化部署
 
