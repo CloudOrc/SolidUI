@@ -224,10 +224,10 @@ function useDataSource(initialData: InitialData = {}) {
 	) {
 		setLoading(true);
 		let res: ApiResult<any> = await Apis.datasource.query({
-			pageNo: params.pageNo,
-			pageSize: params.pageSize,
-			expire: params.expire,
-			name: params.name,
+			pageNo: params.pageNo || 1,
+			pageSize: params.pageSize || 10,
+			expire: params.expire || "",
+			name: params.name || "",
 		});
 		if (res.ok) {
 			let data = res.data || ({} as any);

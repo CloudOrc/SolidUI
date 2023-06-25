@@ -90,6 +90,7 @@ type EventBusType = {
 	onModelLoad: OnModelLoadEventData;
 	onSelectPage: OnSelectPageEventData;
 	onSelectViewInViewport: OnSelectViewEventData;
+	onSelectPageInViewport: OnSelectPageEventData;
 	onSelectViewInViewList: OnSelectViewEventData;
 	onRemoveViewComplete: OnRemoveViewCompleteEventData;
 	onUpdateViewPropertyValue: OnUpdateViewPropertyValueEventData;

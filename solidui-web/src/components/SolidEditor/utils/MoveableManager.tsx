@@ -55,11 +55,11 @@ export default class MoveableManager extends React.PureComponent<{
 		} = this.props;
 
 		if (!selectedTargets.length) {
-			return this.renderViewportMoveable();
+			// return this.renderViewportMoveable();
+			return undefined;
 		}
 
 		const { moveableData } = this;
-		const { memory } = this;
 
 		const elementGuidelines = [
 			document.querySelector(".editor-viewport"),

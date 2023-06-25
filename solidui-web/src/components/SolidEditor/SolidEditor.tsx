@@ -44,6 +44,7 @@ import { IObject } from "@daybrush/utils";
 import { AddedInfo, ElementInfo, RemovedInfo } from "./utils/types";
 import { eventbus, mm } from "@/utils";
 import "./style/index.less";
+import { isNil } from "lodash-es";
 
 export interface SolidEditorState {
 	selectedTargets: Array<SVGElement | HTMLElement>;
@@ -83,7 +84,6 @@ export default class SolidEditor extends React.PureComponent<
 		selectedMenu: "MoveTool",
 	};
 	public memory = new Memory();
-	public console = new Debugger();
 	public moveableData = new MoveableData(this.memory);
 	// public manager = new SolidEditorManager(this);
 	public factory = new SolidViewFactory();
@@ -101,12 +101,6 @@ export default class SolidEditor extends React.PureComponent<
 		eventbus.on("onDraw", this.handleOnDraw);
 		eventbus.on("onSelectViewInViewList", this.handleSelectViewinViewList);
 	}
-
-	componentDidUpdate(
-		prevProps: Readonly<SolidEditorProps>,
-		prevState: Readonly<Partial<SolidEditorState>>,
-		snapshot?: any,
-	): void {}
 
 	componentWillUnmount(): void {
 		eventbus.off("onSelectPage", this.handleSelectPage);
@@ -401,9 +395,8 @@ export default class SolidEditor extends React.PureComponent<
 			selectedTargets: targets,
 		}).then(() => {
 			if (!isRestore) {
-				const prevs = getIds(this.moveableData.getSelectedTargets());
-				const nexts = getIds(targets);
-
+				// const prevs = getIds(this.moveableData.getSelectedTargets());
+				// const nexts = getIds(targets);
 				// if (
 				//   prevs.length !== nexts.length ||
 				//   !prevs.every((prev, i) => nexts[i] === prev)
@@ -413,7 +406,12 @@ export default class SolidEditor extends React.PureComponent<
 			}
 			this.selecto.current!.setSelectedTargets(targets);
 			this.moveableData.setSelectedTargets(targets);
-			// this.eventBus.trigger("setSelectedTargets");
+			if (targets.length === 0) {
+				eventbus.emit("onSelectPageInViewport", {
+					id: isNil(mm.getCurrentPage()) ? "" : mm.getCurrentPage()?.id || "",
+					page: mm.getCurrentPage(),
+				});
+			}
 			return targets;
 		});
 	}

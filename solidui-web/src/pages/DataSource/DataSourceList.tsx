@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { Table, Input, Button, Spin, Modal } from "antd";
+import { Table, Input, Button, Spin, Modal, Select } from "antd";
 import DataSourceCreate from "./_components/DataSourceCreate";
 import DataSourceEdit from "./_components/DataSourceEdit";
 import DataSourceView from "./_components/DataSourceView";
@@ -54,6 +54,27 @@ export default function () {
 								width: 300,
 								marginRight: 10,
 							}}
+						/>
+
+						<Select
+							defaultValue="all"
+							style={{ width: 120, marginRight: 10 }}
+							onChange={async (value) => {
+								const params = {} as any;
+								if (value !== "all") {
+									if (value === "expired") {
+										params["expire"] = "true";
+									} else {
+										params["expire"] = "false";
+									}
+								}
+								query(params);
+							}}
+							options={[
+								{ value: "all", label: "all" },
+								{ value: "expired", label: "expired" },
+								{ value: "unexpired", label: "unexpired" },
+							]}
 						/>
 						<Button
 							type="primary"

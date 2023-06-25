@@ -42,6 +42,7 @@ function useProperties(initialData: InitialData) {
 	useEffect(() => {
 		eventbus.on("onSelectViewInViewList", handleSelectViewEvent);
 		eventbus.on("onSelectViewInViewport", handleSelectViewEvent);
+		eventbus.on("onSelectPageInViewport", handleSelectPageInViewPort);
 		eventbus.on("onSelectPage", handleSelectPage);
 		eventbus.on("onModelLoad", handleModelLoad);
 
@@ -49,8 +50,14 @@ function useProperties(initialData: InitialData) {
 			eventbus.off("onSelectViewInViewList", handleSelectViewEvent);
 			eventbus.off("onSelectViewInViewport", handleSelectViewEvent);
 			eventbus.off("onSelectPage", handleSelectPage);
+			eventbus.off("onSelectPageInViewport", handleSelectPageInViewPort);
+			eventbus.off("onModelLoad", handleModelLoad);
 		};
 	}, []);
+
+	function handleSelectPageInViewPort() {
+		setPropertyKey("page");
+	}
 
 	function handleModelLoad() {
 		setPropertyKey("top");
