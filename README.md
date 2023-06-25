@@ -6,7 +6,6 @@
   <strong>AI-generated visualization prototyping and editing platform</strong>
 </p>
 
-
 <p align="center">
     <a target="_blank" href="https://github.com/CloudOrc/SolidUI/blob/main/LICENSE">
         <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?label=license" />
@@ -15,27 +14,29 @@
         <img src="https://img.shields.io/badge/JDK-8-green.svg" />
     </a>
 
-   <a target="_blank" href='https://github.com/CloudOrc/SolidUI'>
-        <img src="https://img.shields.io/github/forks/CloudOrc/SolidUI.svg" alt="github forks"/>
-   </a>
-   <a target="_blank" href='https://github.com/CloudOrc/SolidUI'>
-        <img src="https://img.shields.io/github/stars/CloudOrc/SolidUI.svg" alt="github stars"/>
-   </a>
-   <a target="_blank" href='https://github.com/CloudOrc/SolidUI'>
-        <img src="https://img.shields.io/github/contributors/CloudOrc/SolidUI.svg" alt="github contributors"/>
-   </a>
-  <a target="_blank" href="https://badges.toozhao.com/stats/01GS2TEBGN98QRTZ1F3K0Y7XCG">
-       <img src="https://badges.toozhao.com/badges/01GS2TEBGN98QRTZ1F3K0Y7XCG/green.svg" />
-  </a>
+<a target="_blank" href='https://github.com/CloudOrc/SolidUI'>
+<img src="https://img.shields.io/github/forks/CloudOrc/SolidUI.svg" alt="github forks"/>
+</a>
+<a target="_blank" href='https://github.com/CloudOrc/SolidUI'>
+<img src="https://img.shields.io/github/stars/CloudOrc/SolidUI.svg" alt="github stars"/>
+</a>
+<a target="_blank" href='https://github.com/CloudOrc/SolidUI'>
+<img src="https://img.shields.io/github/contributors/CloudOrc/SolidUI.svg" alt="github contributors"/>
+</a>
+<a target="_blank" href="https://badges.toozhao.com/stats/01GS2TEBGN98QRTZ1F3K0Y7XCG">
+<img src="https://badges.toozhao.com/badges/01GS2TEBGN98QRTZ1F3K0Y7XCG/green.svg" />
+</a>
 
 </p>
 <br/>
 
 ---
+
 [English](README.md) | [中文](README_CN.md)
 
 # Introduce
- AI-generated visualization prototyping and editing platform, support 2D, 3D models, combined with LLM(Large Language Model) for quick editing.
+
+AI-generated visualization prototyping and editing platform, support 2D, 3D models, combined with LLM(Large Language Model) for quick editing.
 
 ## Core Features
 
@@ -58,22 +59,21 @@ Want to start with [Standalone](https://github.com/CloudOrc/SolidUI-Doc/tree/mai
 
 Want to start with [Docker](https://github.com/CloudOrc/SolidUI-Doc/tree/main/en_US/Deployment_Documentation/OverallDeployment/README_DOCKER.md)
 
-
 # Document
-For a complete list of documentation for SolidUI v0.1.0, see [SolidUI-Doc](https://github.com/CloudOrc/SolidUI-Doc/tree/main/en_US)
 
+For a complete list of documentation for SolidUI v0.1.0, see [SolidUI-Doc](https://github.com/CloudOrc/SolidUI-Doc/tree/main/en_US)
 
 # Contribute
 
 We welcome and look forward to more contributors participating in building SolidUI, whether it is code, documentation, or other forms of contribution that can help the community.
 
-
 # Contact US
 
 - For any questions and suggestions about SolidUI, you can submit an issue for tracking, processing and experience sharing
 - [twitter](https://twitter.com/dlimeng192048)
-- [bilibili](https://space.bilibili.com/472576729) (in Chinese)  
-- [slack](https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA)  
+- [youtube](https://www.youtube.com/@dlimeng)
+- [bilibili](https://space.bilibili.com/472576729) (in Chinese)
+- [slack](https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA)
 - You can scan the QR code below and join our WeChat group for faster response (in Chinese)
 
 ![SolidUI1](docs/images/solidui_contact_01.png)
