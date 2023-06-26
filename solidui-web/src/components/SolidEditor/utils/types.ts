@@ -78,7 +78,7 @@ export interface EditorInterface {
 	moveableData: MoveableData;
 	// keyManager: KeyManager;
 	// historyManager: HistoryManager;
-	console: Debugger;
+	// console: Debugger;
 	moveableManager: React.RefObject<MoveableManager>;
 	// eventbus: Emitter<EventBusType>;
 

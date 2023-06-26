@@ -138,7 +138,9 @@ export default class MoveableManager extends React.PureComponent<{
 					// e.set(view.frame.translate || []);
 					let t = view.position.top || 0;
 					let l = view.position.left || 0;
-					e.set([t, l]);
+					let tt = parseFloat(t.toString());
+					let ll = parseFloat(l.toString());
+					e.set([tt, ll]);
 				}}
 				onDrag={(e) => {
 					// let deltaX = e.delta[0];
@@ -171,6 +173,12 @@ export default class MoveableManager extends React.PureComponent<{
 						left: moveL,
 						top: moveT,
 					};
+					// view.position = {
+					// 	left: e.beforeTranslate[1],
+					// 	top: e.beforeTranslate[0],
+					// };
+					// e.target.style.transform = `translate(${view.position.top}px, ${view.position.left}px) rotate(${rotate}deg)`;
+
 					e.target.style.transform = `translate(${moveT}px, ${moveL}px) rotate(${rotate}deg)`;
 				}}
 				onDragGroupStart={moveableData.onDragGroupStart}
