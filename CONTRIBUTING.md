@@ -6,9 +6,7 @@ Start by forking the SolidUI GitHub repository, make changes in a branch and the
 
 There are three branches in the remote repository currently:
 
-- `master` : normal delivery branch. After the stable version is released, the code for the stable version branch is merged into the master branch.
-
-- `dev` : daily development branch. The daily development branch, the newly submitted code can pull requests to this branch.
+- `dev` : the daily development branch. The daily development branch, the newly submitted code can be pulled to this branch, and the release version will be created from dev when the release is ready
 
 - `x.x.x-release` : the stable release version.
 
@@ -81,19 +79,3 @@ Push your locally committed changes to the remote origin (your fork).
 ```sh
 git push origin <your-feature-branch>
 ```
-
-## Create a pull request
-
-After submitting changes to your remote repository, you should click on the new pull request On the following github page.
-
-<p align = "center">
-<img src = "http://geek.analysys.cn/static/upload/221/2019-04-02/90f3abbf-70ef-4334-b8d6-9014c9cf4c7f.png" width ="60%"/>
-</p>
-
-Select the modified local branch and the branch to merge past to create a pull request.
-
-<p align = "center">
-<img src = "http://geek.analysys.cn/static/upload/221/2019-04-02/fe7eecfe-2720-4736-951b-b3387cf1ae41.png" width ="60%"/>
-</p>
-
-Next, the administrator is responsible for **merging** to complete the pull request.
