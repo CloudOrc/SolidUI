@@ -394,16 +394,6 @@ export default class SolidEditor extends React.PureComponent<
 		return this.promiseState({
 			selectedTargets: targets,
 		}).then(() => {
-			if (!isRestore) {
-				// const prevs = getIds(this.moveableData.getSelectedTargets());
-				// const nexts = getIds(targets);
-				// if (
-				//   prevs.length !== nexts.length ||
-				//   !prevs.every((prev, i) => nexts[i] === prev)
-				// ) {
-				//   this.historyManager.addAction("selectTargets", { prevs, nexts });
-				// }
-			}
 			this.selecto.current!.setSelectedTargets(targets);
 			this.moveableData.setSelectedTargets(targets);
 			if (targets.length === 0) {
@@ -463,21 +453,7 @@ export default class SolidEditor extends React.PureComponent<
 			// 	selectedTarget && selectedTarget.el ? [selectedTarget.el!] : [],
 			// 	true
 			// );
-
 			this.setSelectedTargets([]);
-
-			// !isRestore &&
-			//   this.historyManager.addAction("removeElements", {
-			//     infos: removed.map(function removeTarget(
-			//       info: ElementInfo
-			//     ): ElementInfo {
-			//       return {
-			//         ...info,
-			//         children: info.children!.map(removeTarget),
-			//         ...(frameMap[info.id!] || {}),
-			//       };
-			//     }),
-			//   });
 			return targets;
 		});
 	}
