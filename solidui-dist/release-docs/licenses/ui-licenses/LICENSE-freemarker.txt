@@ -209,5 +209,6 @@ covered by the same license as the other source files of it:
 
   docs/images/solidui_contact_01.png
   docs/images/solidui_contact_02.png
+  docs/images/designpage.png
   solidui-web/src/assets/images/login_bg.png
   solidui-web/src/assets/images/logo.png
