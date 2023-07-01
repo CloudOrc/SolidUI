@@ -17,12 +17,13 @@
 
 import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import mitt from "mitt";
 import Apis from "@/apis";
 import { ApiResult, ProjectPageDataType, SolidViewDataType } from "@/types";
 import { ProjectPageViewsResultData } from "@/apis/types/resp";
 import SolidViewFactory from "@/views/SolidViewFactory";
-import mitt from "mitt";
 import "./preview.less";
+import { isNil } from "lodash-es";
 
 interface Option {
 	value: string | number;
@@ -39,29 +40,29 @@ export interface PreviewPopupProps {
 }
 
 export default function PreviewPopup(props: PreviewPopupProps) {
-	let { projectId, pageId } = props;
-	const [searchParams, setSearchParams] = useSearchParams();
-	const [scenePageOptions, setScenePageOptions] = React.useState<Option[]>([]);
-	const [selectedScenePageOption, setSelectedScenePageOption] = React.useState<
-		string[]
-	>([]);
+	const { projectId, pageId } = props;
+	// const [searchParams, setSearchParams] = useSearchParams();
+	// const [scenePageOptions, setScenePageOptions] = React.useState<Option[]>([]);
+	// const [selectedScenePageOption, setSelectedScenePageOption] = React.useState<
+	// string[]
+	// >([]);
 	const [views, setViews] = React.useState<SolidViewDataType[]>([]);
 
 	useEffect(() => {
 		load(projectId, pageId);
 	}, [projectId, pageId]);
 
-	async function load(projectId: string, pageId?: string) {
-		if (projectId) {
-			let res: ApiResult<ProjectPageDataType[]> = await Apis.model.queryPages(
-				projectId,
+	async function load(pProjectId: string, pPageId?: string) {
+		if (pProjectId) {
+			const res: ApiResult<ProjectPageDataType[]> = await Apis.model.queryPages(
+				pProjectId,
 			);
 			if (res.ok) {
-				let data = res.data || [];
-				let scenes: Option[] = [];
+				const data = res.data || [];
+				const scenes: Option[] = [];
 				if (data.length > 0) {
 					for (let i = 0; i < data.length; i++) {
-						let scene: Option = {
+						const scene: Option = {
 							value: data[i].id,
 							label: data[i].name,
 							children: [],
@@ -69,22 +70,23 @@ export default function PreviewPopup(props: PreviewPopupProps) {
 
 						if (data[i].children) {
 							for (let j = 0; j < data[i].children.length; j++) {
-								scene &&
-									scene.children &&
-									scene.children.push({
-										value: data[i].children[j].id,
-										label: data[i].children[j].name,
-										children: [],
-									});
+								if (isNil(scene) || isNil(scene.children)) {
+									continue;
+								}
+								scene.children.push({
+									value: data[i].children[j].id,
+									label: data[i].children[j].name,
+									children: [],
+								});
 							}
 						}
 						scenes.push(scene);
 					}
 				}
-				if (pageId) {
-					await queryViews(projectId, pageId);
+				if (pPageId) {
+					await queryViews(pProjectId, pPageId);
 				}
-				setScenePageOptions(scenes);
+				// setScenePageOptions(scenes);
 			}
 		}
 	}
@@ -95,43 +97,42 @@ export default function PreviewPopup(props: PreviewPopupProps) {
 		}
 	}
 
-	async function queryViews(projectId: string, pageId: string) {
-		let res: ApiResult<ProjectPageViewsResultData> =
-			await Apis.model.queryViews(projectId, pageId);
+	async function queryViews(pProjectId: string, pPageId: string) {
+		const res: ApiResult<ProjectPageViewsResultData> =
+			await Apis.model.queryViews(pProjectId, pPageId);
 		if (res.ok) {
-			let data = res.data;
+			const { data } = res;
 			setViews(data?.views || []);
 		}
 	}
 
 	function renderViews() {
 		const nodes: React.ReactNode[] = [];
-		views &&
-			views.forEach((view, idx) => {
-				let type = view.type;
-				let builder = factory.getBuilder(type);
-				if (builder === undefined) {
-					return;
-				}
-				let SolidViewComponent = builder.getComponentType();
-				let _style: React.CSSProperties = {
-					position: "absolute",
-					top: `${view.position.left}px`,
-					left: `${view.position.top}px`,
-					width: `${view.size.width}px`,
-					height: `${view.size.height}px`,
-					background: "#fff",
-					zIndex: idx,
-				};
-				nodes.push(
-					<SolidViewComponent
-						eventbus={eventbus}
-						viewModel={view}
-						style={_style}
-						key={`view${view.id}`}
-					/>,
-				);
-			});
+		views.forEach((view, idx) => {
+			const { type } = view;
+			const builder = factory.getBuilder(type);
+			if (builder === undefined) {
+				return;
+			}
+			const SolidViewComponent = builder.getComponentType();
+			const _style: React.CSSProperties = {
+				position: "absolute",
+				top: `${view.position.left}px`,
+				left: `${view.position.top}px`,
+				width: `${view.size.width}px`,
+				height: `${view.size.height}px`,
+				background: "#fff",
+				zIndex: idx,
+			};
+			nodes.push(
+				<SolidViewComponent
+					eventbus={eventbus}
+					viewModel={view}
+					style={_style}
+					key={`view${view.id}`}
+				/>,
+			);
+		});
 		return nodes;
 	}
 

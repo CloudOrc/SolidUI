@@ -41,9 +41,11 @@ function InputText({
 		setStateValue(value);
 	}, [value]);
 
-	function update(value: string) {
-		setStateValue(value);
-		onChange && onChange(value);
+	function update(pValue: string) {
+		setStateValue(pValue);
+		if (onChange) {
+			onChange(pValue);
+		}
 	}
 
 	function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -52,7 +54,7 @@ function InputText({
 
 	const inputWidth = 100;
 
-	let _style: React.CSSProperties = {
+	const _style: React.CSSProperties = {
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",

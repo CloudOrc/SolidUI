@@ -79,10 +79,12 @@ function Slider({
 		if (!rect) return;
 		const x = pageX - rect.left;
 		const w = rect.right - rect.left;
-		const value = min + clamp(x / w, 0, 1) * (max - min);
+		const mValue = min + clamp(x / w, 0, 1) * (max - min);
 
-		setStateValue(value);
-		onUpdate && onUpdate(value, isLive);
+		setStateValue(mValue);
+		if (onUpdate) {
+			onUpdate(mValue, isLive);
+		}
 	}
 
 	const widthBackground = clamp(
@@ -99,16 +101,16 @@ function Slider({
 
 	return (
 		<span
-  className={classNames(`${prefixCls}-slider`, className)}
-  style={_style}
-  onClick={handleClick}
-  onMouseDown={handleMouseDown}
-  role="slider"
-  tabIndex={0}
-  aria-valuenow={stateValue}
-  aria-valuemin={min}
-  aria-valuemax={max}
-  ref={sliderRef}
+			className={classNames(`${prefixCls}-slider`, className)}
+			style={_style}
+			onClick={handleClick}
+			onMouseDown={handleMouseDown}
+			role="slider"
+			tabIndex={0}
+			aria-valuenow={stateValue}
+			aria-valuemin={min}
+			aria-valuemax={max}
+			ref={sliderRef}
 		/>
 	);
 }

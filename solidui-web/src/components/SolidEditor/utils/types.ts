@@ -20,7 +20,7 @@ import Selecto from "react-selecto";
 import SolidEditor from "../SolidEditor";
 import SolidViewport from "../SolidViewport";
 import MoveableManager from "./MoveableManager";
-import Debugger from "./Debugger";
+// import Debugger from "./Debugger";
 import Memory from "./Memory";
 import MoveableData from "./MoveableData";
 import SolidEditorManager from "./SolidEditorManager";
@@ -85,12 +85,4 @@ export interface EditorInterface {
 	getViewport: () => SolidViewport;
 	getSelecto: () => Selecto;
 	getEditorManager: () => SolidEditorManager;
-}
-
-export interface AddedInfo {
-	added: ElementInfo[];
-}
-
-export interface RemovedInfo {
-	removed: ElementInfo[];
 }

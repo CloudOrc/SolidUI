@@ -16,11 +16,12 @@
  */
 
 import React from "react";
+import { Pic } from "@icon-park/react";
 import {
 	LeftRightExpander,
 	PropertyElement,
 	Switch,
-	Slider,
+	// Slider,
 	InputNumber,
 	InputText,
 	InputTextArea,
@@ -29,7 +30,6 @@ import {
 	InputUpload,
 	Select,
 } from "@/components";
-import { Pic } from "@icon-park/react";
 
 export interface StyleBasicPropertiesProps {
 	className?: string;
@@ -37,8 +37,8 @@ export interface StyleBasicPropertiesProps {
 	expanded?: boolean;
 }
 
-export default function (props: StyleBasicPropertiesProps) {
-	let { className, style, expanded = false } = props;
+export default function StyleBasicProperties(props: StyleBasicPropertiesProps) {
+	const { className, style, expanded = false } = props;
 
 	return (
 		<LeftRightExpander
@@ -53,7 +53,7 @@ export default function (props: StyleBasicPropertiesProps) {
 			</PropertyElement>
 			<PropertyElement label="ButtonGroupRadio" labelWidth={120}>
 				<ButtonGroupRadio
-					value={"horizontal"}
+					value="horizontal"
 					items={[
 						{
 							text: "水平",
@@ -71,7 +71,7 @@ export default function (props: StyleBasicPropertiesProps) {
 			</PropertyElement>
 
 			<PropertyElement label="InputText" labelWidth={120}>
-				<InputText value={"some text..."} />
+				<InputText value="some text..." />
 			</PropertyElement>
 
 			<PropertyElement label="InputColor" labelWidth={120}>
@@ -98,7 +98,7 @@ export default function (props: StyleBasicPropertiesProps) {
 
 			<PropertyElement label="Select" labelWidth={120}>
 				<Select
-					value={"1"}
+					value="1"
 					items={[
 						{
 							label: "option A",

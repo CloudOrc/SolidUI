@@ -25,23 +25,39 @@ import LogoPng from "@/assets/images/logo.png";
 
 import "./login.less";
 
-export default function () {
+export default function Login() {
 	const navigate = useNavigate();
-	const [value, updateCookie, deleteCookie] = useCookie(
-		"solidui_user_session_ticket_id_v1",
-	);
+	const [value] = useCookie("solidui_user_session_ticket_id_v1");
 
 	useEffect(() => {
 		if (value !== undefined && value !== null && value !== "") {
 			navigate("/");
 		}
-	}, []);
+	}, [navigate, value]);
 
 	async function handleLogin(values: { username: string; password: string }) {
-		let res = await Apis.user.login(values);
+		const res = await Apis.user.login(values);
 		if (res.ok) {
 			navigate("/project");
 		}
+	}
+
+	function renderPasswordViewIcon(visible: boolean) {
+		return visible ? (
+			<EyeTwoTone
+				style={{
+					fontSize: 16,
+				}}
+				rev={-1}
+			/>
+		) : (
+			<EyeInvisibleOutlined
+				style={{
+					fontSize: 16,
+				}}
+				rev={-1}
+			/>
+		);
 	}
 
 	return (
@@ -112,21 +128,24 @@ export default function () {
 								<Input.Password
 									className="login-password"
 									placeholder="password"
-									iconRender={(visible) =>
-										visible ? (
-											<EyeTwoTone
-												style={{
-													fontSize: 16,
-												}}
-											/>
-										) : (
-											<EyeInvisibleOutlined
-												style={{
-													fontSize: 16,
-												}}
-											/>
-										)
-									}
+									// iconRender={(visible) =>
+									// 	visible ? (
+									// 		<EyeTwoTone
+									// 			style={{
+									// 				fontSize: 16,
+									// 			}}
+									// 			rev={-1}
+									// 		/>
+									// 	) : (
+									// 		<EyeInvisibleOutlined
+									// 			style={{
+									// 				fontSize: 16,
+									// 			}}
+									// 			rev={-1}
+									// 		/>
+									// 	)
+									// }
+									iconRender={renderPasswordViewIcon}
 									style={{
 										backgroundColor: "#F5F9FC",
 										border: "none",

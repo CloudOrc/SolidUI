@@ -18,13 +18,13 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, message } from "antd";
 import { Close } from "@icon-park/react";
+import { map } from "lodash-es";
 import {
 	ApiResult,
 	DataSourceFormElementDataType,
 	DataSourceGetDataType,
 } from "@/types";
 import Apis from "@/apis";
-import { map, join } from "lodash-es";
 import "./DataSource.less";
 
 const { TextArea } = Input;
@@ -34,41 +34,39 @@ export interface DataSourceEditProps {
 	handleClose: () => void;
 }
 
-export default function (props: DataSourceEditProps) {
+export default function DataSourceEdit(props: DataSourceEditProps) {
 	const [form] = Form.useForm();
 	const [dsFormElements, setDsFormElements] = useState<
 		DataSourceFormElementDataType[]
 	>([]);
 	const [dataSourceTypeId, setDataSourceTypeId] = useState<number>();
-	let { item, handleClose } = props;
+	const { item, handleClose } = props;
 
-	useEffect(() => {
-		return () => {};
-	}, []);
+	useEffect(() => () => {}, []);
 
 	useEffect(() => {
 		load(item.id);
 	}, [item]);
 
 	async function load(id: string) {
-		let res: ApiResult<DataSourceGetDataType> = await Apis.datasource.get(id);
+		const res: ApiResult<DataSourceGetDataType> = await Apis.datasource.get(id);
 		if (res.ok) {
-			let { data } = res;
+			const { data } = res;
 			if (data === null || data === undefined) {
 				return;
 			}
-			let { dataSourceTypeId } = data;
-			let res2: ApiResult<DataSourceFormElementDataType[]> =
-				await Apis.datasource.getFormElementByTypeId(`${dataSourceTypeId}`);
+			const { dataSourceTypeId: mDataSourceTypeId } = data;
+			const res2: ApiResult<DataSourceFormElementDataType[]> =
+				await Apis.datasource.getFormElementByTypeId(`${mDataSourceTypeId}`);
 			if (res2.ok) {
-				let data2 = res2.data || [];
+				const data2 = res2.data || [];
 				setDsFormElements(data2);
-				setDataSourceTypeId(dataSourceTypeId);
+				setDataSourceTypeId(mDataSourceTypeId);
 				const params = JSON.parse(data.parameter || "{}");
 				// let params = data.connectParams.params || {};
 				// let params = data.p
 				// const connectParams = params.params;
-				let paramsStr = map(
+				const paramsStr = map(
 					params.params || {},
 					(value, key) => `${key}=${value}`,
 				).join(",");
@@ -98,56 +96,56 @@ export default function (props: DataSourceEditProps) {
 	function renderDataSourceCreationForm() {
 		return (
 			<Form
-				layout={"vertical"}
+				layout="vertical"
 				form={form}
 				initialValues={{ layout: "vertical" }}
 				onFinish={async (values) => {
-					let cp = values.params;
-					let connectParams = {} as any;
+					const cp = values.params;
+					const connectParams = {} as any;
 					if (cp !== null && undefined !== cp && cp.trim() !== "") {
 						try {
-							cp.split(",").forEach((item: string) => {
-								let kv = item.split("=");
+							cp.split(",").forEach((mItem: string) => {
+								const kv = mItem.split("=");
 								if (kv.length !== 2) {
 									throw new Error("invalid connect params");
 								}
-								connectParams[kv[0]] = kv[1];
+								const { 0: key, 1: value } = kv;
+								connectParams[key] = value;
+								// connectParams[kv[0]] = kv[1];
 							});
 						} catch (e) {
 							message.error("connect params parsed error");
 							return;
 						}
 					}
-					let dsParameter = {
+					const dsParameter = {
 						host: values.host,
-						port: parseInt(values.port || "3306"),
+						port: parseInt(values.port || "3306", 10),
 						username: values.username,
 						password: values.password,
 						database: values.databaseName,
 						driver: values.driverClassName,
 						params: connectParams,
 					};
-					let params: any = {
+					const params: any = {
 						dataSourceName: values.title,
 						dataSourceDesc: values.description,
 						dataSourceTypeId,
 						parameter: JSON.stringify(dsParameter),
 					};
-					console.log("aaaaaa");
-					let res = await Apis.datasource.update(values.id, params);
-					console.log(res);
+					const res = await Apis.datasource.update(values.id, params);
 					if (res.ok) {
 						message.success("update success");
 						handleClose();
 					}
 				}}
 			>
-				<Form.Item name={"id"} hidden>
+				<Form.Item name="id" hidden>
 					<Input hidden />
 				</Form.Item>
 				<Form.Item
 					label="title"
-					name={"title"}
+					name="title"
 					required
 					labelCol={{
 						span: 12,
@@ -165,10 +163,10 @@ export default function (props: DataSourceEditProps) {
 					<Input placeholder="title" />
 				</Form.Item>
 
-				{dsFormElements && dsFormElements.map((item) => renderFormItem(item))}
+				{dsFormElements.map((mItem) => renderFormItem(mItem))}
 				<Form.Item
 					label="description"
-					name={"description"}
+					name="description"
 					labelCol={{
 						span: 24,
 					}}
@@ -185,15 +183,15 @@ export default function (props: DataSourceEditProps) {
 		);
 	}
 
-	function renderFormItem(item: DataSourceFormElementDataType) {
-		switch (item.valueType) {
+	function renderFormItem(pItem: DataSourceFormElementDataType) {
+		switch (pItem.valueType) {
 			case "TEXT":
 				return (
 					<Form.Item
-						key={`form-item-${item.key}`}
-						label={item.nameEn}
-						name={item.key}
-						required={!!item.require}
+						key={`form-item-${pItem.key}`}
+						label={pItem.nameEn}
+						name={pItem.key}
+						required={!!pItem.require}
 						labelCol={{
 							span: 12,
 						}}
@@ -202,21 +200,21 @@ export default function (props: DataSourceEditProps) {
 						}}
 						rules={[
 							{
-								required: !!item.require,
-								message: `${item.nameEn} is required`,
+								required: !!pItem.require,
+								message: `${pItem.nameEn} is required`,
 							},
 						]}
 					>
-						<Input placeholder={item.nameEn} />
+						<Input placeholder={pItem.nameEn} />
 					</Form.Item>
 				);
 			case "PASSWORD":
 				return (
 					<Form.Item
-						key={`form-item-${item.key}`}
-						label={item.nameEn}
-						name={item.key}
-						required={!!item.require}
+						key={`form-item-${pItem.key}`}
+						label={pItem.nameEn}
+						name={pItem.key}
+						required={!!pItem.require}
 						labelCol={{
 							span: 12,
 						}}
@@ -225,12 +223,12 @@ export default function (props: DataSourceEditProps) {
 						}}
 						rules={[
 							{
-								required: !!item.require,
-								message: `${item.nameEn} is required`,
+								required: !!pItem.require,
+								message: `${pItem.nameEn} is required`,
 							},
 						]}
 					>
-						<Input.Password placeholder={item.nameEn} />
+						<Input.Password placeholder={pItem.nameEn} />
 					</Form.Item>
 				);
 			default:

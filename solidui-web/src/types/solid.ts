@@ -78,7 +78,7 @@ export interface SolidViewDataType {
 	size: SolidComponentSizeDataType;
 	options?: any;
 	data: SolidViewDataDataType;
-	events?: SolidViewEventDataType[];
+	// events?: SolidViewEventDataType[];
 	style?: React.CSSProperties;
 	frame: SolidComponentFrameDataType;
 }
@@ -109,4 +109,4 @@ interface SolidViewDataDataYAxisType {
 	label: string;
 }
 
-interface SolidViewEventDataType {}
+// interface SolidViewEventDataType {}

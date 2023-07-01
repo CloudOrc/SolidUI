@@ -16,9 +16,8 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { eventbus, mm } from "@/utils";
-import { OnSelectViewEventData } from "@/types/eventbus";
 import { useUpdate } from "react-use";
+import { eventbus } from "@/utils";
 
 type TabItemDataType = {
 	key: string;
@@ -36,8 +35,8 @@ function useProperties(initialData: InitialData) {
 		"top" | "scene" | "page" | "view" | "none"
 	>("none");
 	const [currentTabKey, setCurrentTabKey] = useState<string>("Style");
-	let mainRef = React.createRef<HTMLDivElement>();
-	let asideRef = React.createRef<HTMLDivElement>();
+	const mainRef = React.createRef<HTMLDivElement>();
+	const asideRef = React.createRef<HTMLDivElement>();
 
 	useEffect(() => {
 		eventbus.on("onSelectViewInViewList", handleSelectViewEvent);
@@ -69,7 +68,7 @@ function useProperties(initialData: InitialData) {
 		forceUpdate();
 	}
 
-	function handleSelectViewEvent(data: OnSelectViewEventData) {
+	function handleSelectViewEvent() {
 		setPropertyKey("view");
 		forceUpdate();
 	}
@@ -78,7 +77,7 @@ function useProperties(initialData: InitialData) {
 		return (
 			<ul className="conf-header__tabs">
 				{initialData.tabs?.map((tabItemData) => {
-					let active = currentTabKey === tabItemData.key;
+					const active = currentTabKey === tabItemData.key;
 					return (
 						<li
 							key={tabItemData.key}
@@ -94,10 +93,12 @@ function useProperties(initialData: InitialData) {
 	}
 
 	function handleTabChange(key: string) {
-		if (key === "Data") {
-			asideRef.current && (asideRef.current.style.width = "500px");
-		} else {
-			asideRef.current && (asideRef.current.style.width = "326px");
+		if (asideRef.current) {
+			if (key === "Data") {
+				asideRef.current.style.width = "500px";
+			} else {
+				asideRef.current.style.width = "326px";
+			}
 		}
 		setCurrentTabKey(key);
 	}

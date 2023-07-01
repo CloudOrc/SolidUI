@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-import SolidViewFactory from "../SolidViewFactory";
-
 export interface ViewCategory {
 	key: string;
 	title: string;
@@ -25,10 +23,6 @@ export interface ViewCategory {
 export type ViewType = "echarts_bar" | "echarts_line" | "echarts_pie";
 
 export default abstract class ViewBuilder {
-	constructor(protected factory: SolidViewFactory) {
-		factory.register(this);
-	}
-
 	abstract createModel(): any;
 
 	abstract getFrame(): any;

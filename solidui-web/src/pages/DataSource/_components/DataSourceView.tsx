@@ -16,8 +16,9 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { Form, Row, Col, Input, Button } from "antd";
+import { Form, Input, Button } from "antd";
 import { Close } from "@icon-park/react";
+import { map } from "lodash-es";
 import {
 	ApiResult,
 	DataSourceDataType,
@@ -25,7 +26,6 @@ import {
 	DataSourceGetDataType,
 } from "@/types";
 import Apis from "@/apis";
-import { map, join } from "lodash-es";
 import "./DataSource.less";
 
 const { TextArea } = Input;
@@ -40,11 +40,9 @@ export default function (props: DataSourceViewProps) {
 	const [dsFormElements, setDsFormElements] = useState<
 		DataSourceFormElementDataType[]
 	>([]);
-	let { item, handleClose } = props;
+	const { item, handleClose } = props;
 
-	useEffect(() => {
-		return () => {};
-	}, []);
+	useEffect(() => () => {}, []);
 
 	useEffect(() => {
 		if (item) {
@@ -53,17 +51,17 @@ export default function (props: DataSourceViewProps) {
 	}, [item]);
 
 	async function load(id: string) {
-		let res: ApiResult<DataSourceGetDataType> = await Apis.datasource.get(id);
+		const res: ApiResult<DataSourceGetDataType> = await Apis.datasource.get(id);
 		if (res.ok) {
-			let { data } = res;
+			const { data } = res;
 			if (data === null || data === undefined) {
 				return;
 			}
-			let { dataSourceTypeId } = data;
-			let res2: ApiResult<DataSourceFormElementDataType[]> =
+			const { dataSourceTypeId } = data;
+			const res2: ApiResult<DataSourceFormElementDataType[]> =
 				await Apis.datasource.getFormElementByTypeId(`${dataSourceTypeId}`);
 			if (res2.ok) {
-				let data2 = res2.data || [];
+				const data2 = res2.data || [];
 				setDsFormElements(data2);
 				// let params = data.connectParams.params || {};
 				// let paramsStr = map(params, (value, key) => `${key}=${value}`).join(
@@ -74,7 +72,7 @@ export default function (props: DataSourceViewProps) {
 				// let params = data.connectParams.params || {};
 				// let params = data.p
 				// const connectParams = params.params;
-				let paramsStr = map(
+				const paramsStr = map(
 					params.params || {},
 					(value, key) => `${key}=${value}`,
 				).join(",");
@@ -105,13 +103,13 @@ export default function (props: DataSourceViewProps) {
 	function renderDataSourceCreationForm() {
 		return (
 			<Form
-				layout={"horizontal"}
+				layout="horizontal"
 				form={form}
 				initialValues={{ layout: "horizontal" }}
 			>
 				<Form.Item
 					label="title"
-					name={"title"}
+					name="title"
 					required
 					labelCol={{
 						span: 6,
@@ -128,10 +126,10 @@ export default function (props: DataSourceViewProps) {
 				>
 					<Input placeholder="title" disabled />
 				</Form.Item>
-				{dsFormElements && dsFormElements.map((item) => renderFormItem(item))}
+				{dsFormElements.map((mItem) => renderFormItem(mItem))}
 				<Form.Item
 					label="description"
-					name={"description"}
+					name="description"
 					labelCol={{
 						span: 6,
 					}}
@@ -149,15 +147,15 @@ export default function (props: DataSourceViewProps) {
 		);
 	}
 
-	function renderFormItem(item: DataSourceFormElementDataType) {
-		switch (item.valueType) {
+	function renderFormItem(pItem: DataSourceFormElementDataType) {
+		switch (pItem.valueType) {
 			case "TEXT":
 				return (
 					<Form.Item
-						key={`form-item-${item.key}`}
-						label={item.nameEn}
-						name={item.key}
-						required={!!item.require}
+						key={`form-item-${pItem.key}`}
+						label={pItem.nameEn}
+						name={pItem.key}
+						required={!!pItem.require}
 						labelCol={{
 							span: 6,
 						}}
@@ -166,21 +164,21 @@ export default function (props: DataSourceViewProps) {
 						}}
 						rules={[
 							{
-								required: !!item.require,
-								message: `${item.nameEn} is required`,
+								required: !!pItem.require,
+								message: `${pItem.nameEn} is required`,
 							},
 						]}
 					>
-						<Input placeholder={item.nameEn} disabled />
+						<Input placeholder={pItem.nameEn} disabled />
 					</Form.Item>
 				);
 			case "PASSWORD":
 				return (
 					<Form.Item
-						key={`form-item-${item.key}`}
-						label={item.nameEn}
-						name={item.key}
-						required={!!item.require}
+						key={`form-item-${pItem.key}`}
+						label={pItem.nameEn}
+						name={pItem.key}
+						required={!!pItem.require}
 						labelCol={{
 							span: 6,
 						}}
@@ -189,12 +187,12 @@ export default function (props: DataSourceViewProps) {
 						}}
 						rules={[
 							{
-								required: !!item.require,
-								message: `${item.nameEn} is required`,
+								required: !!pItem.require,
+								message: `${pItem.nameEn} is required`,
 							},
 						]}
 					>
-						<Input.Password placeholder={item.nameEn} disabled />
+						<Input.Password placeholder={pItem.nameEn} disabled />
 					</Form.Item>
 				);
 			default:

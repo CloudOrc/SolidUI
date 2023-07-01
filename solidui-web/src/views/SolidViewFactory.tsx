@@ -25,14 +25,11 @@ export default class ViewFactory {
 	>();
 
 	public constructor() {
-		this.init(() => {
-			// console.log("load view components ok");
-		});
+		this.init();
 	}
 
-	public init(success?: Function): void {
-		new EChartsBarSolidViewBuilder(this);
-		success && success();
+	public init(): void {
+		this.register(new EChartsBarSolidViewBuilder());
 	}
 
 	public register(builder: SolidViewBuilder): void {
@@ -42,7 +39,7 @@ export default class ViewFactory {
 	public getBuilder(type: string): SolidViewBuilder | undefined {
 		const builder = this.pool.get(type);
 		if (undefined === builder || builder === null) {
-			console.warn(`can't found solid view builder, type = ${type}`);
+			// console.warn(`can't found solid view builder, type = ${type}`);
 			return undefined;
 		}
 		return builder;

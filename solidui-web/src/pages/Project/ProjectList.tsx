@@ -68,7 +68,7 @@ export default function ProjectList() {
 				>
 					<div className="modal-content__form">
 						<Form
-							layout={"vertical"}
+							layout="vertical"
 							form={form}
 							initialValues={{ layout: "vertical" }}
 							onFinish={(values) => {
@@ -109,35 +109,34 @@ export default function ProjectList() {
 	}
 
 	function renderProjects() {
-		let nodes: React.ReactNode[] = [];
-		projects &&
-			projects.forEach((project) => {
-				let popup = popupConverMap.current.get(`${project.id}`);
-				nodes.push(
-					<ProjectCard
-						className="project-item"
-						key={`project-item-${project.id}`}
-						popup={popup}
-						item={project}
-						handleMouseEnter={(e, id) => {
-							e.stopPropagation();
-							e.preventDefault();
-							toggleCover(id, true);
-						}}
-						handleMouseLeave={(e, id) => {
-							e.stopPropagation();
-							e.preventDefault();
-							toggleCover(id, false);
-						}}
-						handleDelete={(id) => {
-							del(id);
-						}}
-						onUpdate={() => {
-							query();
-						}}
-					/>,
-				);
-			});
+		const nodes: React.ReactNode[] = [];
+		projects.forEach((project) => {
+			const popup = popupConverMap.current.get(`${project.id}`);
+			nodes.push(
+				<ProjectCard
+					className="project-item"
+					key={`project-item-${project.id}`}
+					popup={popup}
+					item={project}
+					handleMouseEnter={(e, id) => {
+						e.stopPropagation();
+						e.preventDefault();
+						toggleCover(id, true);
+					}}
+					handleMouseLeave={(e, id) => {
+						e.stopPropagation();
+						e.preventDefault();
+						toggleCover(id, false);
+					}}
+					handleDelete={(id) => {
+						del(id);
+					}}
+					onUpdate={() => {
+						query();
+					}}
+				/>,
+			);
+		});
 		return nodes;
 	}
 

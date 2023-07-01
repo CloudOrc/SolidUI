@@ -18,9 +18,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Form, message } from "antd";
 import { useParams } from "react-router-dom";
+import { isNil } from "lodash-es";
+import { useUpdate } from "react-use";
 import { eventbus, mm } from "@/utils";
 import { SolidScenaDataType, SolidPageDataType } from "@/types/solid";
-import { isNil } from "lodash-es";
 import Apis from "@/apis";
 import {
 	ProjectPageViewsResultData,
@@ -28,7 +29,6 @@ import {
 	CreatedPageResponseDataType,
 } from "@/apis/types/resp";
 import { ApiResult } from "@/types";
-import { useUpdate } from "react-use";
 
 interface StatefulSolidSceneDataType extends SolidScenaDataType {
 	open?: boolean;
@@ -61,8 +61,8 @@ function useGeneral() {
 	>(new Map());
 
 	useEffect(() => {
-		eventbus.on("onModelLoad", (evt) => {
-			let _scenes_ = mm.getScenes() as StatefulSolidSceneDataType[];
+		eventbus.on("onModelLoad", () => {
+			const _scenes_ = mm.getScenes() as StatefulSolidSceneDataType[];
 			_scenes_.forEach((_scene_) => {
 				_scene_.open = false;
 			});
@@ -83,7 +83,7 @@ function useGeneral() {
 	}, [params.id]);
 
 	async function createScene(title: string) {
-		let res: ApiResult<CreatedSceneResponseDataType> =
+		const res: ApiResult<CreatedSceneResponseDataType> =
 			await Apis.model.createPage({
 				projectId: idRef.current || "",
 				name: title,
@@ -91,7 +91,7 @@ function useGeneral() {
 				orders: 1,
 			});
 		if (res.ok) {
-			let { data } = res;
+			const { data } = res;
 			if (isNil(data)) {
 				forceUpdate();
 				return;
@@ -107,7 +107,7 @@ function useGeneral() {
 					height: 768,
 				},
 			});
-			let _scenes_ = mm.getScenes() as StatefulSolidSceneDataType[];
+			const _scenes_ = mm.getScenes() as StatefulSolidSceneDataType[];
 			_scenes_.forEach((_scene_) => {
 				_scene_.open = false;
 			});
@@ -120,7 +120,7 @@ function useGeneral() {
 	}
 
 	async function createPage(scene: StatefulSolidSceneDataType, title: string) {
-		let res: ApiResult<CreatedPageResponseDataType> =
+		const res: ApiResult<CreatedPageResponseDataType> =
 			await Apis.model.createPage({
 				projectId: idRef.current || "",
 				name: title,
@@ -130,7 +130,7 @@ function useGeneral() {
 			});
 
 		if (res.ok) {
-			let { data } = res;
+			const { data } = res;
 			if (isNil(data)) {
 				forceUpdate();
 				return;
@@ -147,7 +147,7 @@ function useGeneral() {
 				},
 			});
 
-			let _pages_ = mm.getPages() as StatefulSolidPageDataType[];
+			const _pages_ = mm.getPages() as StatefulSolidPageDataType[];
 			_pages_.forEach((_page_) => {
 				_page_.selected = false;
 			});
@@ -162,7 +162,7 @@ function useGeneral() {
 		if (!page || !page.id) {
 			return;
 		}
-		let res = await Apis.model.deletePage(page.id);
+		const res = await Apis.model.deletePage(page.id);
 		if (res.ok) {
 			if (page.parentId === "0") {
 				mm.removeScene(page);
@@ -175,28 +175,30 @@ function useGeneral() {
 	}
 
 	function toggleScene(scene: StatefulSolidSceneDataType) {
-		let selectedScene = mm.getScene(scene.id);
+		setLoading(true);
+		const selectedScene = mm.getScene(scene.id);
 		if (selectedScene) {
 			selectedScene.selected = !selectedScene.selected;
 		}
 		forceUpdate();
+		setLoading(false);
 	}
 
 	async function selectPage(page: SolidPageDataType) {
-		let currentPage = mm.getCurrentPage();
+		const currentPage = mm.getCurrentPage();
 		if (currentPage && currentPage.id === page.id) {
 			return;
 		}
 
-		let model = mm.getModel();
+		const model = mm.getModel();
 		if (isNil(model)) {
 			return;
 		}
-		let res: ApiResult<ProjectPageViewsResultData> =
+		const res: ApiResult<ProjectPageViewsResultData> =
 			await Apis.model.queryViews(model.id, page.id);
 		if (res.ok) {
-			const data = res.data;
-			let pages = mm.getPages();
+			const { data } = res;
+			const pages = mm.getPages();
 			pages.forEach((p) => {
 				if (p.id === page.id) {
 					p.selected = true;
@@ -209,7 +211,7 @@ function useGeneral() {
 				};
 			});
 			mm.selectPage(page.id);
-			let views = res.data?.views || [];
+			const views = res.data?.views || [];
 			views.forEach((v) => {
 				v.id = `${v.id}`;
 				v.frame = {
@@ -230,16 +232,15 @@ function useGeneral() {
 	async function edit(
 		entity: StatefulSolidPageDataType | StatefulSolidSceneDataType,
 	) {
-		pageEditingModelMap.current &&
-			pageEditingModelMap.current.forEach((v, k) => {
-				if (v) {
-					pageEditingModelMap.current.set(k, {
-						editing: false,
-						oldName: entity.title,
-						newName: entity.title,
-					});
-				}
-			});
+		pageEditingModelMap.current.forEach((v, k) => {
+			if (v) {
+				pageEditingModelMap.current.set(k, {
+					editing: false,
+					oldName: entity.title,
+					newName: entity.title,
+				});
+			}
+		});
 		pageEditingModelMap.current.set(entity.id, {
 			editing: true,
 			oldName: entity.title,

@@ -34,7 +34,7 @@ function ColorPickerFields({ hex, onChange }: ColorPickerFieldsProps) {
 		event: React.ChangeEvent<HTMLInputElement>,
 	) {
 		if (color.isValidHex(value)) {
-			onChange &&
+			if (onChange) {
 				onChange(
 					{
 						hex: value,
@@ -42,6 +42,7 @@ function ColorPickerFields({ hex, onChange }: ColorPickerFieldsProps) {
 					},
 					event,
 				);
+			}
 		}
 	}
 

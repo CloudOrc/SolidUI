@@ -17,11 +17,13 @@
 
 import * as React from "react";
 import Moveable from "react-moveable";
-import { getContentElement, getId } from "./index";
+import { isNaN } from "lodash-es";
+import { OnReiszeGroupEventData } from "@/types/eventbus";
+import { eventbus, mm } from "@/utils";
+import { getContentElement } from "./index";
 import { EditorInterface } from "./types";
 import { connectEditorContext } from "../SolidEditorContext";
 import { SOLIDUI_ELEMENT_ID } from "./const";
-import { OnReiszeGroupEventData } from "@/types/eventbus";
 import {
 	DimensionViewable,
 	DimensionViewableProps,
@@ -30,11 +32,11 @@ import {
 	DelteButtonViewable,
 	DelteButtonViewableProps,
 } from "../ables/DeleteButtonViewable";
-import { isNaN } from "lodash-es";
-import { eventbus, mm } from "@/utils";
+
+interface MoveableManager extends EditorInterface {}
 
 @connectEditorContext
-export default class MoveableManager extends React.PureComponent<{
+class MoveableManager extends React.PureComponent<{
 	selectedTargets: Array<HTMLElement | SVGElement>;
 	selectedMenu: string;
 	verticalGuidelines: number[];
@@ -42,9 +44,11 @@ export default class MoveableManager extends React.PureComponent<{
 	zoom: number;
 }> {
 	public moveable = React.createRef<Moveable>();
+
 	public getMoveable() {
 		return this.moveable.current!;
 	}
+
 	public render() {
 		const {
 			verticalGuidelines,
@@ -64,9 +68,7 @@ export default class MoveableManager extends React.PureComponent<{
 		const elementGuidelines = [
 			document.querySelector(".editor-viewport"),
 			...moveableData.getTargets(),
-		].filter((el) => {
-			return selectedTargets.indexOf(el as any) === -1;
-		});
+		].filter((el) => selectedTargets.indexOf(el as any) === -1);
 
 		return (
 			<Moveable<DimensionViewableProps & DelteButtonViewableProps>
@@ -104,9 +106,7 @@ export default class MoveableManager extends React.PureComponent<{
 				}}
 				isDisplaySnapDigit
 				isDisplayInnerSnapDigit
-				snapDistFormat={(v, type) => {
-					return `${v}px`;
-				}}
+				snapDistFormat={(v, type) => `${v}px`}
 				// Roundable
 				roundable={false}
 				// roundable={selectedTargets.length > 1 ? false : true}
@@ -126,20 +126,20 @@ export default class MoveableManager extends React.PureComponent<{
 				draggable
 				// onDragStart={moveableData.onDragStart}
 				onDragStart={(e) => {
-					let id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
+					const id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
 					if (id === null || undefined === id) {
 						return;
 					}
-					let view = mm.getView(id);
+					const view = mm.getView(id);
 					if (view === null || undefined === view) {
 						return;
 					}
 
 					// e.set(view.frame.translate || []);
-					let t = view.position.top || 0;
-					let l = view.position.left || 0;
-					let tt = parseFloat(t.toString());
-					let ll = parseFloat(l.toString());
+					const t = view.position.top || 0;
+					const l = view.position.left || 0;
+					const tt = parseFloat(t.toString());
+					const ll = parseFloat(l.toString());
 					e.set([tt, ll]);
 				}}
 				onDrag={(e) => {
@@ -150,22 +150,22 @@ export default class MoveableManager extends React.PureComponent<{
 					// let newTop = rect.top + deltaY;
 					// e.target.style.left = `${newLeft}px`;
 					// e.target.style.top = `${newTop}px`;
-					let id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
+					const id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
 
 					if (id === null || undefined === id) {
 						return;
 					}
-					let view = mm.getView(id);
+					const view = mm.getView(id);
 
 					if (view === null || undefined === view) {
 						return;
 					}
-					let rotate = view.frame.rotate || 0;
+					const rotate = view.frame.rotate || 0;
 
-					let moveT = isNaN(e.beforeTranslate[0])
+					const moveT = isNaN(e.beforeTranslate[0])
 						? parseFloat(view.position.top.toString())
 						: parseFloat(e.beforeTranslate[0].toString());
-					let moveL = isNaN(e.beforeTranslate[1])
+					const moveL = isNaN(e.beforeTranslate[1])
 						? parseFloat(view.position.left.toString())
 						: parseFloat(e.beforeTranslate[1].toString());
 
@@ -224,35 +224,35 @@ export default class MoveableManager extends React.PureComponent<{
 					moveableData.onResize(e);
 				}}
 				onResizeEnd={(e) => {
-					let id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
+					const id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
 					if (id === null || undefined === id) {
 						return;
 					}
 					if (e.lastEvent === null || e.lastEvent === undefined) {
 						return;
 					}
-					let view = mm.getView(id);
+					const view = mm.getView(id);
 					if (view === null || undefined === view) {
 						return;
 					}
-					let w = e.lastEvent.boundingWidth;
-					let h = e.lastEvent.boundingHeight;
+					const w = e.lastEvent.boundingWidth;
+					const h = e.lastEvent.boundingHeight;
 					view.size = { ...view.size, width: w, height: h };
 					eventbus.emit("onResize", { id, width: w, height: h });
 				}}
 				onResizeGroupStart={moveableData.onResizeGroupStart}
 				onResizeGroup={moveableData.onResizeGroup}
 				onResizeGroupEnd={(e) => {
-					let evts = e.events || [];
-					let eventData: OnReiszeGroupEventData = {};
+					const evts = e.events || [];
+					const eventData: OnReiszeGroupEventData = {};
 					for (let i = 0; i < evts.length; i++) {
 						if (evts[i].lastEvent === null || evts[i].lastEvent === undefined) {
 							return;
 						}
-						let t = evts[i].target;
-						let w = evts[i].lastEvent.boundingWidth;
-						let h = evts[i].lastEvent.boundingHeight;
-						let tid = t.getAttribute(SOLIDUI_ELEMENT_ID);
+						const t = evts[i].target;
+						const w = evts[i].lastEvent.boundingWidth;
+						const h = evts[i].lastEvent.boundingHeight;
+						const tid = t.getAttribute(SOLIDUI_ELEMENT_ID);
 						if (tid === null || undefined === tid) {
 							continue;
 						}
@@ -277,7 +277,7 @@ export default class MoveableManager extends React.PureComponent<{
 						}
 					} else {
 						this.getSelecto().clickTarget(e.inputEvent, e.inputTarget);
-						let id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
+						const id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
 						if (id) {
 							eventbus.emit("onSelectViewInViewport", { id });
 						}
@@ -335,6 +335,7 @@ export default class MoveableManager extends React.PureComponent<{
 			/>
 		);
 	}
+
 	public renderViewportMoveable() {
 		const { moveableData } = this;
 		const viewport = this.getViewport();
@@ -351,9 +352,12 @@ export default class MoveableManager extends React.PureComponent<{
 			/>
 		);
 	}
+
 	public componentDidMount() {}
+
 	public updateRect() {
 		this.getMoveable().updateRect();
 	}
 }
-export default interface MoveableManager extends EditorInterface {}
+
+export default MoveableManager;

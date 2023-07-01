@@ -17,25 +17,22 @@
 
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Slider } from "antd";
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { isNil } from "lodash-es";
 import SolidEditor from "@/components/SolidEditor/SolidEditor";
-import EChartsBarSolidView from "@/views/echarts/EChartsBarSolidView";
 import {
 	OnSelectPageEventData,
 	OnZoomEventData,
 	onPageSizeValueChangeEventData,
 } from "@/types/eventbus";
-import { SolidViewDataType } from "@/types/solid";
-import { eventbus, genId } from "@/utils";
-import { isNil } from "lodash-es";
+import { eventbus } from "@/utils";
 
-type View = {
-	top: number;
-	left: number;
-	width: number;
-	height: number;
-	transform?: string;
-};
+// type View = {
+// 	top: number;
+// 	left: number;
+// 	width: number;
+// 	height: number;
+// 	transform?: string;
+// };
 
 function Scena() {
 	const [width, setWidth] = useState(1024);
@@ -45,8 +42,8 @@ function Scena() {
 
 	const editorRef = React.createRef<SolidEditor>();
 
-	function getZoomValue(zoom: number) {
-		let roundZoom = Math.floor(zoom * 100);
+	function getZoomValue(pZoom: number) {
+		const roundZoom = Math.floor(pZoom * 100);
 		return roundZoom / 100;
 	}
 
@@ -68,10 +65,9 @@ function Scena() {
 
 			// TODO, set default zoom to 1
 			setZoom(1);
+			editorRef.current.getInfiniteViewer()?.scrollCenter();
 		}
-
-		editorRef.current && editorRef.current.getInfiniteViewer()?.scrollCenter();
-	}, []);
+	}, [editorRef]);
 
 	useEffect(() => {
 		eventbus.on("onZoom", onZoom);
@@ -87,7 +83,7 @@ function Scena() {
 	}, []);
 
 	function handleSelectPage(evt: OnSelectPageEventData) {
-		const page = evt.page;
+		const { page } = evt;
 		if (isNil(page)) {
 			return;
 		}
@@ -142,7 +138,7 @@ function Scena() {
 					justifyContent: "space-between",
 				}}
 			>
-				<div className="cu-b-l"></div>
+				<div className="cu-b-l" />
 				<div className="cu-b-r" style={{}}>
 					<div className="cu-b-r-nav">
 						<div className="cu-b-zoom-container">
@@ -156,9 +152,9 @@ function Scena() {
 									margin: "0 10px 0 10px",
 								}}
 								onChange={(value) => {
-									let zoom = value / 100;
-									setZoom(zoom);
-									editorRef.current && editorRef.current.setZoom(zoom);
+									const mZoom = value / 100;
+									setZoom(mZoom);
+									editorRef.current?.setZoom(mZoom);
 								}}
 							/>
 							<span>{(getZoomValue(zoom) * 100).toFixed(0)}%</span>

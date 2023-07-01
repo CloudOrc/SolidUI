@@ -15,30 +15,31 @@
  * limitations under the License.
  */
 
-import { SolidViewComponent, SolidViewJSXElement, ElementInfo } from "./types";
-import { SOLIDUI_ELEMENT_ID } from "./const";
 import { Frame } from "scenejs";
 import { fromTranslation, matrix3d } from "@scena/matrix";
 import { getElementInfo } from "react-moveable";
 import {
 	IObject,
-	isString,
+	// isString,
 	splitComma,
 	isArray,
 	isFunction,
-	isNumber,
+	// isNumber,
 	isObject,
 } from "@daybrush/utils";
+import { SOLIDUI_ELEMENT_ID } from "./const";
+import { SolidViewComponent, SolidViewJSXElement, ElementInfo } from "./types";
 
 export const PREFIX = "visual-";
 
-export function prefixNames(prefix: string, ...classNames: string[]) {
+export function prefixNames(pPrefix: string, ...classNames: string[]) {
 	return classNames
 		.map((className) =>
 			className
 				.split(" ")
-				.map((name) => (name ? `${prefix}${name}` : ""))
-				.join(" "))
+				.map((name) => (name ? `${pPrefix}${name}` : ""))
+				.join(" "),
+		)
 		.join(" ");
 }
 
@@ -47,7 +48,8 @@ export function prefix(...classNames: string[]) {
 }
 
 export function getId(el: HTMLElement | SVGElement) {
-	return el.getAttribute(SOLIDUI_ELEMENT_ID)!;
+	// TODO fix issue
+	return el.getAttribute(SOLIDUI_ELEMENT_ID) || "";
 }
 
 export function getIds(els: Array<HTMLElement | SVGElement>): string[] {
@@ -64,7 +66,9 @@ export function isVisualElement(value: any): value is SolidViewJSXElement {
 
 export function getContentElement(el: HTMLElement): HTMLElement | null {
 	if (el.contentEditable === "inherit") {
-		return getContentElement(el.parentElement!);
+		if (el.parentElement) {
+			return getContentElement(el.parentElement);
+		}
 	}
 	if (el.contentEditable === "true") {
 		return el;
@@ -91,7 +95,7 @@ export function getVisualAttrs(el: HTMLElement | SVGElement) {
 
 export function updateElements(infos: ElementInfo[]) {
 	return infos.map(function registerElement(info) {
-		const id = info.id!;
+		const { id } = info;
 
 		const target = document.querySelector<HTMLElement>(
 			`[${SOLIDUI_ELEMENT_ID}="${id}"]`,
@@ -103,9 +107,12 @@ export function updateElements(infos: ElementInfo[]) {
 
 		info.el = target;
 
-		for (const name in attrs) {
+		// for (const name in attrs) {
+		// 	target.setAttribute(name, attrs[name]);
+		// }
+		Object.keys(attrs).forEach((name) => {
 			target.setAttribute(name, attrs[name]);
-		}
+		});
 		info.attrs = getVisualAttrs(target);
 		const children = info.children || [];
 
@@ -133,7 +140,7 @@ export function checkImageLoaded(el: HTMLElement | SVGElement): Promise<any> {
 		return Promise.all(
 			[].slice
 				.call(el.querySelectorAll("img"))
-				.map((el) => checkImageLoaded(el)),
+				.map((mEl) => checkImageLoaded(mEl)),
 		);
 	}
 	return new Promise((resolve) => {
@@ -165,7 +172,10 @@ export function setMoveMatrix(frame: Frame, moveMatrix: number[]) {
 		);
 	} else if (frame.has("transform", "matrix3d")) {
 		let num = 1;
-		while (frame.has("transform", `matrix3d${++num}`)) {}
+		// while (frame.has("transform", `matrix3d${++num}`)) {}
+		while (frame.has("transform", `matrix3d${num + 1}`)) {
+			num += 1;
+		}
 
 		frame.set("transform", `matrix3d${num}`, [...moveMatrix]);
 		frame.setOrders(["transform"], [`matrix3d${num}`, ...transformOrders]);

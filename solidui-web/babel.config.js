@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-const isDEV = process.env.NODE_ENV === 'development'
+const isDEV = process.env.NODE_ENV === "development";
 
 module.exports = {
   "presets": [
@@ -30,7 +30,7 @@ module.exports = {
     "@babel/preset-typescript"
   ],
   "plugins": [
-    isDEV && require.resolve('react-refresh/babel'),
+    isDEV && require.resolve("react-refresh/babel"),
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
 		["import", {
 			"libraryName": "antd",
@@ -38,4 +38,4 @@ module.exports = {
 			"style": true
 		}]
   ].filter(Boolean)
-}
+};
