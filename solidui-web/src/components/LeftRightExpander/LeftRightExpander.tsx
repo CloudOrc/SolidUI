@@ -17,8 +17,8 @@
 
 import React, { useEffect, useState } from "react";
 import classNames from "classnames";
-import Checkbox from "../Checkbox";
 import { Down, Right } from "@icon-park/react";
+import Checkbox from "../Checkbox";
 
 import "./LeftRightExpander.less";
 
@@ -34,11 +34,11 @@ export interface LeftRgithExpanderProps {
 	onChecked?: (checked: boolean) => void;
 }
 
-export default function (props: LeftRgithExpanderProps) {
-	let { className, style, title = "Title" } = props;
+export default function LeftRightExpander(props: LeftRgithExpanderProps) {
+	const { className, style, title = "Title" } = props;
 	const [expanded, setExpanded] = useState(!!props.expanded);
 	const [checked, setChecked] = useState(!!props.checked);
-	let { showCheckbox = true } = props;
+	const { showCheckbox = true } = props;
 
 	useEffect(() => {
 		setChecked(!!props.checked);
@@ -61,24 +61,23 @@ export default function (props: LeftRgithExpanderProps) {
 					}}
 				/>
 			);
-		} else {
-			return (
-				<Right
-					theme="outline"
-					size="20"
-					fill="#757272"
-					strokeWidth={2}
-					strokeLinejoin="miter"
-					strokeLinecap="square"
-					style={{
-						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-						marginTop: -1,
-					}}
-				/>
-			);
 		}
+		return (
+			<Right
+				theme="outline"
+				size="20"
+				fill="#757272"
+				strokeWidth={2}
+				strokeLinejoin="miter"
+				strokeLinecap="square"
+				style={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					marginTop: -1,
+				}}
+			/>
+		);
 	}
 
 	function renderPopupview() {
@@ -89,6 +88,7 @@ export default function (props: LeftRgithExpanderProps) {
 				</div>
 			);
 		}
+		return undefined;
 	}
 
 	function handleClick() {
@@ -99,7 +99,7 @@ export default function (props: LeftRgithExpanderProps) {
 		}
 	}
 
-	let _className = classNames("solid-expander", className, {
+	const _className = classNames("solid-expander", className, {
 		"solid-expander--expanded": expanded,
 	});
 
@@ -121,9 +121,11 @@ export default function (props: LeftRgithExpanderProps) {
 						<div className="node-text" />
 						<Checkbox
 							checked={checked}
-							onChange={(checked) => {
-								setChecked(checked);
-								props.onChecked && props.onChecked(checked);
+							onChange={(mChecked) => {
+								setChecked(mChecked);
+								if (props.onChecked) {
+									props.onChecked(mChecked);
+								}
 							}}
 							style={{
 								marginLeft: 8,

@@ -16,10 +16,10 @@
  */
 
 import { MoveableManagerInterface, Renderer } from "react-moveable";
+import { eventbus, mm } from "@/utils";
 import { SolidEditorContext } from "../SolidEditorContext";
 import SolidEditor from "../SolidEditor";
 import { SOLIDUI_ELEMENT_ID } from "../utils/const";
-import { eventbus, mm } from "@/utils";
 
 export interface DelteButtonViewableProps {
 	deleteButtonViewable?: boolean;
@@ -69,33 +69,28 @@ export const DelteButtonViewable = {
 		);
 		return (
 			<SolidEditorContext.Consumer key="delete-button-viewer">
-				{(editor: SolidEditor | null) => {
-					return (
-						<DeleteButton
-							className={"moveable-delete-button"}
-							onClick={() => {
-								if (editor) {
-									// let ids: string[] = [];
-									let targets = editor.getSelectedTargets();
-									editor.removeElements(targets);
-									targets.forEach((target) => {
-										let id = target.getAttribute(SOLIDUI_ELEMENT_ID) as string;
-										console.log(id);
-										mm.removeView(id);
-										// ids.push();
-									});
-									console.log(mm.getViews());
-									eventbus.emit("onRemoveViewComplete", {
-										source: "viewport",
-									});
-								}
-							}}
-							style={{
-								transform: `translate(${pos2[0]}px, ${pos2[1]}px) rotate(${rect.rotation}deg) translate(10px)`,
-							}}
-						/>
-					);
-				}}
+				{(editor: SolidEditor | null) => (
+					<DeleteButton
+						className="moveable-delete-button"
+						onClick={() => {
+							if (editor) {
+								// let ids: string[] = [];
+								const targets = editor.getSelectedTargets();
+								editor.removeElements(targets);
+								targets.forEach((target) => {
+									const id = target.getAttribute(SOLIDUI_ELEMENT_ID) as string;
+									mm.removeView(id);
+								});
+								eventbus.emit("onRemoveViewComplete", {
+									source: "viewport",
+								});
+							}
+						}}
+						style={{
+							transform: `translate(${pos2[0]}px, ${pos2[1]}px) rotate(${rect.rotation}deg) translate(10px)`,
+						}}
+					/>
+				)}
 			</SolidEditorContext.Consumer>
 		);
 	},

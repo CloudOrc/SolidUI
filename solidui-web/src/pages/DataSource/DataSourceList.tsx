@@ -63,9 +63,9 @@ export default function () {
 								const params = {} as any;
 								if (value !== "all") {
 									if (value === "expired") {
-										params["expire"] = "true";
+										params.expire = "true";
 									} else {
-										params["expire"] = "false";
+										params.expire = "false";
 									}
 								}
 								query(params);

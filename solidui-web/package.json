@@ -7,7 +7,9 @@
   "license": "Apache-2.0",
   "scripts": {
     "dev": "cross-env NODE_ENV=development BASE_ENV=development webpack-dev-server -c scripts/webpack.dev.js",
-    "build": "cross-env NODE_ENV=production BASE_ENV=production webpack -c scripts/webpack.prod.js"
+    "build": "cross-env NODE_ENV=production BASE_ENV=production webpack -c scripts/webpack.prod.js",
+    "lint": "eslint --ignore-path=.eslintignore --ext .js,.jsx,.ts,.tsx .",
+    "lint:fix": "eslint --fix --ignore-path=.eslintignore --ext .js,.jsx,.ts,.tsx ."
   },
   "devDependencies": {
     "@babel/core": "7.20.12",
@@ -33,8 +35,11 @@
     "css-loader": "6.7.3",
     "css-minimizer-webpack-plugin": "4.2.2",
     "eslint": "^8.34.0",
-    "eslint-config-ali": "^14.0.2",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -59,8 +64,11 @@
     "webpack-merge": "5.8.0"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.1.4",
     "@cfcs/core": "^0.1.0",
+    "@daybrush/utils": "^1.13.0",
     "@icon-park/react": "^1.4.2",
+    "@scena/matrix": "^1.1.1",
     "@scena/react-guides": "0.22.3",
     "@szhsin/react-menu": "^4.0.0",
     "antd": "4.24.7",

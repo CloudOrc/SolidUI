@@ -21,12 +21,12 @@ import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { ControlledMenu, MenuItem } from "@szhsin/react-menu";
 import { useUpdate } from "react-use";
 import { Close } from "@icon-park/react";
-import useGeneral from "./useGeneral";
+import { isNil } from "lodash-es";
 import { SolidPageDataType, SolidScenaDataType } from "@/types/solid";
 import { mm } from "@/utils";
+import useGeneral from "./useGeneral";
 import "@szhsin/react-menu/dist/index.css";
 import "./general.less";
-import { isNil } from "lodash-es";
 
 const { confirm } = Modal;
 
@@ -47,11 +47,11 @@ function General() {
 		pageEditingModelMap,
 		handleEditingInputKeyDown,
 	} = useGeneral();
-	let scenes = mm.getScenes();
+	const scenes = mm.getScenes();
 
-	let type = React.useRef<"scene" | "page">();
-	let sceneRef = React.useRef<SolidScenaDataType>();
-	let pageRef = React.useRef<SolidPageDataType>();
+	const type = React.useRef<"scene" | "page">();
+	const sceneRef = React.useRef<SolidScenaDataType>();
+	const pageRef = React.useRef<SolidPageDataType>();
 
 	function renderModalContent() {
 		return (
@@ -80,11 +80,11 @@ function General() {
 				>
 					<div className="modal-content__form">
 						<Form
-							layout={"vertical"}
+							layout="vertical"
 							form={form}
 							initialValues={{ layout: "vertical" }}
 							onFinish={(values) => {
-								let title = values.title || "";
+								const title = values.title || "";
 								if (type.current && type.current === "scene") {
 									createScene(title);
 								} else if (
@@ -130,148 +130,146 @@ function General() {
 	}
 
 	function renderScenes() {
-		let kids: React.ReactNode[] = [];
-		scenes &&
-			scenes.forEach((scene) => {
-				let pages = scene.pages || [];
-				kids.push(
-					<section
-						key={`${scene.id}`}
-						className={`expander ${scene.selected ? "open" : ""}`}
-					>
-						<div className="expander__head" onClick={() => toggleScene(scene)}>
-							<svg
-								width="9"
-								height="6"
-								viewBox="0 0 9 6"
-								xmlns="http://www.w3.org/2000/svg"
-								className="expander__icon"
-								style={{
-									width: 10,
-								}}
-							>
-								<path
-									d="M4.50009 6L-5.24537e-07 1.26364e-06L9 4.76837e-07L4.50009 6Z"
-									fill="currentcolor"
-								/>
-							</svg>
-							<div
-								style={{
-									width: "170px",
-								}}
-							>
-								{scene.title}
-							</div>
-							<Button
-								className="btn__page-create"
-								icon={<PlusOutlined />}
-								type="text"
-								onClick={(e) => {
-									e.stopPropagation();
-									e.preventDefault();
-									sceneRef.current = scene;
-									type.current = "page";
-									toggleModal(true);
-									// createPage(scene);
-								}}
+		const kids: React.ReactNode[] = [];
+		scenes.forEach((scene) => {
+			const pages = scene.pages || [];
+			kids.push(
+				<section
+					key={`${scene.id}`}
+					className={`expander ${scene.selected ? "open" : ""}`}
+				>
+					<div className="expander__head" onClick={() => toggleScene(scene)}>
+						<svg
+							width="9"
+							height="6"
+							viewBox="0 0 9 6"
+							xmlns="http://www.w3.org/2000/svg"
+							className="expander__icon"
+							style={{
+								width: 10,
+							}}
+						>
+							<path
+								d="M4.50009 6L-5.24537e-07 1.26364e-06L9 4.76837e-07L4.50009 6Z"
+								fill="currentcolor"
 							/>
+						</svg>
+						<div
+							style={{
+								width: "170px",
+							}}
+						>
+							{scene.title}
 						</div>
-						{pages.length > 0 ? (
-							<div className="expander__body">{renderPages(pages)}</div>
-						) : undefined}
-					</section>,
-				);
-			});
+						<Button
+							className="btn__page-create"
+							icon={<PlusOutlined />}
+							type="text"
+							onClick={(e) => {
+								e.stopPropagation();
+								e.preventDefault();
+								sceneRef.current = scene;
+								type.current = "page";
+								toggleModal(true);
+								// createPage(scene);
+							}}
+						/>
+					</div>
+					{pages.length > 0 ? (
+						<div className="expander__body">{renderPages(pages)}</div>
+					) : undefined}
+				</section>,
+			);
+		});
 		return kids;
 	}
 
 	function renderPages(pages: any[]) {
-		let kids: React.ReactNode[] = [];
-		pages &&
-			pages.forEach((page) => {
-				let selectedCls = page.selected ? "selected" : "";
-				let editingModel = pageEditingModelMap.current.get(page.id);
-				// console.log(`${page.id} -> ${editingModel?.editing}`);
-				let editing = editingModel?.editing;
-				kids.push(
-					<div
-						className={`expander__body-item ${selectedCls}`}
-						key={`${page.id}`}
-						onClick={() => selectPage(page)}
-						style={{
-							position: "relative",
-						}}
-						onContextMenu={(e) => {
-							e.preventDefault();
-							setAnchorPoint({ x: e.clientX, y: e.clientY });
-							setContextMenuOpen(true);
-							pageRef.current = page;
-						}}
-					>
-						<span className="expander__body-item-icon">
-							<svg
-								width="14"
-								height="14"
-								viewBox="0 0 48 48"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<rect
-									x="6"
-									y="6"
-									width="36"
-									height="36"
-									rx="3"
-									stroke="#757272"
-									strokeWidth="3"
-									strokeLinejoin="miter"
-								/>
-								<path
-									d="M6 17H42"
-									stroke="#757272"
-									strokeWidth="3"
-									strokeLinecap="square"
-									strokeLinejoin="miter"
-								/>
-								<path
-									d="M17 42V17"
-									stroke="#757272"
-									strokeWidth="3"
-									strokeLinecap="square"
-									strokeLinejoin="miter"
-								/>
-							</svg>
-						</span>
-						<span className="expander__body-item-title">
-							{/* {page.title} */}
-							{editing ? (
-								<input
-									value={editingModel?.newName || ""}
-									style={{
-										height: 22,
-										outline: "none",
-										fontSize: 12,
-										border: "1px solid #4cc3ed",
-									}}
-									autoFocus={true}
-									onChange={(e) => {
-										const val = e.target.value || "";
-										editingModel!.newName = val;
-										forceUpdate();
-									}}
-									onKeyDown={(e) => handleEditingInputKeyDown(e, page)}
-									onClick={(e) => {
-										e.stopPropagation();
-										e.preventDefault();
-									}}
-								/>
-							) : (
-								page.title
-							)}
-						</span>
-					</div>,
-				);
-			});
+		const kids: React.ReactNode[] = [];
+		pages.forEach((page) => {
+			const selectedCls = page.selected ? "selected" : "";
+			const editingModel = pageEditingModelMap.current.get(page.id);
+			// console.log(`${page.id} -> ${editingModel?.editing}`);
+			const editing = editingModel?.editing;
+			kids.push(
+				<div
+					className={`expander__body-item ${selectedCls}`}
+					key={`${page.id}`}
+					onClick={() => selectPage(page)}
+					style={{
+						position: "relative",
+					}}
+					onContextMenu={(e) => {
+						e.preventDefault();
+						setAnchorPoint({ x: e.clientX, y: e.clientY });
+						setContextMenuOpen(true);
+						pageRef.current = page;
+					}}
+				>
+					<span className="expander__body-item-icon">
+						<svg
+							width="14"
+							height="14"
+							viewBox="0 0 48 48"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<rect
+								x="6"
+								y="6"
+								width="36"
+								height="36"
+								rx="3"
+								stroke="#757272"
+								strokeWidth="3"
+								strokeLinejoin="miter"
+							/>
+							<path
+								d="M6 17H42"
+								stroke="#757272"
+								strokeWidth="3"
+								strokeLinecap="square"
+								strokeLinejoin="miter"
+							/>
+							<path
+								d="M17 42V17"
+								stroke="#757272"
+								strokeWidth="3"
+								strokeLinecap="square"
+								strokeLinejoin="miter"
+							/>
+						</svg>
+					</span>
+					<span className="expander__body-item-title">
+						{/* {page.title} */}
+						{editing ? (
+							<input
+								value={editingModel?.newName || ""}
+								style={{
+									height: 22,
+									outline: "none",
+									fontSize: 12,
+									border: "1px solid #4cc3ed",
+								}}
+								// autoFocus
+								onChange={(e) => {
+									const val = e.target.value || "";
+									editingModel.newName = val;
+									forceUpdate();
+								}}
+								onKeyDown={(e) => handleEditingInputKeyDown(e, page)}
+								onClick={(e) => {
+									e.stopPropagation();
+									e.preventDefault();
+								}}
+							/>
+						) : (
+							page.title
+						)}
+					</span>
+				</div>,
+			);
+		});
 		return kids;
 	}
 
@@ -291,7 +289,7 @@ function General() {
 				</span>
 				<Button
 					className="btn__scene-create"
-					icon={<PlusOutlined />}
+					icon={<PlusOutlined rev={1} />}
 					type="text"
 					onClick={() => {
 						type.current = "scene";
@@ -347,12 +345,12 @@ function General() {
 				onClose={() => setContextMenuOpen(false)}
 			>
 				<MenuItem
-					onClick={(e) => {
+					onClick={() => {
 						const page = pageRef.current;
 						if (isNil(page)) return;
 						confirm({
 							title: "Confirm",
-							icon: <ExclamationCircleOutlined />,
+							icon: <ExclamationCircleOutlined rev={1} />,
 							content: `Do you want to delete page [${page.title}] ?`,
 							okText: "Yes",
 							cancelText: "Cancel",

@@ -17,31 +17,27 @@
 
 import React from "react";
 import { LeftRightExpander, PropertyElement, InputText } from "@/components";
-import { mm, eventbus } from "@/utils";
+import { mm } from "@/utils";
 
-export interface PagePropertiesPanelProps {}
-
-export default function (props: PagePropertiesPanelProps) {
+export default function TopPropertiesPanel() {
 	const project = mm.getModel();
 	return (
-		<>
-			<LeftRightExpander expanded showCheckbox={false} title="Project Infos">
-				<PropertyElement label="Title" labelWidth={80}>
-					<InputText value={project?.title || ""} disabled={true} />
-				</PropertyElement>
+		<LeftRightExpander expanded showCheckbox={false} title="Project Infos">
+			<PropertyElement label="Title" labelWidth={80}>
+				<InputText value={project?.title || ""} disabled />
+			</PropertyElement>
 
-				<PropertyElement label="Description" labelWidth={80}>
-					<InputText value={project?.description || ""} disabled={true} />
-				</PropertyElement>
+			<PropertyElement label="Description" labelWidth={80}>
+				<InputText value={project?.description || ""} disabled />
+			</PropertyElement>
 
-				<PropertyElement label="Create User" labelWidth={80}>
-					<InputText value={project?.createUser || ""} disabled />
-				</PropertyElement>
+			<PropertyElement label="Create User" labelWidth={80}>
+				<InputText value={project?.createUser || ""} disabled />
+			</PropertyElement>
 
-				<PropertyElement label="Create Time" labelWidth={80}>
-					<InputText value={project?.createTime || ""} disabled />
-				</PropertyElement>
-			</LeftRightExpander>
-		</>
+			<PropertyElement label="Create Time" labelWidth={80}>
+				<InputText value={project?.createTime || ""} disabled />
+			</PropertyElement>
+		</LeftRightExpander>
 	);
 }

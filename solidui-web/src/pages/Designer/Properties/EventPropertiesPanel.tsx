@@ -17,8 +17,6 @@
 
 import React from "react";
 
-export interface EventPropertiesPanelProps {}
-
-export default function (props: EventPropertiesPanelProps) {
+export default function EventPropertiesPanel() {
 	return <div>event</div>;
 }

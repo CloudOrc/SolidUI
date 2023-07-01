@@ -28,10 +28,10 @@ interface CheckboxProps {
 	onChange?: (checked: boolean) => void;
 }
 
-export default function (props: CheckboxProps) {
+export default function CHeckbox(props: CheckboxProps) {
 	const [checked, setChecked] = React.useState(!!props.checked);
 
-	let _classNames = classNames(
+	const _classNames = classNames(
 		{
 			"solid-checkbox": true,
 			"cursor-pointer": true,

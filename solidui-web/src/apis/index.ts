@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { param } from "jquery";
+// import { param } from "jquery";
 import ApiService from "./service";
 import {
 	SolidModelCreationDataType,
@@ -30,14 +30,13 @@ export type DataSourceCreationDataType = {
 	parameter: string;
 };
 
-let model = {
+const model = {
 	save: <T>(params: SolidModelCreationDataType) =>
 		ApiService.post<T>("/api/v1/models", params, {}),
 	getProject: <T>(projectId: string) =>
 		ApiService.get<T>(`/solidui/project/${projectId}`),
-	createPage: <T>(params: PageCreationDataType) => {
-		return ApiService.post<T>("/solidui/job/page", params, {});
-	},
+	createPage: <T>(params: PageCreationDataType) =>
+		ApiService.post<T>("/solidui/job/page", params, {}),
 	queryPages: <T>(projectId: string) =>
 		ApiService.get<T>(`/solidui/job/page/queryList/${projectId}`),
 	queryViews: <T>(projectId: string, pageId: string) =>
@@ -45,24 +44,25 @@ let model = {
 			`/solidui/job/query/page?projectId=${projectId}&pageId=${pageId}`,
 		),
 	saveProjectPageViews: <T>(params: ProjectPageViewsCreationDataType) =>
-		ApiService.post("/solidui/job/save/page", params),
+		ApiService.post<T>("/solidui/job/save/page", params),
 	updateProjectPageViews: <T>(params: ProjectPageViewsCreationDataType) =>
-		ApiService.put("/solidui/job/update/page", params),
-	deletePage: <T>(id: string) => ApiService.delete(`/solidui/job/page/${id}`),
+		ApiService.put<T>("/solidui/job/update/page", params),
+	deletePage: <T>(id: string) =>
+		ApiService.delete<T>(`/solidui/job/page/${id}`),
 };
 
-let images = {
+const images = {
 	upload: <T>(params: FormData, props: any) =>
 		ApiService.post<T>("/api/v1/images/upload", params, props),
 };
 
-let user = {
+const user = {
 	login: <T>(params: { username: string; password: string }) =>
 		ApiService.get<T>("/solidui/login", params),
 	logout: <T>() => ApiService.post<T>("/solidui/loginOut"),
 };
 
-let project = {
+const project = {
 	query: <T>(
 		params: { pageNo: number; pageSize: number; searchName: string } = {
 			pageNo: 1,
@@ -76,19 +76,19 @@ let project = {
 				"Content-Type": "multipart/form-data",
 			},
 		}),
-	delete: <T>(id: string) => ApiService.delete(`/solidui/projects/${id}`),
+	delete: <T>(id: string) => ApiService.delete<T>(`/solidui/projects/${id}`),
 	update: <T>(id: string, name: string) =>
-		ApiService.put(`/solidui/projects/${id}?projectName=${name}`),
+		ApiService.put<T>(`/solidui/projects/${id}?projectName=${name}`),
 
 	load: <T>(id: string) => ApiService.get<T>(`/solidui/projects/${id}`),
 };
 
-let page = {
+const page = {
 	rename: <T>(id: string, params: { name: string }) =>
 		ApiService.put<T>(`/solidui/job/page/${id}`, params),
 };
 
-let datasource = {
+const datasource = {
 	query: <T>(
 		params: {
 			name: string;
@@ -110,21 +110,21 @@ let datasource = {
 	getFormElementByTypeId: <T>(typeId: string) =>
 		ApiService.get<T>(`/solidui/datasource/key/type/${typeId}`),
 	delete: <T>(id: string) =>
-		ApiService.delete(`/solidui/datasource/info/delete/${id}`),
+		ApiService.delete<T>(`/solidui/datasource/info/delete/${id}`),
 	// update: <T>(id: string, params: any) =>
 	// ApiService.put(`/solidui/datasources/${id}/info`, params),
 	update: <T>(id: string, params: any) =>
-		ApiService.put(`/solidui/datasource/info/${id}/json`, params),
+		ApiService.put<T>(`/solidui/datasource/info/${id}/json`, params),
 	create: <T>(params: DataSourceCreationDataType) =>
-		ApiService.post("/solidui/datasource/info/json", params),
+		ApiService.post<T>("/solidui/datasource/info/json", params),
 	all: <T>() => ApiService.get<T>("/solidui/datasources/all"),
 	test_connect: <T>(params: { dataSourceName: string; typeName: string }) =>
-		ApiService.post(
+		ApiService.post<T>(
 			`/solidui/datasource/connect/json?dataSourceName=${params.dataSourceName}&typeName=${params.typeName}`,
 			{},
 		),
 	expire: <T>(id: string) =>
-		ApiService.put(`/solidui/datasource/info/${id}/expire`, {}),
+		ApiService.put<T>(`/solidui/datasource/info/${id}/expire`, {}),
 	dbs: <T>(
 		params: { dataSourceName: string; typeName: string } = {
 			dataSourceName: "",
@@ -144,7 +144,7 @@ let datasource = {
 		),
 };
 
-let Apis = {
+const Apis = {
 	model,
 	images,
 	user,

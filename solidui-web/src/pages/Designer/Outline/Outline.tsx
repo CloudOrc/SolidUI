@@ -17,24 +17,24 @@
 
 import React from "react";
 import { Tooltip } from "antd";
-import useOutline from "./useOutline";
-import { mm } from "@/utils";
 import { isNil } from "lodash-es";
+import { mm } from "@/utils";
 import { SolidViewDataType } from "@/types";
+import useOutline from "./useOutline";
 import "./outline.less";
 
 function Outline() {
 	const { selectView, getViewState } = useOutline();
 
 	function renderViews() {
-		let currentPage = mm.getCurrentPage();
+		const currentPage = mm.getCurrentPage();
 		let views: SolidViewDataType[] = [];
 		if (!isNil(currentPage)) {
 			views = currentPage.views;
 		}
-		let nodes: React.ReactNode[] = [];
+		const nodes: React.ReactNode[] = [];
 		views.forEach((view) => {
-			let vs = getViewState(view.id);
+			const vs = getViewState(view.id);
 			let selected = false;
 			if (!isNil(vs)) {
 				selected = vs.selected;

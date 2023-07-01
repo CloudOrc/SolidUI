@@ -16,7 +16,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { Form, Row, Col, Input, Button, message } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { Close, DatabaseConfig } from "@icon-park/react";
 import Apis, { DataSourceCreationDataType } from "@/apis";
 import {
@@ -33,14 +33,14 @@ export interface DataSourceCreateProps {
 	handleOk: () => void;
 }
 
-export default function (props: DataSourceCreateProps) {
+export default function DataSOurceCreate(props: DataSourceCreateProps) {
 	const [form] = Form.useForm();
 	const [dsTypes, setDsTypes] = useState<DataSourceTypeDataType[]>([]);
 	const [dsType, setDsType] = useState<DataSourceTypeDataType>();
 	const [dsFormElements, setDsFormElements] = useState<
 		DataSourceFormElementDataType[]
 	>([]);
-	let { handleClose, handleOk } = props;
+	const { handleClose, handleOk } = props;
 
 	useEffect(() => {
 		getDataSourceTypes();
@@ -49,7 +49,7 @@ export default function (props: DataSourceCreateProps) {
 	}, []);
 
 	async function getDataSourceTypes() {
-		let res: any = await Apis.datasource.types();
+		const res: any = await Apis.datasource.types();
 		if (res.ok) {
 			setDsTypes(res.data || []);
 		}
@@ -57,18 +57,18 @@ export default function (props: DataSourceCreateProps) {
 
 	async function handleSelectDsType(item: DataSourceTypeDataType) {
 		setDsType(item);
-		let res: ApiResult<DataSourceFormElementDataType[]> =
+		const res: ApiResult<DataSourceFormElementDataType[]> =
 			await Apis.datasource.getFormElementByTypeId(item.id);
 		if (res.ok) {
-			let data = res.data || [];
+			const data = res.data || [];
 			setDsFormElements(data);
 		}
 	}
 
 	function renderDataSourceItems() {
-		let nodes: React.ReactNode[] = [];
-		dsTypes.forEach((item, idx) => {
-			let selected = dsType?.classifier === item.classifier;
+		const nodes: React.ReactNode[] = [];
+		dsTypes.forEach((item) => {
+			const selected = dsType?.classifier === item.classifier;
 			nodes.push(
 				<div
 					className={`ds-item ${selected ? "selected" : ""}`}
@@ -98,42 +98,44 @@ export default function (props: DataSourceCreateProps) {
 		}
 		return (
 			<Form
-				layout={"vertical"}
+				layout="vertical"
 				form={form}
 				initialValues={{ layout: "vertical" }}
 				onFinish={async (values) => {
-					let cp = values.params;
-					let connectParams = {} as any;
+					const cp = values.params;
+					const connectParams = {} as any;
 					if (cp !== null && undefined !== cp && cp.trim() !== "") {
 						try {
 							cp.split(",").forEach((item: string) => {
-								let kv = item.split("=");
+								const kv = item.split("=");
 								if (kv.length !== 2) {
 									throw new Error("invalid connect params");
 								}
-								connectParams[kv[0]] = kv[1];
+								const { 0: k, 1: v } = kv;
+								connectParams[k] = v;
+								// connectParams[kv[0]] = kv[1];
 							});
 						} catch (e) {
 							message.error("connect params parsed error");
 							return;
 						}
 					}
-					let dsParameter = {
+					const dsParameter = {
 						host: values.host,
-						port: parseInt(values.port || "3306"),
+						port: parseInt(values.port || "3306", 10),
 						username: values.username,
 						password: values.password,
 						database: values.databaseName,
 						driver: values.driverClassName,
 						params: connectParams,
 					};
-					let params: DataSourceCreationDataType = {
+					const params: DataSourceCreationDataType = {
 						dataSourceName: values.title,
 						dataSourceDesc: values.description,
 						dataSourceTypeId: dsType.id,
 						parameter: JSON.stringify(dsParameter),
 					};
-					let res: any = await Apis.datasource.create(params);
+					const res: any = await Apis.datasource.create(params);
 					if (res.ok) {
 						message.success("create datasource success");
 						handleOk();
@@ -144,7 +146,7 @@ export default function (props: DataSourceCreateProps) {
 			>
 				<Form.Item
 					label="title"
-					name={"title"}
+					name="title"
 					required
 					labelCol={{
 						span: 12,
@@ -161,11 +163,10 @@ export default function (props: DataSourceCreateProps) {
 				>
 					<Input placeholder="title" />
 				</Form.Item>
-				{dsFormElements &&
-					dsFormElements.map((item, idx) => renderFormItem(item))}
+				{dsFormElements && dsFormElements.map((item) => renderFormItem(item))}
 				<Form.Item
 					label="description"
-					name={"description"}
+					name="description"
 					labelCol={{
 						span: 24,
 					}}

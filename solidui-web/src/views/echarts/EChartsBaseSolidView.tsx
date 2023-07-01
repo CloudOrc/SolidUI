@@ -31,8 +31,8 @@ import {
 	VisualMapComponentOption,
 	DatasetComponentOption,
 } from "echarts";
-import SolidView, { SolidViewProps } from "../SolidView";
 import { defaultTheme } from "@/assets/themes";
+import SolidView, { SolidViewProps } from "../SolidView";
 
 export type EChartsBaseSolidViewProps = SolidViewProps;
 
@@ -40,8 +40,10 @@ export default class EChartsBaseSolidView<
 	T extends EChartsBaseSolidViewProps,
 > extends SolidView<T> {
 	ecRef: React.RefObject<HTMLDivElement>;
+
 	ecInstance?: ECharts;
-	resizeTimer?: NodeJS.Timeout;
+
+	resizeTimer?: any;
 
 	constructor(props: T) {
 		super(props);
@@ -175,7 +177,7 @@ export default class EChartsBaseSolidView<
 	/// ///// ------------------------------------------------------------------
 	/// ///// private methods
 	private buildOption(): EChartsOption {
-		let options: EChartsOption = {
+		const options: EChartsOption = {
 			title: this.getTitleOption(),
 			legend: this.getLegendOption(),
 			tooltip: this.getTooltipOption(),
@@ -195,9 +197,9 @@ export default class EChartsBaseSolidView<
 			clearTimeout(this.resizeTimer);
 		}
 
-		let that = this;
+		// const that = this; @typescript-eslint/no-this-alias
 		this.resizeTimer = setTimeout(() => {
-			that.ecInstance && that.ecInstance.resize();
+			this.ecInstance?.resize();
 		}, 50);
 	}
 

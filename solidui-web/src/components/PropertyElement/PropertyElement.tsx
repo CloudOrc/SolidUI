@@ -30,8 +30,8 @@ export interface PropertyElementProps {
 	children?: React.ReactNode;
 }
 
-export default function (props: PropertyElementProps) {
-	let {
+export default function PropertyElement(props: PropertyElementProps) {
+	const {
 		className,
 		style,
 		height = 40,
@@ -42,13 +42,13 @@ export default function (props: PropertyElementProps) {
 		children,
 	} = props;
 
-	let _style: React.CSSProperties = {
+	const _style: React.CSSProperties = {
 		height,
 		margin: "0 25px",
 		...style,
 	};
 
-	let labelStyle: React.CSSProperties = {
+	const labelStyle: React.CSSProperties = {
 		position: "absolute",
 		top: 0,
 		left: 0,
@@ -58,7 +58,7 @@ export default function (props: PropertyElementProps) {
 		..._labelStyle,
 	};
 
-	let inputStyle: React.CSSProperties = {
+	const inputStyle: React.CSSProperties = {
 		position: "absolute",
 		top: 0,
 		left: labelWidth,
@@ -68,7 +68,7 @@ export default function (props: PropertyElementProps) {
 		..._inputStyle,
 	};
 
-	let _className = classNames(
+	const _className = classNames(
 		{
 			"property-element": true,
 			// ["h-tape-layout"]: true,

@@ -24,32 +24,32 @@ export interface ButtonGroupRadioProps {
 	onChange?: (value: any) => void;
 }
 
-export default function (props: ButtonGroupRadioProps) {
+export default function ButtonGroupRadio(props: ButtonGroupRadioProps) {
 	const [value, setValue] = useState(props.value);
 
 	function renderItems() {
-		return props.items.map((item) => {
-			return (
-				<label className="group-choose-btn" key={`key_${item.value}`}>
-					<input
-  type="radio"
-  value={item.value}
-  checked={value === item.value}
-  onChange={(e) => {
-							setValue(e.target.value);
-							item.onChange && item.onChange(e.target.value);
-						}}
-					/>
-					<span className="group-choose-text">{item.text}</span>
-				</label>
-			);
-		});
+		return props.items.map((item) => (
+			<label className="group-choose-btn" key={`key_${item.value}`}>
+				<input
+					type="radio"
+					value={item.value}
+					checked={value === item.value}
+					onChange={(e) => {
+						setValue(e.target.value);
+						if (item.onChange) {
+							item.onChange(e.target.value);
+						}
+					}}
+				/>
+				<span className="group-choose-text">{item.text}</span>
+			</label>
+		));
 	}
 
 	return (
 		<div
-  className="group-choose"
-  style={{
+			className="group-choose"
+			style={{
 				width: 178,
 			}}
 		>

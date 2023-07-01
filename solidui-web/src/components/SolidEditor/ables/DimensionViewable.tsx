@@ -28,17 +28,17 @@ export const DimensionViewable = {
 	},
 	events: {},
 	render(moveable: MoveableManagerInterface) {
-		const { zoom } = moveable.props;
+		const { zoom = 0 } = moveable.props;
 		const rect = moveable.getRect();
 
 		return (
 			<div
-				key={"dimension-viewer"}
+				key="dimension-viewer"
 				className="solid-view-dimension"
 				style={{
 					left: `${rect.width / 2}px`,
 					top: `${rect.height}px`,
-					transform: `translate(-50%, ${20 * zoom!}px) scale(${zoom})`,
+					transform: `translate(-50%, ${20 * zoom}px) scale(${zoom})`,
 				}}
 			>
 				{Math.round(rect.offsetWidth)} x {Math.round(rect.offsetHeight)}

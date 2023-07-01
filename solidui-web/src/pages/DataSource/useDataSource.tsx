@@ -20,17 +20,17 @@ import { message, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/lib/table";
 import { Delete, Pencil, PreviewOpen, Lightning, Time } from "@icon-park/react";
-import Apis from "@/apis";
 import { useUpdate } from "react-use";
 import { useForm } from "antd/lib/form/Form";
-import { ApiResult, DataSourceTypeDataType } from "@/types";
 import { find } from "lodash-es";
+import { ApiResult, DataSourceTypeDataType } from "@/types";
+import Apis from "@/apis";
 
 const { confirm } = Modal;
 
-type InitialData = {
-	dataSources?: any[];
-};
+// type InitialData = {
+// 	dataSources?: any[];
+// };
 
 type DataSourceDataType = {
 	id: string;
@@ -41,7 +41,7 @@ type DataSourceDataType = {
 	expire: boolean;
 };
 
-function useDataSource(initialData: InitialData = {}) {
+function useDataSource() {
 	const forceUpdate = useUpdate();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [dataSources, setDataSources] = useState<any[]>([]);
@@ -111,7 +111,7 @@ function useDataSource(initialData: InitialData = {}) {
 								cursor: "pointer",
 							}}
 							onClick={async () => {
-								let res = await Apis.datasource.expire(record.id);
+								const res = await Apis.datasource.expire(record.id);
 								if (res.ok) {
 									message.success("expire success");
 									query();
@@ -130,10 +130,10 @@ function useDataSource(initialData: InitialData = {}) {
 								cursor: "pointer",
 							}}
 							onClick={async () => {
-								let typeId = record.dataSourceTypeId;
-								let target = find(types, (type) => type.id === `${typeId}`);
+								const typeId = record.dataSourceTypeId;
+								const target = find(types, (type) => type.id === `${typeId}`);
 								if (target) {
-									let res = await Apis.datasource.test_connect({
+									const res = await Apis.datasource.test_connect({
 										dataSourceName: record.dataSourceName,
 										typeName: target.classifier,
 									});
@@ -195,7 +195,7 @@ function useDataSource(initialData: InitialData = {}) {
 									okType: "danger",
 									cancelText: "No",
 									async onOk() {
-										let res = await Apis.datasource.delete(record.id);
+										const res = await Apis.datasource.delete(record.id);
 										if (res.ok) {
 											message.success("delete success");
 											query();
@@ -223,18 +223,18 @@ function useDataSource(initialData: InitialData = {}) {
 		params: any = { pageNo: 1, pageSize: 10, expire: false, name: "" },
 	) {
 		setLoading(true);
-		let res: ApiResult<any> = await Apis.datasource.query({
+		const res: ApiResult<any> = await Apis.datasource.query({
 			pageNo: params.pageNo || 1,
 			pageSize: params.pageSize || 10,
 			expire: params.expire || "",
 			name: params.name || "",
 		});
 		if (res.ok) {
-			let data = res.data || ({} as any);
-			let current = data.currentPage || 1;
-			let size = data.pageSize || 10;
-			let total = data.total || 0;
-			let records = data.totalList || [];
+			const data = res.data || ({} as any);
+			const current = data.currentPage || 1;
+			const size = data.pageSize || 10;
+			const total = data.total || 0;
+			const records = data.totalList || [];
 			records.forEach((item: any) => {
 				item.key = item.id;
 				popupConverMap.current.set(`${item.id}`, false);
@@ -251,16 +251,15 @@ function useDataSource(initialData: InitialData = {}) {
 	}
 
 	async function queryDataSourceTypes() {
-		let res: ApiResult<DataSourceTypeDataType[]> =
+		const res: ApiResult<DataSourceTypeDataType[]> =
 			await Apis.datasource.types();
 		if (res.ok) {
-			let types = res.data || [];
-			setTypes(types);
+			setTypes(res.data || []);
 		}
 	}
 
 	async function create(values: { name: string; description?: string }) {
-		let res = await Apis.project.create({
+		const res = await Apis.project.create({
 			projectName: values.name,
 			description: values.description,
 		});
@@ -272,18 +271,18 @@ function useDataSource(initialData: InitialData = {}) {
 	}
 
 	async function del(id: string) {
-		let res = await Apis.project.delete(id);
+		const res = await Apis.project.delete(id);
 		if (res.ok) {
 			query();
 		}
 	}
 
 	async function resetForm() {
-		form && form.resetFields();
+		form.resetFields();
 	}
 
 	async function toggleCover(id: string, popup: boolean) {
-		popupConverMap.current && popupConverMap.current.set(id, popup);
+		popupConverMap.current.set(id, popup);
 		forceUpdate();
 	}
 

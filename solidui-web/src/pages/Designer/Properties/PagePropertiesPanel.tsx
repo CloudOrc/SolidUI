@@ -16,15 +16,13 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { LeftRightExpander, PropertyElement, InputNumber } from "@/components";
 import { Spin } from "antd";
+import { isNil } from "lodash-es";
+import { LeftRightExpander, PropertyElement, InputNumber } from "@/components";
 import { mm, eventbus } from "@/utils";
 import { OnSelectPageEventData } from "@/types";
-import { isNil } from "lodash-es";
 
-export interface PagePropertiesPanelProps {}
-
-export default function (props: PagePropertiesPanelProps) {
+export default function PagePropertiesPanel() {
 	const [size, setSize] = useState<{ width: number; height: number }>();
 
 	useEffect(() => {
@@ -37,7 +35,7 @@ export default function (props: PagePropertiesPanelProps) {
 	}, []);
 
 	function handleSelectPage(evt: OnSelectPageEventData) {
-		const page = evt.page;
+		const { page } = evt;
 		if (isNil(page)) {
 			return;
 		}
@@ -66,7 +64,7 @@ export default function (props: PagePropertiesPanelProps) {
 								height: page.size.height,
 							};
 							eventbus.emit("onPageWidthChange", {
-								value: value,
+								value,
 							});
 						}}
 					/>
@@ -88,7 +86,7 @@ export default function (props: PagePropertiesPanelProps) {
 								height: value,
 							};
 							eventbus.emit("onPageHeightChange", {
-								value: value,
+								value,
 							});
 						}}
 					/>

@@ -18,7 +18,9 @@
 import React from "react";
 
 import { IObject, isString, isArray, isNumber } from "@daybrush/utils";
-
+import { eventbus } from "@/utils";
+import { isNil } from "lodash-es";
+import { connectEditorContext } from "./SolidEditorContext";
 import {
 	SolidViewJSXElement,
 	ElementInfo,
@@ -35,26 +37,29 @@ import {
 	updateElements,
 	getScenaAttrs,
 } from "./utils";
-import { connectEditorContext } from "./SolidEditorContext";
-import { eventbus } from "@/utils";
 
-export default interface SolidViewport extends EditorInterface {}
+// export default interface SolidViewport extends EditorInterface {}
+
+interface SolidViewport extends EditorInterface {}
 
 @connectEditorContext
-export default class SolidViewport extends React.PureComponent<{
+class SolidViewport extends React.PureComponent<{
 	children: any;
 	style: IObject<any>;
 	onBlur: (e: any) => any;
 	// onRef: (ref: any) => void;
 }> {
 	public components: Record<string, SolidViewComponent> = {};
+
 	public jsxs: Record<string, SolidViewJSXElement> = {};
+
 	public viewport: ElementInfo = {
 		jsx: <div />,
 		name: "Viewport",
 		id: "viewport",
 		children: [],
 	};
+
 	public ids: Record<string, ElementInfo> = {
 		viewport: this.viewport,
 	};
@@ -70,7 +75,7 @@ export default class SolidViewport extends React.PureComponent<{
 	// }
 
 	public makeId(ids: Record<string, any> = this.ids) {
-		while (true) {
+		for (;;) {
 			const id = `visual${Math.floor(Math.random() * 100000000)}`;
 			if (ids[id]) {
 				continue;
@@ -80,7 +85,7 @@ export default class SolidViewport extends React.PureComponent<{
 	}
 
 	public getViewportInfos() {
-		return this.viewport.children!;
+		return this.viewport.children;
 	}
 
 	public getSortedIndexesList(
@@ -90,7 +95,7 @@ export default class SolidViewport extends React.PureComponent<{
 			if (Array.isArray(target)) {
 				return target;
 			}
-			return this.getIndexes(target!);
+			return this.getIndexes(target);
 		});
 
 		indexesList.sort((a, b) => {
@@ -111,7 +116,7 @@ export default class SolidViewport extends React.PureComponent<{
 	}
 
 	public getSortedTargets(targets: Array<string | HTMLElement | SVGElement>) {
-		return this.getSortedInfos(targets).map((info) => info.el!);
+		return this.getSortedInfos(targets).map((info) => info.el);
 	}
 
 	public getSortedInfos(targets: Array<string | HTMLElement | SVGElement>) {
@@ -121,14 +126,14 @@ export default class SolidViewport extends React.PureComponent<{
 	}
 
 	public getIndexes(target: HTMLElement | SVGElement | string): number[] {
-		const info = (
-			isString(target) ? this.getInfo(target) : this.getInfoByElement(target)
-		)!;
+		const info = isString(target)
+			? this.getInfo(target)
+			: this.getInfoByElement(target);
 
 		if (!info.scopeId) {
 			return [];
 		}
-		const parentInfo = this.getInfo(info.scopeId)!;
+		const parentInfo = this.getInfo(info.scopeId);
 
 		return [
 			...this.getIndexes(info.scopeId),
@@ -151,17 +156,23 @@ export default class SolidViewport extends React.PureComponent<{
 
 	public getInfoByIndexes(indexes: number[]) {
 		return indexes.reduce((info: ElementInfo, index: number) => {
-			return info.children![index];
+			if (isNil(info.children)) {
+				return info; // TODO check this issue
+			}
+			return info.children[index];
 		}, this.viewport);
 	}
 
 	public getNextInfo(id: string) {
 		const info = this.getInfo(id);
-		const parentInfo = this.getInfo(info.scopeId!)!;
-		const parentChildren = parentInfo.children!;
-		const index = parentChildren.indexOf(info);
+		if (!isNil(info) && info.scopeId) {
+			const parentInfo = this.getInfo(info.scopeId);
+			const parentChildren = parentInfo.children!;
+			const index = parentChildren.indexOf(info);
+			return parentChildren[index + 1];
+		}
 
-		return parentChildren[index + 1];
+		return undefined;
 	}
 
 	public getIndex(id: string | HTMLElement) {
@@ -185,9 +196,7 @@ export default class SolidViewport extends React.PureComponent<{
 		targets: Array<HTMLElement | SVGElement>,
 	): Promise<RemovedInfo> {
 		const removedChildren = this.getSortedTargets(targets)
-			.map((target) => {
-				return this.getInfoByElement(target);
-			})
+			.map((target) => this.getInfoByElement(target))
 			.filter((info) => info) as ElementInfo[];
 		const indexes = removedChildren.map((info) => this.getIndex(info.id!));
 		const removed = this.unregisterChildren(removedChildren);
@@ -304,13 +313,13 @@ export default class SolidViewport extends React.PureComponent<{
 		const { style } = this.props;
 		return (
 			<div
-				className={"editor-viewport-container"}
+				className="editor-viewport-container"
 				onBlur={this.props.onBlur}
 				style={style}
 			>
 				{this.props.children}
 				<div
-					className={"editor-viewport"}
+					className="editor-viewport"
 					{...{ [SOLIDUI_ELEMENT_ID]: "viewport" }}
 					ref={this.viewportRef}
 				>
@@ -337,7 +346,8 @@ export default class SolidViewport extends React.PureComponent<{
 					props,
 					...renderedChildren,
 				) as SolidViewJSXElement;
-			} else if (isVisualFunction(jsx)) {
+			}
+			if (isVisualFunction(jsx)) {
 				props.scenaElementId = id;
 				props.scenaAttrs = info.attrs || {};
 				return React.createElement(
@@ -345,7 +355,8 @@ export default class SolidViewport extends React.PureComponent<{
 					props,
 					...renderedChildren,
 				) as SolidViewJSXElement;
-			} else if (isString(jsx.type)) {
+			}
+			if (isString(jsx.type)) {
 				props[SOLIDUI_ELEMENT_ID] = id;
 			} else {
 				props[SOLIDUI_ELEMENT_ID] = id;
@@ -363,3 +374,5 @@ export default class SolidViewport extends React.PureComponent<{
 		});
 	}
 }
+
+export default SolidViewport;

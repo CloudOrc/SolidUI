@@ -17,10 +17,10 @@
 
 import React from "react";
 
-export default function () {
+export default function Home() {
 	return (
 		<div
-  style={{
+			style={{
 				position: "relative",
 				width: "100%",
 				height: "100%",

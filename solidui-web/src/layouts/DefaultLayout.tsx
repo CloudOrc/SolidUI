@@ -20,7 +20,7 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useCookie } from "react-use";
 import type { MenuProps } from "antd";
 import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
-import { Menu, Dropdown, Button, Avatar } from "antd";
+import { Menu, Dropdown, Avatar } from "antd";
 import Apis from "@/apis";
 import "./DefaultLayout.less";
 
@@ -43,13 +43,11 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-	getItem("Project", "/project", <PieChartOutlined />),
-	getItem("Datasource", "/datasource", <DesktopOutlined />),
+	getItem("Project", "/project", <PieChartOutlined rev={1} />),
+	getItem("Datasource", "/datasource", <DesktopOutlined rev={1} />),
 ];
 
-export interface DefaultLayoutProps {}
-
-export default function () {
+export default function DefaultLayout() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [value, updateCookie, deleteCookie] = useCookie(
@@ -60,17 +58,17 @@ export default function () {
 	const [collapse, setCollapse] = useState<boolean>(false);
 
 	useEffect(() => {
-		if (null === value || undefined === value || "" === value) {
+		if (value === null || undefined === value || value === "") {
 			navigate("/login");
 			return;
 		}
-		let { pathname } = location;
+		const { pathname } = location;
 		setSelectKeys([pathname]);
-		return () => {};
+		// return () => {};
 	}, []);
 
 	async function handleMenuClick(item: any) {
-		let { key } = item;
+		const { key } = item;
 		setSelectKeys([key]);
 		navigate(key);
 	}
@@ -116,7 +114,7 @@ export default function () {
 									width: 100,
 								},
 								onClick: async () => {
-									let res = await Apis.user.logout();
+									const res = await Apis.user.logout();
 									if (res.ok) {
 										deleteCookie();
 										navigate("/login");

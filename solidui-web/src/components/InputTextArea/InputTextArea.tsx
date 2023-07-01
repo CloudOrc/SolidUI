@@ -27,9 +27,9 @@ export interface InputTextareaProps {
 	onChange?: (value: string) => void;
 }
 
-export default function (props: InputTextareaProps) {
+export default function InputTextArea(props: InputTextareaProps) {
 	const [value, setValue] = useState(props.value || "");
-	let _style: React.CSSProperties = {
+	const _style: React.CSSProperties = {
 		padding: "2px 4px",
 		border: "1px solid rgba(0, 0, 0, 0.45)",
 		...props.style,
@@ -45,9 +45,11 @@ export default function (props: InputTextareaProps) {
 			style={_style}
 			value={value}
 			onChange={(e) => {
-				let value = e.target.value || "";
-				setValue(value);
-				props.onChange && props.onChange(value);
+				const mValue = e.target.value || "";
+				setValue(mValue);
+				if (props.onChange) {
+					props.onChange(mValue);
+				}
 			}}
 		/>
 	);

@@ -16,6 +16,8 @@
  */
 
 import React from "react";
+import { useUpdate } from "react-use";
+import { set, get, cloneDeep } from "lodash-es";
 import {
 	LeftRightExpander,
 	PropertyElement,
@@ -26,14 +28,10 @@ import {
 	ButtonGroupRadio,
 	Select,
 } from "@/components";
-import { useUpdate } from "react-use";
 import { eventbus, mm } from "@/utils";
-import { set, get, update, cloneDeep } from "lodash-es";
-
-export interface TitleStylePropertiesProps {}
 
 function getPropertyValue(propertyKey: string) {
-	let view = mm.getCurrentView();
+	const view = mm.getCurrentView();
 	if (view) {
 		return get(view, propertyKey);
 	}
@@ -46,7 +44,7 @@ function updateViewAndEmitEvent(
 ): Promise<any> {
 	let view = mm.getCurrentView();
 	if (view) {
-		let clonedView = cloneDeep(view);
+		const clonedView = cloneDeep(view);
 
 		set(clonedView, propertyKey, propertyValue);
 		// set(view, propertyKey, propertyValue);
@@ -60,7 +58,7 @@ function updateViewAndEmitEvent(
 	return Promise.resolve();
 }
 
-export default function (props: TitleStylePropertiesProps) {
+export default function () {
 	const forceUpdate = useUpdate();
 	return (
 		<LeftRightExpander
@@ -98,7 +96,7 @@ export default function (props: TitleStylePropertiesProps) {
 			<PropertyElement label="Font Family" labelWidth={120}>
 				<Select
 					showSearch={false}
-					value={"Tahoma"}
+					value="Tahoma"
 					items={[
 						{
 							label: "Arial",
@@ -145,7 +143,7 @@ export default function (props: TitleStylePropertiesProps) {
 
 			<PropertyElement label="Text Align" labelWidth={120}>
 				<ButtonGroupRadio
-					value={"center"}
+					value="center"
 					items={[
 						{
 							text: "Left",
