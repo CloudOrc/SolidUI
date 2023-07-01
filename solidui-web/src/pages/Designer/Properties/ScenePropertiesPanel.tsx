@@ -24,31 +24,27 @@ import {
 } from "@/components";
 import { mm, eventbus } from "@/utils";
 
-export interface PagePropertiesPanelProps {}
-
-export default function (props: PagePropertiesPanelProps) {
+export default function ScenePropertiesPanel() {
 	const project = mm.getModel();
 	return (
-		<>
-			<LeftRightExpander expanded showCheckbox={false} title="Project">
-				<PropertyElement label="Width" labelWidth={50}>
-					<InputText value={project?.title || ""} />
-				</PropertyElement>
+		<LeftRightExpander expanded showCheckbox={false} title="Project">
+			<PropertyElement label="Width" labelWidth={50}>
+				<InputText value={project?.title || ""} />
+			</PropertyElement>
 
-				<PropertyElement label="Height" labelWidth={50}>
-					<InputNumber
-						value={768}
-						min={400}
-						step={1}
-						max={3600}
-						onUpdateValue={(value) => {
-							eventbus.emit("onPageHeightChange", {
-								value: value,
-							});
-						}}
-					/>
-				</PropertyElement>
-			</LeftRightExpander>
-		</>
+			<PropertyElement label="Height" labelWidth={50}>
+				<InputNumber
+					value={768}
+					min={400}
+					step={1}
+					max={3600}
+					onUpdateValue={(value) => {
+						eventbus.emit("onPageHeightChange", {
+							value,
+						});
+					}}
+				/>
+			</PropertyElement>
+		</LeftRightExpander>
 	);
 }

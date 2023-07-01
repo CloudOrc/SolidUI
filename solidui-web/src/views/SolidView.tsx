@@ -17,17 +17,15 @@
 
 import React from "react";
 import { Emitter } from "mitt";
+import { set, cloneDeep } from "lodash-es";
 import {
 	EventBusType,
-	OnDragEventData,
-	OnResizeEventData,
 	OnReiszeGroupEventData,
 	OnUpdateViewPropertyValueEventData,
 	onDataSetChangeEventData,
 } from "@/types/eventbus";
 
-import { SolidModelDataType, SolidViewDataType } from "@/types/solid";
-import { set, cloneDeep } from "lodash-es";
+import { SolidViewDataType } from "@/types/solid";
 import Apis from "@/apis";
 import { ApiResult } from "@/types";
 
@@ -37,7 +35,7 @@ export interface SolidViewProps {
 	style?: React.CSSProperties;
 	viewModel: SolidViewDataType;
 	"solidui-element-id"?: string;
-	eventbus?: Emitter<EventBusType>;
+	eventbus: Emitter<EventBusType>;
 	scenaAttrs?: any;
 }
 
@@ -50,18 +48,24 @@ export default abstract class SolidView<
 	S extends SolidViewState = SolidViewState,
 > extends React.Component<T, S> {
 	dataSheet: any[] = [];
-	xs: { label: string }[] = [];
-	ys: { label: string }[] = [];
+
+	// xs: { label: string }[] = [];
+
+	// ys: { label: string }[] = [];
+
 	private viewRef = React.createRef<HTMLDivElement>();
+
 	private vm: SolidViewDataType;
+
 	private id: string;
+
 	private eventbus: Emitter<EventBusType>;
 
 	protected constructor(props: T) {
 		super(props);
 
 		this.id = props["solidui-element-id"] as string;
-		this.eventbus = props.eventbus!;
+		this.eventbus = props.eventbus;
 		this.vm = this.props.viewModel || {};
 
 		// abstract methods
@@ -77,22 +81,26 @@ export default abstract class SolidView<
 
 	/// / ------------------------------------------------------------------
 	/// / abstract methods
-	protected abstract renderView(): React.ReactNode;
 	protected abstract baseViewDidMount(): void;
+
 	protected abstract baseViewWillUnmount(): void;
+
 	protected abstract reRender(): void;
+
 	protected abstract resize(): void;
+
+	protected abstract renderView(): React.ReactNode;
 
 	/// / ------------------------------------------------------------------
 	/// / protected methods
 	protected renderTitle(): React.ReactNode {
 		// let viewModel = this.props.viewModel;
 		// let viewModel = this.state.viewModel;
-		let viewModel = this.vm;
-		let options = viewModel.options || {};
-		let title = options.title || {};
-		let style = title.style || {};
-		let { show } = title;
+		const viewModel = this.vm;
+		const options = viewModel.options || {};
+		const title = options.title || {};
+		const style = title.style || {};
+		const { show } = title;
 		if (show) {
 			return (
 				<div className="solid-view-title" style={style}>
@@ -105,22 +113,18 @@ export default abstract class SolidView<
 
 	/// / ------------------------------------------------------------------
 	/// / private methods
-	private readonly fetchDataAndReRender = async () => {
-		await this.fetchData();
-		this.reRender();
-	};
 
 	private readonly fetchData = async () => {
-		let viewModel = this.vm;
-		let data = viewModel.data || {};
-		let dsId = data.dataSourceId;
-		let { sql } = data;
+		const viewModel = this.vm;
+		const data = viewModel.data || {};
+		const dsId = data.dataSourceId;
+		const { sql } = data;
 		if (!dsId || !sql) {
 			this.dataSheet = viewModel.data.dataset || [];
 			return;
 		}
 
-		let res: ApiResult<any[][]> = await Apis.datasource.querySql({
+		const res: ApiResult<any[][]> = await Apis.datasource.querySql({
 			dataSourceName: data.dataSourceName,
 			typeName: data.dataSourceTypeName,
 			sql,
@@ -143,9 +147,9 @@ export default abstract class SolidView<
 		this.eventbus.on("onDataSetChange", this.handleDataSetChange);
 	}
 
-	protected handleDrag = (evt: OnDragEventData) => {};
+	// protected handleDrag = () => {};
 
-	protected handleResize = (evt: OnResizeEventData) => {
+	protected handleResize = () => {
 		this.resize();
 	};
 
@@ -165,18 +169,23 @@ export default abstract class SolidView<
 	}
 
 	protected getYs(): { label: string }[] {
-		let ys: { label: string }[] = [];
+		const ys: { label: string }[] = [];
 		for (let i = 1; i < this.dataSheet.length; i++) {
 			ys.push({ label: this.dataSheet[0][i] });
 		}
 		return ys;
 	}
 
+	private readonly fetchDataAndReRender = async () => {
+		await this.fetchData();
+		this.reRender();
+	};
+
 	protected handleUpdateViewPropertyValue = (
 		evt: OnUpdateViewPropertyValueEventData,
 	) => {
 		if (this.id === evt.id) {
-			let clonedVM = cloneDeep(this.vm);
+			const clonedVM = cloneDeep(this.vm);
 			set(clonedVM, evt.property, evt.value);
 			this.vm = clonedVM;
 			this.forceUpdate();
@@ -185,34 +194,37 @@ export default abstract class SolidView<
 	};
 
 	protected handleResizeGroup = (evt: OnReiszeGroupEventData) => {
-		for (let key in evt) {
+		Object.keys(evt).forEach((key) => {
 			if (key === this.id) {
 				this.resize();
-				break;
 			}
-		}
+		});
+
+		//  no-restricted-syntax
+		// for (const key in evt) {
+		// 	if (key === this.id) {
+		// 		this.resize();
+		// 		break;
+		// 	}
+		// }
 	};
 
 	async componentWillUnmount() {}
 
-	async componentDidUpdate(
-		prevProps: Readonly<T>,
-		prevState: Readonly<{}>,
-		snapshot?: any,
-	) {
+	async componentDidUpdate() // snapshot?: any, // prevState: Readonly<{}>, // prevProps: Readonly<T>,
+	{
 		// let viewModel = this.state.viewModel;
-		let viewModel = this.vm;
+		// const viewModel = this.vm;
 		// let viewModel = this.props.viewModel;
 		// let metadata = viewModel.metadata || {};
 		// if (viewModel.reFetch) {
 		// 	await this.fetchData();
 		// }
-
 		this.reRender();
 	}
 
 	render() {
-		let { viewModel, className, style, eventbus, scenaAttrs, ...restProps } =
+		const { viewModel, className, style, eventbus, scenaAttrs, ...restProps } =
 			this.props;
 		return (
 			<div

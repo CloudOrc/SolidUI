@@ -16,17 +16,17 @@
  */
 
 import React, { useEffect, useState } from "react";
+import { useUpdate } from "react-use";
 import { eventbus, mm } from "@/utils";
 import {
 	OnSelectPageEventData,
 	OnModelLoadEventData,
 	OnSelectViewEventData,
-	OnDrawEventData,
+	// OnDrawEventData,
 	OnDrawCompleteEventData,
 	OnRemoveViewCompleteEventData,
 	OnUpdateViewPropertyValueEventData,
 } from "@/types";
-import { useUpdate } from "react-use";
 
 type ViewStateDataType = {
 	selected: boolean;
@@ -46,7 +46,7 @@ function useOutline() {
 	}
 
 	function __handleModelLoad(evt: OnModelLoadEventData) {
-		let { model } = evt;
+		const { model } = evt;
 		forceUpdate();
 	}
 
@@ -59,12 +59,14 @@ function useOutline() {
 	}
 
 	function __handleRemoveViewComplete(evt: OnRemoveViewCompleteEventData) {
+		setLoading(true);
 		if (evt.source !== "viewlist") {
 			viewStatesMap.current.forEach((viewState) => {
 				viewState.selected = false;
 			});
 			forceUpdate();
 		}
+		setLoading(false);
 	}
 
 	function __handleUpdateViewPropertyValue(
@@ -74,7 +76,7 @@ function useOutline() {
 	}
 
 	function selectViewById(id: string) {
-		let view = mm.getView(id);
+		const view = mm.getView(id);
 		if (view) {
 			viewStatesMap.current.forEach((viewState) => {
 				viewState.selected = false;

@@ -16,15 +16,12 @@
  */
 
 import React, { useEffect, useState, useRef } from "react";
-import { message, Modal } from "antd";
-import Apis from "@/apis";
+// import { Modal } from "antd";
 import { useUpdate } from "react-use";
-import { ApiResult, DataSourceTypeDataType, DataSourceDataType } from "@/types";
 import { find, isNil, cloneDeep } from "lodash-es";
+import Apis from "@/apis";
+import { ApiResult, DataSourceTypeDataType, DataSourceDataType } from "@/types";
 import { eventbus, mm } from "@/utils";
-import { OnSelectViewEventData } from "@/types/eventbus";
-
-const { confirm } = Modal;
 
 interface Option {
 	key: string;
@@ -35,13 +32,13 @@ interface Option {
 	loading?: boolean;
 }
 
-type InitialData = {
-	dataSources?: DataSourceDataType[];
-	databases?: any[];
-	tables?: any[];
-};
+// type InitialData = {
+// 	dataSources?: DataSourceDataType[];
+// 	databases?: any[];
+// 	tables?: any[];
+// };
 
-function useDataProperties(initialData: InitialData = {}) {
+function useDataProperties() {
 	const forceUpdate = useUpdate();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [columns, setColumns] = useState<string[]>([]);
@@ -74,39 +71,39 @@ function useDataProperties(initialData: InitialData = {}) {
 		};
 	}, []);
 
-	function handleSelectViewEvent(data: OnSelectViewEventData) {
+	function handleSelectViewEvent() {
 		load();
 	}
 
 	async function load() {
-		let view = mm.getCurrentView();
+		const view = mm.getCurrentView();
 		if (isNil(view)) {
 			return;
 		}
 		setLoading(true);
-		let viewData = view?.data || {
+		const viewData = view?.data || {
 			dataSourceId: undefined,
 			table: undefined,
 			sql: undefined,
 		};
 
-		let res: ApiResult<DataSourceTypeDataType[]> =
+		const res: ApiResult<DataSourceTypeDataType[]> =
 			await Apis.datasource.types();
 		if (res.ok) {
-			let dataSourceTypes = res.data || [];
-			let res2: ApiResult<DataSourceDataType> = await Apis.datasource.query({
+			const mDataSourceTypes = res.data || [];
+			const res2: ApiResult<DataSourceDataType> = await Apis.datasource.query({
 				pageNo: 1,
 				pageSize: 10000,
 				expire: false,
 				name: "",
 			});
 			if (res2.ok) {
-				let data = res2.data || ({} as any);
-				let records: DataSourceDataType[] = data.totalList || [];
-				let dataSourceOptions: Option[] = [];
+				const data = res2.data || ({} as any);
+				const records: DataSourceDataType[] = data.totalList || [];
+				const mDataSourceOptions: Option[] = [];
 				records.forEach((item: any) => {
-					item.key = item.id;
-					dataSourceOptions.push({
+					// item.key = item.id;
+					mDataSourceOptions.push({
 						key: `${item.id}`,
 						label: item.dataSourceName,
 						value: item.id,
@@ -115,12 +112,12 @@ function useDataProperties(initialData: InitialData = {}) {
 					});
 				});
 
-				setDataSourceOptions(dataSourceOptions);
-				setDataSourceTypes(dataSourceTypes);
+				setDataSourceOptions(mDataSourceOptions);
+				setDataSourceTypes(mDataSourceTypes);
 				setDataSources(records || []);
 				setColumns([]);
 				setRows([]);
-				let optionVals = [];
+				const optionVals = [];
 				if (viewData.dataSourceId) {
 					optionVals.push(viewData.dataSourceId);
 				}
@@ -129,13 +126,13 @@ function useDataProperties(initialData: InitialData = {}) {
 				}
 				setSelectedDataSourceOptions(optionVals);
 
-				let target = find(records, (d) => d.id === viewData.dataSourceId);
+				const target = find(records, (d) => d.id === viewData.dataSourceId);
 				if (target === null || undefined === target) {
 					setLoading(false);
 					return;
 				}
-				let dsType = find(
-					dataSourceTypes,
+				const dsType = find(
+					mDataSourceTypes,
 					(d) => d.id === `${target?.dataSourceTypeId}`,
 				);
 				if (dsType === null || undefined === dsType) {
@@ -184,11 +181,11 @@ function useDataProperties(initialData: InitialData = {}) {
 	// }
 
 	async function queryTables(id: string) {
-		let target = find(dataSources, (d) => d.id === id);
+		const target = find(dataSources, (d) => d.id === id);
 		if (target === null || undefined === target) {
 			return;
 		}
-		let dsType = find(
+		const dsType = find(
 			dataSourceTypes,
 			(d) => d.id === `${target?.dataSourceTypeId}`,
 		);
@@ -196,15 +193,15 @@ function useDataProperties(initialData: InitialData = {}) {
 			return;
 		}
 		dsTypeIdRef.current = `${target?.dataSourceTypeId}`;
-		let res: ApiResult<any> = await Apis.datasource.dbs({
+		const res: ApiResult<any> = await Apis.datasource.dbs({
 			dataSourceName: target.dataSourceName,
 			typeName: dsType.classifier,
 		});
 		if (res.ok) {
-			let data = res.data || ({} as any);
-			let records = data || [];
-			let dsOptions = cloneDeep(dataSourceOptions);
-			let targetDsOption = find(dsOptions, (ds) => ds.value === id);
+			const data = res.data || ({} as any);
+			const records = data || [];
+			const dsOptions = cloneDeep(dataSourceOptions);
+			const targetDsOption = find(dsOptions, (ds) => ds.value === id);
 			records.forEach((item: any) => {
 				targetDsOption?.children.push({
 					key: item,
@@ -216,11 +213,12 @@ function useDataProperties(initialData: InitialData = {}) {
 			});
 
 			/// / dataSourceId
-			if (mm.getCurrentView()) {
-				mm.getCurrentView()!.data.dataSourceId = id;
-				mm.getCurrentView()!.data.dataSourceName = target.dataSourceName;
-				mm.getCurrentView()!.data.dataSourceTypeId = dsTypeIdRef.current;
-				mm.getCurrentView()!.data.dataSourceTypeName = dsType.name;
+			const currentView = mm.getCurrentView();
+			if (!isNil(currentView)) {
+				currentView.data.dataSourceId = id;
+				currentView.data.dataSourceName = target.dataSourceName;
+				currentView.data.dataSourceTypeId = dsTypeIdRef.current;
+				currentView.data.dataSourceTypeName = dsType.name;
 			}
 
 			setDataSourceOptions(dsOptions);
@@ -232,11 +230,11 @@ function useDataProperties(initialData: InitialData = {}) {
 	}
 
 	async function querySql() {
-		let view = mm.getCurrentView();
+		const view = mm.getCurrentView();
 		if (view === null || undefined === view) {
 			return;
 		}
-		let data = view.data || ({} as any);
+		const data = view.data || ({} as any);
 		if (isNil(selectedDataSource)) {
 			return;
 		}
@@ -246,18 +244,18 @@ function useDataProperties(initialData: InitialData = {}) {
 			sql: data.sql || "",
 		});
 		if (res.ok) {
-			let data = (res.data || []) as any[];
-			let originData = cloneDeep(data);
-			if (data.length > 0) {
-				let columns = data.shift();
-				setColumns(columns);
-				setRows(data);
+			const mData = (res.data || []) as any[];
+			const originData = cloneDeep(mData);
+			if (mData.length > 0) {
+				const mColumns = mData.shift();
+				setColumns(mColumns);
+				setRows(mData);
 			}
 
-			let view = mm.getCurrentView();
-			if (view !== null && undefined !== view && view.id) {
+			const mView = mm.getCurrentView();
+			if (mView !== null && undefined !== mView && mView.id) {
 				eventbus.emit("onDataSetChange", {
-					id: view.id,
+					id: mView.id,
 					data: originData,
 				});
 			}
@@ -265,8 +263,9 @@ function useDataProperties(initialData: InitialData = {}) {
 	}
 
 	async function changeSql(content: string) {
-		if (mm.getCurrentView()) {
-			mm.getCurrentView()!.data.sql = content;
+		const currentView = mm.getCurrentView();
+		if (!isNil(currentView)) {
+			currentView.data.sql = content;
 		}
 		forceUpdate();
 	}
@@ -274,14 +273,15 @@ function useDataProperties(initialData: InitialData = {}) {
 	// TODO type
 	async function changeDsSelections(value: any[], selectOptions: any[]) {
 		setSelectedDataSourceOptions(value);
+		const currentView = mm.getCurrentView();
 		if (
 			selectOptions !== null &&
 			undefined !== selectOptions &&
 			selectOptions.length === 2 &&
-			mm.getCurrentView()
+			!isNil(currentView)
 		) {
-			let val = selectOptions[1].value;
-			mm.getCurrentView()!.data.table = val;
+			const val = selectOptions[1].value;
+			currentView.data.table = val;
 		}
 	}
 

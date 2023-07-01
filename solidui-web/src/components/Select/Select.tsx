@@ -27,18 +27,19 @@ export interface SelectProps extends Pick<RcSelectProps, "showSearch"> {
 	items?: any[];
 }
 
-export default function (props: SelectProps) {
-	let { value, items = [], showSearch } = props;
+export default function SolidSelect(props: SelectProps) {
+	const { value, items = [], showSearch } = props;
 
 	function renderOptions() {
-		let nodes: React.ReactNode[] = [];
+		const nodes: React.ReactNode[] = [];
 		items.forEach((item, index) => {
-			let { value, label } = item;
+			const { value: mValue, label } = item;
 			nodes.push(
 				<Select.Option
-  key={index}
-  value={value}
-  className="solid-select__option"
+					// key={index}
+					key={item.key}
+					value={mValue}
+					className="solid-select__option"
 				>
 					<div className="select-option__item">{label}</div>
 				</Select.Option>,
@@ -53,22 +54,22 @@ export default function (props: SelectProps) {
 
 	return (
 		<Select
-  className="solid-select"
-  value={value}
-  showSearch={showSearch}
+			className="solid-select"
+			value={value}
+			showSearch={showSearch}
 			// showArrow
 			// allowClear
 			// @ts-ignore
 			// multiple={false}
-  dropdownStyle={{
+			dropdownStyle={{
 				zIndex: 200,
 				borderColor: "rgba(0, 0, 0, 0.25)",
 			}}
-  dropdownRender={renderDropdown}
+			dropdownRender={renderDropdown}
 			// optionLabelProp="displayLabel"
 			// labelInValue={true}
 			// loading={true}
-  clearIcon
+			clearIcon
 		>
 			{renderOptions()}
 		</Select>

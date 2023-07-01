@@ -16,16 +16,11 @@
  */
 
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import Apis from "@/apis";
 import { useUpdate } from "react-use";
 import { useForm } from "antd/lib/form/Form";
+import Apis from "@/apis";
 
-type InitialData = {
-	projects?: any[];
-};
-
-function useProject(InitialData: InitialData = {}) {
+function useProject() {
 	const forceUpdate = useUpdate();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [projects, setProjects] = useState<any[]>([]);
@@ -51,13 +46,13 @@ function useProject(InitialData: InitialData = {}) {
 
 	async function query(params: any = { pageNo: 1, pageSize: 10 }) {
 		setLoading(true);
-		let res = await Apis.project.query(params);
+		const res = await Apis.project.query(params);
 		if (res.ok) {
-			let data = res.data || ({} as any);
-			let current = data.currentPage || 1;
-			let size = data.pageSize || 10;
-			let total = data.total || 0;
-			let records = data.totalList || [];
+			const data = res.data || ({} as any);
+			const current = data.currentPage || 1;
+			const size = data.pageSize || 10;
+			const total = data.total || 0;
+			const records = data.totalList || [];
 			records.forEach((item: any) => {
 				popupConverMap.current.set(`${item.id}`, false);
 			});
@@ -72,7 +67,7 @@ function useProject(InitialData: InitialData = {}) {
 	}
 
 	async function create(values: { name: string; description?: string }) {
-		let res = await Apis.project.create({
+		const res = await Apis.project.create({
 			projectName: values.name,
 			description: values.description,
 		});
@@ -84,18 +79,18 @@ function useProject(InitialData: InitialData = {}) {
 	}
 
 	async function del(id: string) {
-		let res = await Apis.project.delete(id);
+		const res = await Apis.project.delete(id);
 		if (res.ok) {
 			query();
 		}
 	}
 
 	async function resetForm() {
-		form && form.resetFields();
+		form.resetFields();
 	}
 
 	async function toggleCover(id: string, popup: boolean) {
-		popupConverMap.current && popupConverMap.current.set(id, popup);
+		popupConverMap.current.set(id, popup);
 		forceUpdate();
 	}
 

@@ -16,11 +16,12 @@
  */
 
 import React, { useEffect } from "react";
-import { LeftRightExpander, PropertyElement, InputText } from "@/components";
 import { useUpdate } from "react-use";
+import { LeftRightExpander, PropertyElement, InputText } from "@/components";
 import { eventbus, mm } from "@/utils";
+import { isNil } from "lodash-es";
 
-export default function () {
+export default function StyleProperties() {
 	const forceUpdate = useUpdate();
 
 	useEffect(() => {
@@ -43,9 +44,13 @@ export default function () {
 				<InputText
 					value={mm.getCurrentView()?.title || ""}
 					onChange={(e) => {
-						mm.getCurrentView()!.title = e || "";
+						const currentView = mm.getCurrentView();
+						if (isNil(currentView)) {
+							return;
+						}
+						currentView.title = e || "";
 						eventbus.emit("onUpdateViewPropertyValue", {
-							id: mm.getCurrentView()!.id,
+							id: currentView.id,
 							property: "title",
 							value: e || "",
 						});

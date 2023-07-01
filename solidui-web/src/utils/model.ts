@@ -15,19 +15,15 @@
  * limitations under the License.
  */
 
-import {
-	SolidModelDataType,
-	SolidPageDataType,
-	SolidViewDataType,
-} from "@/types/solid";
-import { isNil } from "lodash-es";
+// import { isNil } from "lodash-es";
+// import { SolidModelDataType, SolidPageDataType } from "@/types/solid";
 
-export function getPage(
-	model: SolidModelDataType,
-	id: string,
-): SolidPageDataType | undefined {
-	if (isNil(model) || isNil(id)) {
-		return undefined;
-	}
-	let scenes = model.scenas || [];
-}
+// export function getPage(
+// 	model: SolidModelDataType,
+// 	id: string,
+// ): SolidPageDataType | undefined {
+// 	if (isNil(model) || isNil(id)) {
+// 		return undefined;
+// 	}
+// 	let scenes = model.scenas || [];
+// }

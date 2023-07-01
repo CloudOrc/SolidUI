@@ -17,11 +17,11 @@
 
 import * as React from "react";
 import classNames from "classnames";
+import { Hue, Saturation } from "react-color/lib/components/common";
+import { CustomPicker } from "react-color";
 import ColorPickerFields from "./Fields";
 import Pointer from "./Pointer";
 import PointerCircle from "./PointCircle";
-import { Hue, Saturation } from "react-color/lib/components/common";
-import { CustomPicker } from "react-color";
 import "./ColorPicker.less";
 
 export interface ColorPickerProps /* extends CustomPickerProps<any> */ {
@@ -35,7 +35,7 @@ export interface ColorPickerProps /* extends CustomPickerProps<any> */ {
 }
 
 function ColorPicker(props: ColorPickerProps) {
-	let {
+	const {
 		prefixCls = "solid",
 		className,
 		// value,

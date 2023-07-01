@@ -18,19 +18,6 @@
 import React from "react";
 import StyleProperties from "./styles/StyleProperties";
 
-export interface StylePropertiesPanelProps {}
-
-export default function (props: StylePropertiesPanelProps) {
-	return (
-		<>
-			<StyleProperties />
-			{/*
-			<StyleTitleProperties />
-			 <StyleBasicProperties
-				style={{
-					top: "-1px",
-				}}
-			/> */}
-		</>
-	);
+export default function StylePropertiesPanel() {
+	return <StyleProperties />;
 }

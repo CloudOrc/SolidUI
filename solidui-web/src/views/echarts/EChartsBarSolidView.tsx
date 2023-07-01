@@ -15,9 +15,6 @@
  * limitations under the License.
  */
 
-import EChartsBaseSolidView, {
-	EChartsBaseSolidViewProps,
-} from "./EChartsBaseSolidView";
 import {
 	SeriesOption,
 	XAXisComponentOption,
@@ -26,24 +23,21 @@ import {
 	TooltipComponentOption,
 } from "echarts";
 import { findIndex, head } from "lodash-es";
+import EChartsBaseSolidView, {
+	EChartsBaseSolidViewProps,
+} from "./EChartsBaseSolidView";
 
 export type SolidEChartsBarViewProps = EChartsBaseSolidViewProps;
 
 export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChartsBarViewProps> {
-	constructor(props: SolidEChartsBarViewProps) {
-		super(props);
-	}
-
 	private getSeries(y: any): SeriesOption | undefined {
-		let row0 = this.dataSheet[0];
+		const row0 = this.dataSheet[0];
 		if (!row0) return undefined;
 
-		let xIdx = findIndex(row0, (o) => {
-			return o === y.label;
-		});
+		const xIdx = findIndex(row0, (o) => o === y.label);
 		if (xIdx === -1) return undefined;
 
-		let seriesData: any[] = [];
+		const seriesData: any[] = [];
 		this.dataSheet.forEach((row, idx) => {
 			if (idx === 0) return;
 
@@ -64,19 +58,20 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 		| XAXisComponentOption
 		| XAXisComponentOption[]
 		| undefined {
-		let headRow = head(this.dataSheet);
+		const headRow = head(this.dataSheet);
 		if (!headRow) return {};
-		let xs = this.getXs();
+		const xs = this.getXs();
 		if (!xs || xs.length === 0) return {};
 		// let viewDimensions = get(this.props.viewModel, "data.xs", []) as any[];
 		// let headDimension = head(viewDimensions);
-		let headDimension = head(xs);
-		let viewDimensionIdx = findIndex(headRow, (o) => {
-			return o === headDimension!.label;
-		});
+		const headDimension = head(xs);
+		const viewDimensionIdx = findIndex(
+			headRow,
+			(o) => o === headDimension!.label,
+		);
 		if (viewDimensionIdx === -1) return {};
 
-		let xAxisData: any[] = [];
+		const xAxisData: any[] = [];
 		this.dataSheet.forEach((row, idx) => {
 			if (idx === 0) return;
 
@@ -85,8 +80,8 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 			});
 		});
 
-		let vm = this.props.viewModel as any;
-		let option = vm.option || {};
+		const vm = this.props.viewModel as any;
+		const option = vm.option || {};
 
 		return {
 			type: "category",
@@ -97,10 +92,10 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 
 	protected getSeriesOption(): SeriesOption[] | undefined {
 		// let xs = get(this.props.viewModel, "data.ys", []) as any[];
-		let ys = this.getYs();
-		let seriesList: SeriesOption[] = [];
+		const ys = this.getYs();
+		const seriesList: SeriesOption[] = [];
 		ys.forEach((y) => {
-			let series = this.getSeries(y);
+			const series = this.getSeries(y);
 			if (series) {
 				seriesList.push(series);
 			}
@@ -113,15 +108,15 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 		| LegendComponentOption
 		| LegendComponentOption[]
 		| undefined {
-		let vm = this.props.viewModel as any;
-		let option = vm.option || {};
+		const vm = this.props.viewModel as any;
+		const option = vm.option || {};
 		return option.legend;
 	}
 
 	protected getGridOption(): GridComponentOption | GridComponentOption[] {
-		let baseGridOptions = super.getGridOption();
-		let vm = this.props.viewModel as any;
-		let option = vm.option || {};
+		const baseGridOptions = super.getGridOption();
+		const vm = this.props.viewModel as any;
+		const option = vm.option || {};
 		return { ...baseGridOptions, ...option.grid };
 	}
 
@@ -129,8 +124,8 @@ export default class EChartsBarSolidView extends EChartsBaseSolidView<SolidEChar
 		| TooltipComponentOption
 		| TooltipComponentOption[]
 		| undefined {
-		let vm = this.props.viewModel as any;
-		let option = vm.option || {};
+		const vm = this.props.viewModel as any;
+		const option = vm.option || {};
 		return option.tooltip || {};
 	}
 }

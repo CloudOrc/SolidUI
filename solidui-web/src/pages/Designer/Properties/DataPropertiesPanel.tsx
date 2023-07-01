@@ -15,33 +15,24 @@
  * limitations under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Row, Col, Cascader, Button, Input } from "antd";
-import { FixedSizeGrid as Grid, FixedSizeList as List } from "react-window";
 import {
 	StickyTable,
 	Row as TableRow,
 	Cell as TableCell,
 	// @ts-ignore
 } from "react-sticky-table";
-import Apis from "@/apis";
-import { ApiResult, DataSourceCascaderDataType } from "@/types";
-import useDataProperties from "./useDataProperties";
 import { mm } from "@/utils";
+import useDataProperties from "./useDataProperties";
 
 const { TextArea } = Input;
 
-const ROW_HEIGHT = 32;
-const COLUMN_WIDTH = 150;
-
-export interface DataPropertiesPanelProps {}
-
-export default function (props: DataPropertiesPanelProps) {
+export default function DataPropertiesPanel() {
 	const {
 		loading,
 		columns,
 		rows,
-		dataSources,
 		dataSourceOptions,
 		selectedDataSourceOptions,
 		changeDsSelections,
@@ -50,8 +41,8 @@ export default function (props: DataPropertiesPanelProps) {
 		changeSql,
 	} = useDataProperties();
 
-	let view = mm.getCurrentView();
-	let data = view?.data || ({} as any);
+	const view = mm.getCurrentView();
+	const data = view?.data || ({} as any);
 
 	// const dropdownRender = (menus: React.ReactNode) => (
 	// 	<div>
@@ -62,20 +53,20 @@ export default function (props: DataPropertiesPanelProps) {
 	// 	</div>
 	// );
 
-	let rowss = [];
+	const rowss = [];
 
-	let cells: TableCell[] = [];
+	const cells: TableCell[] = [];
 	for (let i = 0; i < columns.length; i++) {
 		cells.push(<TableCell key={i}>{columns[i]}</TableCell>);
 	}
-	rowss.push(<TableRow key={"table-header-row"}>{cells}</TableRow>);
+	rowss.push(<TableRow key="table-header-row">{cells}</TableRow>);
 
-	rows.forEach((row, index) => {
-		let cells: TableCell[] = [];
-		row.forEach((cell, index) => {
-			cells.push(<TableCell key={index}>{cell}</TableCell>);
+	rows.forEach((row) => {
+		const mCells: TableCell[] = [];
+		row.forEach((cell) => {
+			mCells.push(<TableCell key={cell}>{cell}</TableCell>);
 		});
-		rowss.push(<TableRow key={`table-row-${index}`}>{cells}</TableRow>);
+		rowss.push(<TableRow key={row}>{mCells}</TableRow>);
 	});
 
 	return (
@@ -90,7 +81,7 @@ export default function (props: DataPropertiesPanelProps) {
 								options={dataSourceOptions}
 								value={selectedDataSourceOptions}
 								loadData={(selectOptions) => {
-									let option = selectOptions[0];
+									const option = selectOptions[0];
 									queryTables(option.value as string);
 								}}
 								onChange={changeDsSelections}
@@ -139,11 +130,7 @@ export default function (props: DataPropertiesPanelProps) {
 				</div>
 			</div>
 			<div className="ds-data-table">
-				<StickyTable
-					headerSticky={1}
-					borderWidth={"1px"}
-					borderColor={"#E7E7E7"}
-				>
+				<StickyTable headerSticky={1} borderWidth="1px" borderColor="#E7E7E7">
 					{rowss}
 				</StickyTable>
 			</div>

@@ -18,8 +18,8 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import classNames from "classnames";
-import ColorPicker from "../ColorPicker/ColorPicker";
 import { isString } from "lodash-es";
+import ColorPicker from "../ColorPicker/ColorPicker";
 import "./InputColor.less";
 
 export interface InputColorProps {
@@ -56,9 +56,11 @@ export default function ({
 	}
 
 	function handleColorChange(color: any) {
-		const value = isString(color) ? color : color.hex;
-		setStateValue(value);
-		onChange && onChange(value);
+		const mValue = isString(color) ? color : color.hex;
+		setStateValue(mValue);
+		if (onChange) {
+			onChange(mValue);
+		}
 	}
 
 	function renderColorPicker() {
@@ -77,7 +79,7 @@ export default function ({
 		);
 	}
 
-	let _style: React.CSSProperties = {
+	const _style: React.CSSProperties = {
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",

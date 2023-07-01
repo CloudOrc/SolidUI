@@ -15,20 +15,20 @@
  * limitations under the License.
  */
 
-import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
-import { API_URL } from "@/config";
+import axios, { AxiosRequestConfig } from "axios";
 import { message } from "antd";
+// import { API_URL } from "@/config";
 import { Result, AxiosResultType, HttpMethod, ApiResult } from "@/types";
 
-const ErrorCode = {
-	OK: 0,
-	UNAUTHORIZED: 401,
-	FAILED: 10004,
-	FAIL: -1,
-};
+// const ErrorCode = {
+// 	OK: 0,
+// 	UNAUTHORIZED: 401,
+// 	FAILED: 10004,
+// 	FAIL: -1,
+// };
 
 const instance = axios.create({
-	baseURL: API_URL,
+	baseURL: "",
 	timeout: 10000,
 	headers: {
 		"Content-Type": "application/json;charset=utf-8",
@@ -39,22 +39,18 @@ const instance = axios.create({
 instance.interceptors.request.use(
 	// @ts-ignore
 	(config: AxiosRequestConfig) => {
-		let token = localStorage.getItem("token");
+		const token = localStorage.getItem("token");
 		if (token) {
 			// @ts-ignore
 			config.headers.Authorization = `Bearer ${token}`;
 		}
 		return config;
 	},
-	(error) => {
-		return Promise.reject(error);
-	},
+	(error) => Promise.reject(error),
 );
 
 instance.interceptors.response.use(
-	(response) => {
-		return response;
-	},
+	(response) => response,
 	(error) => {
 		if (error.response.status === 401) {
 			message.error("session timeout, please sign in again");
@@ -132,40 +128,31 @@ function doRequest<T>(
 			break;
 	}
 
-	return new Promise<ApiResult<T>>((resolve, reject) => {
-		return response
+	return new Promise<ApiResult<T>>((resolve, reject) =>
+		response
 			.then((res) => {
-				let { data } = res;
-				let { success } = data;
-				let { code } = data;
-				let msg = data.msg || "";
+				const { data: mData } = res;
+				const { success } = mData;
+				// const { code } = mData;
+				const msg = mData.msg || "";
 				if (success) {
 					resolve({
 						ok: true,
-						data: data.data,
-					});
-				} else if (code === ErrorCode.FAILED) {
-					message.warning(data.msg);
-					resolve({
-						ok: false,
+						data: mData.data,
 					});
 				} else {
-					console.warn(
-						`code is ${code}, message is ${msg}, need to handle this error`,
-					);
 					message.warning(msg);
 					resolve({
 						ok: false,
 					});
-					// reject(res.data);
 				}
 			})
 			.catch((err) => {
-				let errText = JSON.stringify(err);
+				const errText = JSON.stringify(err);
 				message.warning(errText);
 				reject(err);
-			});
-	});
+			}),
+	);
 }
 
 const service = {

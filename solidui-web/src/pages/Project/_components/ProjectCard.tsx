@@ -29,15 +29,7 @@ import {
 	message,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import {
-	Pic,
-	Copy,
-	Lightning,
-	Delete,
-	Export,
-	Editor,
-	Close,
-} from "@icon-park/react";
+import { Delete, Editor, Close } from "@icon-park/react";
 import classNames from "classnames";
 import Apis from "@/apis";
 import { ProjectDataType } from "@/types";
@@ -57,12 +49,12 @@ export interface ProjectCardProps {
 	onUpdate: () => void;
 }
 
-export default function (props: ProjectCardProps) {
+export default function ProjectCard(props: ProjectCardProps) {
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [editOpen, setEditOpen] = useState<boolean>(false);
 
-	let {
+	const {
 		className,
 		style,
 		popup = false,
@@ -75,8 +67,8 @@ export default function (props: ProjectCardProps) {
 
 	// const editingProject = React.useRef<ProjectDataType>();
 
-	async function handleEdit(item: ProjectDataType) {
-		navigate(`/dashboard/${item.id}?projectName=${item.projectName}`);
+	async function handleEdit(proj: ProjectDataType) {
+		navigate(`/dashboard/${proj.id}?projectName=${proj.projectName}`);
 	}
 
 	async function __handleDelete() {
@@ -104,16 +96,16 @@ export default function (props: ProjectCardProps) {
 		});
 	}
 
-	let clazzName = classNames("solidui-card__project", className);
+	const clazzName = classNames("solidui-card__project", className);
 	return (
 		<div
 			className={clazzName}
 			style={style}
 			onMouseEnter={(e) => {
-				handleMouseEnter && handleMouseEnter(e, `${item.id}`);
+				handleMouseEnter(e, `${item.id}`);
 			}}
 			onMouseLeave={(e) => {
-				handleMouseLeave && handleMouseLeave(e, `${item.id}`);
+				handleMouseLeave(e, `${item.id}`);
 			}}
 		>
 			<div className="card-content">
@@ -223,7 +215,7 @@ export default function (props: ProjectCardProps) {
 			<div className="card-bottom">
 				<Row
 					wrap={false}
-					align={"middle"}
+					align="middle"
 					style={{
 						height: "100%",
 					}}
@@ -273,18 +265,18 @@ export default function (props: ProjectCardProps) {
 					>
 						<div className="modal-content__form">
 							<Form
-								layout={"vertical"}
+								layout="vertical"
 								form={form}
 								initialValues={{ layout: "vertical" }}
 								onFinish={async (values) => {
-									let res = await Apis.project.update(
-										item.id + "",
+									const res = await Apis.project.update(
+										`${item.id}`,
 										values.name,
 									);
 									if (res.ok) {
 										message.success("rename ok");
 										setEditOpen(false);
-										onUpdate && onUpdate();
+										onUpdate();
 									}
 								}}
 							>

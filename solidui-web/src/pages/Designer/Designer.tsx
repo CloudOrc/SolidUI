@@ -17,34 +17,34 @@
 
 import React from "react";
 import { useParams } from "react-router-dom";
+import { eventbus, mm } from "@/utils";
+import Apis from "@/apis";
+import { ProjectDataType } from "@/apis/types/resp";
+import { ApiResult, ProjectPageDataType, SolidScenaDataType } from "@/types";
 import Header from "./Header/Header";
 import Aside from "./Aside/Aside";
 import Scena from "./Scena/Scena";
 import Properties from "./Properties/Properties";
-import { eventbus, mm } from "@/utils";
-import Apis from "@/apis";
 import "../../assets/styles/designer.less";
-import { ApiResult, ProjectPageDataType, SolidScenaDataType } from "@/types";
-import { ProjectDataType } from "@/apis/types/resp";
 
 function Dashboard() {
 	const params = useParams();
-	let { id } = params;
+	const { id } = params;
 
 	React.useEffect(() => {
 		load();
 	}, []);
 
 	async function load() {
-		let res: ApiResult<ProjectPageDataType[]> = await Apis.model.queryPages(
+		const res: ApiResult<ProjectPageDataType[]> = await Apis.model.queryPages(
 			id || "",
 		);
 		if (res.ok) {
-			let data = res.data || [];
-			let scenes: SolidScenaDataType[] = [];
+			const data = res.data || [];
+			const scenes: SolidScenaDataType[] = [];
 			if (data.length > 0) {
 				for (let i = 0; i < data.length; i++) {
-					let scene: SolidScenaDataType & { open?: boolean; pages: any[] } = {
+					const scene: SolidScenaDataType & { open?: boolean; pages: any[] } = {
 						id: data[i].id,
 						parentId: data[i].parentId,
 						title: data[i].name,
@@ -69,13 +69,13 @@ function Dashboard() {
 				id || "",
 			);
 			if (res2.ok) {
-				const data = res2.data;
+				const mData = res2.data;
 				const model = {
 					id: id || "",
-					title: data?.projectName || "",
-					description: data?.description || "",
-					createUser: data?.userName || "",
-					createTime: data?.createTime || "",
+					title: mData?.projectName || "",
+					description: mData?.description || "",
+					createUser: mData?.userName || "",
+					createTime: mData?.createTime || "",
 					scenas: scenes,
 					size: { width: 0, height: 0 },
 					frame: {},

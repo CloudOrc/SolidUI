@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+import { isNil, set, unset, forEach, isEmpty, remove, find } from "lodash-es";
 import {
 	SolidModelDataType,
 	SolidScenaDataType,
@@ -23,17 +24,24 @@ import {
 } from "@/types/solid";
 import { eventbus } from "@/utils";
 import { OnSelectViewEventData } from "@/types/eventbus";
-import { isNil, set, unset, forEach, isEmpty, remove, find } from "lodash-es";
 
 class ModelManager {
 	private model?: SolidModelDataType;
+
 	private currentPage?: SolidPageDataType;
+
 	private currentView?: SolidViewDataType;
+
 	private sceneMap: Map<string, SolidScenaDataType> = new Map();
+
 	private pageMap: Map<string, SolidPageDataType> = new Map();
+
 	private viewMap: Map<string, SolidViewDataType> = new Map();
+
 	private scenes: SolidScenaDataType[] = [];
+
 	private pages: SolidPageDataType[] = [];
+
 	private views: SolidViewDataType[] = [];
 
 	constructor() {
@@ -44,8 +52,8 @@ class ModelManager {
 	}
 
 	private handleSelectView(data: OnSelectViewEventData) {
-		let viewId = data.id;
-		let view = this.viewMap.get(viewId);
+		const viewId = data.id;
+		const view = this.viewMap.get(viewId);
 		if (!isNil(view)) {
 			this.currentView = view;
 		}
@@ -72,7 +80,7 @@ class ModelManager {
 		if (isNil(model)) {
 			return;
 		}
-		let scenes = model.scenas;
+		const scenes = model.scenas;
 		if (isNil(scenes)) {
 			return;
 		}
@@ -83,21 +91,22 @@ class ModelManager {
 			if (isNil(scenes[m].pages)) {
 				continue;
 			}
+			const scenePages = scenes[m].pages;
+			if (isNil(scenePages)) {
+				continue;
+			}
 
-			for (let n = 0; n < scenes[m].pages!.length; n++) {
-				this.pageMap.set(scenes[m].pages![n].id, scenes[m].pages![n]);
-				this.pages.push(scenes[m].pages![n]);
+			for (let n = 0; n < scenePages.length; n++) {
+				this.pageMap.set(scenePages[n].id, scenePages[n]);
+				this.pages.push(scenePages[n]);
 
-				if (isNil(scenes[m].pages![n].views)) {
+				if (isNil(scenePages[n].views)) {
 					continue;
 				}
 
-				for (let x = 0; x < scenes[m].pages![n].views.length; x++) {
-					this.viewMap.set(
-						scenes[m].pages![n].views[x].id,
-						scenes[m].pages![n].views[x],
-					);
-					this.views.push(scenes[m].pages![n].views[x]);
+				for (let x = 0; x < scenePages[n].views.length; x++) {
+					this.viewMap.set(scenePages[n].views[x].id, scenePages[n].views[x]);
+					this.views.push(scenePages[n].views[x]);
 				}
 			}
 		}
@@ -120,12 +129,16 @@ class ModelManager {
 		if (isNil(this.model)) {
 			return;
 		}
-		let scene = this.getScene(page.parentId);
+		const scene = this.getScene(page.parentId);
 		if (isNil(scene)) {
 			return;
 		}
+		const scenePages = scene.pages;
+		if (isNil(scenePages)) {
+			return;
+		}
 
-		scene.pages!.push(page);
+		scenePages.push(page);
 		this.pageMap.set(page.id, page);
 		this.pages.push(page);
 	}
@@ -184,7 +197,7 @@ class ModelManager {
 			return;
 		}
 		forEach(views, (item) => {
-			this.currentPage!.views.push(item);
+			this.currentPage?.views.push(item);
 			this.viewMap.set(`${item.id}`, item);
 			this.views.push(item);
 		});
@@ -196,7 +209,7 @@ class ModelManager {
 		}
 		this.currentPage.views = [];
 		forEach(views, (item) => {
-			this.currentPage!.views.push(item);
+			this.currentPage?.views.push(item);
 			this.viewMap.set(`${item.id}`, item);
 			this.views.push(item);
 		});
@@ -206,7 +219,7 @@ class ModelManager {
 		if (isNil(this.currentPage)) {
 			return;
 		}
-		let index = this.currentPage.views.findIndex((item) => item.id === id);
+		const index = this.currentPage.views.findIndex((item) => item.id === id);
 		if (index > -1) {
 			this.currentPage.views.splice(index, 1);
 		}
@@ -235,8 +248,8 @@ class ModelManager {
 			return;
 		}
 		const scene = find(this.scenes, (item) => item.id === thisPage.parentId);
-		if (scene) {
-			scene.pages && remove(scene.pages, (item) => item.id === page.id);
+		if (scene && scene.pages) {
+			remove(scene.pages, (item) => item.id === page.id);
 		}
 		this.pageMap.delete(page.id);
 		remove(this.pages, (item) => item.id === page.id);

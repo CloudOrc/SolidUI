@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button, Tooltip, Drawer, message } from "antd";
 import { ChartHistogramTwo } from "@icon-park/react";
-import PreviewPopup from "../Preview/PreviewPopup";
 import { eventbus, mm } from "@/utils/index";
 import Apis from "@/apis";
 import {
@@ -28,29 +27,29 @@ import {
 } from "@/apis/types";
 import "./header.less";
 import { isNil, startsWith } from "lodash-es";
-import { useEffect } from "react";
+import PreviewPopup from "../Preview/PreviewPopup";
 
-function Header(props: any) {
+function Header() {
 	const navigate = useNavigate();
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [searchParams] = useSearchParams();
 	const [previewVisible, setPreviewVisible] = React.useState(false);
 	const [title, setTitle] = React.useState("");
 
 	function renderPreviewPopup() {
 		if (!previewVisible) {
-			return;
+			return undefined;
 		}
 
 		return (
 			<Drawer
 				title=""
-				placement={"top"}
-				closable={true}
+				placement="top"
+				closable
 				onClose={() => {}}
 				open={previewVisible}
-				key={"top"}
+				key="top"
 				footer={undefined}
-				height={"100vh"}
+				height="100vh"
 			>
 				<div
 					style={{
@@ -138,7 +137,7 @@ function Header(props: any) {
 						}}
 						onClick={() => {
 							const page = mm.getCurrentPage();
-							let project = mm.getModel();
+							const project = mm.getModel();
 							if (isNil(project) || isNil(page)) {
 								message.warn("please select a page first");
 								return;
@@ -152,16 +151,16 @@ function Header(props: any) {
 						type="primary"
 						size="small"
 						onClick={async () => {
-							let model = mm.getPrepareSavingModel();
-							let page = mm.getCurrentPage();
+							const model = mm.getPrepareSavingModel();
+							const page = mm.getCurrentPage();
 
 							if (isNil(model) || isNil(page)) {
 								return;
 							}
-							let views = page.views || [];
-							let _views: PageViewCreationDataType[] = [];
+							const views = page.views || [];
+							const _views: PageViewCreationDataType[] = [];
 							views.forEach((view) => {
-								let v: any = {
+								const v: any = {
 									title: view.title,
 									position: {
 										top: `${view.position.top}`,
@@ -189,7 +188,7 @@ function Header(props: any) {
 								}
 								_views.push(v);
 							});
-							let data: ProjectPageViewsCreationDataType = {
+							const data: ProjectPageViewsCreationDataType = {
 								projectId: model.id,
 								page: {
 									id: page.id,
@@ -201,7 +200,7 @@ function Header(props: any) {
 								},
 								views: _views,
 							};
-							let res = await Apis.model.updateProjectPageViews(data);
+							const res = await Apis.model.updateProjectPageViews(data);
 							if (res.ok) {
 								message.success("Save success");
 							}

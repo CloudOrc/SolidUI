@@ -24,17 +24,19 @@ export interface SwitchProps {
 	onChange?: (checked: boolean) => void;
 }
 
-export default function (props: SwitchProps) {
+export default function Switch(props: SwitchProps) {
 	const [checked, setChecked] = useState(!!props.checked);
 
 	return (
 		<div className="lingc-switch">
 			<div className="switch-box">
 				<span
-  className={`switch-span ${checked ? "on" : "off"}`}
-  onClick={() => {
+					className={`switch-span ${checked ? "on" : "off"}`}
+					onClick={() => {
 						setChecked(!checked);
-						props.onChange && props.onChange(!checked);
+						if (props.onChange) {
+							props.onChange(!checked);
+						}
 					}}
 				/>
 			</div>

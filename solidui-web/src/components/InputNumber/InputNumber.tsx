@@ -18,7 +18,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import classNames from "classnames";
-import { isFinite, isInteger, toNumber, parseInt } from "lodash";
+import { isFinite, isInteger, toNumber, parseInt } from "lodash-es";
 import Slider, { SliderProps } from "../Slider/Slider";
 import "./InputNumber.less";
 
@@ -86,25 +86,28 @@ function DatNumber({
 	//   setStateValue(value)
 	// }, [value])
 
-	function update(value: any) {
-		setStateValue(value);
+	function update(pValue: any) {
+		setStateValue(pValue);
+		if (!onUpdateValue) {
+			return;
+		}
 
-		if (typeof value === "string") {
-			onUpdateValue && onUpdateValue(parseInt(`${value}`));
-		} else if (typeof value === "number") {
-			onUpdateValue && onUpdateValue(value);
+		if (typeof pValue === "string") {
+			onUpdateValue(parseInt(`${pValue}`));
+		} else if (typeof pValue === "number") {
+			onUpdateValue(pValue);
 		} else {
-			onUpdateValue && onUpdateValue(parseInt(`${value}`));
+			onUpdateValue(parseInt(`${pValue}`));
 		}
 	}
 
-	function handleSliderUpdate(value: number) {
-		update(applyConstraints({ value, min, max, step }));
+	function handleSliderUpdate(pValue: number) {
+		update(applyConstraints({ value: pValue, min, max, step }));
 	}
 
 	function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-		const { value } = event.target;
-		let newValue = applyConstraints({ value, min, max, step });
+		const { value: mValue } = event.target;
+		const newValue = applyConstraints({ value: mValue, min, max, step });
 		update(newValue);
 	}
 
@@ -116,7 +119,7 @@ function DatNumber({
 			: controlsWidth;
 	const sliderWidth = controlsWidth - inputWidth;
 
-	let _style: React.CSSProperties = {
+	const _style: React.CSSProperties = {
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
@@ -125,12 +128,12 @@ function DatNumber({
 		...style,
 	};
 
-	let borderStyle: React.CSSProperties = {};
+	const borderStyle: React.CSSProperties = {};
 	if (!border) {
 		borderStyle.border = "none";
 	}
 
-	let inputBorderStyle: React.CSSProperties = {};
+	const inputBorderStyle: React.CSSProperties = {};
 	if (!border) {
 		inputBorderStyle.border = "none";
 		// inputBorderStyle.borderLeft = "1px solid #0d0e0e";

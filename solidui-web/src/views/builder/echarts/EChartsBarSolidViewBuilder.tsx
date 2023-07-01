@@ -14,17 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import EChartsBaseViewBuilder from "./EChartsBaseViewBuilder";
+import React from "react";
 import { TooltipComponentOption } from "echarts";
-import { ViewCategory, ViewType } from "../SolidViewBuilder";
-import EChartsBarSolidView from "../../echarts/EChartsBarSolidView";
 import { SolidViewDataType } from "@/types/solid";
 import { genId } from "@/utils";
+import EChartsBaseViewBuilder from "./EChartsBaseViewBuilder";
+import { ViewCategory, ViewType } from "../SolidViewBuilder";
+import EChartsBarSolidView from "../../echarts/EChartsBarSolidView";
 
 export default class EChartsBarSolidViewBuilder extends EChartsBaseViewBuilder {
 	createModel(): any {
-		let viewModel: SolidViewDataType = {
+		const viewModel: SolidViewDataType = {
 			id: genId(),
 			title: "bar",
 			type: "echarts_bar",
@@ -80,7 +80,7 @@ export default class EChartsBarSolidViewBuilder extends EChartsBaseViewBuilder {
 			} as TooltipComponentOption,
 		};
 
-		let viewStyle = {
+		const viewStyle = {
 			position: "absolute",
 			background: "#fff",
 			overflow: "hidden",

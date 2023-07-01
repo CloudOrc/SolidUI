@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import React, { Fragment } from "react";
+import React from "react";
 import TopPropertiesPanel from "./TopPropertiesPanel";
 import ScenePropertiesPanel from "./ScenePropertiesPanel";
 import PagePropertiesPanel from "./PagePropertiesPanel";
@@ -23,7 +23,6 @@ import StylePropertiesPanel from "./StylePropertiesPanel";
 import DataPropertiesPanel from "./DataPropertiesPanel";
 import EventPropertiesPanel from "./EventPropertiesPanel";
 import useProperties from "./useProperties";
-import { mm, eventbus } from "@/utils/index";
 
 import "./configurations.less";
 
@@ -49,18 +48,21 @@ function Properties() {
 	function renderByPropertyKey() {
 		if (propertyKey === "top") {
 			return <TopPropertiesPanel />;
-		} else if (propertyKey === "scene") {
+		}
+		if (propertyKey === "scene") {
 			return <ScenePropertiesPanel />;
-		} else if (propertyKey === "page") {
+		}
+		if (propertyKey === "page") {
 			return <PagePropertiesPanel />;
-		} else if (propertyKey === "view") {
+		}
+		if (propertyKey === "view") {
 			return (
-				<Fragment>
+				<>
 					<header className="conf-header">{renderTabs()}</header>
 					<main className="conf-main" ref={mainRef}>
 						{renderPanel()}
 					</main>
-				</Fragment>
+				</>
 			);
 		}
 		return undefined;
@@ -69,11 +71,14 @@ function Properties() {
 	function renderPanel() {
 		if (currentTabKey === "Style") {
 			return <StylePropertiesPanel />;
-		} else if (currentTabKey === "Data") {
+		}
+		if (currentTabKey === "Data") {
 			return <DataPropertiesPanel />;
-		} else if (currentTabKey === "Events") {
+		}
+		if (currentTabKey === "Events") {
 			return <EventPropertiesPanel />;
 		}
+		return undefined;
 	}
 
 	return (
