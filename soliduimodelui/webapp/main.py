@@ -24,14 +24,15 @@ import sys
 from collections import deque
 
 from flask_cors import CORS
-from flask import Flask, request, jsonify, send_from_directory, Response
+from flask import Flask, request, jsonify, send_from_directory, Response, Blueprint
 from dotenv import load_dotenv
 
 
 load_dotenv('.env')
 
-APP_PORT = int(os.environ.get("WEB_PORT", 12345))
+APP_PORT = int(os.environ.get("WEB_PORT", 5110))
 
+base_blueprint = Blueprint("baseurl", __name__, url_prefix="/solidui")
 
 # We know this Flask app is for local use. So we can disable the verbose Werkzeug logger
 log = logging.getLogger('werkzeug')
@@ -41,8 +42,9 @@ cli = sys.modules['flask.cli']
 cli.show_server_banner = lambda *x: None
 
 app = Flask(__name__)
-
+app.register_blueprint(base_blueprint)
 CORS(app)
+
 
 
 if __name__ == '__main__':

@@ -26,7 +26,7 @@ import webbrowser
 from multiprocessing import Process
 
 from soliduimodelui.webapp.main import app, APP_PORT
-
+from soliduimodelui.kernelprogram.main import main as kernel_program_main, cleanup_kernel_program
 
 APP_URL = "http://localhost:%s" % APP_PORT
 
@@ -37,12 +37,12 @@ def run_webapp():
         logging.exception("Error running the webapp:")
         sys.exit(1)
 
-# def run_kernel_program():
-#     try:
-#         asyncio.run(kernel_program_main())
-#     except Exception as e:
-#         logging.exception("Error running the kernel_program:")
-#         sys.exit(1)
+def run_kernel_program():
+    try:
+        asyncio.run(kernel_program_main())
+    except Exception as e:
+        logging.exception("Error running the kernel_program:")
+        sys.exit(1)
 
 def setup_logging():
     log_format = "%(asctime)s [%(levelname)s]: %(message)s"
@@ -84,11 +84,11 @@ def main():
     setup_logging()
 
     webapp_process = Process(target=run_webapp)
-    #kernel_program_process = Process(target=run_kernel_program)
+    kernel_program_process = Process(target=run_kernel_program)
 
     try:
         webapp_process.start()
-        #kernel_program_process.start()
+        kernel_program_process.start()
 
         # Poll until the webapp is running
         while True:
@@ -103,19 +103,19 @@ def main():
         webbrowser.open(APP_URL)
 
         webapp_process.join()
-        #kernel_program_process.join()
+        kernel_program_process.join()
 
         
     except KeyboardInterrupt:
         print("Terminating processes...")
         
-        #cleanup_kernel_program()
-        #kernel_program_process.terminate()
+        cleanup_kernel_program()
+        kernel_program_process.terminate()
 
         webapp_process.terminate()
 
         webapp_process.join()
-        #kernel_program_process.join()
+        kernel_program_process.join()
 
         print("Processes terminated.")
         
