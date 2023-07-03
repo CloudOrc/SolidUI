@@ -60,7 +60,7 @@ cli = sys.modules['flask.cli']
 cli.show_server_banner = lambda *x: None
 
 app = Flask(__name__)
-app.register_blueprint(base_blueprint)
+
 CORS(app)
 
 def start_kernel_manager():
@@ -153,6 +153,8 @@ def handle_restart():
     return jsonify({"result": "success"})
 
 
+app.register_blueprint(base_blueprint)
+
 async def main():
     start_kernel_manager()
 
@@ -170,6 +172,3 @@ def run_flask_app():
 if __name__ == "__main__":
     asyncio.run(main())
 
-
-
-    
