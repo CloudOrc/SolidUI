@@ -79,6 +79,9 @@ public class DataSourceTypeKey {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    @TableId(value = "datasource_type_id")
+    private Long dataSourceTypeId;
+
     /** Key name */
     private String key;
 
@@ -92,7 +95,6 @@ public class DataSourceTypeKey {
 
     private String nameEn;
 
-
     /** Default value */
     private String defaultValue;
 
@@ -104,8 +106,6 @@ public class DataSourceTypeKey {
     private boolean require;
     /** Value regex */
     private String valueRegex;
-
-
 
     public Long getId() {
         return id;
@@ -193,6 +193,14 @@ public class DataSourceTypeKey {
 
     public void setNameEn(String nameEn) {
         this.nameEn = nameEn;
+    }
+
+    public Long getDataSourceTypeId() {
+        return dataSourceTypeId;
+    }
+
+    public void setDataSourceTypeId(Long dataSourceTypeId) {
+        this.dataSourceTypeId = dataSourceTypeId;
     }
 
     @Override

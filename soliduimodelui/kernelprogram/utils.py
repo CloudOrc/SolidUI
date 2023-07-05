@@ -41,3 +41,4 @@ def init_snakemq(ident, init_type="listen"):
     else:
         raise Exception("Unsupported init type.")
     return messaging, link
+
