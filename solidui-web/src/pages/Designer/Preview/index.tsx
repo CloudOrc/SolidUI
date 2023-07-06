@@ -15,16 +15,25 @@
  * limitations under the License.
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { Cascader } from "antd";
+import {
+	CaretLeftOutlined,
+	CaretUpOutlined,
+	FullscreenOutlined,
+	LeftOutlined,
+	RightOutlined,
+} from "@ant-design/icons";
+import Select, { Option } from "rc-select";
 import mitt from "mitt";
 import Apis from "@/apis";
 import { ApiResult, ProjectPageDataType, SolidViewDataType } from "@/types";
 import { ProjectPageViewsResultData } from "@/apis/types/resp";
 import SolidViewFactory from "@/views/SolidViewFactory";
-import { isNil } from "lodash-es";
+import _, { isNil } from "lodash-es";
+import { FullScreen } from "@/utils/fullScreen";
 import "./preview.less";
+import { message } from "antd";
 
 interface Option {
 	value: string | number;
@@ -131,6 +140,7 @@ export default function Preview() {
 		});
 		return nodes;
 	}
+	console.log(scenePageOptions);
 
 	return (
 		<div id="preview">
@@ -138,19 +148,139 @@ export default function Preview() {
 			<div
 				style={{
 					position: "absolute",
-					top: 5,
-					left: 5,
-					// right: 5,
+					bottom: 15,
+					right: 15,
 				}}
 			>
-				<Cascader
-					size="small"
-					options={scenePageOptions}
-					// @ts-ignore
-					onChange={onChange}
-					placeholder="select scene & page"
-				/>
+				<FeatureBar
+					onPageChange={onChange}
+					data={scenePageOptions}
+				></FeatureBar>
 			</div>
 		</div>
 	);
 }
+
+interface IPointerProps {
+	data: any[];
+	onPageChange: (page: any) => void;
+}
+
+export const FeatureBar: React.FC<IPointerProps> = (props) => {
+	console.log(props);
+
+	// scene
+	const scenes = useMemo(() => {
+		const scenes: { [key: string]: any } = {};
+		for (let i = 0; i < props.data.length; i++) {
+			const scene = props.data[i];
+			scenes[scene.value] = scene;
+		}
+		return scenes;
+	}, [props.data]);
+	// 当前scene
+	const [currentScene, setCurrnetScene] = useState<any>(null);
+	// 当前page index
+	const [currentPageIndex, setCurrnetPageIndex] = useState<number>(NaN);
+	// 当前页
+	const currentPage = _.get(currentScene, ["children", currentPageIndex], {});
+
+	// scene change
+	function onSceneChange(scene: string) {
+		setCurrnetScene(scenes[scene]);
+		if (scenes[scene].children?.length) {
+			setCurrnetPageIndex(0);
+			props.onPageChange([
+				_.get(scenes[scene], "value"),
+				_.get(scenes[scene], ["children", 0, "value"]),
+			]);
+		}
+	}
+	// page change
+	function onPageChange(dir: "r" | "l") {
+		if (currentScene) {
+			let nextPage: number = currentPageIndex;
+			if (dir === "l") {
+				nextPage = Math.max(currentPageIndex - 1, 0);
+			}
+			if (dir === "r") {
+				nextPage = Math.min(
+					currentPageIndex + 1,
+					currentScene.children.length - 1,
+				);
+			}
+			setCurrnetPageIndex(nextPage);
+			props.onPageChange([
+				_.get(currentScene, "value"),
+				_.get(currentScene, ["children", nextPage, "value"]),
+			]);
+		} else {
+			message.open({
+				type: "warning",
+				content: "please select scene",
+			});
+		}
+	}
+	return (
+		<div className="featbar-wrapper">
+			<div className="featbar-scene">
+				<Select
+					className="feature-select"
+					value={currentScene?.value}
+					onChange={onSceneChange}
+					menuItemSelectedIcon={null}
+					inputIcon={(props) =>
+						props.open ? <CaretUpOutlined /> : <CaretLeftOutlined />
+					}
+					direction="ltr"
+					placeholder="please select scene"
+					dropdownStyle={{
+						zIndex: 1000,
+						background: "#00000050",
+						borderWidth: 0,
+						padding: 0,
+						minHeight: 0,
+					}}
+				>
+					{props.data.map((scene) => {
+						return (
+							<Option key={scene.value} value={scene.value}>
+								<div
+									style={{
+										cursor: "pointer",
+									}}
+								>
+									{scene.label}
+								</div>
+							</Option>
+						);
+					})}
+				</Select>
+			</div>
+			<div className="featbar-divider" />
+			<div className="featbar-page">
+				<span className="left_arrows">
+					<span onClick={() => onPageChange("l")}>
+						<LeftOutlined />
+					</span>
+				</span>
+				<span className="page_title">
+					{currentPage.label || "please select page"}
+				</span>
+				<span className="right_arrows">
+					<span onClick={() => onPageChange("r")}>
+						<RightOutlined />
+					</span>
+				</span>
+			</div>
+			<div className="featbar-divider" />
+			<div className="featbar-tools">
+				<FullscreenOutlined
+					onClick={() => {
+						FullScreen.switchFullScreen();
+					}}
+				/>
+			</div>
+		</div>
+	);
+};
