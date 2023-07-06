@@ -26,7 +26,10 @@ from collections import deque
 from flask_cors import CORS
 from flask import Flask, request, jsonify, send_from_directory, Response, Blueprint
 from dotenv import load_dotenv
-
+import soliduimodelui.webapp.web_utils as web_utils
+# from langchain.prompts import PromptTemplate
+# from langchain.llms import OpenAI
+# from langchain.chains import LLMChain
 
 load_dotenv('.env')
 
@@ -42,10 +45,21 @@ cli = sys.modules['flask.cli']
 cli.show_server_banner = lambda *x: None
 
 app = Flask(__name__)
-app.register_blueprint(base_blueprint)
 CORS(app)
 
 
+async def get_code(user_prompt, user_key=None, model="gpt-3.5-turbo", type=0):
+    return 0
+
+@base_blueprint.route('/api/<path:path>', methods=["GET", "POST"])
+def proxy_kernel_manager(path):
+    return web_utils.response_format()
+
+@base_blueprint.route('/generate', methods=['POST'])
+def generate_code():
+    return web_utils.response_format()
+
+app.register_blueprint(base_blueprint)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=APP_PORT, debug=True, use_reloader=False)
