@@ -47,8 +47,9 @@ cli.show_server_banner = lambda *x: None
 app = Flask(__name__)
 CORS(app)
 
-
+# type 0:gpt-3.5-turbo 1:gpt-4
 async def get_code(user_prompt, user_key=None, model="gpt-3.5-turbo", type=0):
+
     return 0
 
 @base_blueprint.route('/api/<path:path>', methods=["GET", "POST"])
