@@ -30,7 +30,7 @@ import Apis from "@/apis";
 import { ApiResult, ProjectPageDataType, SolidViewDataType } from "@/types";
 import { ProjectPageViewsResultData } from "@/apis/types/resp";
 import SolidViewFactory from "@/views/SolidViewFactory";
-import _, { isNil } from "lodash-es";
+import { get, isNil } from "lodash-es";
 import { FullScreen } from "@/utils/fullScreen";
 import "./preview.less";
 import { message } from "antd";
@@ -140,7 +140,6 @@ export default function Preview() {
 		});
 		return nodes;
 	}
-	console.log(scenePageOptions);
 
 	return (
 		<div id="preview">
@@ -167,8 +166,6 @@ interface IPointerProps {
 }
 
 export const FeatureBar: React.FC<IPointerProps> = (props) => {
-	console.log(props);
-
 	// scene
 	const scenes = useMemo(() => {
 		const scenes: { [key: string]: any } = {};
@@ -183,7 +180,7 @@ export const FeatureBar: React.FC<IPointerProps> = (props) => {
 	// 当前page index
 	const [currentPageIndex, setCurrnetPageIndex] = useState<number>(NaN);
 	// 当前页
-	const currentPage = _.get(currentScene, ["children", currentPageIndex], {});
+	const currentPage = get(currentScene, ["children", currentPageIndex], {});
 
 	// scene change
 	function onSceneChange(scene: string) {
@@ -191,8 +188,8 @@ export const FeatureBar: React.FC<IPointerProps> = (props) => {
 		if (scenes[scene].children?.length) {
 			setCurrnetPageIndex(0);
 			props.onPageChange([
-				_.get(scenes[scene], "value"),
-				_.get(scenes[scene], ["children", 0, "value"]),
+				get(scenes[scene], "value"),
+				get(scenes[scene], ["children", 0, "value"]),
 			]);
 		}
 	}
@@ -211,8 +208,8 @@ export const FeatureBar: React.FC<IPointerProps> = (props) => {
 			}
 			setCurrnetPageIndex(nextPage);
 			props.onPageChange([
-				_.get(currentScene, "value"),
-				_.get(currentScene, ["children", nextPage, "value"]),
+				get(currentScene, "value"),
+				get(currentScene, ["children", nextPage, "value"]),
 			]);
 		} else {
 			message.open({
