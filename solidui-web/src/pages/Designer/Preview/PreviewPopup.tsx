@@ -24,6 +24,7 @@ import { ProjectPageViewsResultData } from "@/apis/types/resp";
 import SolidViewFactory from "@/views/SolidViewFactory";
 import "./preview.less";
 import { isNil } from "lodash-es";
+import { FeatureBar } from "./index";
 
 interface Option {
 	value: string | number;
@@ -41,11 +42,9 @@ export interface PreviewPopupProps {
 
 export default function PreviewPopup(props: PreviewPopupProps) {
 	const { projectId, pageId } = props;
-	// const [searchParams, setSearchParams] = useSearchParams();
-	// const [scenePageOptions, setScenePageOptions] = React.useState<Option[]>([]);
-	// const [selectedScenePageOption, setSelectedScenePageOption] = React.useState<
-	// string[]
-	// >([]);
+
+	const [scenePageOptions, setScenePageOptions] = React.useState<Option[]>([]);
+
 	const [views, setViews] = React.useState<SolidViewDataType[]>([]);
 
 	useEffect(() => {
@@ -86,7 +85,7 @@ export default function PreviewPopup(props: PreviewPopupProps) {
 				if (pPageId) {
 					await queryViews(pProjectId, pPageId);
 				}
-				// setScenePageOptions(scenes);
+				setScenePageOptions(scenes);
 			}
 		}
 	}
@@ -139,25 +138,18 @@ export default function PreviewPopup(props: PreviewPopupProps) {
 	return (
 		<div id="preview">
 			{renderViews()}
-			{/* <div
+			<div
 				style={{
 					position: "absolute",
-					top: 5,
-					right: 5,
+					bottom: 15,
+					right: 15,
 				}}
 			>
-				<Cascader
-					size="small"
-					options={scenePageOptions}
-					// @ts-ignore
-					onChange={onChange}
-					placeholder="select scene & page"
-					style={{
-						marginRight: 28,
-						marginTop: 1,
-					}}
-				/>
-			</div> */}
+				{/* <FeatureBar
+					onPageChange={onChange}
+					data={scenePageOptions}
+				></FeatureBar> */}
+			</div>
 		</div>
 	);
 }
