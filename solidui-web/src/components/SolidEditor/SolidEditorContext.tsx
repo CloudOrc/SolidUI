@@ -25,7 +25,7 @@ function connectContext(
 	context: React.Context<any>,
 	properties: readonly string[],
 ) {
-	return function (Component: any) {
+	return function connect(Component: any) {
 		const { prototype } = Component;
 
 		Component.contextType = context;

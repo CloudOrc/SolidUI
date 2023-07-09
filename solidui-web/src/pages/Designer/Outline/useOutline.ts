@@ -17,15 +17,12 @@
 
 import React, { useEffect, useState } from "react";
 import { useUpdate } from "react-use";
+import { useMemoizedFn } from "ahooks";
 import { eventbus, mm } from "@/utils";
 import {
-	OnSelectPageEventData,
-	OnModelLoadEventData,
 	OnSelectViewEventData,
-	// OnDrawEventData,
 	OnDrawCompleteEventData,
 	OnRemoveViewCompleteEventData,
-	OnUpdateViewPropertyValueEventData,
 } from "@/types";
 
 type ViewStateDataType = {
@@ -38,42 +35,50 @@ function useOutline() {
 
 	const viewStatesMap = React.useRef<Map<string, ViewStateDataType>>(new Map());
 
-	function __handleSelectPage(evt: OnSelectPageEventData) {
+	// function handleSelectPage() {
+	// 	viewStatesMap.current.forEach((viewState) => {
+	// 		viewState.selected = false;
+	// 	});
+	// 	forceUpdate();
+	// }
+
+	const handleSelectPage = useMemoizedFn(() => {
 		viewStatesMap.current.forEach((viewState) => {
 			viewState.selected = false;
 		});
 		forceUpdate();
-	}
+	});
 
-	function __handleModelLoad(evt: OnModelLoadEventData) {
-		const { model } = evt;
+	const handleModelLoad = useMemoizedFn(() => {
 		forceUpdate();
-	}
+	});
 
-	function __handleSelectViewInViewport(evt: OnSelectViewEventData) {
+	const handleSelectViewInViewport = useMemoizedFn(
+		(evt: OnSelectViewEventData) => {
+			selectViewById(evt.id);
+		},
+	);
+
+	const handleDrawComplete = useMemoizedFn((evt: OnDrawCompleteEventData) => {
 		selectViewById(evt.id);
-	}
+	});
 
-	function __handleDrawComplete(evt: OnDrawCompleteEventData) {
-		selectViewById(evt.id);
-	}
+	const handleRemoveViewComplete = useMemoizedFn(
+		(evt: OnRemoveViewCompleteEventData) => {
+			setLoading(true);
+			if (evt.source !== "viewlist") {
+				viewStatesMap.current.forEach((viewState) => {
+					viewState.selected = false;
+				});
+				forceUpdate();
+			}
+			setLoading(false);
+		},
+	);
 
-	function __handleRemoveViewComplete(evt: OnRemoveViewCompleteEventData) {
-		setLoading(true);
-		if (evt.source !== "viewlist") {
-			viewStatesMap.current.forEach((viewState) => {
-				viewState.selected = false;
-			});
-			forceUpdate();
-		}
-		setLoading(false);
-	}
-
-	function __handleUpdateViewPropertyValue(
-		evt: OnUpdateViewPropertyValueEventData,
-	) {
+	const handleUpdateViewPropertyValue = useMemoizedFn(() => {
 		forceUpdate();
-	}
+	});
 
 	function selectViewById(id: string) {
 		const view = mm.getView(id);
@@ -87,21 +92,28 @@ function useOutline() {
 	}
 
 	useEffect(() => {
-		eventbus.on("onModelLoad", __handleModelLoad);
-		eventbus.on("onSelectPage", __handleSelectPage);
-		eventbus.on("onSelectViewInViewport", __handleSelectViewInViewport);
-		eventbus.on("onDrawComplete", __handleDrawComplete);
-		eventbus.on("onRemoveViewComplete", __handleRemoveViewComplete);
-		eventbus.on("onUpdateViewPropertyValue", __handleUpdateViewPropertyValue);
+		eventbus.on("onModelLoad", handleModelLoad);
+		eventbus.on("onSelectPage", handleSelectPage);
+		eventbus.on("onSelectViewInViewport", handleSelectViewInViewport);
+		eventbus.on("onDrawComplete", handleDrawComplete);
+		eventbus.on("onRemoveViewComplete", handleRemoveViewComplete);
+		eventbus.on("onUpdateViewPropertyValue", handleUpdateViewPropertyValue);
 
 		return () => {
-			eventbus.off("onModelLoad", __handleModelLoad);
-			eventbus.off("onSelectPage", __handleSelectPage);
-			eventbus.off("onSelectViewInViewport", __handleSelectViewInViewport);
-			eventbus.off("onDrawComplete", __handleDrawComplete);
-			eventbus.off("onRemoveViewComplete", __handleRemoveViewComplete);
+			eventbus.off("onModelLoad", handleModelLoad);
+			eventbus.off("onSelectPage", handleSelectPage);
+			eventbus.off("onSelectViewInViewport", handleSelectViewInViewport);
+			eventbus.off("onDrawComplete", handleDrawComplete);
+			eventbus.off("onRemoveViewComplete", handleRemoveViewComplete);
 		};
-	}, []);
+	}, [
+		handleModelLoad,
+		handleSelectPage,
+		handleSelectViewInViewport,
+		handleDrawComplete,
+		handleRemoveViewComplete,
+		handleUpdateViewPropertyValue,
+	]);
 
 	function selectView(id: string): void {
 		viewStatesMap.current.forEach((viewState) => {

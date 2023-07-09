@@ -79,7 +79,7 @@ public class DataSourceTypeKey {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableId(value = "datasource_type_id")
+//    @TableId(value = "datasource_type_id")
     private Long dataSourceTypeId;
 
     /** Key name */

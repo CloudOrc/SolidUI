@@ -70,7 +70,10 @@ export default class EChartsLineSolidView extends EChartsBaseSolidView<SolidECha
 		) as any[];
 		const headDimension = head(viewDimensions);
 		if (!headDimension) return {};
-		const viewDimensionIdx = findIndex(headRow, (o) => o === headDimension.label);
+		const viewDimensionIdx = findIndex(
+			headRow,
+			(o) => o === headDimension.label,
+		);
 		if (viewDimensionIdx === -1) return {};
 
 		const xAxisData: any[] = [];
@@ -93,7 +96,11 @@ export default class EChartsLineSolidView extends EChartsBaseSolidView<SolidECha
 	}
 
 	protected getSeriesOption(): SeriesOption[] | undefined {
-		const measures = get(this.props.viewModel, "metadata.measures", []) as any[];
+		const measures = get(
+			this.props.viewModel,
+			"metadata.measures",
+			[],
+		) as any[];
 		const seriesList: SeriesOption[] = [];
 		measures.forEach((item) => {
 			const series = this.getSeries(item);

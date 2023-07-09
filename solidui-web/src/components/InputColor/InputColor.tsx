@@ -32,7 +32,7 @@ export interface InputColorProps {
 	onChange?: (hex: string) => void;
 }
 
-export default function ({
+export default function InputColor({
 	prefixCls = "solid",
 	className,
 	style,

@@ -65,8 +65,6 @@ export default function ProjectCard(props: ProjectCardProps) {
 		onUpdate,
 	} = props;
 
-	// const editingProject = React.useRef<ProjectDataType>();
-
 	async function handleEdit(proj: ProjectDataType) {
 		navigate(`/dashboard/${proj.id}?projectName=${proj.projectName}`);
 	}
@@ -221,8 +219,7 @@ export default function ProjectCard(props: ProjectCardProps) {
 					}}
 				>
 					<Col flex="none" style={{ padding: "0 16px" }}>
-						<Avatar size={44} icon={<UserOutlined />} />
-						{/* <div style={{ padding: "0 16px" }}>none</div> */}
+						<Avatar size={44} icon={<UserOutlined rev={1} />} />
 					</Col>
 					<Col flex="auto">
 						<div>{item.userName}</div>

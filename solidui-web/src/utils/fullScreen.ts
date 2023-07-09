@@ -15,17 +15,19 @@
  * limitations under the License.
  */
 
-export class FullScreen {
+export default class FullScreen {
 	public static requestFullScreen = () => {
 		if (!document.fullscreenElement) {
 			document.documentElement.requestFullscreen();
 		}
 	};
+
 	public static exitFullScreen = () => {
 		if (document.fullscreenElement) {
 			document.exitFullscreen();
 		}
 	};
+
 	public static switchFullScreen = () => {
 		if (document.fullscreenElement) {
 			document.exitFullscreen();

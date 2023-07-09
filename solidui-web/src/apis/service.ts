@@ -128,7 +128,7 @@ function doRequest<T>(
 			break;
 	}
 
-	return new Promise<ApiResult<T>>((resolve, reject) =>
+	return new Promise<ApiResult<T>>((resolve, reject) => {
 		response
 			.then((res) => {
 				const { data: mData } = res;
@@ -151,8 +151,34 @@ function doRequest<T>(
 				const errText = JSON.stringify(err);
 				message.warning(errText);
 				reject(err);
-			}),
-	);
+			});
+	});
+
+	// return new Promise<ApiResult<T>>((resolve, reject) =>
+	// 	response
+	// 		.then((res) => {
+	// 			const { data: mData } = res;
+	// 			const { success } = mData;
+	// 			// const { code } = mData;
+	// 			const msg = mData.msg || "";
+	// 			if (success) {
+	// 				resolve({
+	// 					ok: true,
+	// 					data: mData.data,
+	// 				});
+	// 			} else {
+	// 				message.warning(msg);
+	// 				resolve({
+	// 					ok: false,
+	// 				});
+	// 			}
+	// 		})
+	// 		.catch((err) => {
+	// 			const errText = JSON.stringify(err);
+	// 			message.warning(errText);
+	// 			reject(err);
+	// 		}),
+	// );
 }
 
 const service = {

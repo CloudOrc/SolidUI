@@ -15,49 +15,49 @@
  * limitations under the License.
  */
 
- @import "@/assets/styles/variables.less";
+@import "@/assets/styles/variables.less";
 
 .group-choose {
-  display: flex;
-  justify-content: space-around;
-  border: 1px solid #424858;
-  padding: 2px;
-  font-size: 12px;
-  width: 100%;
+	display: flex;
+	justify-content: space-around;
+	border: 1px solid #424858;
+	padding: 2px;
+	font-size: 12px;
+	width: 100%;
 	border-color: @borderColor;
 
-  .group-choose-btn {
-    position: relative;
-    display: block;
-    flex: 1 1;
-    width: 33.3%;
-    height: 18px;
-    margin-right: 2px;
+	.group-choose-btn {
+		position: relative;
+		display: block;
+		flex: 1 1;
+		width: 33.3%;
+		height: 18px;
+		margin-right: 2px;
 		background-color: @disableColor;
 
-    input[type=radio]:checked+.group-choose-text {
-      background-color: #3e7dff;
-    }
-  }
+		input[type="radio"]:checked + .group-choose-text {
+			background-color: #3e7dff;
+		}
+	}
 
-  .group-choose-text {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    color: #fff;
-    text-align: center;
-    line-height: 18px;
+	.group-choose-text {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		color: #fff;
+		text-align: center;
+		line-height: 18px;
 
-    user-select: none;
+		user-select: none;
 
-    &:hover {
+		&:hover {
 			background-color: #a2c0fd;
-    }
-  }
+		}
+	}
 
-  input {
-    display: none;
-  }
+	input {
+		display: none;
+	}
 }
