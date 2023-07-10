@@ -32,7 +32,7 @@ export default function SolidSelect(props: SelectProps) {
 
 	function renderOptions() {
 		const nodes: React.ReactNode[] = [];
-		items.forEach((item, index) => {
+		items.forEach((item) => {
 			const { value: mValue, label } = item;
 			nodes.push(
 				<Select.Option

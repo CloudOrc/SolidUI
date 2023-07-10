@@ -17,12 +17,17 @@
 
 import React, { useEffect } from "react";
 import { useUpdate } from "react-use";
+import { useMemoizedFn } from "ahooks";
 import { LeftRightExpander, PropertyElement, InputText } from "@/components";
 import { eventbus, mm } from "@/utils";
 import { isNil } from "lodash-es";
 
 export default function StyleProperties() {
 	const forceUpdate = useUpdate();
+
+	const handleSelectViewEvent = useMemoizedFn(() => {
+		forceUpdate();
+	});
 
 	useEffect(() => {
 		eventbus.on("onSelectViewInViewList", handleSelectViewEvent);
@@ -32,11 +37,7 @@ export default function StyleProperties() {
 			eventbus.off("onSelectViewInViewList", handleSelectViewEvent);
 			eventbus.off("onSelectViewInViewport", handleSelectViewEvent);
 		};
-	}, []);
-
-	function handleSelectViewEvent() {
-		forceUpdate();
-	}
+	}, [handleSelectViewEvent]);
 
 	return (
 		<LeftRightExpander expanded showCheckbox={false} title="View">

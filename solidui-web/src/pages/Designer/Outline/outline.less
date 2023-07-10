@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
- @import "@/assets/styles/variables.less";
+@import "@/assets/styles/variables.less";
 
 .aside-outline {
 	position: absolute;
@@ -24,18 +24,18 @@
 	bottom: 0;
 	right: 0;
 
-  .heading {
-    position: relative;
-    height: 38px;
-    // background-color: #35373d;
+	.heading {
+		position: relative;
+		height: 38px;
+		// background-color: #35373d;
 		// background-color: @backgroundColor;
-		background-color: #FCFCFD;
-		border-top: 1px solid #E7E7E7;
-		border-bottom: 1px solid #E7E7E7;
+		background-color: #fcfcfd;
+		border-top: 1px solid #e7e7e7;
+		border-bottom: 1px solid #e7e7e7;
 		color: @primaryTextColor;
-    text-align: center;
-    display: flex;
-    align-items: center;
+		text-align: center;
+		display: flex;
+		align-items: center;
 
 		span {
 			position: relative;
@@ -44,89 +44,89 @@
 			font-size: 14px;
 			width: 100%;
 		}
-  }
+	}
 
-  .components {
-    position: absolute;
-    top: 38px;
-    left: 0;
-    right: 0;
-    bottom: 0;
+	.components {
+		position: absolute;
+		top: 38px;
+		left: 0;
+		right: 0;
+		bottom: 0;
 		background-color: #fff;
 
 		ul.charts {
-      list-style: none;
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
+			list-style: none;
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
 
-      li.chartview {
-        position: relative;
-        width: 100%;
-        height: 32px;
-        display: flex;
-        align-items: center;
+			li.chartview {
+				position: relative;
+				width: 100%;
+				height: 32px;
+				display: flex;
+				align-items: center;
 
-        &:hover {
-          cursor: pointer;
-          // background: rgba(21,21,23,.4);
+				&:hover {
+					cursor: pointer;
+					// background: rgba(21,21,23,.4);
 					// background-color: #e0e0e0;
 					background-color: @hoverBgColor;
-        }
+				}
 
-        &.selected {
-          // background: #00a5cf;
-          // color: #fff;
+				&.selected {
+					// background: #00a5cf;
+					// color: #fff;
 					background-color: #e2f5ff;
 					// background-color: #e0e0e0;
 					color: @primaryTextColor;
-        }
+				}
 
-        > .eblock {
-          position: absolute;
-          left: 5px;
-          width: 16px;
-          height: 16px;
-          z-index: 2;
-          background: transparent;
-          display: inline-block;
-        }
+				> .eblock {
+					position: absolute;
+					left: 5px;
+					width: 16px;
+					height: 16px;
+					z-index: 2;
+					background: transparent;
+					display: inline-block;
+				}
 
-        > .bi-font {
-          position: absolute;
-          left: 26px;
-          font-size: 12px;
-          margin-bottom: 1px;
-        }
+				> .bi-font {
+					position: absolute;
+					left: 26px;
+					font-size: 12px;
+					margin-bottom: 1px;
+				}
 
-        > .text {
-          width: calc((100% - 46px) - 12px);
-          margin-left: 46px;
-        }
+				> .text {
+					width: calc((100% - 46px) - 12px);
+					margin-left: 46px;
+				}
 
-        > .act {
-          position: absolute;
-          right: 12px;
-          cursor: pointer;
+				> .act {
+					position: absolute;
+					right: 12px;
+					cursor: pointer;
 
-          > i.bi-font {
-            color: #757272;
+					> i.bi-font {
+						color: #757272;
 
-            &.bi-eye {
-              font-size: 13px;
-            }
+						&.bi-eye {
+							font-size: 13px;
+						}
 
-            &.bi-lock {
-              font-size: 12px;
-            }
-          }
+						&.bi-lock {
+							font-size: 12px;
+						}
+					}
 
-          &.act-lock {
-            font-size: 12px;
-            right: 32px;
-          }
-        }
-      }
-    }
-  }
+					&.act-lock {
+						font-size: 12px;
+						right: 32px;
+					}
+				}
+			}
+		}
+	}
 }

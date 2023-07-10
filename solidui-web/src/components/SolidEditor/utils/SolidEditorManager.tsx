@@ -21,7 +21,6 @@ import { message } from "antd";
 import { eventbus, mm } from "@/utils/index";
 import {
 	OnDrawEventData,
-	OnModelLoadEventData,
 	OnSelectPageEventData,
 	OnSelectViewEventData,
 } from "@/types/eventbus";
@@ -57,7 +56,7 @@ export default class SolidEditorManager {
 	 * 定制方法 this.editor | this.viewport (.updateView(....))
 	 * @param event event {}
 	 */
-	private handleUpdateViewPropertyValue(event: any) {}
+	// private handleUpdateViewPropertyValue(event: any) {}
 
 	private handleOnDraw(event: OnDrawEventData) {
 		if (!mm.getCurrentPage()) {
@@ -95,7 +94,7 @@ export default class SolidEditorManager {
 	private handleSelectPage(event: OnSelectPageEventData) {
 		const pageId = event.id;
 		const page = mm.getPage(pageId);
-		this.editor.clear().then((removed) => {
+		this.editor.clear().then(() => {
 			const views = page?.views || [];
 			views.forEach((view) => {
 				const builder = this.factory.getBuilder(view.type);
@@ -144,7 +143,7 @@ export default class SolidEditorManager {
 		});
 	}
 
-	private handleModelLoad(event: OnModelLoadEventData) {}
+	private handleModelLoad() {}
 
 	private handleSelectViewinViewList(event: OnSelectViewEventData) {
 		const view = mm.getView(event.id);

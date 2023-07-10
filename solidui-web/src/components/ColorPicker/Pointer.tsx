@@ -18,7 +18,7 @@
 import * as React from "react";
 
 function Pointer() {
-  return <div className="pointer" />;
+	return <div className="pointer" />;
 }
 
 export default Pointer;

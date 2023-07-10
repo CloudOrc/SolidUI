@@ -15,42 +15,42 @@
  * limitations under the License.
  */
 
- @import "@/assets/styles/variables.less";
+@import "@/assets/styles/variables.less";
 
 .header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: @headerHeight;
-  z-index: 10;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: @headerHeight;
+	z-index: 10;
 	background-color: @bgColor;
-	border-bottom: 1px solid #D2D1D1;
+	border-bottom: 1px solid #d2d1d1;
 
-  .header-main {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
+	.header-main {
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
 		right: 0;
 		min-width: 1244px;
-    user-select: none;
+		user-select: none;
 		background: @bgColor;
 		border-bottom: 1px solid @bgColor;
 
-    .header-left {
-      position: relative;
-      display: flex;
-      align-items: center;
-      height: 100%;
+		.header-left {
+			position: relative;
+			display: flex;
+			align-items: center;
+			height: 100%;
 
-      .logo {
-        width: 29px;
-        height: 28px;
-        margin-left: 20px;
+			.logo {
+				width: 29px;
+				height: 28px;
+				margin-left: 20px;
 				margin-bottom: 3px;
-        background: url('@/assets/images/logo.png') 50% no-repeat;
-        background-size: contain;
+				background: url("@/assets/images/logo.png") 50% no-repeat;
+				background-size: contain;
 				font-size: 20px;
 				font-weight: 600;
 				color: #fff;
@@ -58,7 +58,7 @@
 				justify-content: center;
 				align-items: center;
 				cursor: pointer;
-      }
+			}
 
 			.logo-text {
 				display: flex;
@@ -70,30 +70,30 @@
 				cursor: pointer;
 			}
 
-      .version {
-        display: inline-block;
-        background: linear-gradient(49deg,#2966cd,#33dbff);
-        width: 58px;
-        height: 20px;
-        box-shadow: 0 0 4px 0 rgb(0 0 0 / 9%);
-        border-radius: 12px 12px 12px 0;
-        margin-left: 12px;
-        font-size: 12px;
-        color: #fff;
-        text-align: center;
-        line-height: 20px;
-        cursor: pointer;
-      }
+			.version {
+				display: inline-block;
+				background: linear-gradient(49deg, #2966cd, #33dbff);
+				width: 58px;
+				height: 20px;
+				box-shadow: 0 0 4px 0 rgb(0 0 0 / 9%);
+				border-radius: 12px 12px 12px 0;
+				margin-left: 12px;
+				font-size: 12px;
+				color: #fff;
+				text-align: center;
+				line-height: 20px;
+				cursor: pointer;
+			}
 
-      .split-line {
-        margin-left: 16px;
-        width: 1px;
-        height: 30px;
+			.split-line {
+				margin-left: 16px;
+				width: 1px;
+				height: 30px;
 				background-color: @dividersColor;
-      }
-    }
+			}
+		}
 
-    .header-center {
+		.header-center {
 			position: absolute;
 			top: 0;
 			bottom: 0;
@@ -101,9 +101,9 @@
 			width: 500px;
 			display: flex;
 			align-items: center;
-    }
+		}
 
-    .header-right {
+		.header-right {
 			position: absolute;
 			right: 20px;
 			top: 0;
@@ -113,7 +113,6 @@
 			max-width: 200px;
 			display: flex;
 			align-items: center;
-    }
-
-  }
+		}
+	}
 }

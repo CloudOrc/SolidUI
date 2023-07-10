@@ -17,6 +17,7 @@
 
 import React from "react";
 import { useParams } from "react-router-dom";
+import { useMemoizedFn } from "ahooks";
 import { eventbus, mm } from "@/utils";
 import Apis from "@/apis";
 import { ProjectDataType } from "@/apis/types/resp";
@@ -31,11 +32,7 @@ function Dashboard() {
 	const params = useParams();
 	const { id } = params;
 
-	React.useEffect(() => {
-		load();
-	}, []);
-
-	async function load() {
+	const handleLoad = useMemoizedFn(async () => {
 		const res: ApiResult<ProjectPageDataType[]> = await Apis.model.queryPages(
 			id || "",
 		);
@@ -85,7 +82,11 @@ function Dashboard() {
 				eventbus.emit("onModelLoad", { model });
 			}
 		}
-	}
+	});
+
+	React.useEffect(() => {
+		handleLoad();
+	}, [handleLoad]);
 
 	return (
 		<div id="dashboard">
