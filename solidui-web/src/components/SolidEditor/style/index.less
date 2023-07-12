@@ -15,20 +15,20 @@
  * limitations under the License.
  */
 
- @import "@/assets/styles/variables.less";
+@import "@/assets/styles/variables.less";
 
 @editorPrefix: visual;
 
 [class*="visual-"] {
-  font-family: "Open Sans", sans-serif;
+	font-family: "Open Sans", sans-serif;
 }
 
 .@{editorPrefix}-editor {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  font-family: sans-serif;
-  transform-style: preserve-3d;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	font-family: sans-serif;
+	transform-style: preserve-3d;
 
 	.editor-guides {
 		position: absolute !important;
@@ -41,7 +41,7 @@
 		left: calc(@rulerGuidesSize);
 		width: calc(100% - @rulerGuidesSize);
 		height: @rulerGuidesSize !important;
-		border-bottom: 1px solid #D2D1D1;
+		border-bottom: 1px solid #d2d1d1;
 	}
 
 	.editor-guides.guides-vertical {
@@ -49,7 +49,7 @@
 		left: 0;
 		height: calc(100% - @rulerGuidesSize);
 		width: @rulerGuidesSize !important;
-		border-right: 1px solid #D2D1D1;
+		border-right: 1px solid #d2d1d1;
 	}
 
 	.editor-guides-reset {
@@ -57,7 +57,7 @@
 		// background: @back3Color;
 		// background: #7f7f7f;
 		// background: #6B6B6C;
-		background: #EAECEE;
+		background: #eaecee;
 		width: @rulerGuidesSize;
 		height: @rulerGuidesSize;
 		z-index: 1;
@@ -65,8 +65,8 @@
 		// border-bottom: 1px solid @back4Color;
 		// border-right: 1px solid #6B6B6C;
 		// border-bottom: 1px solid #6B6B6C;
-		border-bottom: 1px solid #D2D1D1;
-		border-right: 1px solid #D2D1D1;
+		border-bottom: 1px solid #d2d1d1;
+		border-right: 1px solid #d2d1d1;
 		box-sizing: border-box;
 		cursor: pointer;
 		left: 0;
@@ -81,7 +81,7 @@
 		height: calc(100% - @rulerGuidesSize);
 		// background: rgb(13, 14, 14);
 		// background: @infiniteViewBgColor;
-		background: #E6E5E6;
+		background: #e6e5e6;
 
 		.editor-viewport-container {
 			position: relative;
@@ -109,14 +109,14 @@
 }
 
 .solid-view-dimension {
-  position: absolute;
-  background: @mainColor;
-  border-radius: 2px;
-  padding: 1px 3px;
-  color: white;
-  font-size: 13px;
-  white-space: nowrap;
-  font-weight: bold;
-  will-change: transform;
-  transform: translate(-50%) translateZ(0px);
+	position: absolute;
+	background: @mainColor;
+	border-radius: 2px;
+	padding: 1px 3px;
+	color: white;
+	font-size: 13px;
+	white-space: nowrap;
+	font-weight: bold;
+	will-change: transform;
+	transform: translate(-50%) translateZ(0px);
 }

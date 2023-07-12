@@ -16,7 +16,7 @@
  */
 
 import React, { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useMemoizedFn } from "ahooks";
 import mitt from "mitt";
 import Apis from "@/apis";
 import { ApiResult, ProjectPageDataType, SolidViewDataType } from "@/types";
@@ -24,7 +24,6 @@ import { ProjectPageViewsResultData } from "@/apis/types/resp";
 import SolidViewFactory from "@/views/SolidViewFactory";
 import "./preview.less";
 import { isNil } from "lodash-es";
-import { FeatureBar } from "./index";
 
 interface Option {
 	value: string | number;
@@ -43,58 +42,50 @@ export interface PreviewPopupProps {
 export default function PreviewPopup(props: PreviewPopupProps) {
 	const { projectId, pageId } = props;
 
-	const [scenePageOptions, setScenePageOptions] = React.useState<Option[]>([]);
-
 	const [views, setViews] = React.useState<SolidViewDataType[]>([]);
 
-	useEffect(() => {
-		load(projectId, pageId);
-	}, [projectId, pageId]);
+	const handleLoad = useMemoizedFn(
+		async (pProjectId: string, pPageId?: string) => {
+			if (pProjectId) {
+				const res: ApiResult<ProjectPageDataType[]> =
+					await Apis.model.queryPages(pProjectId);
+				if (res.ok) {
+					const data = res.data || [];
+					const scenes: Option[] = [];
+					if (data.length > 0) {
+						for (let i = 0; i < data.length; i++) {
+							const scene: Option = {
+								value: data[i].id,
+								label: data[i].name,
+								children: [],
+							};
 
-	async function load(pProjectId: string, pPageId?: string) {
-		if (pProjectId) {
-			const res: ApiResult<ProjectPageDataType[]> = await Apis.model.queryPages(
-				pProjectId,
-			);
-			if (res.ok) {
-				const data = res.data || [];
-				const scenes: Option[] = [];
-				if (data.length > 0) {
-					for (let i = 0; i < data.length; i++) {
-						const scene: Option = {
-							value: data[i].id,
-							label: data[i].name,
-							children: [],
-						};
-
-						if (data[i].children) {
-							for (let j = 0; j < data[i].children.length; j++) {
-								if (isNil(scene) || isNil(scene.children)) {
-									continue;
+							if (data[i].children) {
+								for (let j = 0; j < data[i].children.length; j++) {
+									if (isNil(scene) || isNil(scene.children)) {
+										continue;
+									}
+									scene.children.push({
+										value: data[i].children[j].id,
+										label: data[i].children[j].name,
+										children: [],
+									});
 								}
-								scene.children.push({
-									value: data[i].children[j].id,
-									label: data[i].children[j].name,
-									children: [],
-								});
 							}
+							scenes.push(scene);
 						}
-						scenes.push(scene);
+					}
+					if (pPageId) {
+						await queryViews(pProjectId, pPageId);
 					}
 				}
-				if (pPageId) {
-					await queryViews(pProjectId, pPageId);
-				}
-				setScenePageOptions(scenes);
 			}
-		}
-	}
+		},
+	);
 
-	async function onChange(value: string[]) {
-		if (value && value[0] && value[1]) {
-			queryViews(value[0], value[1]);
-		}
-	}
+	useEffect(() => {
+		handleLoad(projectId, pageId);
+	}, [handleLoad, projectId, pageId]);
 
 	async function queryViews(pProjectId: string, pPageId: string) {
 		const res: ApiResult<ProjectPageViewsResultData> =

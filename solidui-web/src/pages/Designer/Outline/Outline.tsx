@@ -16,7 +16,6 @@
  */
 
 import React from "react";
-import { Tooltip } from "antd";
 import { isNil } from "lodash-es";
 import { mm } from "@/utils";
 import { SolidViewDataType } from "@/types";

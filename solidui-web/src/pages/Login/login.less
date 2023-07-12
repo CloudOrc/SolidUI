@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-@boxShadowColor: #FCFDFE;
+@boxShadowColor: #fcfdfe;
 @boxShadowWidth: 8px;
 
 .solidui-login {
@@ -35,7 +35,7 @@
 		background-attachment: fixed;
 		margin: 0;
 		padding: 0;
-		opacity: .4;
+		opacity: 0.4;
 		z-index: 10;
 	}
 
@@ -72,7 +72,11 @@
 				align-items: center;
 				height: 260px;
 				width: 100%;
-				box-shadow: @boxShadowWidth @boxShadowWidth @boxShadowWidth @boxShadowColor, @boxShadowWidth -@boxShadowWidth @boxShadowWidth @boxShadowColor, -@boxShadowWidth @boxShadowWidth @boxShadowWidth @boxShadowColor, -@boxShadowWidth -@boxShadowWidth @boxShadowWidth @boxShadowColor;
+				box-shadow: @boxShadowWidth @boxShadowWidth @boxShadowWidth
+						@boxShadowColor,
+					@boxShadowWidth -@boxShadowWidth @boxShadowWidth @boxShadowColor,
+					-@boxShadowWidth @boxShadowWidth @boxShadowWidth @boxShadowColor,
+					-@boxShadowWidth -@boxShadowWidth @boxShadowWidth @boxShadowColor;
 			}
 		}
 	}
@@ -80,6 +84,6 @@
 
 .login-password {
 	#basic_password {
-		background-color: #F5F9FC;
+		background-color: #f5f9fc;
 	}
 }

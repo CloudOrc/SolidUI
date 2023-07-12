@@ -17,6 +17,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useUpdate } from "react-use";
+import { useMemoizedFn } from "ahooks";
 import { eventbus } from "@/utils";
 
 type TabItemDataType = {
@@ -38,6 +39,25 @@ function useProperties(initialData: InitialData) {
 	const mainRef = React.createRef<HTMLDivElement>();
 	const asideRef = React.createRef<HTMLDivElement>();
 
+	const handleSelectPageInViewPort = useMemoizedFn(() => {
+		setPropertyKey("page");
+	});
+
+	const handleModelLoad = useMemoizedFn(() => {
+		setPropertyKey("top");
+		forceUpdate();
+	});
+
+	const handleSelectPage = useMemoizedFn(() => {
+		setPropertyKey("page");
+		forceUpdate();
+	});
+
+	const handleSelectViewEvent = useMemoizedFn(() => {
+		setPropertyKey("view");
+		forceUpdate();
+	});
+
 	useEffect(() => {
 		eventbus.on("onSelectViewInViewList", handleSelectViewEvent);
 		eventbus.on("onSelectViewInViewport", handleSelectViewEvent);
@@ -52,26 +72,12 @@ function useProperties(initialData: InitialData) {
 			eventbus.off("onSelectPageInViewport", handleSelectPageInViewPort);
 			eventbus.off("onModelLoad", handleModelLoad);
 		};
-	}, []);
-
-	function handleSelectPageInViewPort() {
-		setPropertyKey("page");
-	}
-
-	function handleModelLoad() {
-		setPropertyKey("top");
-		forceUpdate();
-	}
-
-	function handleSelectPage() {
-		setPropertyKey("page");
-		forceUpdate();
-	}
-
-	function handleSelectViewEvent() {
-		setPropertyKey("view");
-		forceUpdate();
-	}
+	}, [
+		handleModelLoad,
+		handleSelectPage,
+		handleSelectViewEvent,
+		handleSelectPageInViewPort,
+	]);
 
 	function renderTabs() {
 		return (

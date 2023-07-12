@@ -17,6 +17,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button } from "antd";
+import { useMemoizedFn } from "ahooks";
 import { Close } from "@icon-park/react";
 import { map } from "lodash-es";
 import {
@@ -35,22 +36,14 @@ export interface DataSourceViewProps {
 	handleClose: () => void;
 }
 
-export default function (props: DataSourceViewProps) {
+export default function DataSourceView(props: DataSourceViewProps) {
 	const [form] = Form.useForm();
 	const [dsFormElements, setDsFormElements] = useState<
 		DataSourceFormElementDataType[]
 	>([]);
 	const { item, handleClose } = props;
 
-	useEffect(() => () => {}, []);
-
-	useEffect(() => {
-		if (item) {
-			load(`${item.id}`);
-		}
-	}, [item]);
-
-	async function load(id: string) {
+	const handleLoad = useMemoizedFn(async (id: string) => {
 		const res: ApiResult<DataSourceGetDataType> = await Apis.datasource.get(id);
 		if (res.ok) {
 			const { data } = res;
@@ -63,15 +56,7 @@ export default function (props: DataSourceViewProps) {
 			if (res2.ok) {
 				const data2 = res2.data || [];
 				setDsFormElements(data2);
-				// let params = data.connectParams.params || {};
-				// let paramsStr = map(params, (value, key) => `${key}=${value}`).join(
-				// 	",",
-				// );
-
 				const params = JSON.parse(data.parameter || "{}");
-				// let params = data.connectParams.params || {};
-				// let params = data.p
-				// const connectParams = params.params;
 				const paramsStr = map(
 					params.params || {},
 					(value, key) => `${key}=${value}`,
@@ -83,12 +68,6 @@ export default function (props: DataSourceViewProps) {
 					description: data.dataSourceDesc,
 					dataSourceTypeId: id,
 					params: paramsStr,
-					// host: data.connectParams.host,
-					// port: data.connectParams.port,
-					// driverClassName: data.connectParams.driver,
-					// username: data.connectParams.username,
-					// password: data.connectParams.password,
-					// databaseName: data.connectParams.database || "",
 					host: params.host,
 					port: params.port,
 					driverClassName: params.driver,
@@ -98,7 +77,13 @@ export default function (props: DataSourceViewProps) {
 				});
 			}
 		}
-	}
+	});
+
+	useEffect(() => {
+		if (item) {
+			handleLoad(`${item.id}`);
+		}
+	}, [item, handleLoad]);
 
 	function renderDataSourceCreationForm() {
 		return (

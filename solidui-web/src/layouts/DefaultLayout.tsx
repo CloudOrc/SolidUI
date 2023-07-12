@@ -50,12 +50,10 @@ const items: MenuItem[] = [
 export default function DefaultLayout() {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [value, updateCookie, deleteCookie] = useCookie(
-		"solidui_user_session_ticket_id_v1",
-	);
+	const [value, deleteCookie] = useCookie("solidui_user_session_ticket_id_v1");
 
 	const [selectKeys, setSelectKeys] = useState<string[]>(["home"]);
-	const [collapse, setCollapse] = useState<boolean>(false);
+	// const [collapse, setCollapse] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (value === null || undefined === value || value === "") {
@@ -65,7 +63,7 @@ export default function DefaultLayout() {
 		const { pathname } = location;
 		setSelectKeys([pathname]);
 		// return () => {};
-	}, []);
+	}, [location, navigate, value]);
 
 	async function handleMenuClick(item: any) {
 		const { key } = item;
@@ -147,7 +145,7 @@ export default function DefaultLayout() {
 						style={{
 							height: "100%",
 						}}
-						inlineCollapsed={collapse}
+						inlineCollapsed={false}
 						items={items}
 						onClick={handleMenuClick}
 					/>

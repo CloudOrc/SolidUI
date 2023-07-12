@@ -18,7 +18,9 @@
 import React from "react";
 
 import { IObject, isString, isArray, isNumber } from "@daybrush/utils";
+
 import { eventbus } from "@/utils";
+
 import { isNil } from "lodash-es";
 import { connectEditorContext } from "./SolidEditorContext";
 import {
@@ -30,6 +32,7 @@ import {
 	EditorInterface,
 } from "./utils/types";
 import { SOLIDUI_ELEMENT_ID } from "./utils/const";
+
 import {
 	isVisualFunction,
 	isVisualElement,

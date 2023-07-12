@@ -91,7 +91,8 @@ function useDataSource() {
 			title: "operation",
 			dataIndex: "operation",
 			align: "center",
-			render(value, record, index) {
+			// eslint-disable-next-line
+			render(value, record) {
 				return (
 					<div
 						style={{
@@ -189,7 +190,7 @@ function useDataSource() {
 							onClick={async () => {
 								confirm({
 									title: "Are you sure delete this item?",
-									icon: <ExclamationCircleOutlined />,
+									icon: <ExclamationCircleOutlined rev={false} />,
 									content: `${record.dataSourceName}`,
 									okText: "Yes",
 									okType: "danger",

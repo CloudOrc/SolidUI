@@ -199,7 +199,10 @@ export function getOffsetOriginMatrix(
 	return matrix3d(stack.offsetMatrix as any, translation);
 }
 
-export function getScenaAttrs(el: HTMLElement | SVGElement) {
+export function getScenaAttrs(el?: HTMLElement | SVGElement) {
+	if (!el) {
+		return {};
+	}
 	const { attributes } = el;
 	const { length } = attributes;
 	const attrs: IObject<any> = {};

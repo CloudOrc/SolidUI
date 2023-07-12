@@ -147,8 +147,6 @@ export default abstract class SolidView<
 		this.eventbus.on("onDataSetChange", this.handleDataSetChange);
 	}
 
-	// protected handleDrag = () => {};
-
 	protected handleResize = () => {
 		this.resize();
 	};
@@ -199,31 +197,17 @@ export default abstract class SolidView<
 				this.resize();
 			}
 		});
-
-		//  no-restricted-syntax
-		// for (const key in evt) {
-		// 	if (key === this.id) {
-		// 		this.resize();
-		// 		break;
-		// 	}
-		// }
 	};
 
 	async componentWillUnmount() {}
 
-	async componentDidUpdate() // snapshot?: any, // prevState: Readonly<{}>, // prevProps: Readonly<T>,
-	{
-		// let viewModel = this.state.viewModel;
-		// const viewModel = this.vm;
-		// let viewModel = this.props.viewModel;
-		// let metadata = viewModel.metadata || {};
-		// if (viewModel.reFetch) {
-		// 	await this.fetchData();
-		// }
+	async componentDidUpdate() {
 		this.reRender();
 	}
 
 	render() {
+		// TODO
+		/* eslint-disable @typescript-eslint/no-unused-vars */
 		const { viewModel, className, style, eventbus, scenaAttrs, ...restProps } =
 			this.props;
 		return (

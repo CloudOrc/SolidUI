@@ -17,6 +17,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
+import { useMemoizedFn } from "ahooks";
 import {
 	CaretLeftOutlined,
 	CaretUpOutlined,
@@ -31,7 +32,7 @@ import { ApiResult, ProjectPageDataType, SolidViewDataType } from "@/types";
 import { ProjectPageViewsResultData } from "@/apis/types/resp";
 import SolidViewFactory from "@/views/SolidViewFactory";
 import { get, isNil } from "lodash-es";
-import { FullScreen } from "@/utils/fullScreen";
+import FullScreen from "@/utils/fullScreen";
 import "./preview.less";
 import { message } from "antd";
 
@@ -50,11 +51,7 @@ export default function Preview() {
 	const [scenePageOptions, setScenePageOptions] = React.useState<Option[]>([]);
 	const [views, setViews] = React.useState<SolidViewDataType[]>([]);
 
-	useEffect(() => {
-		load();
-	}, []);
-
-	async function load() {
+	const handleLoad = useMemoizedFn(async () => {
 		const { id } = params;
 		const pageId = searchParams.get("pageId");
 
@@ -94,7 +91,11 @@ export default function Preview() {
 				setScenePageOptions(scenes);
 			}
 		}
-	}
+	});
+
+	useEffect(() => {
+		handleLoad();
+	}, [handleLoad]);
 
 	async function onChange(value: string[]) {
 		if (value && value[0] && value[1]) {
@@ -151,10 +152,7 @@ export default function Preview() {
 					right: 15,
 				}}
 			>
-				<FeatureBar
-					onPageChange={onChange}
-					data={scenePageOptions}
-				></FeatureBar>
+				<FeatureBar onPageChange={onChange} data={scenePageOptions} />
 			</div>
 		</div>
 	);
@@ -165,15 +163,15 @@ interface IPointerProps {
 	onPageChange: (page: any) => void;
 }
 
-export const FeatureBar: React.FC<IPointerProps> = (props) => {
+function FeatureBar(props: IPointerProps) {
 	// scene
 	const scenes = useMemo(() => {
-		const scenes: { [key: string]: any } = {};
+		const mScenes: { [key: string]: any } = {};
 		for (let i = 0; i < props.data.length; i++) {
 			const scene = props.data[i];
-			scenes[scene.value] = scene;
+			mScenes[scene.value] = scene;
 		}
-		return scenes;
+		return mScenes;
 	}, [props.data]);
 	// 当前scene
 	const [currentScene, setCurrnetScene] = useState<any>(null);
@@ -218,6 +216,15 @@ export const FeatureBar: React.FC<IPointerProps> = (props) => {
 			});
 		}
 	}
+
+	function renderIcon(p: any) {
+		return p.open ? (
+			<CaretUpOutlined rev={false} />
+		) : (
+			<CaretLeftOutlined rev={false} />
+		);
+	}
+
 	return (
 		<div className="featbar-wrapper">
 			<div className="featbar-scene">
@@ -226,9 +233,7 @@ export const FeatureBar: React.FC<IPointerProps> = (props) => {
 					value={currentScene?.value}
 					onChange={onSceneChange}
 					menuItemSelectedIcon={null}
-					inputIcon={(props) =>
-						props.open ? <CaretUpOutlined /> : <CaretLeftOutlined />
-					}
+					inputIcon={renderIcon}
 					direction="ltr"
 					placeholder="please select scene"
 					dropdownStyle={{
@@ -239,26 +244,24 @@ export const FeatureBar: React.FC<IPointerProps> = (props) => {
 						minHeight: 0,
 					}}
 				>
-					{props.data.map((scene) => {
-						return (
-							<Option key={scene.value} value={scene.value}>
-								<div
-									style={{
-										cursor: "pointer",
-									}}
-								>
-									{scene.label}
-								</div>
-							</Option>
-						);
-					})}
+					{props.data.map((scene) => (
+						<Option key={scene.value} value={scene.value}>
+							<div
+								style={{
+									cursor: "pointer",
+								}}
+							>
+								{scene.label}
+							</div>
+						</Option>
+					))}
 				</Select>
 			</div>
 			<div className="featbar-divider" />
 			<div className="featbar-page">
 				<span className="left_arrows">
 					<span onClick={() => onPageChange("l")}>
-						<LeftOutlined />
+						<LeftOutlined rev={false} />
 					</span>
 				</span>
 				<span className="page_title">
@@ -266,13 +269,14 @@ export const FeatureBar: React.FC<IPointerProps> = (props) => {
 				</span>
 				<span className="right_arrows">
 					<span onClick={() => onPageChange("r")}>
-						<RightOutlined />
+						<RightOutlined rev={false} />
 					</span>
 				</span>
 			</div>
 			<div className="featbar-divider" />
 			<div className="featbar-tools">
 				<FullscreenOutlined
+					rev={false}
 					onClick={() => {
 						FullScreen.switchFullScreen();
 					}}
@@ -280,4 +284,4 @@ export const FeatureBar: React.FC<IPointerProps> = (props) => {
 			</div>
 		</div>
 	);
-};
+}
