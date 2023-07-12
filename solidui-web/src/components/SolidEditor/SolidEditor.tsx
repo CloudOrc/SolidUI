@@ -20,15 +20,11 @@ import InfiniteViewer from "react-infinite-viewer";
 import Guides from "@scena/react-guides";
 import Selecto from "react-selecto";
 import { message } from "antd";
-// import mitt from "mitt";
-
-import { invert, matrix3d } from "@scena/matrix";
 import { IObject } from "@daybrush/utils";
 import { isNil } from "lodash-es";
 import SolidViewFactory from "@/views/SolidViewFactory";
 import {
 	OnDrawEventData,
-	OnModelLoadEventData,
 	OnSelectPageEventData,
 	OnSelectViewEventData,
 } from "@/types/eventbus";
@@ -68,8 +64,6 @@ export default class SolidEditor extends React.PureComponent<
 	SolidEditorProps,
 	Partial<SolidEditorState>
 > {
-	// public state: SolidEditorState;
-
 	constructor(props: SolidEditorProps) {
 		super(props);
 		this.clear = this.clear.bind(this);
@@ -163,7 +157,7 @@ export default class SolidEditor extends React.PureComponent<
 	public handleSelectPage = (event: OnSelectPageEventData) => {
 		const pageId = event.id;
 		const page = mm.getPage(pageId);
-		this.clear().then((removed) => {
+		this.clear().then(() => {
 			const views = page?.views || [];
 			views.forEach((view) => {
 				const builder = this.factory.getBuilder(view.type);
@@ -338,7 +332,7 @@ export default class SolidEditor extends React.PureComponent<
 		return this.removeElements(this.getViewport().getElements(ids), isRestore);
 	}
 
-	private appendComplete(infos: ElementInfo[], isRestore?: boolean) {
+	private appendComplete(infos: ElementInfo[]) {
 		const targets1 = infos.map((info) => info.el!);
 		this.setSelectedTargets(targets1, true);
 		return targets1;
@@ -387,10 +381,7 @@ export default class SolidEditor extends React.PureComponent<
 		});
 	}
 
-	public setSelectedTargets(
-		targets: Array<HTMLElement | SVGElement>,
-		isRestore?: boolean,
-	) {
+	public setSelectedTargets(targets: Array<HTMLElement | SVGElement>) {
 		targets = targets.filter((target) =>
 			targets.every(
 				(parnetTarget) =>
@@ -415,49 +406,35 @@ export default class SolidEditor extends React.PureComponent<
 
 	public getSelectedTargets = () => this.state.selectedTargets;
 
-	private checkBlur() {
-		const { activeElement } = document;
-		if (activeElement) {
-			(activeElement as HTMLElement).blur();
-		}
-		const selection = document.getSelection()!;
+	// private checkBlur() {
+	// 	const { activeElement } = document;
+	// 	if (activeElement) {
+	// 		(activeElement as HTMLElement).blur();
+	// 	}
+	// 	const selection = document.getSelection()!;
 
-		if (selection) {
-			selection.removeAllRanges();
-		}
-		// this.eventBus.trigger("blur");
-	}
+	// 	if (selection) {
+	// 		selection.removeAllRanges();
+	// 	}
+	// }
 
-	public removeElements(
-		targets: Array<HTMLElement | SVGElement>,
-		isRestore?: boolean,
-	) {
+	public removeElements(targets: Array<HTMLElement | SVGElement>) {
 		const viewport = this.getViewport();
-		// const frameMap = this.removeFrames(targets);
-		const indexesList = viewport.getSortedIndexesList(targets);
-		const indexesListLength = indexesList.length;
-		let scopeId = "";
-		let selectedInfo: ElementInfo | null = null;
+		// const indexesList = viewport.getSortedIndexesList(targets);
+		// const indexesListLength = indexesList.length;
+		// let scopeId = "";
+		// let selectedInfo: ElementInfo | null = null;
 
-		if (indexesListLength) {
-			const lastInfo = viewport.getInfoByIndexes(
-				indexesList[indexesListLength - 1],
-			);
-			const nextInfo = viewport.getNextInfo(lastInfo.id!);
+		// if (indexesListLength) {
+		// 	const lastInfo = viewport.getInfoByIndexes(
+		// 		indexesList[indexesListLength - 1],
+		// 	);
+		// 	const nextInfo = viewport.getNextInfo(lastInfo.id!);
 
-			scopeId = lastInfo.scopeId!;
-			selectedInfo = nextInfo;
-		}
-		return viewport.removeTargets(targets).then(({ removed }) => {
-			// let selectedTarget =
-			// 	selectedInfo ||
-			// 	viewport.getLastChildInfo(scopeId)! ||
-			// 	viewport.getInfo(scopeId);
-
-			// this.setSelectedTargets(
-			// 	selectedTarget && selectedTarget.el ? [selectedTarget.el!] : [],
-			// 	true
-			// );
+		// 	scopeId = lastInfo.scopeId!;
+		// 	selectedInfo = nextInfo;
+		// }
+		return viewport.removeTargets(targets).then(() => {
 			this.setSelectedTargets([]);
 			return targets;
 		});
@@ -522,7 +499,7 @@ export default class SolidEditor extends React.PureComponent<
 			<div id={this.props.id} className={prefix("editor")} ref={this.editorRef}>
 				<div
 					className="editor-guides-reset"
-					onClick={(e) => {
+					onClick={() => {
 						infiniteViewer.current!.scrollCenter();
 					}}
 				/>
@@ -586,8 +563,8 @@ export default class SolidEditor extends React.PureComponent<
 						verticalGuides.current!.scroll(e.scrollTop);
 						verticalGuides.current!.scrollGuides(e.scrollLeft);
 					}}
-					onDragStart={(e) => {}}
-					onDrag={(e) => {}}
+					// onDragStart={(e) => {}}
+					// onDrag={(e) => {}}
 					usePinch
 					onPinch={(e) => {
 						eventbus.emit("onZoom", { zoom: e.zoom });
@@ -595,7 +572,7 @@ export default class SolidEditor extends React.PureComponent<
 							zoom: e.zoom,
 						});
 					}}
-					onPinchStart={(e) => {}}
+					// onPinchStart={(e) => {}}
 				>
 					<SolidViewport
 						ref={this.viewport}
@@ -643,14 +620,14 @@ export default class SolidEditor extends React.PureComponent<
 							  }
 							: undefined
 					}
-					onDragStart={(e) => {
-						// this.checkBlur();
-						// e.stop();
-						// if (e.inputEvent.target.nodeName === "BUTTON") {
-						// 	return false;
-						// }
-						// return true;
-					}}
+					// onDragStart={(e) => {
+					// this.checkBlur();
+					// e.stop();
+					// if (e.inputEvent.target.nodeName === "BUTTON") {
+					// 	return false;
+					// }
+					// return true;
+					// }}
 					// onSelect={(e) => {
 					// 	e.added.forEach((el) => {
 					// 		el.classList.add("selected");
@@ -659,14 +636,14 @@ export default class SolidEditor extends React.PureComponent<
 					// 		el.classList.remove("selected");
 					// 	});
 					// }}
-					onDrag={(e) => {
-						// e.stop();
-					}}
-					onDragEnd={(e) => {
-						// e.stop();
-					}}
-					onSelect={(e) => {}}
-					onSelectStart={(e) => {}}
+					// onDrag={(e) => {
+					// e.stop();
+					// }}
+					// onDragEnd={(e) => {
+					// e.stop();
+					// }}
+					// onSelect={(e) => {}}
+					// onSelectStart={(e) => {}}
 					onSelectEnd={(e) => {
 						const selected = e.selected || [];
 						const { isDragStart } = e;
@@ -682,12 +659,12 @@ export default class SolidEditor extends React.PureComponent<
 						});
 					}}
 					// onDrag={e => {}}
-					onScroll={(e) => {
-						// viewerRef.current?.scrollBy(
-						// 	e.direction[0] * 10,
-						// 	e.direction[1] * 10
-						// );
-					}}
+					// onScroll={(e) => {
+					// viewerRef.current?.scrollBy(
+					// 	e.direction[0] * 10,
+					// 	e.direction[1] * 10
+					// );
+					// }}
 				/>
 			</div>
 		);

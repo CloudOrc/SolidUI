@@ -15,154 +15,155 @@
  * limitations under the License.
  */
 
- .lingc-switch {
-  display: flex;
-  align-items: center;
+.lingc-switch {
+	display: flex;
+	align-items: center;
 
-  .switch-close {
-    transform: scale(1);
-    margin-right: 1px;
-    position: relative;
-    display: inline-block;
-    line-height: 0;
-    width: 20px;
-    height: 20px;
-    font-size: 26px;
-    color: #858e9e;
-    cursor: pointer;
+	.switch-close {
+		transform: scale(1);
+		margin-right: 1px;
+		position: relative;
+		display: inline-block;
+		line-height: 0;
+		width: 20px;
+		height: 20px;
+		font-size: 26px;
+		color: #858e9e;
+		cursor: pointer;
 
-    .span-close-area {
-      display: inline-flex;
-      width: 100%;
-      height: 100%;
-      padding: 0;
-      margin: 0;
-      justify-content: center;
-      align-items: center;
+		.span-close-area {
+			display: inline-flex;
+			width: 100%;
+			height: 100%;
+			padding: 0;
+			margin: 0;
+			justify-content: center;
+			align-items: center;
 
-      &:after {
-        position: absolute;
-        content: "";
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        opacity: 0;
-        height: 100%;
-        z-index: 1;
-      }
-    }
-  }
+			&:after {
+				position: absolute;
+				content: "";
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				opacity: 0;
+				height: 100%;
+				z-index: 1;
+			}
+		}
+	}
 
-  .switch-box {
-    position: relative;
+	.switch-box {
+		position: relative;
 
-    .switch-span {
-      position: relative;
-      display: block;
-      // height: 8px;
-      // width: 16px;
+		.switch-span {
+			position: relative;
+			display: block;
+			// height: 8px;
+			// width: 16px;
 			width: 22px;
 			height: 10px;
-      float: right;
-      background-color: #3f4349;
-      border-radius: 8px;
-      // transform: translateX(-2px);
-      cursor: pointer;
+			float: right;
+			background-color: #3f4349;
+			border-radius: 8px;
+			// transform: translateX(-2px);
+			cursor: pointer;
 
-      transform: scale(1);
-      margin-right: 1px;
+			transform: scale(1);
+			margin-right: 1px;
 
-      &::before {
-        display: block;
-        content: "";
-        width: 0;
-        height: 100%;
-        background: #689df7;
-        border-radius: 8px;
+			&::before {
+				display: block;
+				content: "";
+				width: 0;
+				height: 100%;
+				background: #689df7;
+				border-radius: 8px;
 				// border-radius: 4px;
-      }
+			}
 
-      &::after {
-        position: absolute;
-        display: block;
-        content: "";
-        // top: -1px;
-        // left: -2px;
-        // width: 10px;
-        // height: 10px;
+			&::after {
+				position: absolute;
+				display: block;
+				content: "";
+				// top: -1px;
+				// left: -2px;
+				// width: 10px;
+				// height: 10px;
 				top: -2px;
-        left: -2px;
-        width: 14px;
-        height: 14px;
-        background: #858e9e;
-        border-radius: 50%;
-        z-index: 1;
-      }
+				left: -2px;
+				width: 14px;
+				height: 14px;
+				background: #858e9e;
+				border-radius: 50%;
+				z-index: 1;
+			}
 
-      &.on {
-        &::before {
-          width: 100%;
-          animation: switch_on_width_animate .3s linear backwards;
-        }
+			&.on {
+				&::before {
+					width: 100%;
+					animation: switch_on_width_animate 0.3s linear backwards;
+				}
 
-        &::after {
-          background: #e1ebff;
-          transform: translateX(100%);
-          animation: switch_on_background_animate .3s linear backwards;
-        }
-      }
+				&::after {
+					background: #e1ebff;
+					transform: translateX(100%);
+					animation: switch_on_background_animate 0.3s linear backwards;
+				}
+			}
 
-      &.off {
-        &::before {
-          width: 4px;
-          animation: switch_off_width_animate .3s linear backwards;
-        }
+			&.off {
+				&::before {
+					width: 4px;
+					animation: switch_off_width_animate 0.3s linear backwards;
+				}
 
-        &::after {
-          background: #858e9e;
-          animation: switch_off_background_animate .3s linear backwards;
-        }
-      }
-    }
-  }
-
+				&::after {
+					background: #858e9e;
+					animation: switch_off_background_animate 0.3s linear backwards;
+				}
+			}
+		}
+	}
 }
 
-
-@keyframes switch_on_width_animate
-{
-  0% {
-    width:0
-  } to {
-    width:100%
-  }
+@keyframes switch_on_width_animate {
+	0% {
+		width: 0;
+	}
+	to {
+		width: 100%;
+	}
 }
 
 @keyframes switch_off_width_animate {
-  0% {
-    width:100%
-  } to {
-    width:0
-  }
+	0% {
+		width: 100%;
+	}
+	to {
+		width: 0;
+	}
 }
 
-@keyframes switch_on_background_animate{
-  0% {
-    transform:translateX(0);
-    background:#858e9e
-  } to {
-    transform:translateX(100%);
-    background:#e1ebff
-  }
+@keyframes switch_on_background_animate {
+	0% {
+		transform: translateX(0);
+		background: #858e9e;
+	}
+	to {
+		transform: translateX(100%);
+		background: #e1ebff;
+	}
 }
 
-@keyframes switch_off_background_animate{
-  0% {
-    transform:translateX(100%);
-    background:#e1ebff
-  } to {
-    transform:translateX(0);
-    background:#858e9e
-  }
+@keyframes switch_off_background_animate {
+	0% {
+		transform: translateX(100%);
+		background: #e1ebff;
+	}
+	to {
+		transform: translateX(0);
+		background: #858e9e;
+	}
 }

@@ -93,7 +93,7 @@ function Header() {
 		if (projectName !== null) {
 			setTitle(projectName);
 		}
-	}, []);
+	}, [searchParams]);
 
 	return (
 		<header className="header">

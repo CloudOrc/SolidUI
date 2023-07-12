@@ -17,6 +17,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, message } from "antd";
+import { useMemoizedFn } from "ahooks";
 import { Close } from "@icon-park/react";
 import { map } from "lodash-es";
 import {
@@ -42,13 +43,7 @@ export default function DataSourceEdit(props: DataSourceEditProps) {
 	const [dataSourceTypeId, setDataSourceTypeId] = useState<number>();
 	const { item, handleClose } = props;
 
-	useEffect(() => () => {}, []);
-
-	useEffect(() => {
-		load(item.id);
-	}, [item]);
-
-	async function load(id: string) {
+	const handleLoad = useMemoizedFn(async (id: string) => {
 		const res: ApiResult<DataSourceGetDataType> = await Apis.datasource.get(id);
 		if (res.ok) {
 			const { data } = res;
@@ -91,7 +86,11 @@ export default function DataSourceEdit(props: DataSourceEditProps) {
 				});
 			}
 		}
-	}
+	});
+
+	useEffect(() => {
+		handleLoad(item.id);
+	}, [item, handleLoad]);
 
 	function renderDataSourceCreationForm() {
 		return (

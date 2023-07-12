@@ -25,7 +25,7 @@ import "./DataSourceList.less";
 
 const { Search } = Input;
 
-export default function () {
+export default function DataSourceList() {
 	const {
 		loading,
 		columns,

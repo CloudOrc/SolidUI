@@ -45,9 +45,7 @@ function updateViewAndEmitEvent(
 	let view = mm.getCurrentView();
 	if (view) {
 		const clonedView = cloneDeep(view);
-
 		set(clonedView, propertyKey, propertyValue);
-		// set(view, propertyKey, propertyValue);
 		view = clonedView;
 		eventbus.emit("onUpdateViewPropertyValue", {
 			id: view.id,
@@ -58,7 +56,7 @@ function updateViewAndEmitEvent(
 	return Promise.resolve();
 }
 
-export default function () {
+export default function StyleTitleProperties() {
 	const forceUpdate = useUpdate();
 	return (
 		<LeftRightExpander

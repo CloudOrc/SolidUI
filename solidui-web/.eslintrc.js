@@ -95,6 +95,8 @@ module.exports = {
 						"allowSingleExtends": true,
 					}
 				],
+				"@typescript-eslint/no-non-null-assertion": 0,	// need discussion, temporary disable
+
 				// react
 				"react/jsx-filename-extension": [1, { extensions: [".jsx", ".tsx"] }],
 				"react/require-default-props": 0,

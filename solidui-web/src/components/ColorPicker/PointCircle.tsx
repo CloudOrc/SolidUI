@@ -18,7 +18,7 @@
 import * as React from "react";
 
 function PointerCircle() {
-  return <div className="pointer-circle" />;
+	return <div className="pointer-circle" />;
 }
 
 export default PointerCircle;

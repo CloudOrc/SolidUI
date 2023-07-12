@@ -106,7 +106,7 @@ class MoveableManager extends React.PureComponent<{
 				}}
 				isDisplaySnapDigit
 				isDisplayInnerSnapDigit
-				snapDistFormat={(v, type) => `${v}px`}
+				snapDistFormat={(v) => `${v}px`}
 				// Roundable
 				roundable={false}
 				// roundable={selectedTargets.length > 1 ? false : true}
@@ -295,7 +295,7 @@ class MoveableManager extends React.PureComponent<{
 					e.datas.isRender = true;
 					// this.eventBus.requestTrigger("render");
 				}}
-				onRenderEnd={(e) => {
+				onRenderEnd={() => {
 					// this.eventBus.requestTrigger("render");
 					// if (!e.datas.isRender) {
 					// 	return;
@@ -311,11 +311,11 @@ class MoveableManager extends React.PureComponent<{
 						moveableData.getFrame(target).get(),
 					);
 				}}
-				onRenderGroup={(e) => {
+				onRenderGroup={() => {
 					// this.eventBus.requestTrigger("renderGroup", e);
 					// e.datas.isRender = true;
 				}}
-				onRenderGroupEnd={(e) => {
+				onRenderGroupEnd={() => {
 					// this.eventBus.requestTrigger("renderGroup", e);
 					// if (!e.datas.isRender) {
 					// 	return;
