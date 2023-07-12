@@ -26,7 +26,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',  # This field specifies the format of the `long_description`.
     packages=find_packages(),
-    package_data={'soliduimodelui.webapp': ['static/*', 'static/assets/*']},
+    # package_data={'soliduimodelui.webapp': ['static/*', 'static/assets/*']},
     install_requires=[
         'ipykernel>=6,<7',
         'snakemq>=1,<2',
