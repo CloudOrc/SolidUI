@@ -15,24 +15,25 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.entrance.vo;
+package com.cloudorc.solidui.dao.entity;
 
 import lombok.Data;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 @Data
-public class ModelKeyVO {
+@TableName("solidui_model_type")
+public class ModelType {
 
     private Long id;
+
     private String name;
+
     private String typeName;
 
-    public ModelKeyVO() {
-    }
+    private String prompt;
 
-    public ModelKeyVO(Long id, String name, String typeName) {
-        this.id = id;
-        this.name = name;
-        this.typeName = typeName;
-    }
+    private String token;
 
+    private String baseurl;
 }

@@ -15,24 +15,11 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.entrance.vo;
+package com.cloudorc.solidui.entrance.service;
 
-import lombok.Data;
+import com.cloudorc.solidui.entrance.utils.Result;
 
-@Data
-public class ModelKeyVO {
+public interface ModelService {
 
-    private Long id;
-    private String name;
-    private String typeName;
-
-    public ModelKeyVO() {
-    }
-
-    public ModelKeyVO(Long id, String name, String typeName) {
-        this.id = id;
-        this.name = name;
-        this.typeName = typeName;
-    }
-
+    Result queryModelList();
 }

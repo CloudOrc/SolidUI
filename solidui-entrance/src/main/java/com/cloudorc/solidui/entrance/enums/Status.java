@@ -16,12 +16,12 @@
  */
 package com.cloudorc.solidui.entrance.enums;
 
+import java.util.Locale;
+
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import java.util.Locale;
-import java.util.Optional;
-
 public enum Status {
+
     SUCCESS(0, "success", "成功"),
     INTERNAL_SERVER_ERROR_ARGS(10000, "Internal Server Error: {0}", "服务端异常: {0}"),
     USER_NAME_EXIST(10001, "user name already exists", "用户名已存在"),
@@ -61,6 +61,7 @@ public enum Status {
     UPDATE_JOB_ERROR(10076, "update job  error", "更新图例报错"),
     DELETE_JOB_ERROR(10077, "delete job  error", "删除图例报错"),
     JOB_PAGE_ALREADY_EXISTS_ERROR(10078, "job page already exists error", "场景存在报错"),
+    QUERY_MODEL_TYPE_ERROR(10080, "query model type error", "查询模型列表报错"),
     FAILED(1, "failed", "失败");
 
     private final int code;
@@ -84,6 +85,5 @@ public enum Status {
             return this.enMsg;
         }
     }
-
 
 }
