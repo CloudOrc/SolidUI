@@ -45,7 +45,7 @@ public class ModelController extends BaseController {
     @ResponseStatus(HttpStatus.OK)
     @ApiException(QUERY_MODEL_TYPE_ERROR)
     @RequestMapping(path = "/keys", method = RequestMethod.GET)
-    public Result getJobPage(HttpServletRequest req) {
+    public Result getModelList(HttpServletRequest req) {
 
         return modelService.queryModelList();
     }

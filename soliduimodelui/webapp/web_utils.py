@@ -14,22 +14,6 @@
 
 import pymysql
 
-class LimitedLengthString:
-    def __init__(self, maxlen=2000):
-        self.data = deque()
-        self.len = 0
-        self.maxlen = maxlen
-
-    def append(self, string):
-        self.data.append(string)
-        self.len += len(string)
-        while self.len > self.maxlen:
-            popped = self.data.popleft()
-            self.len -= len(popped)
-
-    def get_string(self):
-        result = ''.join(self.data)
-        return result[-self.maxlen:]
 
 def response_format(code=0,msg="success",data={},success=True,failed=False):
     return {
@@ -41,13 +25,13 @@ def response_format(code=0,msg="success",data={},success=True,failed=False):
     }
 
 
-def query_model(db_host='localhost',db_port=3306,db_user='root',db_pass='password',db_name='testdb',model=""):
+def query_model(db_host='localhost',db_port=3306,db_user='root',db_pass='password', db_name='testdb', modelId=0):
 
-    conn = pymysql.connect(host=db_host,port=db_port,user=db_user,passwd=db_pass,db=db_name)
+    conn = pymysql.connect(host=db_host, port=db_port, user=db_user, passwd=db_pass, db=db_name, cursorclass=pymysql.cursors.DictCursor)
 
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM solidui_model_type WHERE name = %s",model)
+    cursor.execute("SELECT * FROM solidui_model_type WHERE id = %s",modelId)
 
     result = cursor.fetchone()
 

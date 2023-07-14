@@ -42,8 +42,9 @@ APP_PORT = int(os.environ.get("WEB_PORT", 5110))
 base_blueprint = Blueprint("baseurl", __name__, url_prefix="/solidui/models")
 
 # We know this Flask app is for local use. So we can disable the verbose Werkzeug logger
-log = logging.getLogger('werkzeug')
+log = logging.getLogger('soliduimodel')
 log.setLevel(logging.ERROR)
+logging.basicConfig(filename='app.log')
 
 cli = sys.modules['flask.cli']
 cli.show_server_banner = lambda *x: None
@@ -51,8 +52,27 @@ cli.show_server_banner = lambda *x: None
 app = Flask(__name__)
 CORS(app)
 
-message_buffer = web_utils.LimitedLengthString()
 
+
+
+class LimitedLengthString:
+    def __init__(self, maxlen=2000):
+        self.data = deque()
+        self.len = 0
+        self.maxlen = maxlen
+
+    def append(self, string):
+        self.data.append(string)
+        self.len += len(string)
+        while self.len > self.maxlen:
+            popped = self.data.popleft()
+            self.len -= len(popped)
+
+    def get_string(self):
+        result = ''.join(self.data)
+        return result[-self.maxlen:]
+
+message_buffer = LimitedLengthString()
 
 # type 0:gpt-3.5-turbo 1:gpt-4
 async def get_code_gpt(user_prompt, user_key="", model="gpt-3.5-turbo", base_url="https://api.openai.com"):
@@ -105,26 +125,30 @@ async def get_code_gpt(user_prompt, user_key="", model="gpt-3.5-turbo", base_url
 def proxy_kernel_manager(path):
     if request.method == "POST":
         resp = requests.post(
-            f'http://localhost:{KERNEL_APP_PORT}/solidui/{path}', json=request.get_json())
+            f'http://localhost:{KERNEL_APP_PORT}/solidui/kernel/{path}', json=request.get_json())
     else:
-        resp = requests.get(f'http://localhost:{KERNEL_APP_PORT}/solidui/{path}')
+        resp = requests.get(f'http://localhost:{KERNEL_APP_PORT}/solidui/kernel/{path}')
 
     excluded_headers = ['content-encoding',
                         'content-length', 'transfer-encoding', 'connection']
     headers = [(name, value) for (name, value) in resp.raw.headers.items()
                if name.lower() not in excluded_headers]
 
-    return web_utils.response_format(code=resp.status_code, data=resp.content)
+    return web_utils.response_format(code=resp.status_code, data=resp.content.decode('utf-8'))
 
 
 @base_blueprint.route('/generate', methods=['POST'])
 def generate_code():
-    user_prompt = request.json.get('prompt', '')
-    model = request.json.get('model', None)
-    result = web_utils.query_model(db_host, db_port, db_name, db_user, db_pass, model)
+    user_prompt = request.json.get('prompt', "")
+    modelId = request.json.get('modelId', 0)
+
+    logging.info(f'Prompt: {user_prompt}, Model Id: {modelId}')
+
+    result = web_utils.query_model(db_host, db_port, db_user, db_pass, db_name , modelId)
+
     user_key = result['token']
     base_url = result['baseurl']
-
+    model = result['name']
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
@@ -145,6 +169,11 @@ def download_file():
     # from `workspace/` send the file
     # make sure to set required headers to make it download the file
     return send_from_directory(os.path.join(os.getcwd(), 'workspace'), file, as_attachment=True)
+
+
+@base_blueprint.route('/test', methods=["GET", "POST"])
+def testList():
+    return web_utils.response_format()
 
 
 app.register_blueprint(base_blueprint)
