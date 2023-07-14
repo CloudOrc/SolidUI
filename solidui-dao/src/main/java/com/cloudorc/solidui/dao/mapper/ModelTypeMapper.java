@@ -15,24 +15,15 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.entrance.vo;
+package com.cloudorc.solidui.dao.mapper;
 
-import lombok.Data;
+import com.cloudorc.solidui.dao.entity.ModelType;
 
-@Data
-public class ModelKeyVO {
+import java.util.List;
 
-    private Long id;
-    private String name;
-    private String typeName;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-    public ModelKeyVO() {
-    }
+public interface ModelTypeMapper extends BaseMapper<ModelType> {
 
-    public ModelKeyVO(Long id, String name, String typeName) {
-        this.id = id;
-        this.name = name;
-        this.typeName = typeName;
-    }
-
+    List<ModelType> queryList();
 }

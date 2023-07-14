@@ -39,7 +39,7 @@ db_pass = os.environ.get('DB_PASS')
 
 APP_PORT = int(os.environ.get("WEB_PORT", 5110))
 
-base_blueprint = Blueprint("baseurl", __name__, url_prefix="/solidui")
+base_blueprint = Blueprint("baseurl", __name__, url_prefix="/solidui/models")
 
 # We know this Flask app is for local use. So we can disable the verbose Werkzeug logger
 log = logging.getLogger('werkzeug')
@@ -105,9 +105,9 @@ async def get_code_gpt(user_prompt, user_key="", model="gpt-3.5-turbo", base_url
 def proxy_kernel_manager(path):
     if request.method == "POST":
         resp = requests.post(
-            f'http://localhost:{KERNEL_APP_PORT}/{path}', json=request.get_json())
+            f'http://localhost:{KERNEL_APP_PORT}/solidui/{path}', json=request.get_json())
     else:
-        resp = requests.get(f'http://localhost:{KERNEL_APP_PORT}/{path}')
+        resp = requests.get(f'http://localhost:{KERNEL_APP_PORT}/solidui/{path}')
 
     excluded_headers = ['content-encoding',
                         'content-length', 'transfer-encoding', 'connection']

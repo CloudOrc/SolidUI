@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -79,7 +80,7 @@ public class DataSourceTypeKey {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-//    @TableId(value = "datasource_type_id")
+    @TableField(value = "datasource_type_id")
     private Long dataSourceTypeId;
 
     /** Key name */
