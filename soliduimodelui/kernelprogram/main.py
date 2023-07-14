@@ -38,7 +38,7 @@ import soliduimodelui.kernelprogram.utils as utils
 
 
 APP_PORT = int(os.environ.get("API_PORT", 5010))
-base_blueprint = Blueprint("baseurl", __name__, url_prefix="/solidui")
+base_blueprint = Blueprint("baseurl", __name__, url_prefix="/solidui/kernel")
 
 # Get global logger
 logger = config.get_logger()
@@ -53,7 +53,7 @@ send_queue = Queue()
 messaging = None
 
 # We know this Flask app is for local use. So we can disable the verbose Werkzeug logger
-log = logging.getLogger('werkzeug')
+log = logging.getLogger('soliduimodel')
 log.setLevel(logging.ERROR)
 
 cli = sys.modules['flask.cli']
@@ -139,6 +139,8 @@ def handle_request():
         return jsonify({"results": results})
     elif request.method == "POST":
         data = request.json
+
+        print(f"data:{data}")
 
         send_queue.put(data)
 
