@@ -35,7 +35,7 @@ load_dotenv('.env')
 import soliduimodelui.kernelprogram.kernel_manager as kernel_manager
 import soliduimodelui.kernelprogram.config as config
 import soliduimodelui.kernelprogram.utils as utils
-
+import soliduimodelui.webapp.web_utils as web_utils
 
 APP_PORT = int(os.environ.get("API_PORT", 5010))
 base_blueprint = Blueprint("baseurl", __name__, url_prefix="/solidui/kernel")
@@ -152,7 +152,7 @@ def handle_restart():
     cleanup_kernel_program()
     start_kernel_manager()
 
-    return jsonify({"result": "success"})
+    return web_utils.response_format()
 
 
 app.register_blueprint(base_blueprint)
