@@ -75,5 +75,16 @@
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>
+
+        <fileSet>
+            <directory>${basedir}/..</directory>
+            <includes>
+                <include>setup.py</include>
+                <include>README.md</include>
+            </includes>
+            <outputDirectory>.</outputDirectory>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
     </fileSets>
 </assembly>
