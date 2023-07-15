@@ -24,6 +24,7 @@ services:
       - "12345:12345"
     networks:
       - solidui
+
   solidui-web:
     image: ${HUB}/solidui-web:${TAG}
     container_name: solidui-web
@@ -32,6 +33,27 @@ services:
     networks:
       - solidui
 
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: SolidUI@123
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - solidui
+
+  soliduimodelui:
+    image: ${HUB}/soliduimodelui:${TAG}
+    container_name: soliduimodelui
+    ports:
+      - "5110:5110"
+    networks:
+      - solidui
+
 networks:
   solidui:
     driver: bridge
+
+volumes:
+  mysql_data:
