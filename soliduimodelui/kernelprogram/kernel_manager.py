@@ -27,11 +27,11 @@ from time import sleep
 from jupyter_client import BlockingKernelClient
 
 from dotenv import load_dotenv
-load_dotenv('.env')
+
 
 import soliduimodelui.kernelprogram.utils as utils
 import soliduimodelui.kernelprogram.config as config
-
+load_dotenv(dotenv_path='soliduimodelui/.env', override=True)
 # Set up globals
 messaging = None
 logger = config.get_logger()

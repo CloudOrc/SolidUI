@@ -29,7 +29,8 @@ from dotenv import load_dotenv
 import soliduimodelui.webapp.web_utils as web_utils
 from soliduimodelui.kernelprogram.main import APP_PORT as KERNEL_APP_PORT
 
-load_dotenv('.env')
+
+load_dotenv(dotenv_path='soliduimodelui/.env', override=True)
 
 db_host = os.environ.get('DB_HOST')
 db_port = int(os.environ.get('DB_PORT'))
@@ -151,6 +152,7 @@ def generate_code():
     model = result['name']
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
+
 
     code, status = loop.run_until_complete(
         get_code_gpt(user_prompt, user_key, model, base_url))

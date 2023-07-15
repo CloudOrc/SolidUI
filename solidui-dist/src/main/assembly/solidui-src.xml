@@ -80,6 +80,9 @@
                 <!-- system ignore -->
                 <exclude>**/.DS_Store</exclude>
                 <exclude>**/Thumbs.db</exclude>
+
+                <exclude>**/__pycache__/**</exclude>
+                <exclude>*.iml</exclude>
             </excludes>
         </fileSet>
     </fileSets>
