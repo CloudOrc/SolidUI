@@ -68,6 +68,11 @@
             <includes>
                 <include>**/**/*</include>
             </includes>
+             <excludes>
+                 <exclude>__pycache__</exclude>
+                 <exclude>**/__pycache__</exclude>
+                 <exclude>*.iml</exclude>
+             </excludes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
         </fileSet>

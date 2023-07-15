@@ -153,16 +153,15 @@ def generate_code():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-    print(f"model:{model}")
 
-    # code, status = loop.run_until_complete(
-    #     get_code_gpt(user_prompt, user_key, model, base_url))
-    # loop.close()
+    code, status = loop.run_until_complete(
+        get_code_gpt(user_prompt, user_key, model, base_url))
+    loop.close()
 
     # Append all messages to the message buffer for later use
     message_buffer.append(user_prompt + "\n\n")
-    return web_utils.response_format()
-    #return web_utils.response_format(code=status, data={'code': code})
+
+    return web_utils.response_format(code=status, data={'code': code})
 
 
 @base_blueprint.route('/download')
