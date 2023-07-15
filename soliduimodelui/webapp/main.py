@@ -29,7 +29,8 @@ from dotenv import load_dotenv
 import soliduimodelui.webapp.web_utils as web_utils
 from soliduimodelui.kernelprogram.main import APP_PORT as KERNEL_APP_PORT
 
-load_dotenv('.env')
+
+load_dotenv(dotenv_path='soliduimodelui/.env', override=True)
 
 db_host = os.environ.get('DB_HOST')
 db_port = int(os.environ.get('DB_PORT'))
@@ -152,14 +153,16 @@ def generate_code():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-    code, status = loop.run_until_complete(
-        get_code_gpt(user_prompt, user_key, model, base_url))
-    loop.close()
+    print(f"model:{model}")
+
+    # code, status = loop.run_until_complete(
+    #     get_code_gpt(user_prompt, user_key, model, base_url))
+    # loop.close()
 
     # Append all messages to the message buffer for later use
     message_buffer.append(user_prompt + "\n\n")
-
-    return web_utils.response_format(code=status, data={'code': code})
+    return web_utils.response_format()
+    #return web_utils.response_format(code=status, data={'code': code})
 
 
 @base_blueprint.route('/download')

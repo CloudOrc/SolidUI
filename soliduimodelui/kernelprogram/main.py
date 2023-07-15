@@ -30,13 +30,14 @@ from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS  # Import the CORS library
 
 from dotenv import load_dotenv
-load_dotenv('.env')
+
 
 import soliduimodelui.kernelprogram.kernel_manager as kernel_manager
 import soliduimodelui.kernelprogram.config as config
 import soliduimodelui.kernelprogram.utils as utils
 import soliduimodelui.webapp.web_utils as web_utils
 
+load_dotenv(dotenv_path='soliduimodelui/.env', override=True)
 APP_PORT = int(os.environ.get("API_PORT", 5010))
 base_blueprint = Blueprint("baseurl", __name__, url_prefix="/solidui/kernel")
 

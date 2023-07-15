@@ -61,5 +61,15 @@
             <directory>${basedir}/docker</directory>
             <outputDirectory>docker</outputDirectory>
         </fileSet>
+
+        <fileSet>
+            <directory>${basedir}/../soliduimodelui</directory>
+            <outputDirectory>soliduimodelui</outputDirectory>
+            <includes>
+                <include>**/**/*</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
     </fileSets>
 </assembly>

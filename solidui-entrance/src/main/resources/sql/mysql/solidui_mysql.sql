@@ -142,6 +142,19 @@ CREATE TABLE `solidui_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+DROP TABLE IF EXISTS `solidui_model_type`;
+
+CREATE TABLE `solidui_model_type` (
+                                      `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                                      `name` varchar(255) DEFAULT NULL,
+                                      `type_name` varchar(255) DEFAULT NULL,
+                                      `prompt` varchar(255) DEFAULT NULL,
+                                      `token` varchar(255) DEFAULT NULL,
+                                      `baseurl` varchar(255) DEFAULT NULL,
+                                      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 INSERT INTO `solidui_user` (`id`, `user_name`, `user_password`, `create_time`, `update_time`, `queue`)
 VALUES
 (1,'admin','21232f297a57a5a743894a0e4a801fc3','2023-05-01 00:00:00','2023-05-01 00:00:00',NULL);
@@ -158,7 +171,12 @@ VALUES
 (7,1,'databaseName','数据库名(Database name)','Database name',NULL,'TEXT',NULL,0,'数据库名(Database name)','Database name',NULL,'2023-05-23 09:57:25','2023-05-23 09:57:25');
 
 
-
 INSERT INTO `solidui_datasource_type` (`id`, `name`, `description`, `option`, `classifier`, `icon`, `layers`)
 VALUES
 (1,'mysql','mysql','mysql','mysql','mysql',3);
+
+INSERT INTO `solidui_model_type` (`id`, `name`, `type_name`, `prompt`, `token`, `baseurl`)
+VALUES
+(1,'gpt-3.5-turbo','gpt',NULL,'sk-tDHORTwNMfpIJGeeHNRpFx2CaiEKeqsoJH2cfncNyl67DWoU','https://api.chatanywhere.com.cn'),
+(2,'gpt-4','gpt',NULL,NULL,'https://api.chatanywhere.com.cn'),
+(3,'chatglm_lite','chatglm',NULL,NULL,'https://open.bigmodel.cn');

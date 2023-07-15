@@ -40,6 +40,7 @@ services:
       MYSQL_ROOT_PASSWORD: SolidUI@123
     volumes:
       - mysql_data:/var/lib/mysql
+      - ../entrance-server/conf/sql/mysql/solidui_mysql.sql:/docker-entrypoint-initdb.d/solidui_mysql.sql
     networks:
       - solidui
 
