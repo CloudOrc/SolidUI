@@ -44,7 +44,7 @@ module.exports = {
         test: /\.css$/,
         include: [
           path.resolve(__dirname, '../src'),
-					path.resolve(__dirname, '../node_modules/@szhsin/react-menu')
+          path.resolve(__dirname, '../node_modules/@szhsin/react-menu')
           // path.resolve(__dirname, '../node_modules/antd')
         ],
         use: [
@@ -56,33 +56,25 @@ module.exports = {
       {
         test: /\.less$/,
         include: [
-					path.resolve(__dirname, '../src'),
-					path.resolve(__dirname, '../node_modules/antd'),
-					path.resolve(__dirname, '../node_modules/rc-select')
-				],
+          path.resolve(__dirname, '../src'),
+          path.resolve(__dirname, '../node_modules/antd'),
+          path.resolve(__dirname, '../node_modules/rc-select')
+        ],
         use: [
           isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader',
           {
-						loader: 'less-loader',
-						options: {
-							lessOptions: {
-								modifyVars: themeVars,
-								javascriptEnabled: true
-							}
-						}
-					}
+            loader: 'less-loader',
+            options: {
+              lessOptions: {
+                modifyVars: themeVars,
+                javascriptEnabled: true
+              }
+            }
+          }
         ]
       },
-      // {
-      //   test: /.(js|jsx)$/,
-      //   include: [path.resolve(__dirname, '../src')],
-      //   use: [
-      //     'thread-loader',
-      //     'babel-loader'
-      //   ]
-      // },
       {
         test: /\.(js|jsx|ts|tsx)$/,
         include: [path.resolve(__dirname, '../src')],
@@ -92,7 +84,40 @@ module.exports = {
         ]
       },
       {
-        test: /.(png|jpg|jpeg|gif|svg)$/,
+        test: /\.svg$/i,
+        include: [path.resolve(__dirname, '../src')],
+        issuer: /\.[jt]sx?$/,
+        use: [
+          { loader: 'thread-loader' },
+          { loader: 'babel-loader', },
+          { loader: '@svgr/webpack', options: { icon: true, typescript: true, svgo: false, mome: true } }
+        ],
+        // 根据条件识别资源（暂时用不到）
+        // oneOf: [
+        //   {
+        //     resourceQuery: { not: [/asset/] },
+        //     use: [
+        //       { loader: 'thread-loader' },
+        //       { loader: 'babel-loader', },
+        //       { loader: '@svgr/webpack', options: { icon: true, typescript: true, svgo: false, mome: true } }
+        //     ],
+        //   },
+        //   {
+        //     resourceQuery: { and: [/asset/] },
+        //     type: 'asset',
+        //     parser: {
+        //       dataUrlCondition: {
+        //         maxSize: 10 * 1024,
+        //       }
+        //     },
+        //     generator: {
+        //       filename: 'static/images/[name].[contenthash:8][ext]',
+        //     },
+        //   }
+        // ]
+      },
+      {
+        test: /.(png|jpg|jpeg|gif)$/,
         type: 'asset',
         parser: {
           dataUrlCondition: {

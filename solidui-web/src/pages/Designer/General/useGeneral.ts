@@ -16,7 +16,7 @@
  */
 
 import React, { useEffect, useState, useRef } from "react";
-import { Form, message } from "antd";
+import { message } from "antd";
 import { useParams } from "react-router-dom";
 import { isNil } from "lodash-es";
 import { useUpdate } from "react-use";
@@ -43,10 +43,8 @@ interface StatefulSolidPageDataType extends SolidPageDataType {
 function useGeneral() {
 	const forceUpdate = useUpdate();
 	const params = useParams();
-	const [form] = Form.useForm();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [scenes, setScenes] = useState<StatefulSolidSceneDataType[]>([]);
-	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const idRef = React.useRef<string>();
 
 	const pageEditingModelMap = useRef<
@@ -113,8 +111,6 @@ function useGeneral() {
 			});
 			setScenes(_scenes_);
 			message.success("create scene ok");
-			toggleModal(false);
-			form.resetFields();
 		}
 		forceUpdate();
 	}
@@ -152,8 +148,6 @@ function useGeneral() {
 				_page_.selected = false;
 			});
 			message.success("create page ok");
-			toggleModal(false);
-			form.resetFields();
 		}
 		forceUpdate();
 	}
@@ -225,10 +219,6 @@ function useGeneral() {
 		}
 	}
 
-	async function toggleModal(open: boolean) {
-		setModalOpen(open);
-	}
-
 	async function edit(
 		entity: StatefulSolidPageDataType | StatefulSolidSceneDataType,
 	) {
@@ -249,51 +239,60 @@ function useGeneral() {
 
 		forceUpdate();
 	}
-
-	async function handleEditingInputKeyDown(
-		event: React.KeyboardEvent<HTMLInputElement>,
+	async function updateName(
 		entity: StatefulSolidPageDataType | StatefulSolidSceneDataType,
 	) {
 		const selectEntity = pageEditingModelMap.current.get(entity.id);
 		if (isNil(selectEntity)) {
 			return;
 		}
+
+		if (selectEntity.newName === selectEntity.oldName) {
+			selectEntity.editing = false;
+			forceUpdate();
+			return;
+		}
+		const res = await Apis.page.rename(entity.id, {
+			name: selectEntity.newName,
+		});
+		if (res.ok) {
+			message.success("rename ok");
+			entity.title = selectEntity.newName;
+			selectEntity.editing = false;
+			forceUpdate();
+		}
+	}
+
+	async function handleEditingInputKeyDown(
+		event: React.KeyboardEvent<HTMLInputElement>,
+		entity: StatefulSolidPageDataType | StatefulSolidSceneDataType,
+	) {
 		if (event.keyCode === 27) {
-			// esc
-			if (selectEntity) {
-				selectEntity.editing = false;
-				selectEntity.newName = "";
-				selectEntity.oldName = "";
+			const selectEntity = pageEditingModelMap.current.get(entity.id);
+			if (isNil(selectEntity)) {
+				return;
 			}
+			selectEntity.editing = false;
+			selectEntity.newName = "";
+			selectEntity.oldName = "";
 			forceUpdate();
 		} else if (event.keyCode === 13) {
-			// enter
-			const res = await Apis.page.rename(entity.id, {
-				name: selectEntity.newName,
-			});
-			if (res.ok) {
-				message.success("rename ok");
-				entity.title = selectEntity.newName;
-				selectEntity.editing = false;
-				forceUpdate();
-			}
+			await updateName(entity);
 		}
 	}
 
 	return {
 		loading,
-		form,
 		scenes,
 		createScene,
 		createPage,
 		toggleScene,
 		selectPage,
 		deletePage,
-		modalOpen,
-		toggleModal,
 		edit,
 		pageEditingModelMap,
 		handleEditingInputKeyDown,
+		updateName,
 	};
 }
 

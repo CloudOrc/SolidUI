@@ -72,6 +72,7 @@
     "@icon-park/react": "^1.4.2",
     "@scena/matrix": "^1.1.1",
     "@scena/react-guides": "0.22.3",
+    "@svgr/webpack": "^8.0.1",
     "@szhsin/react-menu": "^4.0.0",
     "ahooks": "^3.7.8",
     "antd": "4.24.7",
