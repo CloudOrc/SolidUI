@@ -13,16 +13,29 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-FROM python:3.7-slim
+FROM python:3.8-slim
 
 ENV TZ Asia/Shanghai
 ENV SOLIDUI_HOME /opt/solidui
 
 WORKDIR $SOLIDUI_HOME
 
-COPY . ./
+RUN mkdir -p $SOLIDUI_HOME/soliduimodelui
+
+COPY ./README.md $SOLIDUI_HOME/
+
+COPY ./setup.py $SOLIDUI_HOME/
+
+COPY ./soliduimodelui/__init__.py $SOLIDUI_HOME/soliduimodelui/
+
+COPY ./soliduimodelui/.env $SOLIDUI_HOME/soliduimodelui/
+
+COPY ./soliduimodelui/main.py $SOLIDUI_HOME/soliduimodelui/
+
+COPY ./soliduimodelui/webapp $SOLIDUI_HOME/soliduimodelui/webapp
+
+COPY ./soliduimodelui/kernelprogram $SOLIDUI_HOME/soliduimodelui/kernelprogram
 
 RUN pip install -e .
 
 CMD ["modelui"]
-

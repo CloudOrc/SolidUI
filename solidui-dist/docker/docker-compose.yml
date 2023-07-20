@@ -49,6 +49,7 @@ services:
     container_name: soliduimodelui
     ports:
       - "5110:5110"
+      - "5010:5010"
     networks:
       - solidui
 
