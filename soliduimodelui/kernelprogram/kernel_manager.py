@@ -22,7 +22,7 @@ import threading
 import time
 import atexit
 import traceback
-
+import logging
 from time import sleep
 from jupyter_client import BlockingKernelClient
 
@@ -35,7 +35,8 @@ load_dotenv(dotenv_path='soliduimodelui/.env', override=True)
 # Set up globals
 messaging = None
 logger = config.get_logger()
-
+logger.setLevel(logging.DEBUG)
+logging.basicConfig(filename='soliduimodelui/kernel.log')
 
 class FlushingThread(threading.Thread):
     def __init__(self, kc, kill_sema):

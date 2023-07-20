@@ -40,17 +40,21 @@ db_pass = os.environ.get('DB_PASS')
 
 APP_PORT = int(os.environ.get("WEB_PORT", 5110))
 
+UPLOAD_FOLDER = 'workspace/'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 base_blueprint = Blueprint("baseurl", __name__, url_prefix="/solidui/models")
 
 # We know this Flask app is for local use. So we can disable the verbose Werkzeug logger
 log = logging.getLogger('soliduimodel')
-log.setLevel(logging.ERROR)
-logging.basicConfig(filename='app.log')
+log.setLevel(logging.DEBUG)
+logging.basicConfig(filename='soliduimodelui/webapp.log')
 
 cli = sys.modules['flask.cli']
 cli.show_server_banner = lambda *x: None
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
 
 
