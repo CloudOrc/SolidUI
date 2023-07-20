@@ -41,8 +41,6 @@ load_dotenv(dotenv_path='soliduimodelui/.env', override=True)
 APP_PORT = int(os.environ.get("API_PORT", 5010))
 base_blueprint = Blueprint("baseurl", __name__, url_prefix="/solidui/kernel")
 
-# Get global logger
-logger = config.get_logger()
 
 # Note, only one kernel_manager_process can be active
 kernel_manager_process = None
@@ -54,8 +52,9 @@ send_queue = Queue()
 messaging = None
 
 # We know this Flask app is for local use. So we can disable the verbose Werkzeug logger
-log = logging.getLogger('soliduimodel')
-log.setLevel(logging.ERROR)
+logger = config.get_logger()
+logger.setLevel(logging.DEBUG)
+logging.basicConfig(filename='soliduimodelui/kernel.log')
 
 cli = sys.modules['flask.cli']
 cli.show_server_banner = lambda *x: None
