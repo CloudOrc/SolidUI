@@ -35,8 +35,12 @@ load_dotenv(dotenv_path='soliduimodelui/.env', override=True)
 # Set up globals
 messaging = None
 logger = config.get_logger()
-logger.setLevel(logging.DEBUG)
-logging.basicConfig(filename='soliduimodelui/kernel.log')
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+logger.addHandler(console_handler)
+logger.setLevel(logging.INFO)
+fh = logging.FileHandler('soliduimodelui/kernel.log')
+logger.addHandler(fh)
 
 class FlushingThread(threading.Thread):
     def __init__(self, kc, kill_sema):
@@ -57,7 +61,7 @@ class FlushingThread(threading.Thread):
 
 
 def cleanup_spawned_processes():
-    print("Cleaning up kernels...")
+    logger.info("Cleaning up kernels...")
     for filename in os.listdir(config.KERNEL_PID_DIR):
         fp = os.path.join(config.KERNEL_PID_DIR, filename)
         if os.path.isfile(fp):

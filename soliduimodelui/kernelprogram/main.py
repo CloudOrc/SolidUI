@@ -53,8 +53,13 @@ messaging = None
 
 # We know this Flask app is for local use. So we can disable the verbose Werkzeug logger
 logger = config.get_logger()
-logger.setLevel(logging.DEBUG)
-logging.basicConfig(filename='soliduimodelui/kernel.log')
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+logger.addHandler(console_handler)
+logger.setLevel(logging.INFO)
+fh = logging.FileHandler('soliduimodelui/kernel.log')
+logger.addHandler(fh)
+
 
 cli = sys.modules['flask.cli']
 cli.show_server_banner = lambda *x: None
@@ -140,7 +145,7 @@ def handle_request():
     elif request.method == "POST":
         data = request.json
 
-        print(f"data:{data}")
+        logger.info(f"data:{data}")
 
         send_queue.put(data)
 
@@ -169,7 +174,7 @@ async def main():
 
 
 def run_flask_app():
-    app.run(host="0.0.0.0", port=APP_PORT)
+    app.run(host="0.0.0.0", port=APP_PORT, debug=True, use_reloader=False)
 
 if __name__ == "__main__":
     asyncio.run(main())
