@@ -47,8 +47,12 @@ base_blueprint = Blueprint("baseurl", __name__, url_prefix="/solidui/models")
 
 # We know this Flask app is for local use. So we can disable the verbose Werkzeug logger
 log = logging.getLogger('soliduimodel')
-log.setLevel(logging.DEBUG)
-logging.basicConfig(filename='soliduimodelui/webapp.log')
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+log.addHandler(console_handler)
+log.setLevel(logging.INFO)
+fh = logging.FileHandler('soliduimodelui/web.log')
+log.addHandler(fh)
 
 cli = sys.modules['flask.cli']
 cli.show_server_banner = lambda *x: None
@@ -147,7 +151,7 @@ def generate_code():
     user_prompt = request.json.get('prompt', "")
     modelId = request.json.get('modelId', 0)
 
-    logging.info(f'Prompt: {user_prompt}, Model Id: {modelId}')
+    log.info(f'Prompt: {user_prompt}, Model Id: {modelId}')
 
     result = web_utils.query_model(db_host, db_port, db_user, db_pass, db_name , modelId)
 
