@@ -228,9 +228,6 @@ def download_file():
     return send_from_directory(os.path.join(os.getcwd(), 'workspace'), file, as_attachment=True)
 
 
-@base_blueprint.route('/test', methods=["GET", "POST"])
-def testList():
-    return web_utils.response_format()
 
 
 app.register_blueprint(base_blueprint)
