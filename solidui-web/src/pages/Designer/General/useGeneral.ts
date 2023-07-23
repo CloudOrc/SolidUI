@@ -79,7 +79,11 @@ function useGeneral() {
 
 		idRef.current = params.id;
 	}, [params.id]);
-
+	/**
+	 * 创建场景
+	 * @param title 标题
+	 * @returns
+	 */
 	async function createScene(title: string) {
 		const res: ApiResult<CreatedSceneResponseDataType> =
 			await Apis.model.createPage({
@@ -114,7 +118,12 @@ function useGeneral() {
 		}
 		forceUpdate();
 	}
-
+	/**
+	 * 创建场景页
+	 * @param scene 场景
+	 * @param title 标题
+	 * @returns
+	 */
 	async function createPage(scene: StatefulSolidSceneDataType, title: string) {
 		const res: ApiResult<CreatedPageResponseDataType> =
 			await Apis.model.createPage({
@@ -151,23 +160,28 @@ function useGeneral() {
 		}
 		forceUpdate();
 	}
-
-	async function deletePage(page: SolidPageDataType) {
-		if (!page || !page.id) {
-			return;
-		}
-		const res = await Apis.model.deletePage(page.id);
+	/**
+	 * 删除场景或场景页
+	 * @param item 被删除项
+	 * @returns
+	 */
+	async function deletePage(item: SolidPageDataType | SolidScenaDataType) {
+		if (!item || !item.id) return;
+		const res = await Apis.model.deletePage(item.id);
 		if (res.ok) {
-			if (page.parentId === "0") {
-				mm.removeScene(page);
+			if (!Number(item.parentId)) {
+				mm.removeScene(item as SolidScenaDataType);
 			} else {
-				mm.removePage(page);
+				mm.removePage(item as SolidPageDataType);
 			}
 		}
 		setScenes(mm.getScenes());
 		forceUpdate();
 	}
-
+	/**
+	 * 切换场景
+	 * @param scene 
+	 */
 	function toggleScene(scene: StatefulSolidSceneDataType) {
 		setLoading(true);
 		const selectedScene = mm.getScene(scene.id);
@@ -177,7 +191,11 @@ function useGeneral() {
 		forceUpdate();
 		setLoading(false);
 	}
-
+	/**
+	 * 选择场景页
+	 * @param page 
+	 * @returns 
+	 */
 	async function selectPage(page: SolidPageDataType) {
 		const currentPage = mm.getCurrentPage();
 		if (currentPage && currentPage.id === page.id) {
@@ -218,7 +236,10 @@ function useGeneral() {
 			forceUpdate();
 		}
 	}
-
+	/**
+	 * 场景或场景页进入重命名
+	 * @param entity
+	 */
 	async function edit(
 		entity: StatefulSolidPageDataType | StatefulSolidSceneDataType,
 	) {
@@ -239,20 +260,23 @@ function useGeneral() {
 
 		forceUpdate();
 	}
-	async function updateName(
+	/**
+	 * 场景或场景页重命名
+	 * @param entity
+	 * @returns
+	 */
+	async function renamePage(
 		entity: StatefulSolidPageDataType | StatefulSolidSceneDataType,
 	) {
 		const selectEntity = pageEditingModelMap.current.get(entity.id);
-		if (isNil(selectEntity)) {
-			return;
-		}
+		if (isNil(selectEntity)) return;
 
 		if (selectEntity.newName === selectEntity.oldName) {
 			selectEntity.editing = false;
 			forceUpdate();
 			return;
 		}
-		const res = await Apis.page.rename(entity.id, {
+		const res = await Apis.model.renamePage(entity.id, {
 			name: selectEntity.newName,
 		});
 		if (res.ok) {
@@ -262,7 +286,12 @@ function useGeneral() {
 			forceUpdate();
 		}
 	}
-
+	/**
+	 * 编辑完成
+	 * @param event 
+	 * @param entity 
+	 * @returns 
+	 */
 	async function handleEditingInputKeyDown(
 		event: React.KeyboardEvent<HTMLInputElement>,
 		entity: StatefulSolidPageDataType | StatefulSolidSceneDataType,
@@ -277,7 +306,7 @@ function useGeneral() {
 			selectEntity.oldName = "";
 			forceUpdate();
 		} else if (event.keyCode === 13) {
-			await updateName(entity);
+			await renamePage(entity);
 		}
 	}
 
@@ -292,7 +321,7 @@ function useGeneral() {
 		edit,
 		pageEditingModelMap,
 		handleEditingInputKeyDown,
-		updateName,
+		renamePage,
 	};
 }
 
