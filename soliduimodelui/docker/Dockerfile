@@ -13,16 +13,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-FROM python:3.8-slim
+FROM continuumio/anaconda3
 
 ENV TZ Asia/Shanghai
 ENV SOLIDUI_HOME /opt/solidui
 
 WORKDIR $SOLIDUI_HOME
 
-RUN mkdir -p $SOLIDUI_HOME/workspace
-
-RUN mkdir -p $SOLIDUI_HOME/soliduimodelui
+RUN mkdir -p $SOLIDUI_HOME/workspace && \
+    mkdir -p $SOLIDUI_HOME/soliduimodelui
 
 COPY ./README.md $SOLIDUI_HOME/
 

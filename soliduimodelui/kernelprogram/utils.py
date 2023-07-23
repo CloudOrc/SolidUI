@@ -35,7 +35,7 @@ def init_snakemq(ident, init_type="listen"):
     packeter = snakemq.packeter.Packeter(link)
     messaging = snakemq.messaging.Messaging(ident, "", packeter)
     if init_type == "listen":
-        link.add_listener(("localhost", config.SNAKEMQ_PORT))
+        link.add_listener(("0.0.0.0", config.SNAKEMQ_PORT))
     elif init_type == "connect":
         link.add_connector(("localhost", config.SNAKEMQ_PORT))
     else:
