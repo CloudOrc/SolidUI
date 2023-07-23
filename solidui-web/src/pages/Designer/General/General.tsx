@@ -48,7 +48,7 @@ function General() {
 		edit,
 		pageEditingModelMap,
 		handleEditingInputKeyDown,
-		updateName,
+		renamePage,
 	} = useGeneral();
 	const scenes = mm.getScenes();
 
@@ -56,17 +56,21 @@ function General() {
 	const sceneRef = React.useRef<SolidScenaDataType>();
 	const pageRef = React.useRef<SolidPageDataType>();
 
+	function getActiveItem() {
+		if (type.current === "page") {
+			return pageRef.current;
+		}
+		if (type.current === "scene") {
+			return sceneRef.current;
+		}
+		return null;
+	}
+
 	useClickAway(
 		() => {
-			let current = null;
-			if (type.current === "page") {
-				current = pageRef.current;
-			}
-			if (type.current === "scene") {
-				current = sceneRef.current;
-			}
+			const current = getActiveItem();
 			if (isNil(current)) return;
-			updateName(current);
+			renamePage(current);
 		},
 		() => document.querySelector("#editing-input"),
 		["mousedown", "contextmenu"],
@@ -158,9 +162,7 @@ function General() {
 					className={`expander__body-item ${selectedCls}`}
 					key={`${page.id}`}
 					onClick={() => selectPage(page)}
-					style={{
-						position: "relative",
-					}}
+					style={{ position: "relative" }}
 				>
 					<Icon
 						className="expander__body-item-icon"
@@ -258,39 +260,31 @@ function General() {
 			>
 				<MenuItem
 					onClick={() => {
-						let current = null;
-						if (type.current === "page") {
-							current = pageRef.current;
-						}
-						if (type.current === "scene") {
-							current = sceneRef.current;
-						}
+						const current = getActiveItem();
 						if (isNil(current)) return;
 						edit(current);
 					}}
 				>
 					Rename
 				</MenuItem>
-				{type.current === "page" && (
-					<MenuItem
-						onClick={() => {
-							const page = pageRef.current;
-							if (isNil(page)) return;
-							confirm({
-								title: "Confirm",
-								icon: <ExclamationCircleOutlined rev={1} />,
-								content: `Do you want to delete page [${page.title}] ?`,
-								okText: "Yes",
-								cancelText: "Cancel",
-								onOk: async () => {
-									deletePage(page);
-								},
-							});
-						}}
-					>
-						Delete
-					</MenuItem>
-				)}
+				<MenuItem
+					onClick={() => {
+						const current = getActiveItem();
+						if (isNil(current)) return;
+						confirm({
+							title: "Confirm",
+							icon: <ExclamationCircleOutlined rev={1} />,
+							content: `Do you want to delete [${current.title}] ?`,
+							okText: "Yes",
+							cancelText: "Cancel",
+							onOk: async () => {
+								deletePage(current);
+							},
+						});
+					}}
+				>
+					Delete
+				</MenuItem>
 			</ControlledMenu>
 		</div>
 	);
