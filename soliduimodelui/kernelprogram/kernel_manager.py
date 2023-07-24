@@ -28,7 +28,6 @@ from jupyter_client import BlockingKernelClient
 
 from dotenv import load_dotenv
 
-
 import soliduimodelui.kernelprogram.utils as utils
 import soliduimodelui.kernelprogram.config as config
 load_dotenv(dotenv_path='soliduimodelui/.env', override=True)
@@ -89,13 +88,15 @@ def start_snakemq(kc):
     global messaging
 
     messaging, link = utils.init_snakemq(config.IDENT_KERNEL_MANAGER, "connect")
-
+    logger.info(f"start_snakemq messaging: {messaging}")
     def on_recv(conn, ident, message):
+        logger.info(f"start_snakemq ident: {ident}")
         if ident == config.IDENT_MAIN:
             message = json.loads(message.data.decode("utf-8"))
+            logger.info("json.loads: %s" % message["value"])
 
             if message["type"] == "execute":
-                logger.debug("Executing command: %s" % message["value"])
+                logger.info("Executing command: %s" % message["value"])
                 kc.execute(message["value"])
                 # Try direct flush with default wait (0.2)
                 flush_kernel_msgs(kc)
@@ -178,11 +179,11 @@ def flush_kernel_msgs(kc, tries=1, timeout=0.2):
                 # get_iopub_msg suffers from message fetch errors
                 break
             except Exception as e:
-                logger.debug(f"{e} [{type(e)}")
-                logger.debug(traceback.format_exc())
+                logger.info(f"{e} [{type(e)}")
+                logger.info(traceback.format_exc())
                 break
     except Exception as e:
-        logger.debug(f"{e} [{type(e)}")
+        logger.info(f"{e} [{type(e)}")
 
 
 def start_kernel():

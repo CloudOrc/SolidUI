@@ -20,9 +20,8 @@ ENV SOLIDUI_HOME /opt/solidui
 
 WORKDIR $SOLIDUI_HOME
 
-RUN mkdir -p $SOLIDUI_HOME/workspace
-
-RUN mkdir -p $SOLIDUI_HOME/soliduimodelui
+RUN mkdir -p $SOLIDUI_HOME/workspace && \
+    mkdir -p $SOLIDUI_HOME/soliduimodelui
 
 COPY ./README.md $SOLIDUI_HOME/
 
