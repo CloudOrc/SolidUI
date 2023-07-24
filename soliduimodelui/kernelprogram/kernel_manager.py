@@ -27,7 +27,6 @@ from time import sleep
 from jupyter_client import BlockingKernelClient
 
 from dotenv import load_dotenv
-import debugpy
 
 import soliduimodelui.kernelprogram.utils as utils
 import soliduimodelui.kernelprogram.config as config
@@ -136,7 +135,6 @@ def start_flusher(kc):
 
 
 def send_message(message, message_type="message"):
-    logger.info(f"send_message... type:{message_type} message:{message}")
     utils.send_json(
         messaging, {"type": message_type, "value": message}, config.IDENT_MAIN
     )
@@ -149,7 +147,6 @@ def flush_kernel_msgs(kc, tries=1, timeout=0.2):
         while True:
             try:
                 msg = kc.get_iopub_msg(timeout=timeout)
-                logger.info(f"flush_kernel_msgs... msg:{msg}")
                 if msg["msg_type"] == "execute_result":
                     if "text/plain" in msg["content"]["data"]:
                         send_message(
@@ -244,4 +241,3 @@ def start_kernel():
 if __name__ == "__main__":
     kc = start_kernel()
     start_snakemq(kc)
-    debugpy.listen(("0.0.0.0", 5678))
