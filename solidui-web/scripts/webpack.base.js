@@ -20,7 +20,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const themeVars = require('./theme')
-
+const webpackBar = require('webpackbar');
 const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
@@ -155,6 +155,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpackBar({
+      color:"#C142DA"
+    }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../public/index.html'),
       inject: true,
