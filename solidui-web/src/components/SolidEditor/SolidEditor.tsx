@@ -132,18 +132,19 @@ export default class SolidEditor extends React.PureComponent<
 			message.warn("please select one page before draw view");
 			return;
 		}
-		const { viewType } = event;
+		const { viewType, options } = event;
 		const builder = this.factory.getBuilder(viewType);
 		if (builder === undefined) {
 			return;
 		}
 		const SolidViewComponent = builder.getComponentType();
-		const vm = builder.createModel();
+		const vm = builder.createModel(options);
 		const _style: React.CSSProperties = {
 			...vm.style,
 			width: `${vm.size.width}px`,
 			height: `${vm.size.height}px`,
 		};
+
 		this.appendJSX({
 			id: vm.id,
 			jsx: <SolidViewComponent viewModel={vm} style={_style} />,

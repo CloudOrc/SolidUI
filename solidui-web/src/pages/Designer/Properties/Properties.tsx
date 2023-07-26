@@ -82,7 +82,7 @@ function Properties() {
 	}
 
 	return (
-		<section className="aside-east" ref={asideRef}>
+		<section id="section-properties" className="aside-east" ref={asideRef}>
 			<div className="aside-east__container">{renderByPropertyKey()}</div>
 		</section>
 	);

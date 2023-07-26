@@ -85,6 +85,7 @@ module.exports = {
 				"no-nested-ternary": 1,
 				"no-prototype-builtins": 2,
 				"class-methods-use-this": 0,
+				"no-shadow": 0,	// need discussion
 
 				// typescript
 				"@typescript-eslint/no-empty-function": 0,

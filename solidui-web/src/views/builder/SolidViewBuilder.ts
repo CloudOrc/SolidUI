@@ -20,10 +20,14 @@ export interface ViewCategory {
 	title: string;
 }
 
-export type ViewType = "echarts_bar" | "echarts_line" | "echarts_pie";
+export type ViewType =
+	| "echarts_bar"
+	| "echarts_line"
+	| "echarts_pie"
+	| "image_base64";
 
 export default abstract class ViewBuilder {
-	abstract createModel(): any;
+	abstract createModel(options?: any): any;
 
 	abstract getFrame(): any;
 

@@ -15,83 +15,64 @@
  * limitations under the License.
  */
 
-import React, { useEffect, useState } from "react";
-import { Spin } from "antd";
-import { isNil } from "lodash-es";
-import { LeftRightExpander, PropertyElement, InputNumber } from "@/components";
-import { mm, eventbus } from "@/utils";
-import { OnSelectPageEventData } from "@/types";
+import React, { useEffect } from "react";
+// import { isNil } from "lodash-es";
+// import { eventbus } from "@/utils";
+// import { OnSelectPageEventData } from "@/types";
+import usePageProperties from "./usePageProperties";
+import PagePagePropertiesPanel from "./page/PagePagePropertiesPanel";
+import PageModeluiPropertiesPanel from "./page/PageModeluiDialogPanel";
 
 export default function PagePropertiesPanel() {
-	const [size, setSize] = useState<{ width: number; height: number }>();
+	const { currentTabKey, mainRef, renderTabs } = usePageProperties({
+		tabs: [
+			{
+				key: "Page",
+				tab: "Page",
+			},
+			{
+				key: "Modelui",
+				tab: "Modelui",
+			},
+		],
+	});
+	// const [size, setSize] = useState<{ width: number; height: number }>();
 
 	useEffect(() => {
-		eventbus.on("onSelectPage", handleSelectPage);
-		const page = mm.getCurrentPage();
-		setSize({
-			width: page?.size.width || 1024,
-			height: page?.size.height || 768,
-		});
+		// eventbus.on("onSelectPage", handleSelectPage);
+		// const page = mm.getCurrentPage();
+		// setSize({
+		// 	width: page?.size.width || 1024,
+		// 	height: page?.size.height || 768,
+		// });
 	}, []);
 
-	function handleSelectPage(evt: OnSelectPageEventData) {
-		const { page } = evt;
-		if (isNil(page)) {
-			return;
+	// function handleSelectPage(evt: OnSelectPageEventData) {
+	// const { page } = evt;
+	// if (isNil(page)) {
+	// }
+	// setSize({
+	// 	width: page?.size.width || 1024,
+	// 	height: page?.size.height || 768,
+	// });
+	// }
+
+	function renderPanel() {
+		if (currentTabKey === "Page") {
+			return <PagePagePropertiesPanel />;
 		}
-		setSize({
-			width: page?.size.width || 1024,
-			height: page?.size.height || 768,
-		});
+		if (currentTabKey === "Modelui") {
+			return <PageModeluiPropertiesPanel />;
+		}
+		return undefined;
 	}
 
 	return (
-		<Spin spinning={false}>
-			<LeftRightExpander expanded showCheckbox={false} title="Page">
-				<PropertyElement label="Width" labelWidth={50}>
-					<InputNumber
-						value={size?.width || 1024}
-						min={800}
-						step={1}
-						max={4200}
-						onUpdateValue={(value) => {
-							const page = mm.getCurrentPage();
-							if (isNil(page)) {
-								return;
-							}
-							page.size = {
-								width: value,
-								height: page.size.height,
-							};
-							eventbus.emit("onPageWidthChange", {
-								value,
-							});
-						}}
-					/>
-				</PropertyElement>
-
-				<PropertyElement label="Height" labelWidth={50}>
-					<InputNumber
-						value={size?.height || 768}
-						min={400}
-						step={1}
-						max={3600}
-						onUpdateValue={(value) => {
-							const page = mm.getCurrentPage();
-							if (isNil(page)) {
-								return;
-							}
-							page.size = {
-								width: page.size.width,
-								height: value,
-							};
-							eventbus.emit("onPageHeightChange", {
-								value,
-							});
-						}}
-					/>
-				</PropertyElement>
-			</LeftRightExpander>
-		</Spin>
+		<>
+			<header className="conf-header">{renderTabs()}</header>
+			<main className="conf-main" ref={mainRef}>
+				{renderPanel()}
+			</main>
+		</>
 	);
 }

@@ -18,7 +18,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button, Tooltip, Drawer, message } from "antd";
-import { ChartHistogramTwo } from "@icon-park/react";
+import { ChartHistogramTwo, PictureOne } from "@icon-park/react";
 import { eventbus, mm } from "@/utils/index";
 import Apis from "@/apis";
 import {
@@ -123,6 +123,29 @@ function Header() {
 							onClick={() => {
 								eventbus.emit("onDraw", {
 									viewType: "echarts_bar",
+								});
+							}}
+						/>
+					</Tooltip>
+
+					<Tooltip>
+						<PictureOne
+							// theme="outline"
+							// size="40"
+							// fill="#757272"
+							// strokeLinejoin="bevel"
+							// strokeLinecap="square"
+							theme="two-tone"
+							size="32"
+							fill={["#379aff", "#4890f3"]}
+							strokeLinejoin="bevel"
+							strokeLinecap="square"
+							style={{
+								cursor: "pointer",
+							}}
+							onClick={() => {
+								eventbus.emit("onDraw", {
+									viewType: "image_base64",
 								});
 							}}
 						/>

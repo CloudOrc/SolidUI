@@ -29,7 +29,11 @@ interface SolidComponentSizeDataType {
 	height: number;
 }
 
-export type SolidViewType = "echarts_bar" | "echarts_line" | "echarts_pie";
+export type SolidViewType =
+	| "echarts_bar"
+	| "echarts_line"
+	| "echarts_pie"
+	| "image_base64";
 
 export interface SolidModelDataType {
 	id: string;
@@ -97,6 +101,8 @@ interface SolidViewDataDataType {
 	table?: string;
 	xs?: SolidViewDataDataXAxisType[];
 	ys?: SolidViewDataDataYAxisType[];
+	modelId?: number;
+	prompt?: string;
 	sql?: string;
 	python?: string;
 }

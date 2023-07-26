@@ -18,7 +18,8 @@
 import React, { useEffect, useState } from "react";
 import { useUpdate } from "react-use";
 import { useMemoizedFn } from "ahooks";
-import { eventbus } from "@/utils";
+import { eventbus, mm } from "@/utils";
+import { isNil } from "lodash-es";
 
 type TabItemDataType = {
 	key: string;
@@ -40,7 +41,10 @@ function useProperties(initialData: InitialData) {
 	const asideRef = React.createRef<HTMLDivElement>();
 
 	const handleSelectPageInViewPort = useMemoizedFn(() => {
-		setPropertyKey("page");
+		const currentPage = mm.getCurrentPage();
+		if (!isNil(currentPage)) {
+			setPropertyKey("page");
+		}
 	});
 
 	const handleModelLoad = useMemoizedFn(() => {

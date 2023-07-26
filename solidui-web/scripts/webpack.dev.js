@@ -32,6 +32,21 @@ module.exports = merge(baseConfig, {
       directory: path.join(__dirname, '../public'),
     },
 		proxy: {
+			'/solidui/models/generate': {
+				target: 'http://43.138.5.82:5110',
+				changeOrigin: true,
+				pathRewrite: {}
+			},
+			'/solidui/kernel/restart': {
+				target: 'http://43.138.5.82:5010',
+				changeOrigin: true,
+				pathRewrite: {}
+			},
+			'/solidui/models/api/api': {
+				target: 'http://43.138.5.82:5110',
+				changeOrigin: true,
+				pathRewrite: {}
+			},
 			'/solidui': {
 				target: 'http://localhost:12345',
 				changeOrigin: true,
