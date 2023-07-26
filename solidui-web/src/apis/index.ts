@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-// import { param } from "jquery";
 import ApiService from "./service";
 import {
 	SolidModelCreationDataType,

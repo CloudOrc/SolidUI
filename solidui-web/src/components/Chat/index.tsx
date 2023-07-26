@@ -101,13 +101,6 @@ function Message(props: {
 	);
 }
 
-// export enum WaitingStates {
-// 	GeneratingCode = "Generating code",
-// 	RunningCode = "Running code",
-// 	UploadingFile = "Uploading file",
-// 	Idle = "Idle",
-// }
-
 export default function Chat(props: {
 	waitingForSystem: WaitingStates;
 	chatScrollRef: RefObject<HTMLDivElement>;

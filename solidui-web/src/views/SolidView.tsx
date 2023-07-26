@@ -94,8 +94,6 @@ export default abstract class SolidView<
 	/// / ------------------------------------------------------------------
 	/// / protected methods
 	protected renderTitle(): React.ReactNode {
-		// let viewModel = this.props.viewModel;
-		// let viewModel = this.state.viewModel;
 		const viewModel = this.vm;
 		const options = viewModel.options || {};
 		const title = options.title || {};

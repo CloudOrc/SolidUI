@@ -69,9 +69,6 @@ export default class Base64ImageSolidViewBuilder extends SolidViewBuilder {
 						label: "cc",
 					},
 				],
-
-				// modelId: options.modelId,
-				// prompt: options.prompt,
 			},
 		};
 

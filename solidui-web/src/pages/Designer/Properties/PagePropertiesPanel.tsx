@@ -16,9 +16,6 @@
  */
 
 import React, { useEffect } from "react";
-// import { isNil } from "lodash-es";
-// import { eventbus } from "@/utils";
-// import { OnSelectPageEventData } from "@/types";
 import usePageProperties from "./usePageProperties";
 import PagePagePropertiesPanel from "./page/PagePagePropertiesPanel";
 import PageModeluiPropertiesPanel from "./page/PageModeluiDialogPanel";
