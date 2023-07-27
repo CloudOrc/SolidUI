@@ -21,6 +21,7 @@ const baseConfig = require('./webpack.base')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 module.exports = merge(baseConfig, {
+  stats: "minimal",
   mode: 'development',
   devtool: 'eval-cheap-module-source-map',
   devServer: {

@@ -114,7 +114,7 @@ export default function DefaultLayout() {
 								onClick: async () => {
 									const res = await Apis.user.logout();
 									if (res.ok) {
-										deleteCookie();
+										deleteCookie("");
 										navigate("/login");
 									}
 								},

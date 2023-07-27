@@ -34,8 +34,6 @@ const model = {
 		ApiService.post<T>("/api/v1/models", params, {}),
 	getProject: <T>(projectId: string) =>
 		ApiService.get<T>(`/solidui/project/${projectId}`),
-	createPage: <T>(params: PageCreationDataType) =>
-		ApiService.post<T>("/solidui/job/page", params, {}),
 	queryPages: <T>(projectId: string) =>
 		ApiService.get<T>(`/solidui/job/page/queryList/${projectId}`),
 	queryViews: <T>(projectId: string, pageId: string) =>
@@ -46,6 +44,11 @@ const model = {
 		ApiService.post<T>("/solidui/job/save/page", params),
 	updateProjectPageViews: <T>(params: ProjectPageViewsCreationDataType) =>
 		ApiService.put<T>("/solidui/job/update/page", params),
+
+	createPage: <T>(params: PageCreationDataType) =>
+		ApiService.post<T>("/solidui/job/page", params, {}),
+	renamePage: <T>(id: string, params: { name: string }) =>
+		ApiService.put<T>(`/solidui/job/page/${id}`, params),
 	deletePage: <T>(id: string) =>
 		ApiService.delete<T>(`/solidui/job/page/${id}`),
 };
@@ -80,11 +83,6 @@ const project = {
 		ApiService.put<T>(`/solidui/projects/${id}?projectName=${name}`),
 
 	load: <T>(id: string) => ApiService.get<T>(`/solidui/projects/${id}`),
-};
-
-const page = {
-	rename: <T>(id: string, params: { name: string }) =>
-		ApiService.put<T>(`/solidui/job/page/${id}`, params),
 };
 
 const datasource = {
@@ -158,7 +156,6 @@ const Apis = {
 	images,
 	user,
 	project,
-	page,
 	datasource,
 	modelui,
 };

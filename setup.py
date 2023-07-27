@@ -33,9 +33,10 @@ setup(
         'requests>=2,<3',
         'Flask>=2,<3',
         'flask-cors>=3,<4',
-        'python-dotenv>=1,<2'
-        'pymysql',
-        'matplotlib'
+        'python-dotenv>=1,<2',
+        'matplotlib>=3,<4',
+        'pymysql>=1,<2',
+        'pandas>=1,<2'
     ],
     entry_points={
         'console_scripts': [

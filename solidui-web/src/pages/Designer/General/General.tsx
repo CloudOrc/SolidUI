@@ -16,14 +16,19 @@
  */
 
 import React, { useState } from "react";
-import { Button, Modal, Form, Input } from "antd";
-import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { Button, Modal } from "antd";
+import Icon, {
+	PlusOutlined,
+	ExclamationCircleOutlined,
+} from "@ant-design/icons";
 import { ControlledMenu, MenuItem } from "@szhsin/react-menu";
 import { useUpdate } from "react-use";
-import { Close } from "@icon-park/react";
 import { isNil } from "lodash-es";
+import { useClickAway } from "ahooks";
 import { SolidPageDataType, SolidScenaDataType } from "@/types/solid";
 import { mm } from "@/utils";
+import solidRightArrow from "@/assets/icon/svg/solidRightArrow.svg";
+import scenePageIcon from "@/assets/icon/svg/scenePageIcon.svg";
 import useGeneral from "./useGeneral";
 import "@szhsin/react-menu/dist/index.css";
 import "./general.less";
@@ -35,17 +40,15 @@ function General() {
 	const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
 	const forceUpdate = useUpdate();
 	const {
-		form,
-		modalOpen,
 		toggleScene,
 		createScene,
 		createPage,
 		selectPage,
 		deletePage,
-		toggleModal,
 		edit,
 		pageEditingModelMap,
 		handleEditingInputKeyDown,
+		renamePage,
 	} = useGeneral();
 	const scenes = mm.getScenes();
 
@@ -53,125 +56,89 @@ function General() {
 	const sceneRef = React.useRef<SolidScenaDataType>();
 	const pageRef = React.useRef<SolidPageDataType>();
 
-	function renderModalContent() {
-		return (
-			<div className="solidui-modal">
-				<div className="solidui-modal__header">
-					{type.current === "page" ? " New Page" : "New Scene"}
-					<span className="solidui-modal__close-btn">
-						<Close
-							theme="outline"
-							size="16"
-							fill="rgba(0, 0, 0, 0.65)"
-							strokeWidth={2}
-							strokeLinejoin="miter"
-							strokeLinecap="square"
-							onClick={() => {
-								toggleModal(false);
-							}}
-						/>
-					</span>
-				</div>
-				<div
-					className="solidui-modal__content"
-					style={{
-						height: 100,
-					}}
-				>
-					<div className="modal-content__form">
-						<Form
-							layout="vertical"
-							form={form}
-							initialValues={{ layout: "vertical" }}
-							onFinish={(values) => {
-								const title = values.title || "";
-								if (type.current && type.current === "scene") {
-									createScene(title);
-								} else if (
-									type.current &&
-									type.current === "page" &&
-									sceneRef.current
-								) {
-									createPage(sceneRef.current, title);
-								}
-							}}
-						>
-							<Form.Item
-								label="title"
-								name="title"
-								required
-								rules={[
-									{
-										required: true,
-										message: "Please input name",
-									},
-								]}
-							>
-								<Input placeholder="title" autoFocus />
-							</Form.Item>
-						</Form>
-					</div>
-				</div>
-				<div className="solidui-modal__footer">
-					<Button
-						type="default"
-						size="small"
-						style={{ marginRight: 10 }}
-						onClick={() => toggleModal(false)}
-					>
-						Cancel
-					</Button>
-					<Button type="primary" size="small" onClick={() => form.submit()}>
-						Save
-					</Button>
-				</div>
-			</div>
-		);
+	function getActiveItem() {
+		if (type.current === "page") {
+			return pageRef.current;
+		}
+		if (type.current === "scene") {
+			return sceneRef.current;
+		}
+		return null;
 	}
+
+	useClickAway(
+		() => {
+			const current = getActiveItem();
+			if (isNil(current)) return;
+			renamePage(current);
+		},
+		() => document.querySelector("#editing-input"),
+		["mousedown", "contextmenu"],
+	);
 
 	function renderScenes() {
 		const kids: React.ReactNode[] = [];
 		scenes.forEach((scene) => {
 			const pages = scene.pages || [];
+			const editingModel = pageEditingModelMap.current.get(scene.id);
+			const editing = editingModel?.editing;
 			kids.push(
 				<section
 					key={`${scene.id}`}
 					className={`expander ${scene.selected ? "open" : ""}`}
 				>
 					<div className="expander__head" onClick={() => toggleScene(scene)}>
-						<svg
-							width="9"
-							height="6"
-							viewBox="0 0 9 6"
-							xmlns="http://www.w3.org/2000/svg"
+						<Icon
 							className="expander__icon"
-							style={{
-								width: 10,
-							}}
-						>
-							<path
-								d="M4.50009 6L-5.24537e-07 1.26364e-06L9 4.76837e-07L4.50009 6Z"
-								fill="currentcolor"
-							/>
-						</svg>
-						<div
-							style={{
-								width: "170px",
-							}}
-						>
-							{scene.title}
+							style={{ fontSize: 10 }}
+							component={solidRightArrow}
+							rev={undefined}
+						/>
+						<div className="expander__head-title">
+							{editing ? (
+								<input
+									id="editing-input"
+									className="expander__head-title-input"
+									type="text"
+									value={editingModel?.newName || ""}
+									// autoFocus
+									onChange={(e) => {
+										const val = e.target.value || "";
+										editingModel.newName = val;
+										forceUpdate();
+									}}
+									onKeyDown={(e) => handleEditingInputKeyDown(e, scene)}
+									onClick={(e) => {
+										e.stopPropagation();
+										e.preventDefault();
+									}}
+								/>
+							) : (
+								<div
+									style={{ flex: 1 }}
+									onContextMenu={(e) => {
+										e.preventDefault();
+										setAnchorPoint({ x: e.clientX, y: e.clientY });
+										setContextMenuOpen(true);
+										type.current = "scene";
+										sceneRef.current = scene;
+									}}
+								>
+									{scene.title}
+								</div>
+							)}
 						</div>
 						<Button
 							className="btn__page-create"
-							icon={<PlusOutlined />}
+							icon={<PlusOutlined rev={1} />}
 							type="text"
 							onClick={(e) => {
 								e.stopPropagation();
 								e.preventDefault();
-								sceneRef.current = scene;
+								if (!scene.selected) toggleScene(scene);
 								type.current = "page";
-								toggleModal(true);
-								// createPage(scene);
+								sceneRef.current = scene;
+								createPage(scene, `${scene.title}-page${pages.length + 1}`);
 							}}
 						/>
 					</div>
@@ -189,68 +156,27 @@ function General() {
 		pages.forEach((page) => {
 			const selectedCls = page.selected ? "selected" : "";
 			const editingModel = pageEditingModelMap.current.get(page.id);
-			// console.log(`${page.id} -> ${editingModel?.editing}`);
 			const editing = editingModel?.editing;
 			kids.push(
 				<div
 					className={`expander__body-item ${selectedCls}`}
 					key={`${page.id}`}
 					onClick={() => selectPage(page)}
-					style={{
-						position: "relative",
-					}}
-					onContextMenu={(e) => {
-						e.preventDefault();
-						setAnchorPoint({ x: e.clientX, y: e.clientY });
-						setContextMenuOpen(true);
-						pageRef.current = page;
-					}}
+					style={{ position: "relative" }}
 				>
-					<span className="expander__body-item-icon">
-						<svg
-							width="14"
-							height="14"
-							viewBox="0 0 48 48"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<rect
-								x="6"
-								y="6"
-								width="36"
-								height="36"
-								rx="3"
-								stroke="#757272"
-								strokeWidth="3"
-								strokeLinejoin="miter"
-							/>
-							<path
-								d="M6 17H42"
-								stroke="#757272"
-								strokeWidth="3"
-								strokeLinecap="square"
-								strokeLinejoin="miter"
-							/>
-							<path
-								d="M17 42V17"
-								stroke="#757272"
-								strokeWidth="3"
-								strokeLinecap="square"
-								strokeLinejoin="miter"
-							/>
-						</svg>
-					</span>
+					<Icon
+						className="expander__body-item-icon"
+						style={{ color: "white" }}
+						component={scenePageIcon}
+						rev={undefined}
+					/>
 					<span className="expander__body-item-title">
-						{/* {page.title} */}
 						{editing ? (
 							<input
+								id="editing-input"
+								className="expander__body-item-title-input"
+								type="text"
 								value={editingModel?.newName || ""}
-								style={{
-									height: 22,
-									outline: "none",
-									fontSize: 12,
-									border: "1px solid #4cc3ed",
-								}}
 								// autoFocus
 								onChange={(e) => {
 									const val = e.target.value || "";
@@ -264,7 +190,18 @@ function General() {
 								}}
 							/>
 						) : (
-							page.title
+							<div
+								style={{ flex: 1 }}
+								onContextMenu={(e) => {
+									e.preventDefault();
+									setAnchorPoint({ x: e.clientX, y: e.clientY });
+									setContextMenuOpen(true);
+									type.current = "page";
+									pageRef.current = page;
+								}}
+							>
+								{page.title}
+							</div>
 						)}
 					</span>
 				</div>,
@@ -276,24 +213,15 @@ function General() {
 	return (
 		<div className="aside-general">
 			<div className="heading">
-				<span
-					style={{
-						position: "relative",
-						height: "38px",
-						width: "100%",
-						fontSize: "14px",
-						lineHeight: "38px",
-					}}
-				>
-					Outline
-				</span>
+				<span className="title">Outline</span>
 				<Button
 					className="btn__scene-create"
 					icon={<PlusOutlined rev={1} />}
 					type="text"
 					onClick={() => {
 						type.current = "scene";
-						toggleModal(true);
+						sceneRef.current = undefined;
+						createScene(`scene${scenes.length + 1}`);
 					}}
 				/>
 			</div>
@@ -305,7 +233,6 @@ function General() {
 						width: "100%",
 						height: "100%",
 						overflow: "hidden",
-						// color: "#fff",
 						color: "#1a1a1a",
 						backgroundColor: "#fff",
 					}}
@@ -317,8 +244,6 @@ function General() {
 							left: 0,
 							right: 0,
 							bottom: 0,
-							marginRight: "-4px",
-							marginBottom: "-4px",
 							overflow: "scroll",
 						}}
 					>
@@ -326,17 +251,6 @@ function General() {
 					</div>
 				</div>
 			</div>
-
-			<Modal
-				title={null}
-				footer={null}
-				closable={false}
-				bodyStyle={{ padding: 0 }}
-				open={modalOpen}
-				modalRender={(modal: any) => modal}
-			>
-				{renderModalContent()}
-			</Modal>
 
 			<ControlledMenu
 				anchorPoint={anchorPoint}
@@ -346,30 +260,30 @@ function General() {
 			>
 				<MenuItem
 					onClick={() => {
-						const page = pageRef.current;
-						if (isNil(page)) return;
+						const current = getActiveItem();
+						if (isNil(current)) return;
+						edit(current);
+					}}
+				>
+					Rename
+				</MenuItem>
+				<MenuItem
+					onClick={() => {
+						const current = getActiveItem();
+						if (isNil(current)) return;
 						confirm({
 							title: "Confirm",
 							icon: <ExclamationCircleOutlined rev={1} />,
-							content: `Do you want to delete page [${page.title}] ?`,
+							content: `Do you want to delete [${current.title}] ?`,
 							okText: "Yes",
 							cancelText: "Cancel",
 							onOk: async () => {
-								deletePage(page);
+								deletePage(current);
 							},
 						});
 					}}
 				>
 					Delete
-				</MenuItem>
-				<MenuItem
-					onClick={() => {
-						const page = pageRef.current;
-						if (isNil(page)) return;
-						edit(page);
-					}}
-				>
-					Rename
 				</MenuItem>
 			</ControlledMenu>
 		</div>

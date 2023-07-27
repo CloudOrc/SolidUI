@@ -20,7 +20,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const themeVars = require('./theme')
-
+const webpackBar = require('webpackbar');
 const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
@@ -46,11 +46,11 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        // include: [
-        //   path.resolve(__dirname, '../src'),
-				// 	path.resolve(__dirname, '../node_modules/@szhsin/react-menu')
-        //   // path.resolve(__dirname, '../node_modules/antd')
-        // ],
+        include: [
+          path.resolve(__dirname, '../src'),
+					path.resolve(__dirname, '../node_modules/@szhsin/react-menu')
+          // path.resolve(__dirname, '../node_modules/antd')
+        ],
         use: [
           isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
@@ -59,34 +59,26 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        // include: [
-				// 	path.resolve(__dirname, '../src'),
-				// 	path.resolve(__dirname, '../node_modules/antd'),
-				// 	path.resolve(__dirname, '../node_modules/rc-select')
-				// ],
+        include: [
+					path.resolve(__dirname, '../src'),
+					path.resolve(__dirname, '../node_modules/antd'),
+					path.resolve(__dirname, '../node_modules/rc-select')
+				],
         use: [
           isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader',
           {
-						loader: 'less-loader',
-						options: {
-							lessOptions: {
-								modifyVars: themeVars,
-								javascriptEnabled: true
-							}
-						}
-					}
+            loader: 'less-loader',
+            options: {
+              lessOptions: {
+                modifyVars: themeVars,
+                javascriptEnabled: true
+              }
+            }
+          }
         ]
       },
-      // {
-      //   test: /.(js|jsx)$/,
-      //   include: [path.resolve(__dirname, '../src')],
-      //   use: [
-      //     'thread-loader',
-      //     'babel-loader'
-      //   ]
-      // },
       {
         test: /\.(js|jsx|ts|tsx)$/,
         include: [path.resolve(__dirname, '../src')],
@@ -96,7 +88,40 @@ module.exports = {
         ]
       },
       {
-        test: /.(png|jpg|jpeg|gif|svg)$/,
+        test: /\.svg$/i,
+        include: [path.resolve(__dirname, '../src')],
+        issuer: /\.[jt]sx?$/,
+        use: [
+          { loader: 'thread-loader' },
+          { loader: 'babel-loader', },
+          { loader: '@svgr/webpack', options: { icon: true, typescript: true, svgo: false, mome: true } }
+        ],
+        // 根据条件识别资源（暂时用不到）
+        // oneOf: [
+        //   {
+        //     resourceQuery: { not: [/asset/] },
+        //     use: [
+        //       { loader: 'thread-loader' },
+        //       { loader: 'babel-loader', },
+        //       { loader: '@svgr/webpack', options: { icon: true, typescript: true, svgo: false, mome: true } }
+        //     ],
+        //   },
+        //   {
+        //     resourceQuery: { and: [/asset/] },
+        //     type: 'asset',
+        //     parser: {
+        //       dataUrlCondition: {
+        //         maxSize: 10 * 1024,
+        //       }
+        //     },
+        //     generator: {
+        //       filename: 'static/images/[name].[contenthash:8][ext]',
+        //     },
+        //   }
+        // ]
+      },
+      {
+        test: /.(png|jpg|jpeg|gif)$/,
         type: 'asset',
         parser: {
           dataUrlCondition: {
@@ -134,6 +159,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpackBar({
+      color:"#C142DA"
+    }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../public/index.html'),
       inject: true,

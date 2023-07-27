@@ -35,7 +35,13 @@
 		text-align: center;
 		display: flex;
 		align-items: center;
-
+		> .title {
+			position: relative;
+			height: 38px;
+			width: 100%;
+			font-size: 14px;
+			line-height: 38px;
+		}
 		.btn__scene-create {
 			color: @primaryTextColor;
 			margin-right: 6px;
@@ -69,13 +75,23 @@
 }
 
 .expander {
+	.expander__body-item-title-input,
+	.expander__head-title-input {
+		flex: 1;
+		height: 20px;
+		padding: 0 6px;
+		outline: none;
+		font-size: 12px;
+		border: 1px solid #4cc3ed;
+	}
 	.expander__head {
+		justify-content: space-between;
 		display: flex;
 		-webkit-box-align: center;
 		align-items: center;
 		height: 32px;
 		padding-left: 12px;
-		padding-right: 12px;
+		padding-right: 0px;
 		border-bottom: 1px solid #e7e7e7;
 		border-top-color: rgb(36, 36, 36);
 		border-right-color: rgb(36, 36, 36);
@@ -85,12 +101,19 @@
 		&:hover {
 			background-color: @hoverBgColor;
 		}
-
 		> .expander__icon {
-			margin-right: 8px;
 			transform: rotate(-90deg);
 			color: rgb(117, 117, 117);
 			overflow: hidden;
+			margin-right: 8px;
+		}
+		> .expander__head-title {
+			flex: 1;
+			font-size: 12px;
+			display: flex;
+		}
+		> .btn__page-create {
+			margin-right: 6px;
 		}
 	}
 
@@ -112,25 +135,21 @@
 		border-right-color: #e7e7e7;
 		border-left-color: #e7e7e7;
 		display: none;
-		// padding-top: 16px;
-		// padding-bottom: 32px;
 
 		.expander__body-item {
 			display: flex;
 			-webkit-box-align: center;
 			align-items: center;
-			font-size: 13px;
-			line-height: 24px;
+			font-size: 12px;
+			line-height: 28px;
+			height: 28px;
 			padding-left: 12px;
+			padding-right: 0px;
 			background-color: transparent;
 			cursor: pointer;
 
 			&:hover {
 				background-color: @hoverBgColor;
-
-				.expander__body-item-delete {
-					display: flex;
-				}
 			}
 
 			&.selected {
@@ -139,6 +158,7 @@
 			}
 
 			> .expander__body-item-icon {
+				margin-right: 8px;
 				display: flex;
 				width: 14px;
 				height: 14px;
@@ -150,13 +170,10 @@
 			}
 
 			> .expander__body-item-title {
-				margin-left: 6px;
+				flex: 1;
 				color: rgba(0, 0, 0, 0.65);
 				font-size: 12px;
-			}
-
-			.expander__body-item-delete {
-				display: none;
+				display: flex;
 			}
 		}
 	}
