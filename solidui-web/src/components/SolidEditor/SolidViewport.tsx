@@ -41,8 +41,6 @@ import {
 	getScenaAttrs,
 } from "./utils";
 
-// export default interface SolidViewport extends EditorInterface {}
-
 interface SolidViewport extends EditorInterface {}
 
 @connectEditorContext
@@ -199,7 +197,12 @@ class SolidViewport extends React.PureComponent<{
 		targets: Array<HTMLElement | SVGElement>,
 	): Promise<RemovedInfo> {
 		const removedChildren = this.getSortedTargets(targets)
-			.map((target) => this.getInfoByElement(target))
+			.map((target) => {
+				if (target) {
+					return this.getInfoByElement(target);
+				}
+				return undefined;
+			})
 			.filter((info) => info) as ElementInfo[];
 		const indexes = removedChildren.map((info) => this.getIndex(info.id!));
 		const removed = this.unregisterChildren(removedChildren);
@@ -326,7 +329,7 @@ class SolidViewport extends React.PureComponent<{
 					{...{ [SOLIDUI_ELEMENT_ID]: "viewport" }}
 					ref={this.viewportRef}
 				>
-					{this.__renderChildren(this.getViewportInfos())}
+					{this.__renderChildren(this.getViewportInfos() || [])}
 				</div>
 			</div>
 		);

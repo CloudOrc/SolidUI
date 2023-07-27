@@ -20,11 +20,9 @@ import { fromTranslation, matrix3d } from "@scena/matrix";
 import { getElementInfo } from "react-moveable";
 import {
 	IObject,
-	// isString,
 	splitComma,
 	isArray,
 	isFunction,
-	// isNumber,
 	isObject,
 } from "@daybrush/utils";
 import { SOLIDUI_ELEMENT_ID } from "./const";
