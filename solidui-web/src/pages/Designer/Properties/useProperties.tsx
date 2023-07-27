@@ -54,11 +54,23 @@ function useProperties(initialData: InitialData) {
 
 	const handleSelectPage = useMemoizedFn(() => {
 		setPropertyKey("page");
+		const dom = document.getElementById("section-properties");
+		if (dom) {
+			dom.style.width = "326px";
+		}
 		forceUpdate();
 	});
 
 	const handleSelectViewEvent = useMemoizedFn(() => {
 		setPropertyKey("view");
+		const dom = document.getElementById("section-properties");
+		if (dom) {
+			if (currentTabKey === "Style") {
+				dom.style.width = "326px";
+			} else {
+				dom.style.width = "500px";
+			}
+		}
 		forceUpdate();
 	});
 

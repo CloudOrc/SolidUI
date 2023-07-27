@@ -41,9 +41,6 @@ function Properties() {
 		});
 
 	function renderByPropertyKey() {
-		// if (propertyKey === "top") {
-		// 	return <TopPropertiesPanel />;
-		// }
 		if (propertyKey === "scene") {
 			return <ScenePropertiesPanel />;
 		}

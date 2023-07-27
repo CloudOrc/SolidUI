@@ -15,10 +15,9 @@
  * limitations under the License.
  */
 
-import React, { useState } from "react";
-// import { useUpdate } from "react-use";
-// import { useMemoizedFn } from "ahooks";
-// import { eventbus } from "@/utils";
+import React, { useState, useEffect } from "react";
+import { useMemoizedFn } from "ahooks";
+import { eventbus } from "@/utils";
 
 type TabItemDataType = {
 	key: string;
@@ -31,20 +30,32 @@ type InitialData = {
 };
 
 function usePageProperties(initialData: InitialData) {
-	// const forceUpdate = useUpdate();
-	const [propertyKey] = useState<"page" | "modelui" | "none">("page");
+	const [propertyKey, setPropertyKey] = useState<"page" | "modelui" | "none">(
+		"page",
+	);
 	const [currentTabKey, setCurrentTabKey] = useState<string>("Page");
 	const mainRef = React.createRef<HTMLDivElement>();
 	const asideRef = React.createRef<HTMLDivElement>();
 
-	// const handleSelectPageInViewPort = useMemoizedFn(() => {
-	// 	setPropertyKey("page");
-	// });
+	const handleSelectPage = useMemoizedFn(() => {
+		setPropertyKey("page");
+		const dom = document.getElementById("section-properties");
+		if (dom) {
+			if (currentTabKey === "Page") {
+				dom.style.width = "326px";
+			} else {
+				dom.style.width = "800px";
+			}
+		}
+	});
 
-	// const handleSelectPage = useMemoizedFn(() => {
-	// 	setPropertyKey("page");
-	// 	forceUpdate();
-	// });
+	useEffect(() => {
+		eventbus.on("onSelectPage", handleSelectPage);
+
+		return () => {
+			eventbus.off("onSelectPage", handleSelectPage);
+		};
+	}, [handleSelectPage]);
 
 	function renderTabs() {
 		return (

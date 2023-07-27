@@ -56,10 +56,6 @@ export interface SolidEditorProps {
 	debug?: boolean;
 }
 
-export interface SomeEventData {
-	name: string;
-}
-
 export default class SolidEditor extends React.PureComponent<
 	SolidEditorProps,
 	Partial<SolidEditorState>
@@ -72,8 +68,8 @@ export default class SolidEditor extends React.PureComponent<
 			selectedTargets: [],
 			horizontalGuides: [],
 			verticalGuides: [],
-			zoom: 1,
-			// zoom: this.props.zoom ? this.props.zoom : 1,
+			// zoom: 1,
+			zoom: this.props.zoom ? this.props.zoom : 1,
 			selectedMenu: "MoveTool",
 		};
 	}
@@ -91,7 +87,6 @@ export default class SolidEditor extends React.PureComponent<
 
 	public moveableData = new MoveableData(this.memory);
 
-	// public manager = new SolidEditorManager(this);
 	public factory = new SolidViewFactory();
 
 	public editorRef = React.createRef<HTMLDivElement>();
@@ -174,10 +169,8 @@ export default class SolidEditor extends React.PureComponent<
 					// top: `${vm.position.top}px`,
 					// left: `${vm.position.left}px`,
 					position: "absolute",
-					// transform: `translate(${vm.frame.translate[0]}px, ${vm.frame.translate[1]}px)`,
 					transform: `translate(${vm.position.top}px, ${vm.position.left}px)`,
 				};
-				// if (!view.data.remote) {
 				if (!vm.data.dataSourceId || !vm.data.sql) {
 					const localVM = builder.createModel();
 					vm.data = localVM.data;
@@ -191,7 +184,6 @@ export default class SolidEditor extends React.PureComponent<
 						// 	</div>
 						// ),
 						jsx: <SolidViewComponent viewModel={vm} style={_style} />,
-						// frame: vm.frame,
 						name: builder.getTitle(),
 					},
 				]);
@@ -208,10 +200,6 @@ export default class SolidEditor extends React.PureComponent<
 
 	public getViewport = () => this.viewport.current!;
 
-	// public getEditorManager = () => {
-	// 	return this.manager;
-	// };
-
 	public getSelecto = () => this.selecto.current!;
 
 	public getInfiniteViewer = () => this.infiniteViewer.current!;
@@ -222,14 +210,11 @@ export default class SolidEditor extends React.PureComponent<
 		});
 	};
 
-	public getZoom = (): number => this.state.zoom;
-
 	public selectTarget(id: string) {
 		const target = this.getViewport().getElement(id);
 		if (target) {
 			this.setSelectedTargets([target]);
 		}
-		// this.getViewport().selectTarget(id);
 	}
 
 	public appendJSXsOnly(
@@ -297,7 +282,6 @@ export default class SolidEditor extends React.PureComponent<
 			});
 		}
 		this.getViewport().getElements(ids);
-		// const elems = this.getViewport().getElements(ids);
 		this.removeElements(this.getViewport().getElements(ids));
 	}
 
@@ -326,7 +310,6 @@ export default class SolidEditor extends React.PureComponent<
 						);
 					}),
 			);
-		// return Promise.resolve([]);
 	}
 
 	public removeByIds(ids: string[], isRestore?: boolean) {
@@ -621,30 +604,6 @@ export default class SolidEditor extends React.PureComponent<
 							  }
 							: undefined
 					}
-					// onDragStart={(e) => {
-					// this.checkBlur();
-					// e.stop();
-					// if (e.inputEvent.target.nodeName === "BUTTON") {
-					// 	return false;
-					// }
-					// return true;
-					// }}
-					// onSelect={(e) => {
-					// 	e.added.forEach((el) => {
-					// 		el.classList.add("selected");
-					// 	});
-					// 	e.removed.forEach((el) => {
-					// 		el.classList.remove("selected");
-					// 	});
-					// }}
-					// onDrag={(e) => {
-					// e.stop();
-					// }}
-					// onDragEnd={(e) => {
-					// e.stop();
-					// }}
-					// onSelect={(e) => {}}
-					// onSelectStart={(e) => {}}
 					onSelectEnd={(e) => {
 						const selected = e.selected || [];
 						const { isDragStart } = e;
@@ -659,13 +618,6 @@ export default class SolidEditor extends React.PureComponent<
 							moveableManager.current!.getMoveable().dragStart(e.inputEvent);
 						});
 					}}
-					// onDrag={e => {}}
-					// onScroll={(e) => {
-					// viewerRef.current?.scrollBy(
-					// 	e.direction[0] * 10,
-					// 	e.direction[1] * 10
-					// );
-					// }}
 				/>
 			</div>
 		);

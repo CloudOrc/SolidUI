@@ -16,6 +16,7 @@
  */
 
 import React, { useEffect, useState } from "react";
+import { message } from "antd";
 import { useMemoizedFn } from "ahooks";
 import { eventbus } from "@/utils";
 import Apis from "@/apis";
@@ -156,6 +157,7 @@ function useModelui() {
 			const resultMsgObj = JSON.parse(resultMsgStr);
 			const resultMsg = resultMsgObj.result || "";
 			if (resultMsg === "success") {
+				message.info("code run success");
 			}
 		}
 	}

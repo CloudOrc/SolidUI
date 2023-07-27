@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import React, { useEffect } from "react";
+import React from "react";
 import usePageProperties from "./usePageProperties";
 import PagePagePropertiesPanel from "./page/PagePagePropertiesPanel";
 import PageModeluiPropertiesPanel from "./page/PageModeluiDialogPanel";
@@ -33,26 +33,6 @@ export default function PagePropertiesPanel() {
 			},
 		],
 	});
-	// const [size, setSize] = useState<{ width: number; height: number }>();
-
-	useEffect(() => {
-		// eventbus.on("onSelectPage", handleSelectPage);
-		// const page = mm.getCurrentPage();
-		// setSize({
-		// 	width: page?.size.width || 1024,
-		// 	height: page?.size.height || 768,
-		// });
-	}, []);
-
-	// function handleSelectPage(evt: OnSelectPageEventData) {
-	// const { page } = evt;
-	// if (isNil(page)) {
-	// }
-	// setSize({
-	// 	width: page?.size.width || 1024,
-	// 	height: page?.size.height || 768,
-	// });
-	// }
 
 	function renderPanel() {
 		if (currentTabKey === "Page") {
