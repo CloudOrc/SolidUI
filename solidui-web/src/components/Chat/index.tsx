@@ -22,7 +22,7 @@ import { User, VoiceOne } from "@icon-park/react";
 import { WaitingStates } from "@/types/chat";
 
 import ReactMarkdown from "react-markdown";
-import "./Chat.css";
+import "./chat.less";
 
 function Message(props: {
 	text: string;
