@@ -20,11 +20,8 @@ import Selecto from "react-selecto";
 import SolidEditor from "../SolidEditor";
 import SolidViewport from "../SolidViewport";
 import MoveableManager from "./MoveableManager";
-// import Debugger from "./Debugger";
 import Memory from "./Memory";
 import MoveableData from "./MoveableData";
-import SolidEditorManager from "./SolidEditorManager";
-// import { Emitter } from "mitt";
 
 export interface BaseSolidViewProps {
 	visualElementId?: string;
@@ -52,9 +49,6 @@ export interface ElementInfo {
 	id?: string;
 	name: string;
 	jsx: SolidViewJSXType;
-	// frame?: IObject<any>;
-	// frameOrder?: IObject<any>;
-	// moveMatrix?: number[];
 	scopeId?: string;
 	children?: ElementInfo[];
 	attrs?: IObject<any>;
@@ -74,15 +68,8 @@ export interface RemovedInfo {
 export interface EditorInterface {
 	editor: SolidEditor;
 	memory: Memory;
-	// eventBus: EventBus;
 	moveableData: MoveableData;
-	// keyManager: KeyManager;
-	// historyManager: HistoryManager;
-	// console: Debugger;
 	moveableManager: React.RefObject<MoveableManager>;
-	// eventbus: Emitter<EventBusType>;
-
 	getViewport: () => SolidViewport;
 	getSelecto: () => Selecto;
-	getEditorManager: () => SolidEditorManager;
 }

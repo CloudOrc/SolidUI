@@ -36,7 +36,11 @@ module.exports = {
     alias: {
       '@': path.join(__dirname, '../src')
     },
-    modules: [path.resolve(__dirname, '../node_modules')]
+		// [issue fix] react-markdown, react-syntax-highlighter common deps property-information with different version
+		// if set modules, webpack will search property-information in root node_modules, this may cause error
+		// ERROR in ./node_modules/hastscript/factory.js 4:16-57
+		// Module not found: Error: Can't resolve 'property-information/normalize' in '/..../SolidUI/solidui-web/node_modules/hastscript'
+    // modules: [path.resolve(__dirname, '../node_modules')]
   },
   module: {
     rules: [
@@ -44,7 +48,7 @@ module.exports = {
         test: /\.css$/,
         include: [
           path.resolve(__dirname, '../src'),
-          path.resolve(__dirname, '../node_modules/@szhsin/react-menu')
+					path.resolve(__dirname, '../node_modules/@szhsin/react-menu')
           // path.resolve(__dirname, '../node_modules/antd')
         ],
         use: [
@@ -56,10 +60,10 @@ module.exports = {
       {
         test: /\.less$/,
         include: [
-          path.resolve(__dirname, '../src'),
-          path.resolve(__dirname, '../node_modules/antd'),
-          path.resolve(__dirname, '../node_modules/rc-select')
-        ],
+					path.resolve(__dirname, '../src'),
+					path.resolve(__dirname, '../node_modules/antd'),
+					path.resolve(__dirname, '../node_modules/rc-select')
+				],
         use: [
           isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
@@ -165,9 +169,6 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV)
     }),
-    // new MonacoWebpackPlugin({
-    //   languages: []
-    // }),
   ],
   cache: {
     type: 'filesystem',

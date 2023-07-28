@@ -44,6 +44,7 @@ export default function InputTextArea(props: InputTextareaProps) {
 			className="solid-textarea"
 			style={_style}
 			value={value}
+			placeholder={props.placeholder || ""}
 			onChange={(e) => {
 				const mValue = e.target.value || "";
 				setValue(mValue);

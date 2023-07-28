@@ -173,12 +173,8 @@ class MoveableManager extends React.PureComponent<{
 						left: moveL,
 						top: moveT,
 					};
-					// view.position = {
-					// 	left: e.beforeTranslate[1],
-					// 	top: e.beforeTranslate[0],
-					// };
-					// e.target.style.transform = `translate(${view.position.top}px, ${view.position.left}px) rotate(${rotate}deg)`;
 
+					// e.target.style.transform = `translate(${view.position.top}px, ${view.position.left}px) rotate(${rotate}deg)`;
 					e.target.style.transform = `translate(${moveT}px, ${moveL}px) rotate(${rotate}deg)`;
 				}}
 				onDragGroupStart={moveableData.onDragGroupStart}
@@ -187,32 +183,6 @@ class MoveableManager extends React.PureComponent<{
 				onDragOrigin={(e) => {
 					moveableData.onDragOrigin(e);
 				}}
-				// onDragEnd={(e) => {
-				// 	let id = e.target.getAttribute(SOLIDUI_ELEMENT_ID);
-				// 	if (null === id || undefined === id) {
-				// 		return;
-				// 	}
-				// 	if (e.lastEvent === null || e.lastEvent === undefined) {
-				// 		return;
-				// 	}
-				// 	let view = mm.getView(id);
-				// 	if (null === view || undefined === view) {
-				// 		return;
-				// 	}
-
-				// 	let translate = e.lastEvent.translate;
-				// 	let pos = view.position;
-				// 	// let newPos = {
-				// 	// 	top: pos.top + translate[1],
-				// 	// 	left: pos.left + translate[0],
-				// 	// };
-				// 	// view.position = newPos;
-				// 	view.position = {
-				// 		top: translate[1],
-				// 		left: translate[0],
-				// 	};
-				// }}
-				// Scale
 				onScaleStart={moveableData.onScaleStart}
 				onScale={moveableData.onScale}
 				onScaleGroupStart={moveableData.onScaleGroupStart}

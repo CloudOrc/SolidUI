@@ -26,14 +26,6 @@ import {
 } from "@/types/eventbus";
 import { eventbus } from "@/utils";
 
-// type View = {
-// 	top: number;
-// 	left: number;
-// 	width: number;
-// 	height: number;
-// 	transform?: string;
-// };
-
 function Scena() {
 	const [width, setWidth] = useState(1024);
 	const [height, setHeight] = useState(768);
@@ -49,20 +41,6 @@ function Scena() {
 
 	useLayoutEffect(() => {
 		if (editorRef.current) {
-			// TODO zoom disabled
-			// let container = editorRef.current.getInfiniteViewer().getContainer();
-			// let infiniteViewContainerRect = container.getBoundingClientRect();
-			// let infiniteWidth = infiniteViewContainerRect.width;
-			// let infiniteHeight = infiniteViewContainerRect.height;
-
-			// let wRatio = (infiniteWidth - 50) / width;
-			// let hRatio = (infiniteHeight - 50) / height;
-			// let ratio = Math.min(wRatio, hRatio);
-			// let roundRatio = Math.floor(ratio * 100);
-			// let zoom = roundRatio / 100;
-			// setZoom(zoom);
-			// editorRef.current.setZoom(zoom);
-
 			// TODO, set default zoom to 1
 			setZoom(1);
 			editorRef.current.getInfiniteViewer()?.scrollCenter();
@@ -120,7 +98,6 @@ function Scena() {
 				<SolidEditor
 					width={width}
 					height={height}
-					debug
 					ref={editorRef}
 					zoom={zoom}
 				/>

@@ -14,18 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+export type MessageDict = {
+	text: string;
+	role: string;
+	type: string;
+};
 
-// export default class Debugger {
-// 	constructor(private isDebug?: boolean) {}
-
-// 	public log(...args: any[]) {
-// 		if (!this.isDebug) {
-// 			return;
-// 		}
-// 		console.log(
-// 			"%c Scena Debugger:",
-// 			"padding: 1px; background: #4af; color: #fff;",
-// 			...args,
-// 		);
-// 	}
-// }
+export enum WaitingStates {
+	GeneratingCode = "Generating code",
+	RunningCode = "Running code",
+	UploadingFile = "Uploading file",
+	Idle = "Idle",
+}

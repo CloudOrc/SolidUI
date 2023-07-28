@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-// import { param } from "jquery";
 import ApiService from "./service";
 import {
 	SolidModelCreationDataType,
@@ -142,12 +141,23 @@ const datasource = {
 		),
 };
 
+const modelui = {
+	keys: <T>() => ApiService.get<T>("/solidui/models/keys"),
+	generate: <T>(params: { modelId: number; prompt: string }) =>
+		ApiService.post<T>(`/solidui/models/generate`, params),
+	generateByCommand: <T>(params: { command: string }) =>
+		ApiService.post<T>(`/solidui/models/api/api`, params),
+	result: <T>() => ApiService.get<T>(`/solidui/models/api/api`),
+	kernel_restart: () => ApiService.post(`/solidui/kernel/restart`),
+};
+
 const Apis = {
 	model,
 	images,
 	user,
 	project,
 	datasource,
+	modelui,
 };
 
 export default Apis;

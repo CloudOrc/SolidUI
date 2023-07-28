@@ -16,12 +16,11 @@
  */
 
 import React from "react";
-import TopPropertiesPanel from "./TopPropertiesPanel";
+// import TopPropertiesPanel from "./TopPropertiesPanel";
 import ScenePropertiesPanel from "./ScenePropertiesPanel";
 import PagePropertiesPanel from "./PagePropertiesPanel";
 import StylePropertiesPanel from "./StylePropertiesPanel";
 import DataPropertiesPanel from "./DataPropertiesPanel";
-import EventPropertiesPanel from "./EventPropertiesPanel";
 import useProperties from "./useProperties";
 
 import "./configurations.less";
@@ -38,17 +37,10 @@ function Properties() {
 					key: "Data",
 					tab: "Data",
 				},
-				// {
-				// 	key: "Events",
-				// 	tab: "Events",
-				// },
 			],
 		});
 
 	function renderByPropertyKey() {
-		if (propertyKey === "top") {
-			return <TopPropertiesPanel />;
-		}
 		if (propertyKey === "scene") {
 			return <ScenePropertiesPanel />;
 		}
@@ -75,14 +67,11 @@ function Properties() {
 		if (currentTabKey === "Data") {
 			return <DataPropertiesPanel />;
 		}
-		if (currentTabKey === "Events") {
-			return <EventPropertiesPanel />;
-		}
 		return undefined;
 	}
 
 	return (
-		<section className="aside-east" ref={asideRef}>
+		<section id="section-properties" className="aside-east" ref={asideRef}>
 			<div className="aside-east__container">{renderByPropertyKey()}</div>
 		</section>
 	);

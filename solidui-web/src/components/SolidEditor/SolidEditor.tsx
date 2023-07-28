@@ -53,16 +53,11 @@ export interface SolidEditorProps {
 	width: number;
 	height: number;
 	zoom?: number;
-	debug?: boolean;
-}
-
-export interface SomeEventData {
-	name: string;
 }
 
 export default class SolidEditor extends React.PureComponent<
 	SolidEditorProps,
-	Partial<SolidEditorState>
+	SolidEditorState
 > {
 	constructor(props: SolidEditorProps) {
 		super(props);
@@ -72,26 +67,16 @@ export default class SolidEditor extends React.PureComponent<
 			selectedTargets: [],
 			horizontalGuides: [],
 			verticalGuides: [],
-			zoom: 1,
-			// zoom: this.props.zoom ? this.props.zoom : 1,
+			// zoom: 1,
+			zoom: this.props.zoom ? this.props.zoom : 1,
 			selectedMenu: "MoveTool",
 		};
 	}
-
-	// public state: SolidEditorState = {
-	// 	selectedTargets: [],
-	// 	horizontalGuides: [],
-	// 	verticalGuides: [],
-	// 	zoom: 1,
-	// 	// zoom: this.props.zoom ? this.props.zoom : 1,
-	// 	selectedMenu: "MoveTool",
-	// };
 
 	public memory = new Memory();
 
 	public moveableData = new MoveableData(this.memory);
 
-	// public manager = new SolidEditorManager(this);
 	public factory = new SolidViewFactory();
 
 	public editorRef = React.createRef<HTMLDivElement>();
@@ -132,18 +117,19 @@ export default class SolidEditor extends React.PureComponent<
 			message.warn("please select one page before draw view");
 			return;
 		}
-		const { viewType } = event;
+		const { viewType, options } = event;
 		const builder = this.factory.getBuilder(viewType);
 		if (builder === undefined) {
 			return;
 		}
 		const SolidViewComponent = builder.getComponentType();
-		const vm = builder.createModel();
+		const vm = builder.createModel(options);
 		const _style: React.CSSProperties = {
 			...vm.style,
 			width: `${vm.size.width}px`,
 			height: `${vm.size.height}px`,
 		};
+
 		this.appendJSX({
 			id: vm.id,
 			jsx: <SolidViewComponent viewModel={vm} style={_style} />,
@@ -173,10 +159,8 @@ export default class SolidEditor extends React.PureComponent<
 					// top: `${vm.position.top}px`,
 					// left: `${vm.position.left}px`,
 					position: "absolute",
-					// transform: `translate(${vm.frame.translate[0]}px, ${vm.frame.translate[1]}px)`,
 					transform: `translate(${vm.position.top}px, ${vm.position.left}px)`,
 				};
-				// if (!view.data.remote) {
 				if (!vm.data.dataSourceId || !vm.data.sql) {
 					const localVM = builder.createModel();
 					vm.data = localVM.data;
@@ -190,7 +174,6 @@ export default class SolidEditor extends React.PureComponent<
 						// 	</div>
 						// ),
 						jsx: <SolidViewComponent viewModel={vm} style={_style} />,
-						// frame: vm.frame,
 						name: builder.getTitle(),
 					},
 				]);
@@ -207,10 +190,6 @@ export default class SolidEditor extends React.PureComponent<
 
 	public getViewport = () => this.viewport.current!;
 
-	// public getEditorManager = () => {
-	// 	return this.manager;
-	// };
-
 	public getSelecto = () => this.selecto.current!;
 
 	public getInfiniteViewer = () => this.infiniteViewer.current!;
@@ -221,14 +200,11 @@ export default class SolidEditor extends React.PureComponent<
 		});
 	};
 
-	public getZoom = (): number => this.state.zoom;
-
 	public selectTarget(id: string) {
 		const target = this.getViewport().getElement(id);
 		if (target) {
 			this.setSelectedTargets([target]);
 		}
-		// this.getViewport().selectTarget(id);
 	}
 
 	public appendJSXsOnly(
@@ -265,7 +241,7 @@ export default class SolidEditor extends React.PureComponent<
 	): Promise<Array<HTMLElement | SVGElement>> {
 		const viewport = this.getViewport();
 		const indexesList = viewport.getSortedIndexesList(
-			this.getSelectedTargets(),
+			this.getSelectedTargets() || [],
 		);
 		const indexesListLength = indexesList.length;
 		let appendIndex = -1;
@@ -282,7 +258,7 @@ export default class SolidEditor extends React.PureComponent<
 
 		return this.getViewport()
 			.appendJSXs(jsxs, appendIndex, scopeId)
-			.then(({ added }) => this.appendComplete(added, isRestore));
+			.then(({ added }) => this.appendComplete(added));
 	}
 
 	public removeAll() {
@@ -296,7 +272,6 @@ export default class SolidEditor extends React.PureComponent<
 			});
 		}
 		this.getViewport().getElements(ids);
-		// const elems = this.getViewport().getElements(ids);
 		this.removeElements(this.getViewport().getElements(ids));
 	}
 
@@ -325,55 +300,19 @@ export default class SolidEditor extends React.PureComponent<
 						);
 					}),
 			);
-		// return Promise.resolve([]);
 	}
 
-	public removeByIds(ids: string[], isRestore?: boolean) {
-		return this.removeElements(this.getViewport().getElements(ids), isRestore);
+	public removeByIds(ids: string[]) {
+		return this.removeElements(this.getViewport().getElements(ids));
 	}
 
 	private appendComplete(infos: ElementInfo[]) {
 		const targets1 = infos.map((info) => info.el!);
-		this.setSelectedTargets(targets1, true);
+		this.setSelectedTargets(targets1);
 		return targets1;
-		// const data = this.moveableData;
-		// const container = this.getViewport().viewportRef.current!;
-		// const targets = infos
-		// 	.map(function registerFrame(info) {
-		// 		const frame = data.createFrame(info.el!, info.frame);
-
-		// 		if (info.frameOrder) {
-		// 			frame.setOrderObject(info.frameOrder);
-		// 		}
-		// 		data.render(info.el!);
-
-		// 		info.children!.forEach(registerFrame);
-		// 		return info.el!;
-		// 	})
-		// 	.filter((el) => el);
-		// infos.forEach((info) => {
-		// 	if (!info.moveMatrix) {
-		// 		return;
-		// 	}
-		// 	const frame = data.getFrame(info.el!);
-		// 	let nextMatrix = getOffsetOriginMatrix(info.el!, container);
-
-		// 	nextMatrix = invert(nextMatrix, 4);
-
-		// 	const moveMatrix = matrix3d(nextMatrix, info.moveMatrix);
-
-		// 	setMoveMatrix(frame, moveMatrix);
-		// 	data.render(info.el!);
-		// });
-		// return Promise.all(targets.map((target) => checkImageLoaded(target))).then(
-		// 	() => {
-		// 		this.setSelectedTargets(targets, true);
-		// 		return targets;
-		// 	}
-		// );
 	}
 
-	public promiseState(state: Partial<SolidEditorState>) {
+	public promiseState(state: SolidEditorState) {
 		return new Promise<void>((resolve) => {
 			this.setState(state, () => {
 				resolve();
@@ -390,6 +329,7 @@ export default class SolidEditor extends React.PureComponent<
 		);
 
 		return this.promiseState({
+			...this.state,
 			selectedTargets: targets,
 		}).then(() => {
 			this.selecto.current!.setSelectedTargets(targets);
@@ -406,34 +346,8 @@ export default class SolidEditor extends React.PureComponent<
 
 	public getSelectedTargets = () => this.state.selectedTargets;
 
-	// private checkBlur() {
-	// 	const { activeElement } = document;
-	// 	if (activeElement) {
-	// 		(activeElement as HTMLElement).blur();
-	// 	}
-	// 	const selection = document.getSelection()!;
-
-	// 	if (selection) {
-	// 		selection.removeAllRanges();
-	// 	}
-	// }
-
 	public removeElements(targets: Array<HTMLElement | SVGElement>) {
 		const viewport = this.getViewport();
-		// const indexesList = viewport.getSortedIndexesList(targets);
-		// const indexesListLength = indexesList.length;
-		// let scopeId = "";
-		// let selectedInfo: ElementInfo | null = null;
-
-		// if (indexesListLength) {
-		// 	const lastInfo = viewport.getInfoByIndexes(
-		// 		indexesList[indexesListLength - 1],
-		// 	);
-		// 	const nextInfo = viewport.getNextInfo(lastInfo.id!);
-
-		// 	scopeId = lastInfo.scopeId!;
-		// 	selectedInfo = nextInfo;
-		// }
 		return viewport.removeTargets(targets).then(() => {
 			this.setSelectedTargets([]);
 			return targets;
@@ -496,105 +410,111 @@ export default class SolidEditor extends React.PureComponent<
 		const verticalSnapGuides = state.verticalGuides;
 
 		return (
-			<div id={this.props.id} className={prefix("editor")} ref={this.editorRef}>
+			<>
 				<div
-					className="editor-guides-reset"
-					onClick={() => {
-						infiniteViewer.current!.scrollCenter();
-					}}
-				/>
-				<div className="editor-zoom-btn" />
-				<Guides
-					ref={horizontalGuides}
-					type="horizontal"
-					className="editor-guides guides-horizontal"
-					snapThreshold={5}
-					snaps={horizontalSnapGuides}
-					displayDragPos
-					dragPosFormat={(v) => `${v}px`}
-					zoom={zoom}
-					unit={unit}
-					onChangeGuides={(e) => {
-						this.setState({
-							horizontalGuides: e.guides,
-						});
-					}}
-					// lineColor="#EAECEE"
-					// backgroundColor="#6B6B6C"
-					// textColor="#EAECEE"
-					lineColor="#D1D1D1"
-					backgroundColor="#F6F6F6"
-					textColor="#D1D1D1"
-				/>
-
-				<Guides
-					ref={verticalGuides}
-					type="vertical"
-					className="editor-guides guides-vertical"
-					snapThreshold={5}
-					snaps={verticalSnapGuides}
-					displayDragPos
-					dragPosFormat={(v) => `${v}px`}
-					zoom={zoom}
-					unit={unit}
-					onChangeGuides={(e) => {
-						this.setState({
-							verticalGuides: e.guides,
-						});
-					}}
-					// lineColor="#EAECEE"
-					lineColor="#D1D1D1"
-					// backgroundColor="#FFFFFF"
-					// backgroundColor="#E6E5E6"
-					backgroundColor="#F6F6F6"
-					textColor="#D1D1D1"
-				/>
-
-				<InfiniteViewer
-					ref={infiniteViewer}
-					className="editor-viewer"
-					zoom={zoom}
-					useWheelScroll
-					useForceWheel
-					pinchThreshold={50}
-					onScroll={(e) => {
-						horizontalGuides.current!.scroll(e.scrollLeft);
-						horizontalGuides.current!.scrollGuides(e.scrollTop);
-						verticalGuides.current!.scroll(e.scrollTop);
-						verticalGuides.current!.scrollGuides(e.scrollLeft);
-					}}
-					// onDragStart={(e) => {}}
-					// onDrag={(e) => {}}
-					usePinch
-					onPinch={(e) => {
-						eventbus.emit("onZoom", { zoom: e.zoom });
-						this.setState({
-							zoom: e.zoom,
-						});
-					}}
-					// onPinchStart={(e) => {}}
+					id={this.props.id}
+					className={prefix("editor")}
+					ref={this.editorRef}
 				>
-					<SolidViewport
-						ref={this.viewport}
-						// onRef={(ref) => (this.viewport = ref)}
-						onBlur={() => {}}
-						style={{
-							width: `${width}px`,
-							height: `${height}px`,
-							background: "rgb(25, 26, 29)",
-							boxShadow: "rgb(0 0 0 / 10%) 0px 2px 6px",
+					<div
+						className="editor-guides-reset"
+						onClick={() => {
+							infiniteViewer.current!.scrollCenter();
 						}}
+					/>
+					<div className="editor-zoom-btn" />
+					<Guides
+						ref={horizontalGuides}
+						type="horizontal"
+						className="editor-guides guides-horizontal"
+						snapThreshold={5}
+						snaps={horizontalSnapGuides}
+						displayDragPos
+						dragPosFormat={(v) => `${v}px`}
+						zoom={zoom}
+						unit={unit}
+						onChangeGuides={(e) => {
+							this.setState({
+								horizontalGuides: e.guides,
+							});
+						}}
+						// lineColor="#EAECEE"
+						// backgroundColor="#6B6B6C"
+						// textColor="#EAECEE"
+						lineColor="#D1D1D1"
+						backgroundColor="#F6F6F6"
+						textColor="#D1D1D1"
+					/>
+
+					<Guides
+						ref={verticalGuides}
+						type="vertical"
+						className="editor-guides guides-vertical"
+						snapThreshold={5}
+						snaps={verticalSnapGuides}
+						displayDragPos
+						dragPosFormat={(v) => `${v}px`}
+						zoom={zoom}
+						unit={unit}
+						onChangeGuides={(e) => {
+							this.setState({
+								verticalGuides: e.guides,
+							});
+						}}
+						// lineColor="#EAECEE"
+						lineColor="#D1D1D1"
+						// backgroundColor="#FFFFFF"
+						// backgroundColor="#E6E5E6"
+						backgroundColor="#F6F6F6"
+						textColor="#D1D1D1"
+					/>
+
+					<InfiniteViewer
+						ref={infiniteViewer}
+						className="editor-viewer"
+						zoom={zoom}
+						useWheelScroll
+						useForceWheel
+						pinchThreshold={50}
+						onScroll={(e) => {
+							horizontalGuides.current!.scroll(e.scrollLeft);
+							horizontalGuides.current!.scrollGuides(e.scrollTop);
+							verticalGuides.current!.scroll(e.scrollTop);
+							verticalGuides.current!.scrollGuides(e.scrollLeft);
+						}}
+						// onDragStart={(e) => {}}
+						// onDrag={(e) => {}}
+						usePinch
+						onPinch={(e) => {
+							eventbus.emit("onZoom", { zoom: e.zoom });
+							this.setState({
+								zoom: e.zoom,
+							});
+						}}
+						// onPinchStart={(e) => {}}
 					>
-						<MoveableManager
-							ref={moveableManager}
-							selectedTargets={selectedTargets}
-							selectedMenu={selectedMenu}
-							verticalGuidelines={verticalSnapGuides}
-							horizontalGuidelines={horizontalSnapGuides}
-							zoom={zoom}
-						/>
-					</SolidViewport>
-				</InfiniteViewer>
+						<SolidViewport
+							ref={this.viewport}
+							// onRef={(ref) => (this.viewport = ref)}
+							onBlur={() => {}}
+							style={{
+								width: `${width}px`,
+								height: `${height}px`,
+								background: "rgb(25, 26, 29)",
+								boxShadow: "rgb(0 0 0 / 10%) 0px 2px 6px",
+							}}
+						>
+							<MoveableManager
+								ref={moveableManager}
+								selectedTargets={selectedTargets}
+								selectedMenu={selectedMenu}
+								verticalGuidelines={verticalSnapGuides}
+								horizontalGuidelines={horizontalSnapGuides}
+								zoom={zoom}
+							/>
+						</SolidViewport>
+					</InfiniteViewer>
+				</div>
 				<Selecto
 					ref={selecto}
 					dragContainer=".editor-viewport"
@@ -620,30 +540,6 @@ export default class SolidEditor extends React.PureComponent<
 							  }
 							: undefined
 					}
-					// onDragStart={(e) => {
-					// this.checkBlur();
-					// e.stop();
-					// if (e.inputEvent.target.nodeName === "BUTTON") {
-					// 	return false;
-					// }
-					// return true;
-					// }}
-					// onSelect={(e) => {
-					// 	e.added.forEach((el) => {
-					// 		el.classList.add("selected");
-					// 	});
-					// 	e.removed.forEach((el) => {
-					// 		el.classList.remove("selected");
-					// 	});
-					// }}
-					// onDrag={(e) => {
-					// e.stop();
-					// }}
-					// onDragEnd={(e) => {
-					// e.stop();
-					// }}
-					// onSelect={(e) => {}}
-					// onSelectStart={(e) => {}}
 					onSelectEnd={(e) => {
 						const selected = e.selected || [];
 						const { isDragStart } = e;
@@ -658,15 +554,8 @@ export default class SolidEditor extends React.PureComponent<
 							moveableManager.current!.getMoveable().dragStart(e.inputEvent);
 						});
 					}}
-					// onDrag={e => {}}
-					// onScroll={(e) => {
-					// viewerRef.current?.scrollBy(
-					// 	e.direction[0] * 10,
-					// 	e.direction[1] * 10
-					// );
-					// }}
 				/>
-			</div>
+			</>
 		);
 	}
 }

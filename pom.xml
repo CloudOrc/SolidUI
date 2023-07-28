@@ -518,6 +518,7 @@
                         <exclude>.mvn/**</exclude>
                         <exclude>compiler/**</exclude>
                         <exclude>**/generated/**</exclude>
+                        <exclude>**/soliduimodelui.egg-info/**</exclude>
                     </excludes>
                 </configuration>
                 <executions>

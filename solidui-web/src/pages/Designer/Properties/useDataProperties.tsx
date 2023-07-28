@@ -16,7 +16,6 @@
  */
 
 import React, { useEffect, useState, useRef } from "react";
-// import { Modal } from "antd";
 import { useUpdate } from "react-use";
 import { useMemoizedFn } from "ahooks";
 import { find, isNil, cloneDeep } from "lodash-es";
@@ -32,12 +31,6 @@ interface Option {
 	isLeaf: boolean;
 	loading?: boolean;
 }
-
-// type InitialData = {
-// 	dataSources?: DataSourceDataType[];
-// 	databases?: any[];
-// 	tables?: any[];
-// };
 
 function useDataProperties() {
 	const forceUpdate = useUpdate();
@@ -144,115 +137,6 @@ function useDataProperties() {
 			eventbus.off("onSelectViewInViewport", handleLoad);
 		};
 	}, [handleLoad]);
-
-	// function handleSelectViewEvent() {
-	// 	load();
-	// }
-
-	// async function load() {
-	// 	const view = mm.getCurrentView();
-	// 	if (isNil(view)) {
-	// 		return;
-	// 	}
-	// 	setLoading(true);
-	// 	const viewData = view?.data || {
-	// 		dataSourceId: undefined,
-	// 		table: undefined,
-	// 		sql: undefined,
-	// 	};
-
-	// 	const res: ApiResult<DataSourceTypeDataType[]> =
-	// 		await Apis.datasource.types();
-	// 	if (res.ok) {
-	// 		const mDataSourceTypes = res.data || [];
-	// 		const res2: ApiResult<DataSourceDataType> = await Apis.datasource.query({
-	// 			pageNo: 1,
-	// 			pageSize: 10000,
-	// 			expire: false,
-	// 			name: "",
-	// 		});
-	// 		if (res2.ok) {
-	// 			const data = res2.data || ({} as any);
-	// 			const records: DataSourceDataType[] = data.totalList || [];
-	// 			const mDataSourceOptions: Option[] = [];
-	// 			records.forEach((item: any) => {
-	// 				// item.key = item.id;
-	// 				mDataSourceOptions.push({
-	// 					key: `${item.id}`,
-	// 					label: item.dataSourceName,
-	// 					value: item.id,
-	// 					isLeaf: false,
-	// 					children: [],
-	// 				});
-	// 			});
-
-	// 			setDataSourceOptions(mDataSourceOptions);
-	// 			setDataSourceTypes(mDataSourceTypes);
-	// 			setDataSources(records || []);
-	// 			setColumns([]);
-	// 			setRows([]);
-	// 			const optionVals = [];
-	// 			if (viewData.dataSourceId) {
-	// 				optionVals.push(viewData.dataSourceId);
-	// 			}
-	// 			if (viewData.table) {
-	// 				optionVals.push(viewData.table);
-	// 			}
-	// 			setSelectedDataSourceOptions(optionVals);
-
-	// 			const target = find(records, (d) => d.id === viewData.dataSourceId);
-	// 			if (target === null || undefined === target) {
-	// 				setLoading(false);
-	// 				return;
-	// 			}
-	// 			const dsType = find(
-	// 				mDataSourceTypes,
-	// 				(d) => d.id === `${target?.dataSourceTypeId}`,
-	// 			);
-	// 			if (dsType === null || undefined === dsType) {
-	// 				setLoading(false);
-	// 				return;
-	// 			}
-	// 			setSelectedDataSource({
-	// 				dataSourceName: target.dataSourceName,
-	// 				typeName: dsType.classifier,
-	// 			});
-	// 		}
-	// 	}
-	// 	setLoading(false);
-	// }
-
-	// async function queryDataSourceTypes() {
-	// 	let res: ApiResult<DataSourceTypeDataType[]> =
-	// 		await Apis.datasource.types();
-	// 	if (res.ok) {
-	// 		let data = res.data || [];
-	// 		setDataSourceTypes(data);
-	// 	}
-	// }
-
-	// async function queryDataSources() {
-	// 	let res: ApiResult<DataSourceDataType> = await Apis.datasource.query({
-	// 		pageNo: 1,
-	// 		pageSize: 10000,
-	// 	});
-	// 	if (res.ok) {
-	// 		let data = res.data || ({} as any);
-	// 		let records: DataSourceDataType[] = data.totalList || [];
-	// 		let dataSourceOptions: Option[] = [];
-	// 		records.forEach((item: any) => {
-	// 			item.key = item.id;
-	// 			dataSourceOptions.push({
-	// 				label: item.dataSourceName,
-	// 				value: item.id,
-	// 				isLeaf: false,
-	// 				children: [],
-	// 			});
-	// 		});
-	// 		setDataSourceOptions(dataSourceOptions);
-	// 		setDataSources(records || []);
-	// 	}
-	// }
 
 	async function queryTables(id: string) {
 		const target = find(dataSources, (d) => d.id === id);
