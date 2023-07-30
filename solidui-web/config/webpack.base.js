@@ -148,9 +148,11 @@ module.exports = {
       inject: true,
     }),
     new webpack.DefinePlugin({
-      "process.env": JSON.stringify(envVariate.filter(isDev, process.env)),
-      "process.env.APP_NAME": JSON.stringify(process.env.APP_NAME),
-      "process.env.APP_VERSION": JSON.stringify(process.env.APP_VERSION),
+      "process.env": JSON.stringify({
+        ...envVariate.filter(isDev, process.env),
+        APP_NAME: process.env.APP_NAME,
+        APP_VERSION: process.env.APP_VERSION
+      }),
     }),
   ],
   cache: {
