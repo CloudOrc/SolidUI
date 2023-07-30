@@ -26,6 +26,9 @@
 <a target="_blank" href="https://badges.toozhao.com/stats/01GS2TEBGN98QRTZ1F3K0Y7XCG">
 <img src="https://badges.toozhao.com/badges/01GS2TEBGN98QRTZ1F3K0Y7XCG/green.svg" />
 </a>
+<a target="_blank" href="https://huggingface.co/spaces/CloudOrc/SolidUI">
+<img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face%20Spaces-blue" />
+</a>
 
 </p>
 <br/>
