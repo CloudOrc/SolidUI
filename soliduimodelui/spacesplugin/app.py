@@ -90,6 +90,11 @@ iface = gr.Interface(
     inputs=[gr.components.Textbox(), gr.components.Dropdown(choices=["gpt-3.5-turbo", "gpt-4"], label="Model"),
             gr.components.Textbox(), gr.components.Textbox()],
     outputs=gr.Image(),
+    title="SolidUI AI-generated visualization platform",
+    description="""
+    AI-generated visualization prototyping and editing platform, support 2D, 3D models, combined with LLM(Large Language Model) for quick editing.
+    GitHub: https://github.com/CloudOrc/SolidUI 
+    """,
     labels=["Base URL", "Model", "OpenAI Key", "Prompt"]
 
 )
