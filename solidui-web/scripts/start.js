@@ -90,10 +90,19 @@ function main(envMode, config) {
 function loadEnvFile(envMode) {
     const envFile = envConfig[envMode].envFile;
     const needVariable = envConfig[envMode].needVariable;
-    const { status } = checkFileExist([envFile])
-    if (!status) exitProcess(envFile + " does not exist")
+    // load
     dotenv.config({ path: envFile, processEnv: process.env })
-    const missVariable = verifyEnv(needVariable, process.env)
+    if (!checkFileExist([envFile]).status) Logger.logWarn(envFile + " does not exist,  will Use default value")
+    function generateDefaultValue() {
+        const envDefault = {}
+        for (let i = 0; i < needVariable.length; i++) {
+            const variable = needVariable[i];
+            envDefault[variable.name] = variable.default
+        }
+        return envDefault
+    }
+    Object.assign(process.env, generateDefaultValue())
+    const missVariable = verifyEnv(needVariable.map(v => v.name), process.env)
     if (missVariable.length) exitProcess(`please check it ${envFile}, ${missVariable.join(',')} miss`)
 }
 
