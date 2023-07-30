@@ -68,6 +68,8 @@ echo "================================== print config info begin ===============
 
 echo "frontend port：${solidui_port}"
 echo "backend address：${solidui_url}"
+echo "models backend address：${solidui_url_models}"
+echo "kernel backend address：${solidui_url_kernel}"
 echo "static file directory：${solidui_basepath}/dist"
 echo "current directory：${workDir}"
 echo "local ip：${solidui_ipaddr}"
