@@ -149,7 +149,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       "process.env": JSON.stringify(envVariate.filter(isDev, process.env)),
-      "process.env.APP_NAME": JSON.stringify(process.APP_NAME),
+      "process.env.APP_NAME": JSON.stringify(process.env.APP_NAME),
       "process.env.APP_VERSION": JSON.stringify(process.env.APP_VERSION),
     }),
   ],

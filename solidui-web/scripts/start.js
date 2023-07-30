@@ -92,16 +92,16 @@ function loadEnvFile(envMode) {
     const needVariable = envConfig[envMode].needVariable;
     // load
     dotenv.config({ path: envFile, processEnv: process.env })
-    if (!checkFileExist([envFile]).status) Logger.logWarn(envFile + " does not exist,  will Use default value, more info please see https://github.com/CloudOrc/SolidUI/blob/dev/solidui-web/README.md")
-    function generateDefaultValue() {
-        const envDefault = {}
+    if (!checkFileExist([envFile]).status) Logger.logWarn(envFile + " does not exist,  will Use default value \r\n more info please see https://github.com/CloudOrc/SolidUI/blob/dev/solidui-web/README.md")
+    function fillDefaultValue(envObject) {
         for (let i = 0; i < needVariable.length; i++) {
             const variable = needVariable[i];
-            envDefault[variable.name] = variable.default
+            if (envObject[variable.name] === void 0) {
+                envObject[variable.name] = variable.default
+            }
         }
-        return envDefault
     }
-    Object.assign(process.env, generateDefaultValue())
+    fillDefaultValue(process.env)
     const missVariable = verifyEnv(needVariable.map(v => v.name), process.env)
     if (missVariable.length) exitProcess(`please check it ${envFile}, ${missVariable.join(',')} miss`)
 }
