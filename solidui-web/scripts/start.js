@@ -77,22 +77,22 @@ function main(envMode, config) {
         // run serve
         webpackServe(compiler, webpackConfig, envMode, config)
     } else {
-        // run build 
+        // run build
         webpackBuild(compiler, webpackConfig, envMode, config)
     }
 }
 
 /**
  * log env file
- * @param {*} envMode 
- * @returns 
+ * @param {*} envMode
+ * @returns
  */
 function loadEnvFile(envMode) {
     const envFile = envConfig[envMode].envFile;
     const needVariable = envConfig[envMode].needVariable;
     // load
     dotenv.config({ path: envFile, processEnv: process.env })
-    if (!checkFileExist([envFile]).status) Logger.logWarn(envFile + " does not exist,  will Use default value")
+    if (!checkFileExist([envFile]).status) Logger.logWarn(envFile + " does not exist,  will Use default value, more info please see https://github.com/CloudOrc/SolidUI/blob/dev/solidui-web/README.md")
     function generateDefaultValue() {
         const envDefault = {}
         for (let i = 0; i < needVariable.length; i++) {
@@ -123,8 +123,8 @@ function preCheck() {
 
 /**
  * get webpack config
- * @param {*} envMode 
- * @returns 
+ * @param {*} envMode
+ * @returns
  */
 function getWebpackConfig(envMode, config) {
     let webpackConfigFile = envConfig[envMode].webpackConfigFile
@@ -137,17 +137,17 @@ function getWebpackConfig(envMode, config) {
 }
 /**
  * Compiler create
- * @param {*} webpackConfig 
- * @returns 
+ * @param {*} webpackConfig
+ * @returns
  */
 function createCompiler(webpackConfig) {
     return webpack(webpackConfig)
 }
 /**
  * serve
- * @param {*} webpackConfig 
- * @param {*} envMode 
- * @param {*} config 
+ * @param {*} webpackConfig
+ * @param {*} envMode
+ * @param {*} config
  */
 function webpackServe(compiler, webpackConfig) {
     const devServer = new WebpackDevServer(webpackConfig.devServer, compiler);
@@ -190,9 +190,9 @@ function webpackServe(compiler, webpackConfig) {
 }
 /**
  * build
- * @param {*} webpackConfig 
- * @param {*} envMode 
- * @param {*} config 
+ * @param {*} webpackConfig
+ * @param {*} envMode
+ * @param {*} config
  */
 function webpackBuild(compiler, webpackConfig) {
     compiler.run((err, stats) => {

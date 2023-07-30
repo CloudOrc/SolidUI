@@ -18,12 +18,16 @@
 const productionVariable = [
     { name: "NODE_ENV", default: "production" },
     { name: "BASE_ENV", default: "" },
+		{ name: "APP_NAME", default: "SolidUI" },
+		{ name: "APP_VERSION", default: "0.2.0" },
 ]
 const developmentVariable = [
     { name: "NODE_ENV", default: "development" },
     { name: "BASE_ENV", default: "" },
     { name: "PROXY_SERVER", default: "http://localhost:12345" },
     { name: "SERVER_PORT", default: 3000 },
+		{ name: "APP_NAME", default: "SolidUI" },
+		{ name: "APP_VERSION", default: "0.2.0" },
 ]
 
 module.exports = {
