@@ -16,6 +16,8 @@
 
 # URL of the backend service of solidui-entrance
 solidui_url="http://127.0.0.1:12345"
+solidui_url_models="http://127.0.0.1:5110"
+solidui_url_kernel="http://127.0.0.1:5010"
 
 # solidui ip address，the http access address for solidui-web will be http://${solidui_ipaddr}:${solidui_port}
 solidui_ipaddr=127.0.0.1
