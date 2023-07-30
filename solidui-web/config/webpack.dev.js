@@ -15,45 +15,46 @@
  * limitations under the License.
  */
 
-const path = require('path')
 const { merge } = require('webpack-merge')
 const baseConfig = require('./webpack.base')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const { staticAssetsDir } = require('./paths')
 
 module.exports = merge(baseConfig, {
   stats: "minimal",
   mode: 'development',
   devtool: 'eval-cheap-module-source-map',
+  infrastructureLogging: { level: 'none' },
   devServer: {
-		port: 3000,
+    port: process.env.SERVER_PORT,
     compress: false,
     hot: true,
     historyApiFallback: true,
     static: {
-      directory: path.join(__dirname, '../public'),
+      directory: staticAssetsDir,
     },
-		proxy: {
-			'/solidui/models/generate': {
-				target: 'http://localhost:5110',
-				changeOrigin: true,
-				pathRewrite: {}
-			},
-			'/solidui/kernel/restart': {
-				target: 'http://localhost:5010',
-				changeOrigin: true,
-				pathRewrite: {}
-			},
-			'/solidui/models/api/api': {
-				target: 'http://localhost:5110',
-				changeOrigin: true,
-				pathRewrite: {}
-			},
-			'/solidui': {
-				target: 'http://localhost:12345',
-				changeOrigin: true,
-				pathRewrite: {}
-			}
-		},
+    proxy: {
+      '/solidui/models/generate': {
+        target: 'http://localhost:5110',
+        changeOrigin: true,
+        pathRewrite: {}
+      },
+      '/solidui/kernel/restart': {
+        target: 'http://localhost:5010',
+        changeOrigin: true,
+        pathRewrite: {}
+      },
+      '/solidui/models/api/api': {
+        target: 'http://localhost:5110',
+        changeOrigin: true,
+        pathRewrite: {}
+      },
+      '/solidui': {
+        target: process.env.PROXY_SERVER,
+        changeOrigin: true,
+        pathRewrite: {}
+      }
+    },
   },
   plugins: [
     new ReactRefreshWebpackPlugin(),

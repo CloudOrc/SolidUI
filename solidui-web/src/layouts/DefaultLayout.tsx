@@ -90,8 +90,8 @@ export default function DefaultLayout() {
 						}}
 					>
 						<div className="logo" />
-						<div className="logo-text">SolidUI</div>
-						<div className="version">v0.1.0</div>
+						<div className="logo-text">{process.env.APP_NAME}</div>
+						<div className="version">v{process.env.APP_VERSION}</div>
 					</div>
 					<div
 						className="header-right"

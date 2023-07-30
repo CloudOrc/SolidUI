@@ -20,6 +20,7 @@ node_modules*/*
 dist/*
 public
 scripts
+config
 docker
 coverage
 src/components/Chat/index.tsx

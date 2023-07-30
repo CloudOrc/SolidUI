@@ -16,13 +16,17 @@
  */
 
 const prodConfig = require('./webpack.prod.js')
-const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
-const smp = new SpeedMeasurePlugin()
 const { merge } = require('webpack-merge')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
-module.exports = smp.wrap(merge(prodConfig, {
+/**
+ * We're going to remove the speed-measure-webpack-plugin here
+ * because speed-measure-webpack-plugin will conflict with mini-css-extract-plugin
+ * more info please check issue https://github.com/webpack-contrib/mini-css-extract-plugin/issues/744
+ * This may be the alternative https://webpack.js.org/configuration/other-options/#profile
+ */
+module.exports = merge(prodConfig, {
   plugins: [
-    new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin(),
   ]
-}))
+})

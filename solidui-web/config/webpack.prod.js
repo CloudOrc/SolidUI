@@ -15,20 +15,25 @@
  * limitations under the License.
  */
 
-const path = require('path')
-const globAll = require('glob-all')
 const { merge } = require('webpack-merge')
 const baseConfig = require('./webpack.base')
 const CopyPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
+const CompressionPlugin = require('compression-webpack-plugin')
+const { staticAssetsDir, outputDir, appHtml } = require("./paths")
 // const { PurgeCSSPlugin } = require('purgecss-webpack-plugin')
-const CompressionPlugin  = require('compression-webpack-plugin')
+// const globAll = require('glob-all')
 
 module.exports = merge(baseConfig, {
+  stats: "minimal",
   mode: 'production',
-
+  performance: {
+    hints: 'warning',
+    maxEntrypointSize: 5242880,
+    maxAssetSize: 5242880,
+  },
   optimization: {
     splitChunks: {
       cacheGroups: {
@@ -64,11 +69,9 @@ module.exports = merge(baseConfig, {
     new CopyPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, '../public'),
-          to: path.resolve(__dirname, '../dist'),
-          filter: source => {
-            return !source.includes('index.html')
-          }
+          from: staticAssetsDir,
+          to: outputDir,
+          filter: source => !(source === appHtml)
         },
       ],
     }),

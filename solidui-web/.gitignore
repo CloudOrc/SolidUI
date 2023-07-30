@@ -24,6 +24,6 @@
 
 # production
 /dist
-
+.env.*
 # misc
 .DS_Store

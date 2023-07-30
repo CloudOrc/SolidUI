@@ -6,8 +6,9 @@
   "author": "solidui",
   "license": "Apache-2.0",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server -c scripts/webpack.dev.js",
-    "build": "cross-env NODE_ENV=production webpack -c scripts/webpack.prod.js",
+    "dev": "node scripts/start.js development",
+    "build": "node scripts/start.js production",
+    "build:analyse": "node scripts/start.js production --analyse",
     "lint": "eslint --ignore-path=.eslintignore --ext .js,.jsx,.ts,.tsx .",
     "lint:fix": "eslint --fix --ignore-path=.eslintignore --ext .js,.jsx,.ts,.tsx .",
     "prettier-check": "prettier './src/**/*{.js,.jsx,.ts,.tsx,.css,.less}' --check",
@@ -34,7 +35,6 @@
     "compression-webpack-plugin": "10.0.0",
     "copy-webpack-plugin": "11.0.0",
     "core-js": "3.27.2",
-    "cross-env": "7.0.3",
     "css-loader": "6.7.3",
     "css-minimizer-webpack-plugin": "4.2.2",
     "eslint": "^8.34.0",
@@ -55,7 +55,6 @@
     "prettier": "^2.8.4",
     "purgecss-webpack-plugin": "5.0.0",
     "react-refresh": "0.14.0",
-    "speed-measure-webpack-plugin": "1.5.0",
     "style-loader": "3.3.1",
     "terser-webpack-plugin": "5.3.6",
     "thread-loader": "3.0.4",
@@ -64,8 +63,10 @@
     "webpack-bundle-analyzer": "4.7.0",
     "webpack-cli": "5.0.1",
     "webpack-dev-server": "4.11.1",
+    "dotenv": "^16.3.1",
     "webpack-merge": "5.8.0",
-    "webpackbar": "^5.0.2"
+    "webpackbar": "^5.0.2",
+    "@svgr/webpack": "^8.0.1"
   },
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
@@ -74,7 +75,6 @@
     "@icon-park/react": "^1.4.2",
     "@scena/matrix": "^1.1.1",
     "@scena/react-guides": "0.22.3",
-    "@svgr/webpack": "^8.0.1",
     "@szhsin/react-menu": "^4.0.0",
     "ahooks": "^3.7.8",
     "antd": "4.24.7",
