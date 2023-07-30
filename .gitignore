@@ -4,3 +4,8 @@
 logs/
 target
 *.iml
+__pycache__
+soliduimodelui.egg-info
+workspace
+kernel_connection_file.json
+app.log

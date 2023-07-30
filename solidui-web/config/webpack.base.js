@@ -36,8 +36,14 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.tsx', '.ts'],
-    alias: { '@': appSrcDir },
-    modules: [path.resolve(__dirname, '../node_modules')]
+    alias: {
+      '@': appSrcDir
+    },
+    // [issue fix] react-markdown, react-syntax-highlighter common deps property-information with different version
+    // if set modules, webpack will search property-information in root node_modules, this may cause error
+    // ERROR in ./node_modules/hastscript/factory.js 4:16-57
+    // Module not found: Error: Can't resolve 'property-information/normalize' in '/..../SolidUI/solidui-web/node_modules/hastscript'
+    // modules: [path.resolve(__dirname, '../node_modules')]
   },
   module: {
     rules: [
@@ -146,9 +152,6 @@ module.exports = {
       "process.env.APP_NAME": JSON.stringify(process.APP_NAME),
       "process.env.APP_VERSION": JSON.stringify(process.env.APP_VERSION),
     }),
-    // new MonacoWebpackPlugin({
-    //   languages: []
-    // }),
   ],
   cache: {
     type: 'filesystem',

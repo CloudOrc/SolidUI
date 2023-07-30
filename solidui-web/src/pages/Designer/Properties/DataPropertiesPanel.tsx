@@ -44,15 +44,6 @@ export default function DataPropertiesPanel() {
 	const view = mm.getCurrentView();
 	const data = view?.data || ({} as any);
 
-	// const dropdownRender = (menus: React.ReactNode) => (
-	// 	<div>
-	// 		{menus}
-	// 		{/* Custom dropdown */}
-	// 		{/* <Divider style={{ margin: 0 }} /> */}
-	// 		{/* <div style={{ padding: 8 }}>The footer is not very short.</div> */}
-	// 	</div>
-	// );
-
 	const rowss = [];
 
 	const cells: TableCell[] = [];

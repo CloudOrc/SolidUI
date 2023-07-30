@@ -39,6 +39,7 @@ type OnZoomEventData = {
 
 type OnDrawEventData = {
 	viewType: SolidViewType;
+	options?: any;
 };
 
 type OnDrawCompleteEventData = {

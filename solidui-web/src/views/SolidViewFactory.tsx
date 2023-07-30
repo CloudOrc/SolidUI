@@ -17,6 +17,7 @@
 
 import SolidViewBuilder from "./builder/SolidViewBuilder";
 import EChartsBarSolidViewBuilder from "./builder/echarts/EChartsBarSolidViewBuilder";
+import Base64ImageSolidViewBuilder from "./builder/images/Base64ImageSolidViewBuilder";
 
 export default class ViewFactory {
 	private pool: Map<string, SolidViewBuilder> = new Map<
@@ -30,6 +31,7 @@ export default class ViewFactory {
 
 	public init(): void {
 		this.register(new EChartsBarSolidViewBuilder());
+		this.register(new Base64ImageSolidViewBuilder());
 	}
 
 	public register(builder: SolidViewBuilder): void {

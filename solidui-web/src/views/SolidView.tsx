@@ -75,7 +75,7 @@ export default abstract class SolidView<
 
 		// private methods
 		this.fetchDataAndReRender = this.fetchDataAndReRender.bind(this);
-		this.reRender = this.reRender.bind(this);
+		// this.reRender = this.reRender.bind(this);
 		this.fetchData = this.fetchData.bind(this);
 	}
 
@@ -94,8 +94,6 @@ export default abstract class SolidView<
 	/// / ------------------------------------------------------------------
 	/// / protected methods
 	protected renderTitle(): React.ReactNode {
-		// let viewModel = this.props.viewModel;
-		// let viewModel = this.state.viewModel;
 		const viewModel = this.vm;
 		const options = viewModel.options || {};
 		const title = options.title || {};
@@ -109,6 +107,10 @@ export default abstract class SolidView<
 			);
 		}
 		return null;
+	}
+
+	protected getVM(): SolidViewDataType {
+		return this.vm;
 	}
 
 	/// / ------------------------------------------------------------------
@@ -138,6 +140,7 @@ export default abstract class SolidView<
 		await this.fetchData();
 
 		this.baseViewDidMount();
+
 		this.eventbus.on("onResize", this.handleResize);
 		this.eventbus.on("onResizeGroup", this.handleResizeGroup);
 		this.eventbus.on(
@@ -174,6 +177,10 @@ export default abstract class SolidView<
 		return ys;
 	}
 
+	protected getViewRef() {
+		return this.viewRef;
+	}
+
 	private readonly fetchDataAndReRender = async () => {
 		await this.fetchData();
 		this.reRender();
@@ -202,7 +209,7 @@ export default abstract class SolidView<
 	async componentWillUnmount() {}
 
 	async componentDidUpdate() {
-		this.reRender();
+		// this.reRender();
 	}
 
 	render() {
@@ -219,6 +226,7 @@ export default abstract class SolidView<
 					height: "100%",
 					zIndex: 1,
 					padding: 5,
+					background: "#fff",
 					...style,
 				}}
 				ref={this.viewRef}

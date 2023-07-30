@@ -15,11 +15,9 @@
  * limitations under the License.
  */
 
-import React, { useEffect, useState } from "react";
-import { useUpdate } from "react-use";
+import React, { useState, useEffect } from "react";
 import { useMemoizedFn } from "ahooks";
-import { eventbus, mm } from "@/utils";
-import { isNil } from "lodash-es";
+import { eventbus } from "@/utils";
 
 type TabItemDataType = {
 	key: string;
@@ -31,69 +29,33 @@ type InitialData = {
 	tabs?: TabItemDataType[];
 };
 
-function useProperties(initialData: InitialData) {
-	const forceUpdate = useUpdate();
-	const [propertyKey, setPropertyKey] = useState<
-		"top" | "scene" | "page" | "view" | "none"
-	>("none");
-	const [currentTabKey, setCurrentTabKey] = useState<string>("Style");
+function usePageProperties(initialData: InitialData) {
+	const [propertyKey, setPropertyKey] = useState<"page" | "modelui" | "none">(
+		"page",
+	);
+	const [currentTabKey, setCurrentTabKey] = useState<string>("Page");
 	const mainRef = React.createRef<HTMLDivElement>();
 	const asideRef = React.createRef<HTMLDivElement>();
-
-	const handleSelectPageInViewPort = useMemoizedFn(() => {
-		const currentPage = mm.getCurrentPage();
-		if (!isNil(currentPage)) {
-			setPropertyKey("page");
-		}
-	});
-
-	const handleModelLoad = useMemoizedFn(() => {
-		setPropertyKey("top");
-		forceUpdate();
-	});
 
 	const handleSelectPage = useMemoizedFn(() => {
 		setPropertyKey("page");
 		const dom = document.getElementById("section-properties");
 		if (dom) {
-			dom.style.width = "326px";
-		}
-		forceUpdate();
-	});
-
-	const handleSelectViewEvent = useMemoizedFn(() => {
-		setPropertyKey("view");
-		const dom = document.getElementById("section-properties");
-		if (dom) {
-			if (currentTabKey === "Style") {
+			if (currentTabKey === "Page") {
 				dom.style.width = "326px";
 			} else {
-				dom.style.width = "500px";
+				dom.style.width = "800px";
 			}
 		}
-		forceUpdate();
 	});
 
 	useEffect(() => {
-		eventbus.on("onSelectViewInViewList", handleSelectViewEvent);
-		eventbus.on("onSelectViewInViewport", handleSelectViewEvent);
-		eventbus.on("onSelectPageInViewport", handleSelectPageInViewPort);
 		eventbus.on("onSelectPage", handleSelectPage);
-		eventbus.on("onModelLoad", handleModelLoad);
 
 		return () => {
-			eventbus.off("onSelectViewInViewList", handleSelectViewEvent);
-			eventbus.off("onSelectViewInViewport", handleSelectViewEvent);
 			eventbus.off("onSelectPage", handleSelectPage);
-			eventbus.off("onSelectPageInViewport", handleSelectPageInViewPort);
-			eventbus.off("onModelLoad", handleModelLoad);
 		};
-	}, [
-		handleModelLoad,
-		handleSelectPage,
-		handleSelectViewEvent,
-		handleSelectPageInViewPort,
-	]);
+	}, [handleSelectPage]);
 
 	function renderTabs() {
 		return (
@@ -115,11 +77,12 @@ function useProperties(initialData: InitialData) {
 	}
 
 	function handleTabChange(key: string) {
-		if (asideRef.current) {
-			if (key === "Data") {
-				asideRef.current.style.width = "500px";
+		const dom = document.getElementById("section-properties");
+		if (dom) {
+			if (key === "Modelui") {
+				dom.style.width = "800px";
 			} else {
-				asideRef.current.style.width = "326px";
+				dom.style.width = "326px";
 			}
 		}
 		setCurrentTabKey(key);
@@ -134,4 +97,4 @@ function useProperties(initialData: InitialData) {
 	};
 }
 
-export default useProperties;
+export default usePageProperties;
