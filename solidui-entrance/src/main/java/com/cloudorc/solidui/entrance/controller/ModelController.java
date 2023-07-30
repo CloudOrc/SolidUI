@@ -32,19 +32,19 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-@Api(tags = "model_tag")
+@Api(tags = "keys_tag")
 @RestController
-@RequestMapping("models")
+@RequestMapping("keys")
 public class ModelController extends BaseController {
 
     @Autowired
     private ModelService modelService;
 
-    @ApiOperation(value = "keys", notes = "keys_notes")
+    @ApiOperation(value = "list", notes = "keys_notes")
     @ApiImplicitParams({})
     @ResponseStatus(HttpStatus.OK)
     @ApiException(QUERY_MODEL_TYPE_ERROR)
-    @RequestMapping(path = "/keys", method = RequestMethod.GET)
+    @RequestMapping(path = "/list", method = RequestMethod.GET)
     public Result getModelList(HttpServletRequest req) {
 
         return modelService.queryModelList();

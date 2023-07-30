@@ -68,6 +68,8 @@ echo "================================== print config info begin ===============
 
 echo "frontend port：${solidui_port}"
 echo "backend address：${solidui_url}"
+echo "models backend address：${solidui_url_models}"
+echo "kernel backend address：${solidui_url_kernel}"
 echo "static file directory：${solidui_basepath}/dist"
 echo "current directory：${workDir}"
 echo "local ip：${solidui_ipaddr}"
@@ -115,6 +117,37 @@ soliduiConf(){
 					proxy_set_header Upgrade $s_http_upgrade;
 					proxy_set_header Connection upgrade;
 				}
+
+				location /solidui/models {
+					proxy_pass $solidui_url_models; #Solidui backend address
+					proxy_set_header Host $host;
+					proxy_set_header X-Real-IP $remote_addr;
+					proxy_set_header x_real_ipP $remote_addr;
+					proxy_set_header remote_addr $remote_addr;
+					proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+					proxy_http_version 1.1;
+					proxy_connect_timeout 4s;
+					proxy_read_timeout 600s;
+					proxy_send_timeout 12s;
+					proxy_set_header Upgrade $http_upgrade;
+					proxy_set_header Connection upgrade;
+        }
+
+				location /solidui/kernel {
+					proxy_pass $solidui_url_kernel; #Solidui backend address
+					proxy_set_header Host $host;
+					proxy_set_header X-Real-IP $remote_addr;
+					proxy_set_header x_real_ipP $remote_addr;
+					proxy_set_header remote_addr $remote_addr;
+					proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+					proxy_http_version 1.1;
+					proxy_connect_timeout 4s;
+					proxy_read_timeout 600s;
+					proxy_send_timeout 12s;
+					proxy_set_header Upgrade $http_upgrade;
+					proxy_set_header Connection upgrade;
+				}
+
 
 				error_page   500 502 503 504  /50x.html;
 					location = /50x.html {
