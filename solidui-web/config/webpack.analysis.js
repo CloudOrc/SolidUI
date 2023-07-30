@@ -15,32 +15,18 @@
  * limitations under the License.
  */
 
-const path = require('path')
+const prodConfig = require('./webpack.prod.js')
 const { merge } = require('webpack-merge')
-const baseConfig = require('./webpack.base')
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
-module.exports = merge(baseConfig, {
-  stats: "minimal",
-  mode: 'development',
-  devtool: 'eval-cheap-module-source-map',
-  devServer: {
-		port: 3000,
-    compress: false,
-    hot: true,
-    historyApiFallback: true,
-    static: {
-      directory: path.join(__dirname, '../public'),
-    },
-		proxy: {
-			'/solidui': {
-				target: 'http://localhost:12345',
-				changeOrigin: true,
-				pathRewrite: {}
-			}
-		},
-  },
+/**
+ * We're going to remove the speed-measure-webpack-plugin here
+ * because speed-measure-webpack-plugin will conflict with mini-css-extract-plugin
+ * more info please check issue https://github.com/webpack-contrib/mini-css-extract-plugin/issues/744
+ * This may be the alternative https://webpack.js.org/configuration/other-options/#profile
+ */
+module.exports = merge(prodConfig, {
   plugins: [
-    new ReactRefreshWebpackPlugin(),
+    new BundleAnalyzerPlugin(),
   ]
 })

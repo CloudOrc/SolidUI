@@ -21,21 +21,22 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const themeVars = require('./theme')
 const webpackBar = require('webpackbar');
+const { name: appName } = require("../package.json")
+const { appMainJs, outputDir, appSrcDir, appHtml } = require("./paths")
+const envVariate = require("./env")
 const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
-  entry: path.join(__dirname, '../src/index.tsx'),
+  entry: appMainJs,
   output: {
     filename: 'static/js/[name].[chunkhash:8].js',
-    path: path.join(__dirname, '../dist'),
+    path: outputDir,
     clean: true,
     publicPath: '/',
   },
   resolve: {
     extensions: ['.js', '.tsx', '.ts'],
-    alias: {
-      '@': path.join(__dirname, '../src')
-    },
+    alias: { '@': appSrcDir },
     modules: [path.resolve(__dirname, '../node_modules')]
   },
   module: {
@@ -43,7 +44,7 @@ module.exports = {
       {
         test: /\.css$/,
         include: [
-          path.resolve(__dirname, '../src'),
+          appSrcDir,
           path.resolve(__dirname, '../node_modules/@szhsin/react-menu')
           // path.resolve(__dirname, '../node_modules/antd')
         ],
@@ -56,7 +57,7 @@ module.exports = {
       {
         test: /\.less$/,
         include: [
-          path.resolve(__dirname, '../src'),
+          appSrcDir,
           path.resolve(__dirname, '../node_modules/antd'),
           path.resolve(__dirname, '../node_modules/rc-select')
         ],
@@ -77,7 +78,7 @@ module.exports = {
       },
       {
         test: /\.(js|jsx|ts|tsx)$/,
-        include: [path.resolve(__dirname, '../src')],
+        include: [appSrcDir],
         use: [
           'thread-loader',
           'babel-loader'
@@ -85,36 +86,13 @@ module.exports = {
       },
       {
         test: /\.svg$/i,
-        include: [path.resolve(__dirname, '../src')],
+        include: [appSrcDir],
         issuer: /\.[jt]sx?$/,
         use: [
           { loader: 'thread-loader' },
           { loader: 'babel-loader', },
           { loader: '@svgr/webpack', options: { icon: true, typescript: true, svgo: false, mome: true } }
         ],
-        // 根据条件识别资源（暂时用不到）
-        // oneOf: [
-        //   {
-        //     resourceQuery: { not: [/asset/] },
-        //     use: [
-        //       { loader: 'thread-loader' },
-        //       { loader: 'babel-loader', },
-        //       { loader: '@svgr/webpack', options: { icon: true, typescript: true, svgo: false, mome: true } }
-        //     ],
-        //   },
-        //   {
-        //     resourceQuery: { and: [/asset/] },
-        //     type: 'asset',
-        //     parser: {
-        //       dataUrlCondition: {
-        //         maxSize: 10 * 1024,
-        //       }
-        //     },
-        //     generator: {
-        //       filename: 'static/images/[name].[contenthash:8][ext]',
-        //     },
-        //   }
-        // ]
       },
       {
         test: /.(png|jpg|jpeg|gif)$/,
@@ -156,14 +134,17 @@ module.exports = {
   },
   plugins: [
     new webpackBar({
-      color:"#C142DA"
+      color: "#3771FA",
+      name: appName,
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../public/index.html'),
+      template: appHtml,
       inject: true,
     }),
     new webpack.DefinePlugin({
-      'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV)
+      "process.env": JSON.stringify(envVariate.filter(isDev, process.env)),
+      "process.env.APP_NAME": JSON.stringify(process.APP_NAME),
+      "process.env.APP_VERSION": JSON.stringify(process.env.APP_VERSION),
     }),
     // new MonacoWebpackPlugin({
     //   languages: []
@@ -171,5 +152,8 @@ module.exports = {
   ],
   cache: {
     type: 'filesystem',
+    store: 'pack',
   }
 }
+
+

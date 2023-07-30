@@ -15,14 +15,33 @@
  * limitations under the License.
  */
 
-const prodConfig = require('./webpack.prod.js')
-const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
-const smp = new SpeedMeasurePlugin()
 const { merge } = require('webpack-merge')
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const baseConfig = require('./webpack.base')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const { staticAssetsDir } = require('./paths')
 
-module.exports = smp.wrap(merge(prodConfig, {
+module.exports = merge(baseConfig, {
+  stats: "minimal",
+  mode: 'development',
+  devtool: 'eval-cheap-module-source-map',
+  infrastructureLogging: { level: 'none' },
+  devServer: {
+    port: process.env.SERVER_PORT,
+    compress: false,
+    hot: true,
+    historyApiFallback: true,
+    static: {
+      directory: staticAssetsDir,
+    },
+    proxy: {
+      '/solidui': {
+        target: process.env.PROXY_SERVER,
+        changeOrigin: true,
+        pathRewrite: {}
+      }
+    },
+  },
   plugins: [
-    new BundleAnalyzerPlugin()
+    new ReactRefreshWebpackPlugin(),
   ]
-}))
+})

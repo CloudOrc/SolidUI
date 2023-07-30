@@ -20,5 +20,6 @@ node_modules*/*
 dist/*
 public
 scripts
+config
 docker
 coverage
