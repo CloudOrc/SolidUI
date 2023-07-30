@@ -9,3 +9,7 @@ soliduimodelui.egg-info
 workspace
 kernel_connection_file.json
 app.log
+process_pids
+build
+soliduimodelui/kernel.log
+soliduimodelui/web.log

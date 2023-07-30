@@ -70,6 +70,10 @@ export default function DefaultLayout() {
 		setSelectKeys([key]);
 		navigate(key);
 	}
+	const vars: Record<string, any> = {};
+	Object.keys(process.env).forEach((key) => {
+		vars[key] = process.env[key];
+	});
 
 	return (
 		<div className="solidui-layout default">
@@ -90,8 +94,8 @@ export default function DefaultLayout() {
 						}}
 					>
 						<div className="logo" />
-						<div className="logo-text">{process.env.APP_NAME}</div>
-						<div className="version">v{process.env.APP_VERSION}</div>
+						<div className="logo-text">{vars.APP_NAME}</div>
+						<div className="version">v{vars.APP_VERSION}</div>
 					</div>
 					<div
 						className="header-right"

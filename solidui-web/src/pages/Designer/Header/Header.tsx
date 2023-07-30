@@ -95,15 +95,21 @@ function Header() {
 		}
 	}, [searchParams]);
 
+	const vars: Record<string, any> = {};
+	Object.keys(process.env).forEach((key) => {
+		vars[key] = process.env[key];
+	});
+
 	return (
 		<header className="header">
 			<div className="header-main">
 				<div className="header-left">
 					<div className="logo" onClick={renderHome} />
 					<div className="logo-text" onClick={renderHome}>
-						SolidUI
+						{/* SolidUI */}
+						{vars.APP_NAME || "SolidUI"}
 					</div>
-					<div className="version">v0.1.0</div>
+					<div className="version">v{vars.APP_VERSION || "0.2.0"}</div>
 					<div className="split-line" />
 					<div className="left-main">
 						<span style={{ marginLeft: "10px" }}>{title}</span>

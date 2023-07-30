@@ -31,11 +31,11 @@ function useModelui() {
 	const [promptInput, setPromptInput] = useState<string>("");
 	const [messages, setMessages] = useState<Array<MessageDict>>(
 		Array.from([
-			{
-				text: "Hello! I'm a GPT Code assistant. Ask me to do something for you! Pro tip: you can upload a file and I'll be able to use it.",
-				role: "system",
-				type: "message",
-			},
+			// {
+			// 	text: "Hello! I'm a GPT Code assistant. Ask me to do something for you! Pro tip: you can upload a file and I'll be able to use it.",
+			// 	role: "system",
+			// 	type: "message",
+			// },
 		]),
 	);
 	const [waitingForSystem, setWaitingForSystem] = useState<WaitingStates>(
@@ -58,6 +58,13 @@ function useModelui() {
 			if (mModels[0] && mModels[0].value) {
 				selectedModelIdRef.current = mModels[0].value;
 			}
+			addMessage({
+				text: `Hello! I'm a ${
+					mModels[0].label || "GPT"
+				} Code assistant. Ask me to do something for you! Pro tip: you can upload a file and I'll be able to use it.`,
+				role: "system",
+				type: "message",
+			});
 			setModels(mModels);
 		}
 	});
@@ -164,6 +171,18 @@ function useModelui() {
 
 	function handleModelChange(value: any) {
 		selectedModelIdRef.current = value;
+
+		const mModels = models.filter((model) => model.value === value);
+
+		if (mModels !== null && mModels !== undefined) {
+			addMessage({
+				text: `Hello! I'm a ${
+					mModels[0].label || "GPT"
+				} Code assistant. Ask me to do something for you! Pro tip: you can upload a file and I'll be able to use it.`,
+				role: "system",
+				type: "message",
+			});
+		}
 	}
 
 	function handlePromptInputChange(value: string) {
