@@ -36,6 +36,8 @@ services:
   mysql:
     image: mysql:5.7
     container_name: mysql
+    ports:
+      - "33060:3306"
     environment:
       MYSQL_ROOT_PASSWORD: SolidUI@123
     volumes:
