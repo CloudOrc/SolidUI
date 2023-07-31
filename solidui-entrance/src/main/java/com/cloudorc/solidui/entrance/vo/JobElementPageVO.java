@@ -18,6 +18,7 @@
 package com.cloudorc.solidui.entrance.vo;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -61,7 +62,7 @@ public class JobElementPageVO {
         private Position position;
         private Size size;
         private String type;
-        private String options;
+        private Map<String, Object> options;
         private Data data;
 
         // Getters and setters

@@ -21,6 +21,8 @@ package com.cloudorc.solidui.entrance.dto;
 import com.cloudorc.solidui.entrance.vo.JobElementPageVO;
 
 import java.util.Date;
+import java.util.Map;
+
 @lombok.Data
 public class JobElementDTO {
 
@@ -47,7 +49,7 @@ public class JobElementDTO {
     public static class DataView {
         private JobElementPageVO.View.Position position;
         private JobElementPageVO.Size size;
-        private String options;
+        private Map<String, Object> options;
         private JobElementPageVO.View.Data data;
 
     }
