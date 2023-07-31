@@ -83,7 +83,7 @@ class LimitedLengthString:
 
 message_buffer = LimitedLengthString()
 
-async def get_code_glm(user_prompt, user_key="", model="chatglm", base_url="http://192.168.100.12:8192"):
+async def get_code_glm(user_prompt, user_key="", model="chatglm", base_url="http://203.57.226.165:8192"):
 
     prompt = f"首先，这是我之前要求您做的事情的历史记录。实际的提示将在历史结束后呈现。历史:\n\n{message_buffer.get_string()}历史结束。\n\n编写以下Python代码：\n\n{user_prompt}\n\n注意，代码将在Jupyter Python内核中执行。\n\n最后一条指令，这是最重要的，只返回代码。不要输出其他内容，因为您的完整响应将直接在内核中执行。\n\n教师模式：如果您想提供一个下载链接，只需将其打印为 <a href='/solidui/models/download?file=INSERT_FILENAME_HERE'>下载文件</a >。用实际的文件名替换INSERT_FILENAME_HERE。所以只需将该HTML打印到标准输出。无需实际下载文件！"
 
