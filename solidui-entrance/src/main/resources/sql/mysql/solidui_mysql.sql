@@ -16,6 +16,11 @@
 */
 SET NAMES utf8mb4;
 
+DROP DATABASE IF EXISTS solidui;
+
+CREATE DATABASE solidui DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+
+USE solidui;
 
 DROP TABLE IF EXISTS `solidui_datasource`;
 
