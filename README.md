@@ -29,7 +29,7 @@
 <a target="_blank" href="https://huggingface.co/spaces/CloudOrc/SolidUI">
 <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face%20Spaces-blue" />
 </a>
-<a target="_blank" href="https://website.solidui.top/">
+<a target="_blank" href="https://website.solidui.top">
 <img src="https://img.shields.io/badge/SolidUI%20Website-blue" />
 </a>
 
@@ -62,9 +62,9 @@ AI-generated visualization prototyping and editing platform, support 2D, 3D mode
 
 For quick experience
 
-Want to start with [Standalone](https://github.com/CloudOrc/SolidUI-Doc/tree/main/en_US/Deployment_Documentation/OverallDeployment/README_STANDALONE.md)
+Want to start with [Standalone](https://website.solidui.top/docs/deployment/deployment-standalone)
 
-Want to start with [Docker](https://github.com/CloudOrc/SolidUI-Doc/tree/main/en_US/Deployment_Documentation/OverallDeployment/README_DOCKER.md)
+Want to start with [Docker](https://website.solidui.top/docs/deployment/deployment-docker)
 
 # What's this?
 
@@ -92,7 +92,7 @@ Through this process, SolidUI's Vincent graph language model is able to continuo
 
 # Document
 
-For a complete list of documentation for SolidUI v0.1.0, see [SolidUI-Doc](https://github.com/CloudOrc/SolidUI-Doc/tree/main/en_US)
+For a complete list of documentation for SolidUI, see [SolidUI-Website](https://website.solidui.top)
 
 # Contribute
 
