@@ -29,6 +29,9 @@
 <a target="_blank" href="https://huggingface.co/spaces/CloudOrc/SolidUI">
 <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face%20Spaces-blue" />
 </a>
+<a target="_blank" href="https://website.solidui.top">
+<img src="https://img.shields.io/badge/SolidUI%20Website-blue" />
+</a>
 
 </p>
 <br/>
@@ -58,9 +61,9 @@ AI生成可视化原型设计和编辑平台，支持2D，3D模型，结合LLM(L
 
 为了快速体验
 
-从 [Standalone](https://github.com/CloudOrc/SolidUI-Doc/tree/main/zh_CN/部署文档/整体部署/README_STANDALONE.md) 开始
+从 [Standalone](https://website.solidui.top/zh-CN/docs/deployment/deployment-standalone) 开始
 
-从 [Docker](https://github.com/CloudOrc/SolidUI-Doc/tree/main/zh_CN/部署文档/整体部署/README_DOCKER.md) 开始
+从 [Docker](https://website.solidui.top/zh-CN/docs/deployment/deployment-docker) 开始
 
 # 这是什么？
 
@@ -88,7 +91,7 @@ SolidUI 使用 RLHF (Reinforcement Learning Human Feedback) 流程来优化文�
 
 # 文档
 
-SolidUI v0.1.0 的完整文档列表，请参见 [SolidUI-Doc](https://github.com/CloudOrc/SolidUI-Doc/tree/main/zh_CN)
+SolidUI v0.1.0 的完整文档列表，请参见 [SolidUI-Website](https://website.solidui.top/zh-CN)
 
 # 贡献
 
