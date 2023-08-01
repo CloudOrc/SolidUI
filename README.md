@@ -29,6 +29,10 @@
 <a target="_blank" href="https://huggingface.co/spaces/CloudOrc/SolidUI">
 <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face%20Spaces-blue" />
 </a>
+<a target="_blank" href="https://website.solidui.top/">
+<img src="https://img.shields.io/badge/SolidUI%20Website-blue" />
+</a>
+
 
 </p>
 <br/>
