@@ -68,7 +68,7 @@ export default class Base64ImageSolidView<
 			if (imageType && imageData) {
 				const i = new Image();
 				const containerViewRef = this.getViewRef();
-				i.onload = function () {
+				i.onload = function loadImage() {
 					vm.size.height = i.height;
 					vm.size.width = i.width;
 					if (containerViewRef.current) {
