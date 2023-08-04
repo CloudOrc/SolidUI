@@ -49,10 +49,6 @@ export default abstract class SolidView<
 > extends React.Component<T, S> {
 	dataSheet: any[] = [];
 
-	// xs: { label: string }[] = [];
-
-	// ys: { label: string }[] = [];
-
 	private viewRef = React.createRef<HTMLDivElement>();
 
 	private vm: SolidViewDataType;
@@ -68,19 +64,14 @@ export default abstract class SolidView<
 		this.eventbus = props.eventbus;
 		this.vm = this.props.viewModel || {};
 
-		// abstract methods
 		this.renderView = this.renderView.bind(this);
 		this.baseViewDidMount = this.baseViewDidMount.bind(this);
 		this.baseViewWillUnmount = this.baseViewWillUnmount.bind(this);
 
-		// private methods
 		this.fetchDataAndReRender = this.fetchDataAndReRender.bind(this);
-		// this.reRender = this.reRender.bind(this);
 		this.fetchData = this.fetchData.bind(this);
 	}
 
-	/// / ------------------------------------------------------------------
-	/// / abstract methods
 	protected abstract baseViewDidMount(): void;
 
 	protected abstract baseViewWillUnmount(): void;
@@ -91,8 +82,6 @@ export default abstract class SolidView<
 
 	protected abstract renderView(): React.ReactNode;
 
-	/// / ------------------------------------------------------------------
-	/// / protected methods
 	protected renderTitle(): React.ReactNode {
 		const viewModel = this.vm;
 		const options = viewModel.options || {};
@@ -112,9 +101,6 @@ export default abstract class SolidView<
 	protected getVM(): SolidViewDataType {
 		return this.vm;
 	}
-
-	/// / ------------------------------------------------------------------
-	/// / private methods
 
 	private readonly fetchData = async () => {
 		const viewModel = this.vm;
@@ -225,7 +211,6 @@ export default abstract class SolidView<
 					width: "100%",
 					height: "100%",
 					zIndex: 1,
-					padding: 5,
 					background: "#fff",
 					...style,
 				}}
