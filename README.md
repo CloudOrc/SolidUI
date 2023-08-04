@@ -14,16 +14,17 @@
         <img src="https://img.shields.io/badge/JDK-8-green.svg" />
     </a>
 
-<a target="_blank" href='https://github.com/CloudOrc/SolidUI'>
+
+<a target="_blank" href='https://github.com/CloudOrc/SolidUI/fork'>
 <img src="https://img.shields.io/github/forks/CloudOrc/SolidUI.svg" alt="github forks"/>
 </a>
-<a target="_blank" href='https://github.com/CloudOrc/SolidUI'>
+<a href="">
 <img src="https://img.shields.io/github/stars/CloudOrc/SolidUI.svg" alt="github stars"/>
 </a>
-<a target="_blank" href='https://github.com/CloudOrc/SolidUI'>
+<a target="_blank" href='https://github.com/CloudOrc/SolidUI/graphs/contributors'>
 <img src="https://img.shields.io/github/contributors/CloudOrc/SolidUI.svg" alt="github contributors"/>
 </a>
-<a target="_blank" href="https://badges.toozhao.com/stats/01GS2TEBGN98QRTZ1F3K0Y7XCG">
+<a href="">
 <img src="https://badges.toozhao.com/badges/01GS2TEBGN98QRTZ1F3K0Y7XCG/green.svg" />
 </a>
 <a target="_blank" href="https://huggingface.co/spaces/CloudOrc/SolidUI">
@@ -32,8 +33,12 @@
 <a target="_blank" href="https://website.solidui.top">
 <img src="https://img.shields.io/badge/SolidUI%20Website-blue" />
 </a>
-
-
+<a href="https://www.producthunt.com/posts/solidui?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-solidui" target="_blank">
+<img src="https://img.shields.io/badge/producthunt-orange"  className="wow fadeInUp" />
+</a>
+<a target="_blank" href="https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA">
+<img src="https://img.shields.io/badge/join-us%20on%20slack-gray.svg?longCache=true&logo=slack&colorB=red" className="wow fadeInUp"/>
+</a>
 </p>
 <br/>
 
