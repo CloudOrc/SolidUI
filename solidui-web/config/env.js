@@ -22,7 +22,7 @@ const productionVariable = [
 const developmentVariable = [
     { name: "NODE_ENV", default: "development" },
     { name: "BASE_ENV", default: "" },
-    { name: "PROXY_SERVER", default: "http://localhost:1234" },
+    { name: "PROXY_SERVER", default: "http://localhost:12345" },
     { name: "SERVER_PORT", default: 3000 },
 ]
 

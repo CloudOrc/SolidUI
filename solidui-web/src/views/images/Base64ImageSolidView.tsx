@@ -66,17 +66,17 @@ export default class Base64ImageSolidView<
 		if (!isNil(options)) {
 			const { imageType, imageData } = options;
 			if (imageType && imageData) {
-				// const img = new Image();
-				// const imageSrc = `data:"${imageType}";base64,${imageData}`;
-				// const self = this;
-				// img.onload = function () {
-				// 	const viewRef = self.getViewRef().current;
-				// 	if (viewRef) {
-				// 		viewRef.style.height = `${img.height + 20}px`;
-				// 		viewRef.style.width = `${img.width + 50}px}`;
-				// 	}
-				// };
-				// img.src = imageSrc;
+				const i = new Image();
+				const containerViewRef = this.getViewRef();
+				i.onload = function () {
+					vm.size.height = i.height;
+					vm.size.width = i.width;
+					if (containerViewRef.current) {
+						containerViewRef.current.style.width = `${i.width}px`;
+						containerViewRef.current.style.height = `${i.height}px`;
+					}
+				};
+				i.src = `data:"${imageType}";base64,${imageData}`;
 
 				this.setState({
 					imageType,
@@ -90,14 +90,7 @@ export default class Base64ImageSolidView<
 		window.removeEventListener("resize", this.resize);
 	}
 
-	/// / ------------------------------------------------------------------
-	/// / protected methods
-	resize(): void {
-		// if (this.resizeTimer) {
-		// 	clearTimeout(this.resizeTimer);
-		// }
-		// this.resizeTimer = setTimeout(() => {}, 50);
-	}
+	resize(): void {}
 
 	protected renderView(): React.ReactNode {
 		if (isNil(this.state)) {
