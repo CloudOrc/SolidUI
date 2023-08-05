@@ -34,10 +34,13 @@
 <img src="https://img.shields.io/badge/SolidUI%20Website-blue" />
 </a>
 <a href="https://www.producthunt.com/posts/solidui?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-solidui" target="_blank">
-<img src="https://img.shields.io/badge/producthunt-orange"  className="wow fadeInUp" />
+<img src="https://img.shields.io/badge/producthunt-orange"  />
 </a>
 <a target="_blank" href="https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA">
-<img src="https://img.shields.io/badge/join-us%20on%20slack-gray.svg?longCache=true&logo=slack&colorB=red" className="wow fadeInUp"/>
+<img src="https://img.shields.io/badge/join-us%20on%20slack-gray.svg?longCache=true&logo=slack&colorB=red"/>
+</a>
+<a target="_blank" href="https://discord.gg/NDnNMSYv">
+<img src="https://img.shields.io/discord/1110556150199504958"/>
 </a>
 </p>
 <br/>
