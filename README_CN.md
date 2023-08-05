@@ -24,19 +24,22 @@
 <img src="https://img.shields.io/github/contributors/CloudOrc/SolidUI.svg" alt="github contributors"/>
 </a>
 <a href="">
-<img src="https://badges.toozhao.com/badges/01GS2TEBGN98QRTZ1F3K0Y7XCG/green.svg" />
+<img src="https://badges.toozhao.com/badges/01GS2TEBGN98QRTZ1F3K0Y7XCG/green.svg" alt="page views"/>
 </a>
 <a target="_blank" href="https://huggingface.co/spaces/CloudOrc/SolidUI">
-<img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face%20Spaces-blue" />
+<img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face%20Spaces-blue" alt="hugging face spaces"/>
 </a>
 <a target="_blank" href="https://website.solidui.top">
-<img src="https://img.shields.io/badge/SolidUI%20Website-blue" />
+<img src="https://img.shields.io/badge/SolidUI%20Website-blue" alt="solidui website"/>
 </a>
-<a href="https://www.producthunt.com/posts/solidui?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-solidui" target="_blank">
-<img src="https://img.shields.io/badge/producthunt-orange"  className="wow fadeInUp" />
+<a target="_blank" href="https://www.producthunt.com/posts/solidui?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-solidui" >
+<img src="https://img.shields.io/badge/producthunt-orange" alt="producthunt" />
 </a>
 <a target="_blank" href="https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA">
-<img src="https://img.shields.io/badge/join-us%20on%20slack-gray.svg?longCache=true&logo=slack&colorB=red" className="wow fadeInUp"/>
+<img src="https://img.shields.io/badge/join-us%20on%20slack-gray.svg?longCache=true&logo=slack&colorB=red" alt="us on slack"/>
+</a>
+<a target="_blank" href="https://discord.gg/NDnNMSYv">
+<img src="https://img.shields.io/discord/1110556150199504958" alt="discord"/>
 </a>
 </p>
 <br/>
@@ -96,7 +99,7 @@ SolidUI 使用 RLHF (Reinforcement Learning Human Feedback) 流程来优化文�
 
 # 文档
 
-SolidUI v0.1.0 的完整文档列表，请参见 [SolidUI-Website](https://website.solidui.top/zh-CN)
+SolidUI 的完整文档列表，请参见 [SolidUI-Website](https://website.solidui.top/zh-CN)
 
 # 贡献
 
