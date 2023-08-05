@@ -99,7 +99,7 @@ SolidUI 使用 RLHF (Reinforcement Learning Human Feedback) 流程来优化文�
 
 # 文档
 
-SolidUI v0.1.0 的完整文档列表，请参见 [SolidUI-Website](https://website.solidui.top/zh-CN)
+SolidUI 的完整文档列表，请参见 [SolidUI-Website](https://website.solidui.top/zh-CN)
 
 # 贡献
 
