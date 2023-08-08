@@ -182,6 +182,6 @@ VALUES
 
 INSERT INTO `solidui_model_type` (`id`, `name`, `type_name`, `prompt`, `token`, `baseurl`)
 VALUES
-(1,'gpt-3.5-turbo','gpt',NULL,'sk-tDHORTwNMfpIJGeeHNRpFx2CaiEKeqsoJH2cfncNyl67DWoU','https://api.chatanywhere.com.cn'),
-(2,'gpt-4','gpt',NULL,NULL,'https://api.chatanywhere.com.cn'),
-(3,'chatglm_lite','chatglm',NULL,NULL,'https://open.bigmodel.cn');
+(1,'gpt-3.5-turbo','gpt',NULL,NULL,NULL),
+(2,'gpt-4','gpt',NULL,NULL,NULL),
+(3,'chatglm_lite','chatglm',NULL,NULL,NULL);
