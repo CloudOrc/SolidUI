@@ -81,7 +81,7 @@ CREATE TABLE `solidui_job_element` (
                                        `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                                        `project_id` int(11) NOT NULL,
                                        `name` varchar(255) NOT NULL DEFAULT '',
-                                       `data` text NOT NULL,
+                                       `data` longtext NOT NULL,
                                        `data_type` varchar(255) NOT NULL DEFAULT '',
                                        `create_time` datetime NOT NULL,
                                        `update_time` datetime NOT NULL,
