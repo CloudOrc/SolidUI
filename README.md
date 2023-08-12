@@ -3,7 +3,7 @@
 </h2>
 
 <p align="center">
-  <strong>AI-generated visualization prototyping and editing platform</strong>
+  <strong>one sentence generates any graph</strong>
 </p>
 
 <p align="center">
@@ -68,11 +68,7 @@ AI-generated visualization prototyping and editing platform, support 2D, 3D mode
 
 # QuickStart
 
-For quick experience
-
-Want to start with [Standalone](https://website.solidui.top/docs/deployment/deployment-standalone)
-
-Want to start with [Docker](https://website.solidui.top/docs/deployment/deployment-docker)
+https://website.solidui.top/docs/user-guide/quick-start/
 
 # What's this?
 
@@ -96,7 +92,6 @@ SolidUI uses the RLHF (Reinforcement Learning Human Feedback) process to optimiz
 
 Through this process, SolidUI's Vincent graph language model is able to continuously learn and improve from user feedback, producing graphics of higher quality and accuracy.
 
-![Version 0.1.0](docs/images/designpage.png)
 
 # Document
 
