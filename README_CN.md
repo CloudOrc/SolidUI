@@ -3,7 +3,7 @@
 </h2>
 
 <p align="center">
-  <strong>AI生成可视化原型设计和编辑平台</strong>
+  <strong>一句话生成任何图形</strong>
 </p>
 
 <p align="center">
@@ -67,11 +67,7 @@ AI生成可视化原型设计和编辑平台，支持2D，3D模型，结合LLM(L
 
 # 快速开始
 
-为了快速体验
-
-从 [Standalone](https://website.solidui.top/zh-CN/docs/deployment/deployment-standalone) 开始
-
-从 [Docker](https://website.solidui.top/zh-CN/docs/deployment/deployment-docker) 开始
+https://website.solidui.top/zh-CN/docs/user-guide/quick-start/
 
 # 这是什么？
 
@@ -95,7 +91,7 @@ SolidUI 使用 RLHF (Reinforcement Learning Human Feedback) 流程来优化文�
 
 通过这一流程，SolidUI 的文生图语言模型能够不断地从用户反馈中学习和进步，生成更高质量和准确性的图形。
 
-![0.1.0版本](docs/images/designpage.png)
+
 
 # 文档
 
