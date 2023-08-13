@@ -144,14 +144,8 @@ export default function Preview() {
 
 	return (
 		<div id="preview">
-			{renderViews()}
-			<div
-				style={{
-					position: "absolute",
-					bottom: 15,
-					right: 15,
-				}}
-			>
+			<div className="view-container">{renderViews()}</div>
+			<div className="operating-area">
 				<FeatureBar onPageChange={onChange} data={scenePageOptions} />
 			</div>
 		</div>
