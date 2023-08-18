@@ -108,6 +108,7 @@ SolidUI 的完整文档列表，请参见 [SolidUI-Website](https://website.soli
 - [youtube](https://www.youtube.com/@dlimeng)
 - [bilibili](https://space.bilibili.com/472576729) (in Chinese)
 - [slack](https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA)
+- [discord](https://discord.gg/brKfUUXg)
 - 可以扫描下面的二维码，加入我们的微信群，以获得更快速的响应 (in Chinese)
 
 ![SolidUI1](docs/images/solidui_contact_01.png)

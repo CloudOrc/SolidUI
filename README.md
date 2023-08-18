@@ -108,13 +108,7 @@ We welcome and look forward to more contributors participating in building Solid
 - [youtube](https://www.youtube.com/@dlimeng)
 - [bilibili](https://space.bilibili.com/472576729) (in Chinese)
 - [slack](https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA)
-- You can scan the QR code below and join our WeChat group for faster response (in Chinese)
-
-![SolidUI1](docs/images/solidui_contact_01.png)
-
-- WeChat Official Account (in Chinese)
-
-![SolidUI2](docs/images/solidui_contact_02.png)
+- [discord](https://discord.gg/brKfUUXg)
 
 # Who is using SolidUI
 
