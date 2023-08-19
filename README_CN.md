@@ -35,9 +35,6 @@
 <a target="_blank" href="https://www.producthunt.com/posts/solidui?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-solidui" >
 <img src="https://img.shields.io/badge/producthunt-orange" alt="producthunt" />
 </a>
-<a target="_blank" href="https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA">
-<img src="https://img.shields.io/badge/join-us%20on%20slack-gray.svg?longCache=true&logo=slack&colorB=red" alt="us on slack"/>
-</a>
 <a target="_blank" href="https://discord.gg/brKfUUXg">
 <img src="https://img.shields.io/discord/1110556150199504958" alt="discord"/>
 </a>
@@ -107,7 +104,6 @@ SolidUI 的完整文档列表，请参见 [SolidUI-Website](https://website.soli
 - [twitter](https://twitter.com/dlimeng192048)
 - [youtube](https://www.youtube.com/@dlimeng)
 - [bilibili](https://space.bilibili.com/472576729) (in Chinese)
-- [slack](https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA)
 - [discord](https://discord.gg/brKfUUXg)
 - 可以扫描下面的二维码，加入我们的微信群，以获得更快速的响应 (in Chinese)
 
