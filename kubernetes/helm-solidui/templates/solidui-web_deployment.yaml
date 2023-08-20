@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: solidui-web
+  labels:
+    app: solidui-web
+spec:
+  selector:
+    matchLabels:
+      octopusexport: OctopusExport
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: solidui-web
+        octopusexport: OctopusExport
+    spec:
+      containers:
+        - name: solidui-web
+          image: '{{ .Values.image.hub }}/solidui-web:{{ .Values.image.tag }}'
+          ports:
+            - name: http
+              containerPort: 8099
+              protocol: TCP
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - web
+                topologyKey: kubernetes.io/hostname

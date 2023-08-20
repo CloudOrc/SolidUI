@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  labels:
+    app: soliduimodelui
+  name: soliduimodelui
+spec:
+  ports:
+  - name: soliduimodelui-5010
+    port: 5010
+    protocol: TCP
+    targetPort: 5010
+  - name: soliduimodelui-5110
+    port: 5110
+    protocol: TCP
+    targetPort: 5110
+  selector:
+    app: soliduimodelui
+  sessionAffinity: None
+  type: ClusterIP
