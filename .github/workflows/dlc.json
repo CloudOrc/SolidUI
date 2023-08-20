@@ -13,18 +13,18 @@
       "pattern": "https://twitter.com/dlimeng192048"
     },
     {
-      "pattern": "https://website.solidui.top/docs/deployment/deployment-standalone"
+      "pattern": "https://cloudorc.github.io/SolidUI-Website/docs/deployment/deployment-standalone"
     },
     {
-      "pattern": "https://website.solidui.top/docs/deployment/deployment-docker"
+      "pattern": "https://cloudorc.github.io/SolidUI-Website/docs/deployment/deployment-docker"
     },{
-      "pattern": "https://website.solidui.top"
+      "pattern": "https://cloudorc.github.io/SolidUI-Website/"
     },{
-      "pattern": "https://website.solidui.top/zh-CN/docs/deployment/deployment-standalone"
+      "pattern": "https://cloudorc.github.io/SolidUI-Website/zh-CN/docs/deployment/deployment-standalone"
     },{
-      "pattern": "https://website.solidui.top/zh-CN/docs/deployment/deployment-docker"
+      "pattern": "https://cloudorc.github.io/SolidUI-Website/zh-CN/docs/deployment/deployment-docker"
     },{
-      "pattern": "https://website.solidui.top/zh-CN"
+      "pattern": "https://cloudorc.github.io/SolidUI-Website/zh-CN"
     }
   ]
 }
