@@ -35,7 +35,7 @@
 <a target="_blank" href="https://www.producthunt.com/posts/solidui?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-solidui" >
 <img src="https://img.shields.io/badge/producthunt-orange" alt="producthunt" />
 </a>
-<a target="_blank" href="https://discord.gg/brKfUUXg">
+<a target="_blank" href="https://discord.gg/NGRNu2mGeQ">
 <img src="https://img.shields.io/discord/1110556150199504958" alt="discord"/>
 </a>
 </p>
@@ -104,7 +104,7 @@ SolidUI 的完整文档列表，请参见 [SolidUI-Website](https://cloudorc.git
 - [twitter](https://twitter.com/dlimeng192048)
 - [youtube](https://www.youtube.com/@dlimeng)
 - [bilibili](https://space.bilibili.com/472576729) (in Chinese)
-- [discord](https://discord.gg/brKfUUXg)
+- [discord](https://discord.gg/NGRNu2mGeQ)
 - 可以扫描下面的二维码，加入我们的微信群，以获得更快速的响应 (in Chinese)
 
 ![SolidUI1](docs/images/solidui_contact_01.png)
