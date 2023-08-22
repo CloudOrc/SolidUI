@@ -36,21 +36,15 @@ public class ApiExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
 
     @ExceptionHandler(ServiceException.class)
-    public Result exceptionHandler(ServiceException e, HandlerMethod hm) {
+    public Result exceptionHandler(ServiceException e) {
         logger.error("ServiceException: ", e);
         return new Result(e.getCode(), e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
-    public Result exceptionHandler(Exception e, HandlerMethod hm) {
-        ApiException ce = hm.getMethodAnnotation(ApiException.class);
-        if (ce == null) {
-            logger.error(e.getMessage(), e);
-            return Result.errorWithArgs(Status.INTERNAL_SERVER_ERROR_ARGS, e.getMessage());
-        }
-        Status st = ce.value();
-        logger.error(st.getMsg(), e);
-        return Result.error(st);
+    public Result exceptionHandler(Exception e) {
+        logger.error("Exception: ", e);
+        return Result.errorWithArgs(Status.INTERNAL_SERVER_ERROR_ARGS, e.getMessage());
     }
 
 }
