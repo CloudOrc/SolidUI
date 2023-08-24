@@ -502,6 +502,7 @@
                         <exclude>**/*.md</exclude>
                         <exclude>.git/</exclude>
                         <exclude>.gitignore</exclude>
+                        <exclude>**/.helmignore</exclude>
                         <exclude>**/.settings/*</exclude>
                         <exclude>**/.classpath</exclude>
                         <exclude>**/.project</exclude>
