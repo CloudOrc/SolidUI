@@ -33,7 +33,7 @@ services:
     networks:
       - solidui
 
-  mysql:
+  solidui-mysql:
     image: mysql:5.7
     container_name: mysql
     ports:
@@ -42,7 +42,7 @@ services:
       MYSQL_ROOT_PASSWORD: SolidUI@123
     volumes:
       - mysql_data:/var/lib/mysql
-      - ../entrance-server/conf/sql/mysql/solidui_mysql.sql:/docker-entrypoint-initdb.d/solidui_mysql.sql
+      - ../../solidui-entrance/src/main/resources/sql/mysql/solidui_mysql.sql:/docker-entrypoint-initdb.d/solidui_mysql.sql
     networks:
       - solidui
 
