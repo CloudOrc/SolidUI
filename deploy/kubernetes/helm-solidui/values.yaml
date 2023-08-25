@@ -21,3 +21,42 @@ image:
   tag: 0.2.0
   pullPolicy: "IfNotPresent"
 
+mysql:
+  resources: {}
+  # resources:
+  #   limits:
+  #     memory: "8Gi"
+  #     cpu: "4"
+  #   requests:
+  #     memory: "2Gi"
+  #     cpu: "500m"
+
+soliduientrance:
+  resources: {}
+  # resources:
+  #   limits:
+  #     memory: "8Gi"
+  #     cpu: "4"
+  #   requests:
+  #     memory: "2Gi"
+  #     cpu: "500m"
+
+soliduiweb:
+  resources: {}
+  # resources:
+  #   limits:
+  #     memory: "8Gi"
+  #     cpu: "4"
+  #   requests:
+  #     memory: "2Gi"
+  #     cpu: "500m"
+
+soliduimodelui:
+  resources: {}
+  # resources:
+  #   limits:
+  #     memory: "8Gi"
+  #     cpu: "4"
+  #   requests:
+  #     memory: "2Gi"
+  #     cpu: "500m"

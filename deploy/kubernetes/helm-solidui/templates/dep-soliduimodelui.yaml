@@ -44,6 +44,13 @@ spec:
             - name: http-port2
               containerPort: 5110
               protocol: TCP
+          env:
+            - name: TZ
+              value: {{ .Values.timezone }}
+          {{- if .Values.soliduimodelui.resources }}
+          resources:
+            {{- toYaml .Values.soliduimodelui.resources | nindent 12 }}
+          {{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

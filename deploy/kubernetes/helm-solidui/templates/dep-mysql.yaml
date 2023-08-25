@@ -47,6 +47,12 @@ spec:
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: SolidUI@123
+            - name: TZ
+              value: {{ .Values.timezone }}
+          {{- if .Values.mysql.resources }}
+          resources:
+            {{- toYaml .Values.mysql.resources | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: mysql-sql
               mountPath: /docker-entrypoint-initdb.d/
