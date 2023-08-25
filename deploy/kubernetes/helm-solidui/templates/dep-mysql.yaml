@@ -37,6 +37,11 @@ spec:
         - name: mysql-sql
           configMap:
             name: mysql-sql
+{{- if .Values.mysql.persistence.enabled }}
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+{{- end }}
       containers:
         - name: mysql
           image: mysql
@@ -56,6 +61,10 @@ spec:
           volumeMounts:
             - name: mysql-sql
               mountPath: /docker-entrypoint-initdb.d/
+{{- if .Values.mysql.persistence.enabled }}
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+{{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

@@ -22,6 +22,10 @@ image:
   pullPolicy: "IfNotPresent"
 
 mysql:
+  persistence:
+    enabled: false
+    size: "20Gi"
+    storageClass: "-"
   resources: {}
   # resources:
   #   limits:
