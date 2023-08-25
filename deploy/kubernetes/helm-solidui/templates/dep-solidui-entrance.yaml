@@ -43,6 +43,10 @@ spec:
           env:
             - name: TZ
               value: {{ .Values.timezone }}
+            {{ range $key, $value :=  .Values.soliduientrance.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{ end }}
           {{- if .Values.soliduientrance.resources }}
           resources:
             {{- toYaml .Values.soliduientrance.resources | nindent 12 }}
