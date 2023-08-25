@@ -48,6 +48,30 @@ spec:
           resources:
             {{- toYaml .Values.soliduiweb.resources | nindent 12 }}
           {{- end }}
+          {{- if .Values.soliduiweb.readinessProbe.enabled }}
+          readinessProbe:
+            failureThreshold: {{ .Values.soliduiweb.readinessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.soliduiweb.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.soliduiweb.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.soliduiweb.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.soliduiweb.readinessProbe.successThreshold }}
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+          {{- end }}
+          {{- if .Values.soliduiweb.livenessProbe.enabled }}
+          livenessProbe:
+            failureThreshold: {{ .Values.soliduiweb.livenessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.soliduiweb.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.soliduiweb.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.soliduiweb.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.soliduiweb.livenessProbe.successThreshold }}
+            httpGet:
+              scheme: HTTP
+              port: 8099
+              path: /
+          {{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

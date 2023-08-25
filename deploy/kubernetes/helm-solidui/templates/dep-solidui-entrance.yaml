@@ -51,6 +51,30 @@ spec:
           resources:
             {{- toYaml .Values.soliduientrance.resources | nindent 12 }}
           {{- end }}
+          {{- if .Values.soliduientrance.readinessProbe.enabled }}
+          readinessProbe:
+            failureThreshold: {{ .Values.soliduientrance.readinessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.soliduientrance.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.soliduientrance.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.soliduientrance.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.soliduientrance.readinessProbe.successThreshold }}
+            httpGet:
+              path: /nacos/v1/console/health/readiness
+              port: http
+              scheme: HTTP
+          {{- end }}
+          {{- if .Values.soliduientrance.livenessProbe.enabled }}
+          livenessProbe:
+            failureThreshold: {{ .Values.soliduientrance.livenessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.soliduientrance.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.soliduientrance.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.soliduientrance.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.soliduientrance.livenessProbe.successThreshold }}
+            httpGet:
+              scheme: HTTP
+              port: 12345
+              path: /solidui/projects/queryProjectListPaging
+          {{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
