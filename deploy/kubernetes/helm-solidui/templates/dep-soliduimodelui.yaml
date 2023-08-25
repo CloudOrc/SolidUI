@@ -17,32 +17,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: soliduimodelui
+  namespace: solidui
+  name: {{ .Chart.Name }}modelui
   labels:
-    app: soliduimodelui
+    app: {{ .Chart.Name }}modelui
 spec:
   selector:
     matchLabels:
-      octopusexport: OctopusExport
-  replicas: 1
+      app: {{ .Chart.Name }}modelui
+  replicas: {{ .Values.replicaCount }}
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: soliduimodelui
-        octopusexport: OctopusExport
+        app: {{ .Chart.Name }}modelui
     spec:
       containers:
-        - name: soliduimodelui
+        - name: {{ .Chart.Name }}modelui
           image: '{{ .Values.image.hub }}/soliduimodelui:{{ .Values.image.tag }}'
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http2
+            - name: http-port1
               containerPort: 5010
               protocol: TCP
-            - name: http
+            - name: http-port2
               containerPort: 5110
               protocol: TCP
+          env:
+            - name: TZ
+              value: {{ .Values.timezone }}
+          {{- if .Values.soliduimodelui.resources }}
+          resources:
+            {{- toYaml .Values.soliduimodelui.resources | nindent 12 }}
+          {{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

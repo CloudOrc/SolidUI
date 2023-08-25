@@ -14,12 +14,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v2
-name: solidui
-description: one sentence generates any graph
-home: https://cloudorc.github.io/SolidUI-Website/
-keywords:
-  - SolidUI
-type: application
-version: 0.2.0
-appVersion: 0.2.0
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: solidui
+  labels:
+    app: {{ .Chart.Name }}-web
+  name: {{ .Chart.Name }}-web
+spec:
+  ports:
+  - name: {{ .Chart.Name }}-web
+    port: 8099
+    protocol: TCP
+    targetPort: 8099
+  selector:
+    app: {{ .Chart.Name }}-web
+  sessionAffinity: None
+  type: ClusterIP

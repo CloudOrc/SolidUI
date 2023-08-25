@@ -17,28 +17,54 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: solidui-entrance
+  namespace: solidui
+  name: mysql
   labels:
-    app: solidui-entrance
+    app: mysql
 spec:
   selector:
     matchLabels:
-      octopusexport: OctopusExport
-  replicas: 1
+      app: mysql
+  replicas: {{ .Values.replicaCount }}
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: solidui-entrance
-        octopusexport: OctopusExport
+        app: mysql
     spec:
+      volumes:
+        - name: mysql-sql
+          configMap:
+            name: mysql-sql
+{{- if .Values.mysql.persistence.enabled }}
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+{{- end }}
       containers:
-        - name: solidui-entrance
-          image: '{{ .Values.image.hub }}/solidui-entrance:{{ .Values.image.tag }}'
+        - name: mysql
+          image: mysql
           ports:
-            - name: http
-              containerPort: 12345
+            - name: mysql
+              containerPort: 3306
+              protocol: TCP
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: SolidUI@123
+            - name: TZ
+              value: {{ .Values.timezone }}
+          {{- if .Values.mysql.resources }}
+          resources:
+            {{- toYaml .Values.mysql.resources | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: mysql-sql
+              mountPath: /docker-entrypoint-initdb.d/
+{{- if .Values.mysql.persistence.enabled }}
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+{{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

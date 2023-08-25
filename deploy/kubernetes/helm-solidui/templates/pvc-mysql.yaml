@@ -14,20 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+{{- if .Values.mysql.persistence.enabled }}
 apiVersion: v1
-kind: Service
+kind: PersistentVolumeClaim
 metadata:
-  namespace: default
-  labels:
-    app: solidui-web
-  name: solidui-web
+  name: mysql-pvc
 spec:
-  ports:
-  - name: solidui-web
-    port: 8099
-    protocol: TCP
-    targetPort: 8099
-  selector:
-    app: solidui-web
-  sessionAffinity: None
-  type: ClusterIP
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ .Values.mysql.persistence.storageClass }}
+  resources:
+    requests:
+      storage: {{ .Values.mysql.persistence.size }}
+{{- end }}

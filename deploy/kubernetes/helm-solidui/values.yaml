@@ -15,6 +15,110 @@
 # limitations under the License.
 
 replicaCount: 1
+timezone: "Asia/Shanghai"
 image:
   hub: ghcr.io/cloudorc/solidui
   tag: 0.2.0
+  pullPolicy: "IfNotPresent"
+
+mysql:
+  persistence:
+    enabled: false
+    size: "20Gi"
+    storageClass: "-"
+  resources: {}
+  # resources:
+  #   limits:
+  #     memory: "8Gi"
+  #     cpu: "4"
+  #   requests:
+  #     memory: "2Gi"
+  #     cpu: "500m"
+  livenessProbe:
+    enabled: false
+    initialDelaySeconds: "30"
+    periodSeconds: "30"
+    timeoutSeconds: "5"
+    failureThreshold: "3"
+    successThreshold: "1"
+  readinessProbe:
+    enabled: false
+    initialDelaySeconds: "30"
+    periodSeconds: "30"
+    timeoutSeconds: "5"
+    failureThreshold: "3"
+    successThreshold: "1"
+
+soliduientrance:
+  env:
+    JAVA_OPTS: "-Xms1g -Xmx1g -Xmn512m"
+  resources: {}
+  # resources:
+  #   limits:
+  #     memory: "8Gi"
+  #     cpu: "4"
+  #   requests:
+  #     memory: "2Gi"
+  #     cpu: "500m"
+  livenessProbe:
+    enabled: false
+    initialDelaySeconds: "30"
+    periodSeconds: "30"
+    timeoutSeconds: "5"
+    failureThreshold: "3"
+    successThreshold: "1"
+  readinessProbe:
+    enabled: false
+    initialDelaySeconds: "30"
+    periodSeconds: "30"
+    timeoutSeconds: "5"
+    failureThreshold: "3"
+    successThreshold: "1"
+
+soliduiweb:
+  resources: {}
+  # resources:
+  #   limits:
+  #     memory: "8Gi"
+  #     cpu: "4"
+  #   requests:
+  #     memory: "2Gi"
+  #     cpu: "500m"
+  livenessProbe:
+    enabled: false
+    initialDelaySeconds: "30"
+    periodSeconds: "30"
+    timeoutSeconds: "5"
+    failureThreshold: "3"
+    successThreshold: "1"
+  readinessProbe:
+    enabled: false
+    initialDelaySeconds: "30"
+    periodSeconds: "30"
+    timeoutSeconds: "5"
+    failureThreshold: "3"
+    successThreshold: "1"
+
+soliduimodelui:
+  resources: {}
+  # resources:
+  #   limits:
+  #     memory: "8Gi"
+  #     cpu: "4"
+  #   requests:
+  #     memory: "2Gi"
+  #     cpu: "500m"
+  livenessProbe:
+    enabled: false
+    initialDelaySeconds: "30"
+    periodSeconds: "30"
+    timeoutSeconds: "5"
+    failureThreshold: "3"
+    successThreshold: "1"
+  readinessProbe:
+    enabled: false
+    initialDelaySeconds: "30"
+    periodSeconds: "30"
+    timeoutSeconds: "5"
+    failureThreshold: "3"
+    successThreshold: "1"

@@ -14,12 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v2
-name: solidui
-description: one sentence generates any graph
-home: https://cloudorc.github.io/SolidUI-Website/
-keywords:
-  - SolidUI
-type: application
-version: 0.2.0
-appVersion: 0.2.0
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-solidui
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Chart.Name }}-web
+                port:
+                  number: 8099
+                
