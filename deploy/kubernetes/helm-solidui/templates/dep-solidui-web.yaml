@@ -17,31 +17,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: soliduimodelui
+  namespace: solidui
+  name: {{ .Chart.Name }}-web
   labels:
-    app: soliduimodelui
+    app: {{ .Chart.Name }}-web
 spec:
   selector:
     matchLabels:
-      octopusexport: OctopusExport
-  replicas: 1
+      app: {{ .Chart.Name }}-web
+  replicas: {{ .Values.replicaCount }}
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: soliduimodelui
-        octopusexport: OctopusExport
+        app: {{ .Chart.Name }}-web
     spec:
       containers:
-        - name: soliduimodelui
-          image: '{{ .Values.image.hub }}/soliduimodelui:{{ .Values.image.tag }}'
+        - name: {{ .Chart.Name }}-web
+          image: '{{ .Values.image.hub }}/solidui-web:{{ .Values.image.tag }}'
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http2
-              containerPort: 5010
-              protocol: TCP
             - name: http
-              containerPort: 5110
+              containerPort: 8099
               protocol: TCP
       affinity:
         podAntiAffinity:

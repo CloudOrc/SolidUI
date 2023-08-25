@@ -17,7 +17,9 @@
 apiVersion: v2
 name: solidui
 description: one sentence generates any graph
+home: https://cloudorc.github.io/SolidUI-Website/
+keywords:
+  - SolidUI
 type: application
 version: 0.2.0
-appVersion: "1.16.0"
-
+appVersion: 0.2.0

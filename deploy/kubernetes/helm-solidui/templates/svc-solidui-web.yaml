@@ -17,17 +17,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: solidui
   labels:
-    app: solidui-web
-  name: solidui-web
+    app: {{ .Chart.Name }}-web
+  name: {{ .Chart.Name }}-web
 spec:
   ports:
-  - name: solidui-web
+  - name: {{ .Chart.Name }}-web
     port: 8099
     protocol: TCP
     targetPort: 8099
   selector:
-    app: solidui-web
+    app: {{ .Chart.Name }}-web
   sessionAffinity: None
   type: ClusterIP

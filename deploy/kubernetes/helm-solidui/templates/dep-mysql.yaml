@@ -17,22 +17,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: solidui
   name: mysql
   labels:
     app: mysql
 spec:
   selector:
     matchLabels:
-      octopusexport: OctopusExport
-  replicas: 1
+      app: mysql
+  replicas: {{ .Values.replicaCount }}
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
         app: mysql
-        octopusexport: OctopusExport
     spec:
       volumes:
         - name: mysql-sql

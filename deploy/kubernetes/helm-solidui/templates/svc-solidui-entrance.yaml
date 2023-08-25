@@ -17,21 +17,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: solidui
   labels:
-    app: soliduimodelui
-  name: soliduimodelui
+    app: {{ .Chart.Name }}-entrance
+  name: {{ .Chart.Name }}-entrance
 spec:
   ports:
-  - name: soliduimodelui-5010
-    port: 5010
+  - name: {{ .Chart.Name }}-entrance
+    port: 12345
     protocol: TCP
-    targetPort: 5010
-  - name: soliduimodelui-5110
-    port: 5110
-    protocol: TCP
-    targetPort: 5110
+    targetPort: 12345
   selector:
-    app: soliduimodelui
+    app: {{ .Chart.Name }}-entrance
   sessionAffinity: None
   type: ClusterIP

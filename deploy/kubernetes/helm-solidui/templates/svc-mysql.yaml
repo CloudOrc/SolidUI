@@ -17,17 +17,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: solidui
   labels:
-    app: solidui-entrance
-  name: solidui-entrance
+    app: mysql
+  name: mysql
 spec:
   ports:
-  - name: solidui-entrance
-    port: 12345
+  - name: mysql
+    port: 3306
     protocol: TCP
-    targetPort: 12345
+    targetPort: 3306
   selector:
-    app: solidui-entrance
+    app: mysql
   sessionAffinity: None
   type: ClusterIP
