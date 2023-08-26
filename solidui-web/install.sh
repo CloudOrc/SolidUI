@@ -120,31 +120,31 @@ soliduiConf(){
 
 				location /solidui/models {
 					proxy_pass $solidui_url_models; #Solidui backend address
-					proxy_set_header Host $s_host;
-					proxy_set_header X-Real-IP $s_remote_addr;
-					proxy_set_header x_real_ipP $s_remote_addr;
-					proxy_set_header remote_addr $s_remote_addr;
-					proxy_set_header X-Forwarded-For $s_proxy_add_x_forwarded_for;
+					proxy_set_header Host $host;
+					proxy_set_header X-Real-IP $remote_addr;
+					proxy_set_header x_real_ipP $remote_addr;
+					proxy_set_header remote_addr $remote_addr;
+					proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 					proxy_http_version 1.1;
 					proxy_connect_timeout 4s;
 					proxy_read_timeout 600s;
 					proxy_send_timeout 12s;
-					proxy_set_header Upgrade $s_http_upgrade;
+					proxy_set_header Upgrade $http_upgrade;
 					proxy_set_header Connection upgrade;
         }
 
 				location /solidui/kernel {
 					proxy_pass $solidui_url_kernel; #Solidui backend address
-					proxy_set_header Host $s_host;
-					proxy_set_header X-Real-IP $s_remote_addr;
-					proxy_set_header x_real_ipP $s_remote_addr;
-					proxy_set_header remote_addr $s_remote_addr;
-					proxy_set_header X-Forwarded-For $s_proxy_add_x_forwarded_for;
+					proxy_set_header Host $host;
+					proxy_set_header X-Real-IP $remote_addr;
+					proxy_set_header x_real_ipP $remote_addr;
+					proxy_set_header remote_addr $remote_addr;
+					proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 					proxy_http_version 1.1;
 					proxy_connect_timeout 4s;
 					proxy_read_timeout 600s;
 					proxy_send_timeout 12s;
-					proxy_set_header Upgrade $s_http_upgrade;
+					proxy_set_header Upgrade $http_upgrade;
 					proxy_set_header Connection upgrade;
 				}
 
