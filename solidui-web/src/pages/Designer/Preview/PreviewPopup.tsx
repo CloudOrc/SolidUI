@@ -128,19 +128,7 @@ export default function PreviewPopup(props: PreviewPopupProps) {
 
 	return (
 		<div id="preview">
-			{renderViews()}
-			<div
-				style={{
-					position: "absolute",
-					bottom: 15,
-					right: 15,
-				}}
-			>
-				{/* <FeatureBar
-					onPageChange={onChange}
-					data={scenePageOptions}
-				></FeatureBar> */}
-			</div>
+			<div className="view-container">{renderViews()}</div>
 		</div>
 	);
 }

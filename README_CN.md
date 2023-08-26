@@ -3,7 +3,7 @@
 </h2>
 
 <p align="center">
-  <strong>AI生成可视化原型设计和编辑平台</strong>
+  <strong>一句话生成任何图形</strong>
 </p>
 
 <p align="center">
@@ -29,16 +29,13 @@
 <a target="_blank" href="https://huggingface.co/spaces/CloudOrc/SolidUI">
 <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face%20Spaces-blue" alt="hugging face spaces"/>
 </a>
-<a target="_blank" href="https://website.solidui.top">
+<a target="_blank" href="https://cloudorc.github.io/SolidUI-Website/">
 <img src="https://img.shields.io/badge/SolidUI%20Website-blue" alt="solidui website"/>
 </a>
 <a target="_blank" href="https://www.producthunt.com/posts/solidui?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-solidui" >
 <img src="https://img.shields.io/badge/producthunt-orange" alt="producthunt" />
 </a>
-<a target="_blank" href="https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA">
-<img src="https://img.shields.io/badge/join-us%20on%20slack-gray.svg?longCache=true&logo=slack&colorB=red" alt="us on slack"/>
-</a>
-<a target="_blank" href="https://discord.gg/NDnNMSYv">
+<a target="_blank" href="https://discord.gg/NGRNu2mGeQ">
 <img src="https://img.shields.io/discord/1110556150199504958" alt="discord"/>
 </a>
 </p>
@@ -67,11 +64,7 @@ AI生成可视化原型设计和编辑平台，支持2D，3D模型，结合LLM(L
 
 # 快速开始
 
-为了快速体验
-
-从 [Standalone](https://website.solidui.top/zh-CN/docs/deployment/deployment-standalone) 开始
-
-从 [Docker](https://website.solidui.top/zh-CN/docs/deployment/deployment-docker) 开始
+https://cloudorc.github.io/SolidUI-Website/zh-CN/docs/user-guide/quick-start/
 
 # 这是什么？
 
@@ -95,11 +88,11 @@ SolidUI 使用 RLHF (Reinforcement Learning Human Feedback) 流程来优化文�
 
 通过这一流程，SolidUI 的文生图语言模型能够不断地从用户反馈中学习和进步，生成更高质量和准确性的图形。
 
-![0.1.0版本](docs/images/designpage.png)
+
 
 # 文档
 
-SolidUI 的完整文档列表，请参见 [SolidUI-Website](https://website.solidui.top/zh-CN)
+SolidUI 的完整文档列表，请参见 [SolidUI-Website](https://cloudorc.github.io/SolidUI-Website/zh-CN)
 
 # 贡献
 
@@ -111,7 +104,7 @@ SolidUI 的完整文档列表，请参见 [SolidUI-Website](https://website.soli
 - [twitter](https://twitter.com/dlimeng192048)
 - [youtube](https://www.youtube.com/@dlimeng)
 - [bilibili](https://space.bilibili.com/472576729) (in Chinese)
-- [slack](https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA)
+- [discord](https://discord.gg/NGRNu2mGeQ)
 - 可以扫描下面的二维码，加入我们的微信群，以获得更快速的响应 (in Chinese)
 
 ![SolidUI1](docs/images/solidui_contact_01.png)

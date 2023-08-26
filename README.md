@@ -3,7 +3,7 @@
 </h2>
 
 <p align="center">
-  <strong>AI-generated visualization prototyping and editing platform</strong>
+  <strong>one sentence generates any graph</strong>
 </p>
 
 <p align="center">
@@ -30,16 +30,13 @@
 <a target="_blank" href="https://huggingface.co/spaces/CloudOrc/SolidUI">
 <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face%20Spaces-blue" alt="hugging face spaces"/>
 </a>
-<a target="_blank" href="https://website.solidui.top">
+<a target="_blank" href="https://cloudorc.github.io/SolidUI-Website/">
 <img src="https://img.shields.io/badge/SolidUI%20Website-blue" alt="solidui website"/>
 </a>
 <a target="_blank" href="https://www.producthunt.com/posts/solidui?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-solidui" >
 <img src="https://img.shields.io/badge/producthunt-orange" alt="producthunt" />
 </a>
-<a target="_blank" href="https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA">
-<img src="https://img.shields.io/badge/join-us%20on%20slack-gray.svg?longCache=true&logo=slack&colorB=red" alt="us on slack"/>
-</a>
-<a target="_blank" href="https://discord.gg/NDnNMSYv">
+<a target="_blank" href="https://discord.gg/NGRNu2mGeQ">
 <img src="https://img.shields.io/discord/1110556150199504958" alt="discord"/>
 </a>
 </p>
@@ -68,11 +65,7 @@ AI-generated visualization prototyping and editing platform, support 2D, 3D mode
 
 # QuickStart
 
-For quick experience
-
-Want to start with [Standalone](https://website.solidui.top/docs/deployment/deployment-standalone)
-
-Want to start with [Docker](https://website.solidui.top/docs/deployment/deployment-docker)
+https://cloudorc.github.io/SolidUI-Website/docs/user-guide/quick-start/
 
 # What's this?
 
@@ -96,11 +89,10 @@ SolidUI uses the RLHF (Reinforcement Learning Human Feedback) process to optimiz
 
 Through this process, SolidUI's Vincent graph language model is able to continuously learn and improve from user feedback, producing graphics of higher quality and accuracy.
 
-![Version 0.1.0](docs/images/designpage.png)
 
 # Document
 
-For a complete list of documentation for SolidUI, see [SolidUI-Website](https://website.solidui.top)
+For a complete list of documentation for SolidUI, see [SolidUI-Website](https://cloudorc.github.io/SolidUI-Website/)
 
 # Contribute
 
@@ -112,14 +104,7 @@ We welcome and look forward to more contributors participating in building Solid
 - [twitter](https://twitter.com/dlimeng192048)
 - [youtube](https://www.youtube.com/@dlimeng)
 - [bilibili](https://space.bilibili.com/472576729) (in Chinese)
-- [slack](https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA)
-- You can scan the QR code below and join our WeChat group for faster response (in Chinese)
-
-![SolidUI1](docs/images/solidui_contact_01.png)
-
-- WeChat Official Account (in Chinese)
-
-![SolidUI2](docs/images/solidui_contact_02.png)
+- [discord](https://discord.gg/NGRNu2mGeQ)
 
 # Who is using SolidUI
 
