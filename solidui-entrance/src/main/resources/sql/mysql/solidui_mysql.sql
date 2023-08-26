@@ -152,8 +152,9 @@ DROP TABLE IF EXISTS `solidui_model_type`;
 CREATE TABLE `solidui_model_type` (
                                       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                                       `name` varchar(255) DEFAULT NULL,
+                                      `code` varchar(255) DEFAULT NULL,
                                       `type_name` varchar(255) DEFAULT NULL,
-                                      `prompt` varchar(255) DEFAULT NULL,
+                                      `prompt` text DEFAULT NULL,
                                       `token` varchar(255) DEFAULT NULL,
                                       `baseurl` varchar(255) DEFAULT NULL,
                                       PRIMARY KEY (`id`)
@@ -180,8 +181,12 @@ INSERT INTO `solidui_datasource_type` (`id`, `name`, `description`, `option`, `c
 VALUES
 (1,'mysql','mysql','mysql','mysql','mysql',3);
 
-INSERT INTO `solidui_model_type` (`id`, `name`, `type_name`, `prompt`, `token`, `baseurl`)
+INSERT INTO `solidui_model_type` (`id`, `name`, `code`, `type_name`, `prompt`, `token`, `baseurl`)
 VALUES
-(1,'gpt-3.5-turbo','gpt',NULL,NULL,NULL),
-(2,'gpt-4','gpt',NULL,NULL,NULL),
-(3,'chatglm_lite','chatglm',NULL,NULL,NULL);
+(1,'gpt-3.5-turbo', 'python', 'gpt','First, here is a history of what I asked you to do earlier. The actual prompt follows after ENDOFHISTORY. History:\n\n{}ENDOFHISTORY.\n\nWrite Python code that does the following: \n\n{}\n\nNote, the code is going to be executed in a Jupyter Python kernel.\n\nLast instruction, and this is the most important, just return code. No other outputs, as your full response will directly be executed in the kernel. \n\nTeacher mode: if you want to give a download link, just print it as <a href=''/solidui/models/download?file=INSERT_FILENAME_HERE''>Download file</a>. Replace INSERT_FILENAME_HERE with the actual filename. So just print that HTML to stdout. No actual downloading of files!',NULL,NULL),
+(2,'gpt-4','python', 'gpt','First, here is a history of what I asked you to do earlier. The actual prompt follows after ENDOFHISTORY. History:\n\n{}ENDOFHISTORY.\n\nWrite Python code that does the following: \n\n{}\n\nNote, the code is going to be executed in a Jupyter Python kernel.\n\nLast instruction, and this is the most important, just return code. No other outputs, as your full response will directly be executed in the kernel. \n\nTeacher mode: if you want to give a download link, just print it as <a href=''/solidui/models/download?file=INSERT_FILENAME_HERE''>Download file</a>. Replace INSERT_FILENAME_HERE with the actual filename. So just print that HTML to stdout. No actual downloading of files!',NULL,NULL),
+(3,'chatglm_lite','python', 'chatglm','首先，这是我之前要求您做的事情的历史记录。实际的提示将在历史结束后呈现。历史:\n\n{}历史结束。\n\n编写以下Python代码：\n\n{}\n\n注意，代码将在Jupyter Python内核中执行。\n\n最后一条指令，这是最重要的，只返回代码。不要输出其他内容，因为您的完整响应将直接在内核中执行。\n\n教师模式：如果您想提供一个下载链接，只需将其打印为 <a href=''/solidui/models/download?file=INSERT_FILENAME_HERE''>下载文件</a >。用实际的文件名替换INSERT_FILENAME_HERE。所以只需将该HTML打印到标准输出。无需实际下载文件！',NULL,NULL),
+(4,'gpt-3.5-turbo','html', 'gpt', 'First, here is a history of what I asked you to do earlier. The actual prompt follows after ENDOFHISTORY. History:\n\n{}ENDOFHISTORY.\n\nWrite Html code that does the following: \n\n{}\n\nNote, the html is going to be executed in a Chrome web browser.\n\nLast instruction, and this is the most important, just return html content. No other outputs, as your full response will directly be executed in the kernel. \n\nTeacher mode: if you want to give a download link, just print it as <a href=''/solidui/models/download?file=INSERT_FILENAME_HERE''>Download file</a>. Replace INSERT_FILENAME_HERE with the actual filename. So just print that HTML to stdout. No actual downloading of files!',NULL,NULL),
+(5,'chatglm_lite','html', 'chatglm','首先，这是我之前要求您做的事情的历史记录。实际的提示将在历史结束后呈现。历史:\n\n{}历史结束。\n\n编写以下Html代码：\n\n{}\n\n注意，代码将在Chrome等现代浏览器中运行。\n\n最后一条指令，这是最重要的，只返回代码。不要输出其他内容，因为您的完整响应将直接在浏览器中运行。\n\n教师模式：如果您想提供一个下载链接，只需将其打印为 <a href=''/solidui/models/download?file=INSERT_FILENAME_HERE''>下载文件</a >。用实际的文件名替换INSERT_FILENAME_HERE。所以只需将该HTML打印到标准输出。无需实际下载文件！',NULL,NULL),
+(6,'gpt-4','html', 'gpt','First, here is a history of what I asked you to do earlier. The actual prompt follows after ENDOFHISTORY. History:\n\n{}ENDOFHISTORY.\n\nWrite Html code that does the following: \n\n{}\n\nNote, the html is going to be executed in a Chrome web browser.\n\nLast instruction, and this is the most important, just return html content. No other outputs, as your full response will directly be executed in the kernel. \n\nTeacher mode: if you want to give a download link, just print it as <a href=''/solidui/models/download?file=INSERT_FILENAME_HERE''>Download file</a>. Replace INSERT_FILENAME_HERE with the actual filename. So just print that HTML to stdout. No actual downloading of files!',NULL,NULL)
+;
