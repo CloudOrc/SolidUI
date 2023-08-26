@@ -83,9 +83,9 @@ class LimitedLengthString:
 
 message_buffer = LimitedLengthString()
 
-async def get_code_glm(user_prompt, user_key="", model="chatglm", base_url="http://203.57.226.165:8192"):
-
-    prompt = f"首先，这是我之前要求您做的事情的历史记录。实际的提示将在历史结束后呈现。历史:\n\n{message_buffer.get_string()}历史结束。\n\n编写以下Python代码：\n\n{user_prompt}\n\n注意，代码将在Jupyter Python内核中执行。\n\n最后一条指令，这是最重要的，只返回代码。不要输出其他内容，因为您的完整响应将直接在内核中执行。\n\n教师模式：如果您想提供一个下载链接，只需将其打印为 <a href='/solidui/models/download?file=INSERT_FILENAME_HERE'>下载文件</a >。用实际的文件名替换INSERT_FILENAME_HERE。所以只需将该HTML打印到标准输出。无需实际下载文件！"
+async def get_code_glm(gpt_prompt, user_prompt, user_key="", model="chatglm", base_url="http://203.57.226.165:8192"):
+#     prompt = f"首先，这是我之前要求您做的事情的历史记录。实际的提示将在历史结束后呈现。历史:\n\n{message_buffer.get_string()}历史结束。\n\n编写以下Python代码：\n\n{user_prompt}\n\n注意，代码将在Jupyter Python内核中执行。\n\n最后一条指令，这是最重要的，只返回代码。不要输出其他内容，因为您的完整响应将直接在内核中执行。\n\n教师模式：如果您想提供一个下载链接，只需将其打印为 <a href='/solidui/models/download?file=INSERT_FILENAME_HERE'>下载文件</a >。用实际的文件名替换INSERT_FILENAME_HERE。所以只需将该HTML打印到标准输出。无需实际下载文件！"
+    prompt = gpt_prompt.format(message_buffer.get_string(), user_prompt)
 
     # Prepare the payload
     data = {
@@ -125,8 +125,9 @@ async def get_code_glm(user_prompt, user_key="", model="chatglm", base_url="http
     return extract_code(response.json()["response"]), 200
 
 # type 0:gpt-3.5-turbo 1:gpt-4
-async def get_code_gpt(user_prompt, user_key="", model="gpt-3.5-turbo", base_url="https://api.openai.com"):
-    prompt = f"First, here is a history of what I asked you to do earlier. The actual prompt follows after ENDOFHISTORY. History:\n\n{message_buffer.get_string()}ENDOFHISTORY.\n\nWrite Python code that does the following: \n\n{user_prompt}\n\nNote, the code is going to be executed in a Jupyter Python kernel.\n\nLast instruction, and this is the most important, just return code. No other outputs, as your full response will directly be executed in the kernel. \n\nTeacher mode: if you want to give a download link, just print it as <a href='/solidui/models/download?file=INSERT_FILENAME_HERE'>Download file</a>. Replace INSERT_FILENAME_HERE with the actual filename. So just print that HTML to stdout. No actual downloading of files!"
+async def get_code_gpt(gpt_prompt, user_prompt, user_key="", model="gpt-3.5-turbo", base_url="https://api.openai.com"):
+#     prompt = f"First, here is a history of what I asked you to do earlier. The actual prompt follows after ENDOFHISTORY. History:\n\n{message_buffer.get_string()}ENDOFHISTORY.\n\nWrite Python code that does the following: \n\n{user_prompt}\n\nNote, the code is going to be executed in a Jupyter Python kernel.\n\nLast instruction, and this is the most important, just return code. No other outputs, as your full response will directly be executed in the kernel. \n\nTeacher mode: if you want to give a download link, just print it as <a href='/solidui/models/download?file=INSERT_FILENAME_HERE'>Download file</a>. Replace INSERT_FILENAME_HERE with the actual filename. So just print that HTML to stdout. No actual downloading of files!"
+    prompt = gpt_prompt.format(message_buffer.get_string(), user_prompt)
 
     data = {
         "model": model,
@@ -200,16 +201,17 @@ def generate_code():
     base_url = result['baseurl']
     model = result['name']
     typeName = result['type_name']
+    gpt_prompt = result['prompt']
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
     if typeName == 'gpt':
         code, status = loop.run_until_complete(
-            get_code_gpt(user_prompt, user_key, model, base_url))
+            get_code_gpt(gpt_prompt, user_prompt, user_key, model, base_url))
         loop.close()
     else:
         code, status = loop.run_until_complete(
-            get_code_glm(user_prompt, user_key, model, base_url))
+            get_code_glm(gpt_prompt, user_prompt, user_key, model, base_url))
         loop.close()
 
 

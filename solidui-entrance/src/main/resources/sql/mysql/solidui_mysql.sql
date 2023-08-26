@@ -152,8 +152,9 @@ DROP TABLE IF EXISTS `solidui_model_type`;
 CREATE TABLE `solidui_model_type` (
                                       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                                       `name` varchar(255) DEFAULT NULL,
+                                      `code` varchar(255) DEFAULT NULL,
                                       `type_name` varchar(255) DEFAULT NULL,
-                                      `prompt` varchar(255) DEFAULT NULL,
+                                      `prompt` text DEFAULT NULL,
                                       `token` varchar(255) DEFAULT NULL,
                                       `baseurl` varchar(255) DEFAULT NULL,
                                       PRIMARY KEY (`id`)
@@ -180,8 +181,10 @@ INSERT INTO `solidui_datasource_type` (`id`, `name`, `description`, `option`, `c
 VALUES
 (1,'mysql','mysql','mysql','mysql','mysql',3);
 
-INSERT INTO `solidui_model_type` (`id`, `name`, `type_name`, `prompt`, `token`, `baseurl`)
+INSERT INTO `solidui_model_type` (`id`, `name`, `code`, `type_name`, `prompt`, `token`, `baseurl`)
 VALUES
-(1,'gpt-3.5-turbo','gpt',NULL,NULL,NULL),
-(2,'gpt-4','gpt',NULL,NULL,NULL),
-(3,'chatglm_lite','chatglm',NULL,NULL,NULL);
+(1,'gpt-3.5-turbo', 'code', 'gpt','First, here is a history of what I asked you to do earlier. The actual prompt follows after ENDOFHISTORY. History:\n\n{}ENDOFHISTORY.\n\nWrite Python code that does the following: \n\n{}\n\nNote, the code is going to be executed in a Jupyter Python kernel.\n\nLast instruction, and this is the most important, just return code. No other outputs, as your full response will directly be executed in the kernel. \n\nTeacher mode: if you want to give a download link, just print it as <a href=''/solidui/models/download?file=INSERT_FILENAME_HERE''>Download file</a>. Replace INSERT_FILENAME_HERE with the actual filename. So just print that HTML to stdout. No actual downloading of files!',NULL,NULL),
+(2,'gpt-4','code', 'gpt',NULL,NULL,NULL),
+(3,'chatglm_lite','code', 'chatglm',NULL,NULL,NULL),
+(4,'gpt-3.5-turbo','html', 'gpt', 'First, here is a history of what I asked you to do earlier. The actual prompt follows after ENDOFHISTORY. History:\n\n{}ENDOFHISTORY.\n\nWrite Html code that does the following: \n\n{}\n\nNote, the html is going to be executed in a Chrome web browser.\n\nLast instruction, and this is the most important, just return html content. No other outputs, as your full response will directly be executed in the kernel. \n\nTeacher mode: if you want to give a download link, just print it as <a href=''/solidui/models/download?file=INSERT_FILENAME_HERE''>Download file</a>. Replace INSERT_FILENAME_HERE with the actual filename. So just print that HTML to stdout. No actual downloading of files!',NULL,NULL);
+;

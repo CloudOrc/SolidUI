@@ -29,6 +29,8 @@ public class ModelType {
 
     private String name;
 
+    private String code;
+
     private String typeName;
 
     private String prompt;

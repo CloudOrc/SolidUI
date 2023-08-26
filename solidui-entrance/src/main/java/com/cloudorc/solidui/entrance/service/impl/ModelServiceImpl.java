@@ -44,7 +44,7 @@ public class ModelServiceImpl extends BaseServiceImpl implements ModelService {
 
         if (!CollectionUtils.isEmpty(modelTypes)) {
             for (ModelType m : modelTypes) {
-                modelKeyVOS.add(new ModelKeyVO(m.getId(), m.getName(), m.getTypeName()));
+                modelKeyVOS.add(new ModelKeyVO(m.getId(), m.getName() + "_" + m.getCode(), m.getTypeName()));
             }
         }
 
