@@ -36,7 +36,7 @@ public class ConstantsSPI {
 
     public static final String DATASOURCE_CLASSNAME = "com.cloudorc.solidui.plugin.jdbc.%sClientFactory";
 
-    public static final String DATASOURCE_TYPE_LIST = "mysql,drois";
+    public static final String DATASOURCE_TYPE_LIST = "mysql,doris";
 
 
 }
