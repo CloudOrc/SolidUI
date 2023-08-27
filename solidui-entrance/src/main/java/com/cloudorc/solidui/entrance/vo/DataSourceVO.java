@@ -16,27 +16,27 @@
  */
 
 
-package com.cloudorc.solidui.spi;
+package com.cloudorc.solidui.entrance.vo;
 
-public class ConstantsSPI {
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.Data;
 
-    public static final String PARAM_SQL_HOST ="host";
+import java.util.Date;
 
-    public static final String PARAM_SQL_PORT ="port";
+@Data
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
+public class DataSourceVO {
 
-    public static final String PARAM_SQL_USERNAME = "username";
-
-    public static final String PARAM_SQL_PASSWORD = "password";
-
-    public static final String PARAM_SQL_EXTRA_PARAMS = "params";
-
-    public static final String PARAM_SQL_DATABASE = "database";
-
-    public static final String PARAM_SQL_DRIVERCLASSNAME = "driverClassName";
-
-    public static final String DATASOURCE_CLASSNAME = "com.cloudorc.solidui.plugin.jdbc.%sClientFactory";
-
-    public static final String DATASOURCE_TYPE_LIST = "mysql,doris";
-
+    private Long id;
+    private String dataSourceName;
+    private String dataSourceDesc;
+    private Long dataSourceTypeId;
+    private String dataSourceType;
+    private String createIdentify;
+    private String parameter;
+    private Date createTime;
+    private String createUser;
+    private String labels;
+    private boolean expire;
 
 }

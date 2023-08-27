@@ -26,4 +26,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface DataSourceTypeMapper extends BaseMapper<DataSourceType> {
 
     List<DataSourceType> queryAllTypes();
+
+    DataSourceType queryById(Long id);
 }
