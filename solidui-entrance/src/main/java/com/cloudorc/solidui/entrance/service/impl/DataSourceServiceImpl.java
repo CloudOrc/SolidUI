@@ -18,6 +18,7 @@
 package com.cloudorc.solidui.entrance.service.impl;
 
 import com.cloudorc.solidui.dao.entity.DataSource;
+import com.cloudorc.solidui.dao.entity.DataSourceType;
 import com.cloudorc.solidui.dao.mapper.DataSourceMapper;
 import com.cloudorc.solidui.dao.mapper.DataSourceTypeMapper;
 import com.cloudorc.solidui.entrance.dto.DataSourceDTO;
@@ -27,6 +28,7 @@ import com.cloudorc.solidui.entrance.service.DataSourceService;
 import com.cloudorc.solidui.entrance.utils.PageInfo;
 import com.cloudorc.solidui.entrance.utils.Result;
 
+import com.cloudorc.solidui.entrance.vo.DataSourceVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -139,13 +142,21 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     public Result queryDataSourceByPage(String dataSourceName, Long dataSourceTypeId, Boolean expire, Integer pageNo,
                                         Integer pageSize) {
         Result<Object> result = new Result<>();
-        PageInfo<DataSource> pageInfo = new PageInfo<>(pageNo, pageSize);
+        PageInfo<DataSourceVO> pageInfo = new PageInfo<>(pageNo, pageSize);
         Page<DataSource> page = new Page<>(pageNo, pageSize);
         IPage<DataSource> dataSourceIPage =
                 dataSourceMapper.queryDataSourceByPage(page, dataSourceName, dataSourceTypeId, expire);
         List<DataSource> dataSourceList = dataSourceIPage.getRecords();
+        List<DataSourceVO> dataSourceVOList = new ArrayList<>();
+        for (DataSource dataSource:dataSourceList){
+            DataSourceVO dataSourceVO = new DataSourceVO();
+            BeanUtils.copyProperties(dataSource, dataSourceVO);
+            DataSourceType dataSourceType = dataSourceTypeMapper.queryById(dataSource.getDataSourceTypeId());
+            dataSourceVO.setDataSourceType(dataSourceType.getName());
+            dataSourceVOList.add(dataSourceVO);
+        }
         pageInfo.setTotal((int) dataSourceIPage.getTotal());
-        pageInfo.setTotalList(dataSourceList);
+        pageInfo.setTotalList(dataSourceVOList);
         result.setData(pageInfo);
         putMsg(result, Status.SUCCESS);
         return result;

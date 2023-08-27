@@ -15,17 +15,28 @@
  * limitations under the License.
  */
 
-package com.cloudorc.solidui.dao.mapper;
 
-import com.cloudorc.solidui.dao.entity.DataSourceType;
+package com.cloudorc.solidui.entrance.vo;
 
-import java.util.List;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.Data;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.Date;
 
-public interface DataSourceTypeMapper extends BaseMapper<DataSourceType> {
+@Data
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
+public class DataSourceVO {
 
-    List<DataSourceType> queryAllTypes();
+    private Long id;
+    private String dataSourceName;
+    private String dataSourceDesc;
+    private Long dataSourceTypeId;
+    private String dataSourceType;
+    private String createIdentify;
+    private String parameter;
+    private Date createTime;
+    private String createUser;
+    private String labels;
+    private boolean expire;
 
-    DataSourceType queryById(Long id);
 }
