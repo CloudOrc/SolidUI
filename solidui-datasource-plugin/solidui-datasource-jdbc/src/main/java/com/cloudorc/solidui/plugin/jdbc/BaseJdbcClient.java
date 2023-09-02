@@ -27,7 +27,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public abstract class BaseJdbcClient implements JdbcClient{
+public abstract class BaseJdbcClient implements JdbcClient {
 
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -55,8 +55,9 @@ public abstract class BaseJdbcClient implements JdbcClient{
 
     @Override
     public void close() throws IOException {
-        closeResource(conn,null,null);
+        closeResource(conn, null, null);
     }
+
     @Override
     public Connection getConn() {
         return conn;

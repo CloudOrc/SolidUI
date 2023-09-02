@@ -24,6 +24,11 @@ import java.util.List;
 
 public interface JdbcClient {
 
+    /**
+     * Generates a SQL query string to select all data from a specified table.
+     */
+    String generateSelectAllDataSql(String database, String tableName);
+
     List<String> getAllDatabase() throws SQLException;
 
     List<String> getAllTables(String database) throws SQLException ;

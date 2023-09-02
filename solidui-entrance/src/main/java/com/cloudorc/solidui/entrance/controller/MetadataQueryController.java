@@ -25,11 +25,18 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.cloudorc.solidui.entrance.enums.Status.*;
+import static com.cloudorc.solidui.entrance.enums.Status.QUERY_METADATA_DB_ERROR;
+import static com.cloudorc.solidui.entrance.enums.Status.QUERY_METADATA_SQL_ERROR;
+import static com.cloudorc.solidui.entrance.enums.Status.QUERY_METADATA_TABLE_ERROR;
 
 @Api(tags = "metadata_query")
 @RestController
@@ -51,7 +58,7 @@ public class MetadataQueryController extends BaseController {
             @RequestParam("dataSourceName") String dataSourceName,
             @RequestParam("typeName") String typeName,
             HttpServletRequest request) {
-        return metadataQueryService.queryDatabasesByDsName(dataSourceName,typeName);
+        return metadataQueryService.queryDatabasesByDsName(dataSourceName, typeName);
 
     }
 
@@ -69,7 +76,25 @@ public class MetadataQueryController extends BaseController {
             @RequestParam("database") String database,
             @RequestParam("typeName") String typeName,
             HttpServletRequest request) {
-        return metadataQueryService.queryTablesByDsName(dataSourceName,database,typeName);
+        return metadataQueryService.queryTablesByDsName(dataSourceName, database, typeName);
+    }
+
+    @ApiOperation(value = "query table data")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name"),
+            @ApiImplicitParam(name = "typeName", required = true, dataType = "String", value = "typeName"),
+            @ApiImplicitParam(name = "database", required = true, dataType = "String", value = "database"),
+            @ApiImplicitParam(name = "tableName", required = true, dataType = "String", value = "tableName")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(QUERY_METADATA_SQL_ERROR)
+    @GetMapping(value = "/queryTableData")
+    public Result getTables(
+            @RequestParam String dataSourceName,
+            @RequestParam String database,
+            @RequestParam String typeName,
+            @RequestParam String tableName) {
+        return metadataQueryService.queryTableData(dataSourceName, database, typeName, tableName);
     }
 
     @ApiOperation(value = "querySql", notes = "query sql")
@@ -86,9 +111,8 @@ public class MetadataQueryController extends BaseController {
             @RequestParam("sql") String sql,
             @RequestParam("typeName") String typeName,
             HttpServletRequest request) {
-        return metadataQueryService.queryBySql(dataSourceName,sql,typeName);
+        return metadataQueryService.queryBySql(dataSourceName, sql, typeName);
     }
-
 
     @ApiOperation(value = "querySql/id", notes = "query sql")
     @ApiImplicitParams({
@@ -104,7 +128,7 @@ public class MetadataQueryController extends BaseController {
             @RequestParam("sql") String sql,
             @RequestParam("typeId") Long typeId,
             HttpServletRequest request) {
-        return metadataQueryService.queryBySql(dataSourceId,sql,typeId);
+        return metadataQueryService.queryBySql(dataSourceId, sql, typeId);
     }
 
 
