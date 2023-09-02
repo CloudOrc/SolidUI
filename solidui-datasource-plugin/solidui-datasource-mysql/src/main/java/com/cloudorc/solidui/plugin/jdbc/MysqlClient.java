@@ -18,9 +18,15 @@
 
 package com.cloudorc.solidui.plugin.jdbc;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MysqlClient extends BaseJdbcClient {
 
@@ -29,7 +35,12 @@ public class MysqlClient extends BaseJdbcClient {
     }
 
     @Override
-    public List<String> getAllDatabase() throws SQLException{
+    public String generateSelectAllDataSql(String database, String tableName) {
+        return "SELECT * FROM " + tableName;
+    }
+
+    @Override
+    public List<String> getAllDatabase() throws SQLException {
         List<String> dataBaseName = new ArrayList<>();
         Statement stmt = null;
         ResultSet rs = null;
@@ -47,7 +58,7 @@ public class MysqlClient extends BaseJdbcClient {
     }
 
     @Override
-    public List<String> getAllTables(String database) throws SQLException{
+    public List<String> getAllTables(String database) throws SQLException {
         List<String> tableNames = new ArrayList<>();
         Statement stmt = null;
         ResultSet rs = null;
@@ -64,7 +75,7 @@ public class MysqlClient extends BaseJdbcClient {
     }
 
     @Override
-    public List<List<String>> getSelectResult(String sql) throws SQLException{
+    public List<List<String>> getSelectResult(String sql) throws SQLException {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         List<List<String>> lists = new ArrayList<>();
@@ -82,7 +93,7 @@ public class MysqlClient extends BaseJdbcClient {
             while (rs.next()) {
                 List<String> stringArrayList = new ArrayList<>();
                 for (int i = 1; i < columnCount + 1; i++) {
-                    stringArrayList.add(rs.getString(i).trim());
+                    stringArrayList.add(Optional.ofNullable(rs.getString(i)).map(String::trim).orElse(null));
                 }
                 lists.add(stringArrayList);
             }
