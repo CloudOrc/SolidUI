@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	Row,
@@ -34,6 +34,7 @@ import classNames from "classnames";
 import Apis from "@/apis";
 import { ProjectDataType } from "@/types";
 import "./ProjectCard.less";
+import { color } from "echarts";
 
 const { confirm } = Modal;
 
@@ -50,6 +51,8 @@ export interface ProjectCardProps {
 }
 
 export default function ProjectCard(props: ProjectCardProps) {
+	const inputRef = useRef<HTMLInputElement>()
+
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [editOpen, setEditOpen] = useState<boolean>(false);
@@ -95,6 +98,61 @@ export default function ProjectCard(props: ProjectCardProps) {
 	}
 
 	const clazzName = classNames("solidui-card__project", className);
+
+	const [showText, setShowText] = useState(true)
+	const [text, setText] = useState(item.projectName)
+	
+	const [inputValue, setInputValue] = useState('')
+	const onDoubleClick = () => {
+		setShowText(false)
+		setInputValue(text)
+		// console.log('inputRef', inputRef)
+		setTimeout(() => {
+			inputRef.current?.focus()
+		}, 100);
+	}
+	const onConfirm = () => {
+		// console.log('确定')
+		setShowText(true)
+		setText(inputValue)
+		//console.log(text != inputValue)
+		if(text != inputValue){
+			onFinish(inputValue);
+		}
+	}
+	const onCancel = () => setShowText(true);
+
+	const onFinish = async (values) => {
+		const res = await Apis.project.update(
+			`${item.id}`,
+			values,
+		);
+		if (res.ok) {
+			message.success("rename ok");
+			setEditOpen(false);
+			onUpdate();
+		}
+	}
+	const [isHovered, setIsHovered] = useState(false);
+
+	const textHoverStyle = {
+		width: "100%",
+		position: "relative",
+		display: "inline-block",
+		// textDecorationLine: isHovered ? "underline" : "none",
+		// textDecorationColor: isHovered ? "blue" : "black",
+		textDecorationWidth: "100%",
+	};
+	const underlineStyle = {
+		position: "absolute",
+		bottom: 0,
+		left: 0,
+		width: "100%",
+		height: "2px",
+		backgroundColor: "blue",
+		content: '""'
+	  };
+	
 	return (
 		<div
 			className={clazzName}
@@ -107,7 +165,8 @@ export default function ProjectCard(props: ProjectCardProps) {
 			}}
 		>
 			<div className="card-content">
-				<div className="content-title">{item.projectName}</div>
+				{/* <div className="content-title">{item.projectName}</div> */}
+				<div className="content-title"></div>
 				{popup ? (
 					<div className="content-mask">
 						<div className="mask-icons">
@@ -222,6 +281,22 @@ export default function ProjectCard(props: ProjectCardProps) {
 						<Avatar size={44} icon={<UserOutlined rev={1} />} />
 					</Col>
 					<Col flex="auto">
+						<div style={textHoverStyle}
+       						onMouseEnter={() => setIsHovered(true)}
+      						onMouseLeave={() => setIsHovered(false)} >
+						{
+							showText ? <p onDoubleClick={onDoubleClick} style={{width:200}}>{item.projectName}</p > : ''
+						}
+						{
+							isHovered ?  <span style={underlineStyle}></span> : ''
+						}
+							   
+					
+						<div style={{display: !showText ? 'block' : 'none' ,paddingTop:10}}>
+							<input  ref={(ref) => { inputRef.current = ref }} type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onBlur={onConfirm} style={{width:'100%', color: '#ffffff', outline: 'none' ,borderTop: 'none',borderLeft: 'none',borderRight: 'none',borderBottomColor:'blue',backgroundColor:'#6c6c6c'}} onKeyDown={(e) => { if (e.keyCode === 13) onConfirm() }}/>
+							
+						</div>
+						</div>
 						<div>{item.userName}</div>
 						<div>{item.updateTime}</div>
 					</Col>
