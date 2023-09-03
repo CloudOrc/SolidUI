@@ -136,11 +136,22 @@ export default function ProjectCard(props: ProjectCardProps) {
 	const [isHovered, setIsHovered] = useState(false);
 
 	const textHoverStyle = {
+		width: "100%",
 		position: "relative",
 		display: "inline-block",
-		textDecoration: isHovered ? "underline" : "none",
-		//  textDecorationColor: "blue",
+		// textDecorationLine: isHovered ? "underline" : "none",
+		// textDecorationColor: isHovered ? "blue" : "black",
+		textDecorationWidth: "100%",
 	};
+	const underlineStyle = {
+		position: "absolute",
+		bottom: 0,
+		left: 0,
+		width: "100%",
+		height: "2px",
+		backgroundColor: "blue",
+		content: '""'
+	  };
 	
 	return (
 		<div
@@ -294,11 +305,15 @@ export default function ProjectCard(props: ProjectCardProps) {
        						onMouseEnter={() => setIsHovered(true)}
       						onMouseLeave={() => setIsHovered(false)} >
 						{
-							showText ? <p onDoubleClick={onDoubleClick}>{item.projectName}</p > : ''
+							showText ? <p onDoubleClick={onDoubleClick} style={{width:200}}>{item.projectName}</p > : ''
 						}
+						{
+							isHovered ?  <span style={underlineStyle}></span> : ''
+						}
+							   
 					
-						<div style={{fontSize:14,display: !showText ? 'block' : 'none' ,paddingTop:10}}>
-							<input  ref={(ref) => { inputRef.current = ref }} type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onBlur={onConfirm} style={{ color: '#ffffff', outline: 'none' ,borderTop: 'none',borderLeft: 'none',borderRight: 'none',borderBottomColor:'blue',backgroundColor:'#6c6c6c'}} onKeyDown={(e) => { if (e.keyCode === 13) onConfirm() }}/>
+						<div style={{display: !showText ? 'block' : 'none' ,paddingTop:10}}>
+							<input  ref={(ref) => { inputRef.current = ref }} type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onBlur={onConfirm} style={{width:'100%', color: '#ffffff', outline: 'none' ,borderTop: 'none',borderLeft: 'none',borderRight: 'none',borderBottomColor:'blue',backgroundColor:'#6c6c6c'}} onKeyDown={(e) => { if (e.keyCode === 13) onConfirm() }}/>
 							{/* <button onClick={onConfirm}>确定</button> */}
 							{/* <button onClick={onCancel}>取消</button> */}
 						</div>
