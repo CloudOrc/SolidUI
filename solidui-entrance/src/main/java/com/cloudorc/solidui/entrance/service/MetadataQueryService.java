@@ -31,4 +31,5 @@ public interface MetadataQueryService {
 
     Result queryConnection(String dataSourceName,String typeName);
 
+    Result queryTableData(String dataSourceName, String database, String typeName, String tableName);
 }
