@@ -49,23 +49,23 @@ public class MetadataQueryController extends BaseController {
     @ApiOperation(value = "queryDatabases", notes = "query databases")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name"),
-            @ApiImplicitParam(name = "typeName", required = true, dataType = "String", value = "typeName")
+            @ApiImplicitParam(name = "typeName", required = false, dataType = "String", value = "typeName")
     })
     @ResponseStatus(HttpStatus.OK)
     @ApiException(QUERY_METADATA_DB_ERROR)
     @RequestMapping(value = "/queryDatabases", method = RequestMethod.GET)
     public Result getDatabases(
             @RequestParam("dataSourceName") String dataSourceName,
-            @RequestParam("typeName") String typeName,
+            @RequestParam(value = "typeName",required = false) String typeName,
             HttpServletRequest request) {
-        return metadataQueryService.queryDatabasesByDsName(dataSourceName, typeName);
+        return metadataQueryService.queryDatabasesByDsName(dataSourceName);
 
     }
 
     @ApiOperation(value = "queryTables", notes = "query tables")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name"),
-            @ApiImplicitParam(name = "typeName", required = true, dataType = "String", value = "typeName"),
+            @ApiImplicitParam(name = "typeName", required = false, dataType = "String", value = "typeName"),
             @ApiImplicitParam(name = "database", required = true, dataType = "String", value = "database")
     })
     @ResponseStatus(HttpStatus.OK)
@@ -74,15 +74,15 @@ public class MetadataQueryController extends BaseController {
     public Result getTables(
             @RequestParam("dataSourceName") String dataSourceName,
             @RequestParam("database") String database,
-            @RequestParam("typeName") String typeName,
+            @RequestParam(value = "typeName",required = false) String typeName,
             HttpServletRequest request) {
-        return metadataQueryService.queryTablesByDsName(dataSourceName, database, typeName);
+        return metadataQueryService.queryTablesByDsName(dataSourceName, database);
     }
 
     @ApiOperation(value = "query table data")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name"),
-            @ApiImplicitParam(name = "typeName", required = true, dataType = "String", value = "typeName"),
+            @ApiImplicitParam(name = "typeName", required = false, dataType = "String", value = "typeName"),
             @ApiImplicitParam(name = "database", required = true, dataType = "String", value = "database"),
             @ApiImplicitParam(name = "tableName", required = true, dataType = "String", value = "tableName")
     })
@@ -90,17 +90,17 @@ public class MetadataQueryController extends BaseController {
     @ApiException(QUERY_METADATA_SQL_ERROR)
     @GetMapping(value = "/queryTableData")
     public Result getTables(
-            @RequestParam String dataSourceName,
-            @RequestParam String database,
-            @RequestParam String typeName,
-            @RequestParam String tableName) {
-        return metadataQueryService.queryTableData(dataSourceName, database, typeName, tableName);
+            @RequestParam("dataSourceName") String dataSourceName,
+            @RequestParam("database") String database,
+            @RequestParam(value = "typeName",required = false) String typeName,
+            @RequestParam("tableName") String tableName) {
+        return metadataQueryService.queryTableData(dataSourceName, database, tableName);
     }
 
     @ApiOperation(value = "querySql", notes = "query sql")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name"),
-            @ApiImplicitParam(name = "typeName", required = true, dataType = "String", value = "type name"),
+            @ApiImplicitParam(name = "typeName", required = false, dataType = "String", value = "type name"),
             @ApiImplicitParam(name = "sql", required = true, dataType = "String", value = "sql")
     })
     @ResponseStatus(HttpStatus.OK)
@@ -109,15 +109,15 @@ public class MetadataQueryController extends BaseController {
     public Result querySelectSql(
             @RequestParam("dataSourceName") String dataSourceName,
             @RequestParam("sql") String sql,
-            @RequestParam("typeName") String typeName,
+            @RequestParam(value = "typeName",required = false) String typeName,
             HttpServletRequest request) {
-        return metadataQueryService.queryBySql(dataSourceName, sql, typeName);
+        return metadataQueryService.queryBySql(dataSourceName, sql);
     }
 
     @ApiOperation(value = "querySql/id", notes = "query sql")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dataSourceId", required = true, dataType = "Long", value = "data source id"),
-            @ApiImplicitParam(name = "typeId", required = true, dataType = "Long", value = "type id"),
+            @ApiImplicitParam(name = "typeId", required = false, dataType = "Long", value = "type id"),
             @ApiImplicitParam(name = "sql", required = true, dataType = "String", value = "sql")
     })
     @ResponseStatus(HttpStatus.OK)
@@ -126,9 +126,9 @@ public class MetadataQueryController extends BaseController {
     public Result querySelectSql(
             @RequestParam("dataSourceId") Long dataSourceId,
             @RequestParam("sql") String sql,
-            @RequestParam("typeId") Long typeId,
+            @RequestParam(value ="typeId",required = false) Long typeId,
             HttpServletRequest request) {
-        return metadataQueryService.queryBySql(dataSourceId, sql, typeId);
+        return metadataQueryService.queryBySql(dataSourceId, sql);
     }
 
 

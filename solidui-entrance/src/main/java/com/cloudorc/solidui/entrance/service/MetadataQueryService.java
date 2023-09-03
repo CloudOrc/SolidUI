@@ -25,11 +25,11 @@ public interface MetadataQueryService {
 
     Result queryTablesByDsName(String dataSourceName,String dbName);
 
-    Result queryBySql(String dataSourceName,String sql,String typeName);
+    Result queryBySql(String dataSourceName,String sql);
 
-    Result queryBySql(Long dataSourceId,String sql,Long typeId);
+    Result queryBySql(Long dataSourceId,String sql);
 
-    Result queryConnection(String dataSourceName,String typeName);
+    Result queryConnection(String dataSourceName);
 
-    Result queryTableData(String dataSourceName, String database, String typeName, String tableName);
+    Result queryTableData(String dataSourceName, String database,String tableName);
 }

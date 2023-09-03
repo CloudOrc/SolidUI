@@ -64,7 +64,7 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
         }
 
         try {
-            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(typeName, dataSource);
+            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(newTypeName,dataSource);
             if(jdbcClient != null)  {
                 List<String> allDatabase = jdbcClient.getAllDatabase();
                 if (CollectionUtils.isEmpty(allDatabase)) {
@@ -86,7 +86,7 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
     }
 
     @Override
-    public Result queryTablesByDsName(String dataSourceName, String dbName, String typeName) {
+    public Result queryTablesByDsName(String dataSourceName, String dbName) {
         DataSource dataSource = dataSourceMapper.queryByName(dataSourceName, null);
         Result<Object> result = new Result<>();
         if (dataSource == null) {
@@ -100,7 +100,7 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
         }
 
         try {
-            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(typeName, dataSource);
+            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(newTypeName, dataSource);
             if (jdbcClient != null) {
                 List<String> allTables = jdbcClient.getAllTables(dbName);
                 if (CollectionUtils.isEmpty(allTables)) {
@@ -122,9 +122,9 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
     }
 
     @Override
-    public Result queryBySql(String dataSourceName, String sql, String typeName) {
+    public Result queryBySql(String dataSourceName, String sql) {
         Result<Object> result = new Result<>();
-        if (dataSourceName == null || typeName == null) {
+        if (dataSourceName == null) {
             putMsg(result, Status.QUERY_METADATA_SQL_ERROR);
             return result;
         }
@@ -136,8 +136,14 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
             return result;
         }
 
+        String newTypeName = putTypeName(dataSource.getDataSourceTypeId());
+        if(StringUtils.isBlank(newTypeName)){
+            putMsg(result, Status.QUERY_DATASOURCE_TYPE_ERROR);
+            return result;
+        }
+
         try {
-            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(typeName, dataSource);
+            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(newTypeName, dataSource);
             if (jdbcClient != null) {
                 List<List<String>> selectResult = jdbcClient.getSelectResult(sql);
                 if (CollectionUtils.isEmpty(selectResult)) {
@@ -159,9 +165,9 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
     }
 
     @Override
-    public Result queryBySql(Long dataSourceId, String sql, Long typeId) {
+    public Result queryBySql(Long dataSourceId, String sql) {
         Result<Object> result = new Result<>();
-        if (dataSourceId == null || typeId == null) {
+        if (dataSourceId == null) {
             putMsg(result, Status.QUERY_METADATA_SQL_ERROR);
             return result;
         }
@@ -172,13 +178,14 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
             putMsg(result, Status.QUERY_METADATA_SQL_ERROR);
             return result;
         }
-        DataSourceType dataSourceType = dataSourceTypeMapper.selectById(typeId);
-        if (dataSourceType == null) {
-            putMsg(result, Status.QUERY_DATASOURCE_ERROR);
+
+        String newTypeName = putTypeName(dataSource.getDataSourceTypeId());
+        if(StringUtils.isBlank(newTypeName)){
+            putMsg(result, Status.QUERY_DATASOURCE_TYPE_ERROR);
             return result;
         }
         try {
-            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(dataSourceType.getName(), dataSource);
+            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(newTypeName, dataSource);
             if (jdbcClient != null) {
                 List<List<String>> selectResult = jdbcClient.getSelectResult(sql);
                 if (CollectionUtils.isEmpty(selectResult)) {
@@ -200,7 +207,7 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
     }
 
     @Override
-    public Result queryConnection(String dataSourceName, String typeName) {
+    public Result queryConnection(String dataSourceName) {
         DataSource dataSource = dataSourceMapper.queryByName(dataSourceName, null);
         Result<Object> result = new Result<>();
         if (dataSource == null) {
@@ -208,8 +215,14 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
             return result;
         }
 
+        String newTypeName = putTypeName(dataSource.getDataSourceTypeId());
+        if(StringUtils.isBlank(newTypeName)){
+            putMsg(result, Status.QUERY_DATASOURCE_TYPE_ERROR);
+            return result;
+        }
+
         try {
-            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(typeName, dataSource);
+            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(newTypeName, dataSource);
             if (jdbcClient != null) {
                 Connection conn = jdbcClient.getConn();
                 if (conn == null) {
@@ -230,15 +243,22 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
     }
 
     @Override
-    public Result queryTableData(String dataSourceName, String database, String typeName, String tableName) {
+    public Result queryTableData(String dataSourceName, String database, String tableName) {
         Result<Object> result = new Result<>();
         DataSource dataSource = dataSourceMapper.queryByName(dataSourceName, null);
         if (Objects.isNull(dataSource)) {
             putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
             return result;
         }
+
+        String newTypeName = putTypeName(dataSource.getDataSourceTypeId());
+        if(StringUtils.isBlank(newTypeName)){
+            putMsg(result, Status.QUERY_DATASOURCE_TYPE_ERROR);
+            return result;
+        }
+
         try {
-            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(typeName, dataSource);
+            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(newTypeName, dataSource);
             if (Objects.isNull(jdbcClient)) {
                 putMsg(result, Status.DATASOURCE_NOT_EXISTS_ERROR);
                 return result;
