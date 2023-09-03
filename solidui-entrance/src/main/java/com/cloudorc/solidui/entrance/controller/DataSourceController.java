@@ -237,16 +237,16 @@ public class DataSourceController extends BaseController {
 
     @ApiOperation(value = "connect", notes = "connect")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataSourceName", required = false, dataType = "String", value = "data source name"),
+            @ApiImplicitParam(name = "dataSourceName", required = true, dataType = "String", value = "data source name"),
             @ApiImplicitParam(name = "typeName", required = false, dataType = "String", value = "type name")
     })
     @RequestMapping(value = "/connect/json", method = RequestMethod.POST)
     @ApiException(QUERY_DATASOURCE_ERROR)
     @ResponseStatus(HttpStatus.OK)
     public Result connect(@RequestParam(value = "dataSourceName", required = true) String dataSourceName,
-                          @RequestParam(value = "typeName", required = true) String typeName,
+                          @RequestParam(value = "typeName", required = false) String typeName,
                           HttpServletRequest request) {
-        return metadataQueryService.queryConnection(dataSourceName, typeName);
+        return metadataQueryService.queryConnection(dataSourceName);
     }
 
 }
