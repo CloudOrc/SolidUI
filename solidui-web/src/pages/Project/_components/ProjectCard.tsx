@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	Row,
@@ -34,6 +34,7 @@ import classNames from "classnames";
 import Apis from "@/apis";
 import { ProjectDataType } from "@/types";
 import "./ProjectCard.less";
+import { color } from "echarts";
 
 const { confirm } = Modal;
 
@@ -50,6 +51,8 @@ export interface ProjectCardProps {
 }
 
 export default function ProjectCard(props: ProjectCardProps) {
+	const inputRef = useRef<HTMLInputElement>()
+
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [editOpen, setEditOpen] = useState<boolean>(false);
@@ -95,6 +98,50 @@ export default function ProjectCard(props: ProjectCardProps) {
 	}
 
 	const clazzName = classNames("solidui-card__project", className);
+
+	const [showText, setShowText] = useState(true)
+	const [text, setText] = useState(item.projectName)
+	
+	const [inputValue, setInputValue] = useState('')
+	const onDoubleClick = () => {
+		setShowText(false)
+		setInputValue(text)
+		// console.log('inputRef', inputRef)
+		setTimeout(() => {
+			inputRef.current?.focus()
+		}, 100);
+	}
+	const onConfirm = () => {
+		// console.log('确定')
+		setShowText(true)
+		setText(inputValue)
+		console.log(text != inputValue)
+		if(text != inputValue){
+			onFinish(inputValue);
+		}
+	}
+	const onCancel = () => setShowText(true);
+
+	const onFinish = async (values) => {
+		const res = await Apis.project.update(
+			`${item.id}`,
+			values,
+		);
+		if (res.ok) {
+			message.success("rename ok");
+			setEditOpen(false);
+			onUpdate();
+		}
+	}
+	const [isHovered, setIsHovered] = useState(false);
+
+	const textHoverStyle = {
+		position: "relative",
+		display: "inline-block",
+		textDecoration: isHovered ? "underline" : "none",
+		// textDecorationColor: "blue",
+	};
+	
 	return (
 		<div
 			className={clazzName}
@@ -222,6 +269,39 @@ export default function ProjectCard(props: ProjectCardProps) {
 						<Avatar size={44} icon={<UserOutlined rev={1} />} />
 					</Col>
 					<Col flex="auto">
+					    {/* <div style={{fontSize:18}}>
+							{item.projectName}   	
+							<Editor
+									className="solidui-icon-btn"
+									style={{padding: "0 5px"}}
+									theme="outline"
+									size="18"
+									fill="#f1f1f1"
+									// strokeLinejoin="bevel"
+									// strokeLinecap="square"
+									strokeLinejoin="miter"
+									strokeLinecap="square"
+									onClick={() => {
+										setEditOpen(true);
+										form.setFieldValue("name", item.projectName);
+									}}
+								/>
+							
+						</div> */}
+						
+						<div style={textHoverStyle}
+       						onMouseEnter={() => setIsHovered(true)}
+      						onMouseLeave={() => setIsHovered(false)} >
+						{
+							showText ? <p onDoubleClick={onDoubleClick}>{item.projectName}</p > : ''
+						}
+					
+						<div style={{fontSize:16,display: !showText ? 'block' : 'none'}}>
+							<input  ref={(ref) => { inputRef.current = ref }} type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onBlur={onConfirm} style={{ color: '#000000', outline: '#6c6c6c' }} onKeyDown={(e) => { if (e.keyCode === 13) onConfirm() }}/>
+							{/* <button onClick={onConfirm}>确定</button> */}
+							{/* <button onClick={onCancel}>取消</button> */}
+						</div>
+						</div>
 						<div>{item.userName}</div>
 						<div>{item.updateTime}</div>
 					</Col>
