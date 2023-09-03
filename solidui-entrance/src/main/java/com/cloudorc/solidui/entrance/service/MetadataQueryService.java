@@ -21,9 +21,9 @@ import com.cloudorc.solidui.entrance.utils.Result;
 
 public interface MetadataQueryService {
 
-    Result queryDatabasesByDsName(String dataSourceName,String typeName);
+    Result queryDatabasesByDsName(String dataSourceName);
 
-    Result queryTablesByDsName(String dataSourceName,String dbName,String typeName);
+    Result queryTablesByDsName(String dataSourceName,String dbName);
 
     Result queryBySql(String dataSourceName,String sql,String typeName);
 
