@@ -16,27 +16,28 @@
  */
 package com.cloudorc.solidui.entrance.controller;
 
+import static com.cloudorc.solidui.entrance.enums.Status.QUERY_METADATA_DB_ERROR;
+import static com.cloudorc.solidui.entrance.enums.Status.QUERY_METADATA_SQL_ERROR;
+import static com.cloudorc.solidui.entrance.enums.Status.QUERY_METADATA_TABLE_ERROR;
+
 import com.cloudorc.solidui.entrance.exceptions.ApiException;
 import com.cloudorc.solidui.entrance.service.MetadataQueryService;
 import com.cloudorc.solidui.entrance.utils.Result;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static com.cloudorc.solidui.entrance.enums.Status.QUERY_METADATA_DB_ERROR;
-import static com.cloudorc.solidui.entrance.enums.Status.QUERY_METADATA_SQL_ERROR;
-import static com.cloudorc.solidui.entrance.enums.Status.QUERY_METADATA_TABLE_ERROR;
 
 @Api(tags = "metadata_query")
 @RestController
@@ -55,9 +56,9 @@ public class MetadataQueryController extends BaseController {
     @ApiException(QUERY_METADATA_DB_ERROR)
     @RequestMapping(value = "/queryDatabases", method = RequestMethod.GET)
     public Result getDatabases(
-            @RequestParam("dataSourceName") String dataSourceName,
-            @RequestParam(value = "typeName",required = false) String typeName,
-            HttpServletRequest request) {
+                               @RequestParam("dataSourceName") String dataSourceName,
+                               @RequestParam(value = "typeName", required = false) String typeName,
+                               HttpServletRequest request) {
         return metadataQueryService.queryDatabasesByDsName(dataSourceName);
 
     }
@@ -72,10 +73,10 @@ public class MetadataQueryController extends BaseController {
     @ApiException(QUERY_METADATA_TABLE_ERROR)
     @RequestMapping(value = "/queryTables", method = RequestMethod.GET)
     public Result getTables(
-            @RequestParam("dataSourceName") String dataSourceName,
-            @RequestParam("database") String database,
-            @RequestParam(value = "typeName",required = false) String typeName,
-            HttpServletRequest request) {
+                            @RequestParam("dataSourceName") String dataSourceName,
+                            @RequestParam("database") String database,
+                            @RequestParam(value = "typeName", required = false) String typeName,
+                            HttpServletRequest request) {
         return metadataQueryService.queryTablesByDsName(dataSourceName, database);
     }
 
@@ -88,12 +89,12 @@ public class MetadataQueryController extends BaseController {
     })
     @ResponseStatus(HttpStatus.OK)
     @ApiException(QUERY_METADATA_SQL_ERROR)
-    @GetMapping(value = "/queryTableData")
+    @RequestMapping(value = "/queryTableData", method = RequestMethod.GET)
     public Result getTables(
-            @RequestParam("dataSourceName") String dataSourceName,
-            @RequestParam("database") String database,
-            @RequestParam(value = "typeName",required = false) String typeName,
-            @RequestParam("tableName") String tableName) {
+                            @RequestParam("dataSourceName") String dataSourceName,
+                            @RequestParam("database") String database,
+                            @RequestParam(value = "typeName", required = false) String typeName,
+                            @RequestParam("tableName") String tableName) {
         return metadataQueryService.queryTableData(dataSourceName, database, tableName);
     }
 
@@ -107,10 +108,10 @@ public class MetadataQueryController extends BaseController {
     @ApiException(QUERY_METADATA_SQL_ERROR)
     @RequestMapping(value = "/querySql", method = RequestMethod.GET)
     public Result querySelectSql(
-            @RequestParam("dataSourceName") String dataSourceName,
-            @RequestParam("sql") String sql,
-            @RequestParam(value = "typeName",required = false) String typeName,
-            HttpServletRequest request) {
+                                 @RequestParam("dataSourceName") String dataSourceName,
+                                 @RequestParam("sql") String sql,
+                                 @RequestParam(value = "typeName", required = false) String typeName,
+                                 HttpServletRequest request) {
         return metadataQueryService.queryBySql(dataSourceName, sql);
     }
 
@@ -124,12 +125,11 @@ public class MetadataQueryController extends BaseController {
     @ApiException(QUERY_METADATA_SQL_ERROR)
     @RequestMapping(value = "/querySql/id", method = RequestMethod.GET)
     public Result querySelectSql(
-            @RequestParam("dataSourceId") Long dataSourceId,
-            @RequestParam("sql") String sql,
-            @RequestParam(value ="typeId",required = false) Long typeId,
-            HttpServletRequest request) {
+                                 @RequestParam("dataSourceId") Long dataSourceId,
+                                 @RequestParam("sql") String sql,
+                                 @RequestParam(value = "typeId", required = false) Long typeId,
+                                 HttpServletRequest request) {
         return metadataQueryService.queryBySql(dataSourceId, sql);
     }
-
 
 }
