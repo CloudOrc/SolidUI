@@ -115,7 +115,7 @@ export default function ProjectCard(props: ProjectCardProps) {
 		// console.log('确定')
 		setShowText(true)
 		setText(inputValue)
-		console.log(text != inputValue)
+		//console.log(text != inputValue)
 		if(text != inputValue){
 			onFinish(inputValue);
 		}
@@ -281,26 +281,6 @@ export default function ProjectCard(props: ProjectCardProps) {
 						<Avatar size={44} icon={<UserOutlined rev={1} />} />
 					</Col>
 					<Col flex="auto">
-					    {/* <div style={{fontSize:18}}>
-							{item.projectName}   	
-							<Editor
-									className="solidui-icon-btn"
-									style={{padding: "0 5px"}}
-									theme="outline"
-									size="18"
-									fill="#f1f1f1"
-									// strokeLinejoin="bevel"
-									// strokeLinecap="square"
-									strokeLinejoin="miter"
-									strokeLinecap="square"
-									onClick={() => {
-										setEditOpen(true);
-										form.setFieldValue("name", item.projectName);
-									}}
-								/>
-							
-						</div> */}
-						
 						<div style={textHoverStyle}
        						onMouseEnter={() => setIsHovered(true)}
       						onMouseLeave={() => setIsHovered(false)} >
@@ -314,8 +294,7 @@ export default function ProjectCard(props: ProjectCardProps) {
 					
 						<div style={{display: !showText ? 'block' : 'none' ,paddingTop:10}}>
 							<input  ref={(ref) => { inputRef.current = ref }} type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onBlur={onConfirm} style={{width:'100%', color: '#ffffff', outline: 'none' ,borderTop: 'none',borderLeft: 'none',borderRight: 'none',borderBottomColor:'blue',backgroundColor:'#6c6c6c'}} onKeyDown={(e) => { if (e.keyCode === 13) onConfirm() }}/>
-							{/* <button onClick={onConfirm}>确定</button> */}
-							{/* <button onClick={onCancel}>取消</button> */}
+							
 						</div>
 						</div>
 						<div>{item.userName}</div>
