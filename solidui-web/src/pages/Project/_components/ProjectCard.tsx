@@ -139,7 +139,7 @@ export default function ProjectCard(props: ProjectCardProps) {
 		position: "relative",
 		display: "inline-block",
 		textDecoration: isHovered ? "underline" : "none",
-		// textDecorationColor: "blue",
+		//  textDecorationColor: "blue",
 	};
 	
 	return (
