@@ -17,6 +17,7 @@
 
 package com.cloudorc.solidui.entrance.service.impl;
 
+import com.cloudorc.solidui.common.utils.JSONUtils;
 import com.cloudorc.solidui.dao.entity.DataSource;
 import com.cloudorc.solidui.dao.entity.DataSourceType;
 import com.cloudorc.solidui.dao.mapper.DataSourceMapper;
@@ -26,12 +27,6 @@ import com.cloudorc.solidui.entrance.service.MetadataQueryService;
 import com.cloudorc.solidui.entrance.utils.DataSourceUtils;
 import com.cloudorc.solidui.entrance.utils.Result;
 import com.cloudorc.solidui.plugin.jdbc.JdbcClient;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -40,8 +35,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 @Service
 public class MetadataQueryServiceImpl extends BaseServiceImpl implements MetadataQueryService {
+
     private final Logger logger = LoggerFactory.getLogger(MetadataQueryServiceImpl.class);
     @Autowired
     private DataSourceMapper dataSourceMapper;
@@ -50,7 +53,7 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
 
     @Override
     public Result queryDatabasesByDsName(String dataSourceName) {
-        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName,null);
+        DataSource dataSource = dataSourceMapper.queryByName(dataSourceName, null);
         Result<Object> result = new Result<>();
         if (dataSource == null) {
             putMsg(result, Status.QUERY_METADATA_DB_ERROR);
@@ -58,14 +61,14 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
         }
 
         String newTypeName = putTypeName(dataSource.getDataSourceTypeId());
-        if(StringUtils.isBlank(newTypeName)){
+        if (StringUtils.isBlank(newTypeName)) {
             putMsg(result, Status.QUERY_DATASOURCE_TYPE_ERROR);
             return result;
         }
 
         try {
-            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(newTypeName,dataSource);
-            if(jdbcClient != null)  {
+            JdbcClient jdbcClient = DataSourceUtils.queryJdbcClient(newTypeName, dataSource);
+            if (jdbcClient != null) {
                 List<String> allDatabase = jdbcClient.getAllDatabase();
                 if (CollectionUtils.isEmpty(allDatabase)) {
                     putMsg(result, Status.QUERY_METADATA_DB_ERROR);
@@ -94,7 +97,7 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
             return result;
         }
         String newTypeName = putTypeName(dataSource.getDataSourceTypeId());
-        if(StringUtils.isBlank(newTypeName)){
+        if (StringUtils.isBlank(newTypeName)) {
             putMsg(result, Status.QUERY_DATASOURCE_TYPE_ERROR);
             return result;
         }
@@ -137,7 +140,7 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
         }
 
         String newTypeName = putTypeName(dataSource.getDataSourceTypeId());
-        if(StringUtils.isBlank(newTypeName)){
+        if (StringUtils.isBlank(newTypeName)) {
             putMsg(result, Status.QUERY_DATASOURCE_TYPE_ERROR);
             return result;
         }
@@ -180,7 +183,7 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
         }
 
         String newTypeName = putTypeName(dataSource.getDataSourceTypeId());
-        if(StringUtils.isBlank(newTypeName)){
+        if (StringUtils.isBlank(newTypeName)) {
             putMsg(result, Status.QUERY_DATASOURCE_TYPE_ERROR);
             return result;
         }
@@ -216,7 +219,7 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
         }
 
         String newTypeName = putTypeName(dataSource.getDataSourceTypeId());
-        if(StringUtils.isBlank(newTypeName)){
+        if (StringUtils.isBlank(newTypeName)) {
             putMsg(result, Status.QUERY_DATASOURCE_TYPE_ERROR);
             return result;
         }
@@ -252,7 +255,7 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
         }
 
         String newTypeName = putTypeName(dataSource.getDataSourceTypeId());
-        if(StringUtils.isBlank(newTypeName)){
+        if (StringUtils.isBlank(newTypeName)) {
             putMsg(result, Status.QUERY_DATASOURCE_TYPE_ERROR);
             return result;
         }
@@ -289,9 +292,8 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
                 }
                 fieldValueResults.add(fieldValueMap);
             }
-
             putMsg(result, Status.SUCCESS);
-            result.setData(fieldValueResults);
+            result.setData(JSONUtils.toJsonString(fieldValueResults));
         } catch (Exception e) {
             logger.error("queryTableData error", e);
             putMsg(result, Status.QUERY_METADATA_SQL_ERROR);
@@ -301,11 +303,11 @@ public class MetadataQueryServiceImpl extends BaseServiceImpl implements Metadat
     }
 
     private String putTypeName(Long dataSourceTypeId) {
-        if(dataSourceTypeId == null){
+        if (dataSourceTypeId == null) {
             return null;
         }
         DataSourceType dataSourceType = dataSourceTypeMapper.queryById(dataSourceTypeId);
-        if(dataSourceType == null){
+        if (dataSourceType == null) {
             return null;
         }
         return dataSourceType.getName();
