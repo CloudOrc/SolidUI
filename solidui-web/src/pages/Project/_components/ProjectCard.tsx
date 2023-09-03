@@ -154,7 +154,8 @@ export default function ProjectCard(props: ProjectCardProps) {
 			}}
 		>
 			<div className="card-content">
-				<div className="content-title">{item.projectName}</div>
+				{/* <div className="content-title">{item.projectName}</div> */}
+				<div className="content-title"></div>
 				{popup ? (
 					<div className="content-mask">
 						<div className="mask-icons">
@@ -296,8 +297,8 @@ export default function ProjectCard(props: ProjectCardProps) {
 							showText ? <p onDoubleClick={onDoubleClick}>{item.projectName}</p > : ''
 						}
 					
-						<div style={{fontSize:16,display: !showText ? 'block' : 'none'}}>
-							<input  ref={(ref) => { inputRef.current = ref }} type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onBlur={onConfirm} style={{ color: '#000000', outline: '#6c6c6c' }} onKeyDown={(e) => { if (e.keyCode === 13) onConfirm() }}/>
+						<div style={{fontSize:14,display: !showText ? 'block' : 'none' ,paddingTop:10}}>
+							<input  ref={(ref) => { inputRef.current = ref }} type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onBlur={onConfirm} style={{ color: '#ffffff', outline: 'none' ,borderTop: 'none',borderLeft: 'none',borderRight: 'none',borderBottomColor:'blue',backgroundColor:'#6c6c6c'}} onKeyDown={(e) => { if (e.keyCode === 13) onConfirm() }}/>
 							{/* <button onClick={onConfirm}>确定</button> */}
 							{/* <button onClick={onCancel}>取消</button> */}
 						</div>
