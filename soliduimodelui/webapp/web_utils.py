@@ -25,13 +25,13 @@ def response_format(code=0,msg="success",data={},success=True,failed=False):
     }
 
 
-def query_model(db_host='localhost',db_port=3306,db_user='root',db_pass='password', db_name='testdb', modelId=0):
+def query_model(db_host='localhost',db_port=3306,db_user='root',db_pass='password', db_name='testdb', model_id=0):
 
     conn = pymysql.connect(host=db_host, port=db_port, user=db_user, passwd=db_pass, db=db_name, cursorclass=pymysql.cursors.DictCursor)
 
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM solidui_model_type WHERE id = %s",modelId)
+    cursor.execute("SELECT * FROM solidui_model_type WHERE id = %s", model_id)
 
     result = cursor.fetchone()
 
