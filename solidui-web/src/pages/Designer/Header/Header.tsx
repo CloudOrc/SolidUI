@@ -109,7 +109,7 @@ function Header() {
 						{/* SolidUI */}
 						{vars.APP_NAME || "SolidUI"}
 					</div>
-					<div className="version">v{vars.APP_VERSION || "0.2.0"}</div>
+					<div className="version">v{vars.APP_VERSION || "0.3.0"}</div>
 					<div className="split-line" />
 					<div className="left-main">
 						<span style={{ marginLeft: "10px" }}>{title}</span>
