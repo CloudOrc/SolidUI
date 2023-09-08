@@ -55,6 +55,7 @@ function useDataProperties() {
 
 	const handleLoad = useMemoizedFn(async () => {
 		const view = mm.getCurrentView();
+		console.log(view)
 		if (isNil(view)) {
 			return;
 		}

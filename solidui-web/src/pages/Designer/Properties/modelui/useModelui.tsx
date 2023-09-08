@@ -18,11 +18,20 @@
 import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import { useMemoizedFn } from "ahooks";
-import { eventbus } from "@/utils";
+import { eventbus, mm } from "@/utils";
 import Apis from "@/apis";
-import { ApiResult } from "@/types";
+import { ApiResult, DataSourceDataType, DataSourceTypeDataType } from "@/types";
 import { WaitingStates, MessageDict } from "@/types/chat";
-import { isNil } from "lodash-es";
+import { find, isNil, cloneDeep } from "lodash-es";
+
+interface Option {
+	key: string;
+	value: string | number | null;
+	label: React.ReactNode;
+	children: Option[];
+	isLeaf: boolean;
+	loading?: boolean;
+}
 
 function useModelui() {
 	const [models, setModels] = useState<
@@ -44,6 +53,26 @@ function useModelui() {
 
 	const selectedModelIdRef = React.useRef<number>();
 	const promptContentRef = React.useRef<string>();
+	const dbContentRef = React.useRef<string>();
+
+	const [modalOpen, setModalOpen] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [dataSources, setDataSources] = useState<DataSourceDataType[]>([]);
+	const [dataSourceOptions, setDataSourceOptions] = useState<Option[]>([]);
+	const [selectedDataSourceOptions, setSelectedDataSourceOptions] = useState<
+		string[]
+	>([]);
+	const [dataSourceTypes, setDataSourceTypes] = useState<
+		DataSourceTypeDataType[]
+	>([]);
+	const dsTypeIdRef = React.useRef<string>();
+	const [selectedDataSource, setSelectedDataSource] = useState<{
+		dataSourceName: string;
+		typeName: string;
+	}>();
+	const [databaseInput, setDatabaseInput] = useState<string>("");
+	const [columns, setColumns] = useState<string[]>([]);
+	const [rows, setRows] = useState<any[][]>([]);
 
 	const loadModels = useMemoizedFn(async () => {
 		const res: ApiResult<Array<{ label: string; value: any }>> =
@@ -194,14 +223,145 @@ function useModelui() {
 		setMessages((state: any) => [...state, message]);
 	}
 
+	async function toggleModal(open: boolean) {
+		console.log(open === true)
+		if (open === true) {
+			handleLoad()
+		}
+		setModalOpen(open);
+	}
+
+	function handleDatabaseSave () {
+
+	}
+
+	function handleDBInputInputChange(value: string) {
+		dbContentRef.current = value || "";
+		setPromptInput(value || "");
+	}
+
+	const handleLoad = useMemoizedFn(async () => {
+		setLoading(true);
+
+		const res: ApiResult<DataSourceTypeDataType[]> =
+			await Apis.datasource.types();
+		if (res.ok) {
+			const mDataSourceTypes = res.data || [];
+			const res2: ApiResult<DataSourceDataType> = await Apis.datasource.query({
+				pageNo: 1,
+				pageSize: 10000,
+				expire: false,
+				name: "",
+			});
+			if (res2.ok) {
+				const data = res2.data || ({} as any);
+				const records: DataSourceDataType[] = data.totalList || [];
+				const mDataSourceOptions: Option[] = [];
+				records.forEach((item: any) => {
+					// item.key = item.id;
+					mDataSourceOptions.push({
+						key: `${item.id}`,
+						label: item.dataSourceName,
+						value: item.id,
+						isLeaf: false,
+						children: [],
+					});
+				});
+
+				setDataSourceOptions(mDataSourceOptions);
+				setDataSourceTypes(mDataSourceTypes);
+				setDataSources(records || []);
+				setColumns([]);
+				setRows([]);
+				
+			}
+		}
+		setLoading(false);
+	});
+
+	async function queryTables(id: string) {
+		const target = find(dataSources, (d) => d.id === id);
+		if (target === null || undefined === target) {
+			return;
+		}
+		const dsType = find(
+			dataSourceTypes,
+			(d) => d.id === `${target?.dataSourceTypeId}`,
+		);
+		if (dsType === null || undefined === dsType) {
+			return;
+		}
+		dsTypeIdRef.current = `${target?.dataSourceTypeId}`;
+		const res: ApiResult<any> = await Apis.datasource.dbs({
+			dataSourceName: target.dataSourceName,
+			typeName: dsType.classifier,
+		});
+		if (res.ok) {
+			const data = res.data || ({} as any);
+			const records = data || [];
+			const dsOptions = cloneDeep(dataSourceOptions);
+			const targetDsOption = find(dsOptions, (ds) => ds.value === id);
+			records.forEach((item: any) => {
+				targetDsOption?.children.push({
+					key: item,
+					label: item,
+					value: item,
+					isLeaf: true,
+					children: [],
+				});
+			});
+
+			/// / dataSourceId
+			const currentView = mm.getCurrentView();
+			if (!isNil(currentView)) {
+				currentView.data.dataSourceId = id;
+				currentView.data.dataSourceName = target.dataSourceName;
+				currentView.data.dataSourceTypeId = dsTypeIdRef.current;
+				currentView.data.dataSourceTypeName = dsType.name;
+			}
+
+			setDataSourceOptions(dsOptions);
+			setSelectedDataSource({
+				dataSourceName: target.dataSourceName,
+				typeName: dsType.classifier,
+			});
+		}
+	}
+
+	// TODO type
+	async function changeDsSelections(value: any[], selectOptions: any[]) {
+		setSelectedDataSourceOptions(value);
+		const currentView = mm.getCurrentView();
+		if (
+			selectOptions !== null &&
+			undefined !== selectOptions &&
+			selectOptions.length === 2 &&
+			!isNil(currentView)
+		) {
+			const val = selectOptions[1].value;
+			currentView.data.table = val;
+		}
+	}
+
 	return {
 		models,
 		messages,
 		promptInput,
 		waitingForSystem,
+		modalOpen,
+		loading,
+		dataSourceOptions,
+		selectedDataSourceOptions,
+		databaseInput,
 		handleModelChange,
 		handlePromptInputChange,
 		sendMessage,
+		setModalOpen,
+		toggleModal,
+		handleDatabaseSave,
+		queryTables,
+		changeDsSelections,
+		handleDBInputInputChange
 	};
 }
 
