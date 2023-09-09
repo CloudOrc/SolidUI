@@ -70,9 +70,18 @@ function useModelui() {
 		dataSourceName: string;
 		typeName: string;
 	}>();
-	const [databaseInput, setDatabaseInput] = useState<string>("");
+	
 	const [columns, setColumns] = useState<string[]>([]);
 	const [rows, setRows] = useState<any[][]>([]);
+	const [tableOptions, setTableOptions] = useState<
+		Array<{ key: string; label: string; value: any }>
+	>([]);
+	
+	const dataSourceNameRef = React.useRef<string>("");
+	const databaseRef = React.useRef<string>("");
+	const dbsTableRef = React.useRef<string>("");
+
+	const [tableData, setTableData] = useState<string>("");
 
 	const loadModels = useMemoizedFn(async () => {
 		const res: ApiResult<Array<{ label: string; value: any }>> =
@@ -235,9 +244,8 @@ function useModelui() {
 
 	}
 
-	function handleDBInputInputChange(value: string) {
-		dbContentRef.current = value || "";
-		setPromptInput(value || "");
+	function handleTableDataChange(value: string) {
+		setTableData(value || "");
 	}
 
 	const handleLoad = useMemoizedFn(async () => {
@@ -279,7 +287,7 @@ function useModelui() {
 		setLoading(false);
 	});
 
-	async function queryTables(id: string) {
+	async function queryDbs(id: string) {
 		const target = find(dataSources, (d) => d.id === id);
 		if (target === null || undefined === target) {
 			return;
@@ -328,19 +336,138 @@ function useModelui() {
 		}
 	}
 
+	async function queryTables(dataSourceName: string | undefined, database: string | undefined) {
+		const res: ApiResult<any> = await Apis.datasource.tables({
+			dataSourceName: dataSourceName,
+			database: database,
+		});
+
+		if (res.ok) {
+			const datas = res.data || [];
+			const tableOptions = datas.map((table: any) => ({
+				key: table,
+				label: table,
+				value: table,
+			}));
+			setTableOptions(tableOptions);
+		}
+	}
+
+	function handleTableChange (value: string) {
+		dbsTableRef.current = value
+	}
+
 	// TODO type
 	async function changeDsSelections(value: any[], selectOptions: any[]) {
 		setSelectedDataSourceOptions(value);
-		const currentView = mm.getCurrentView();
-		if (
-			selectOptions !== null &&
-			undefined !== selectOptions &&
-			selectOptions.length === 2 &&
-			!isNil(currentView)
-		) {
-			const val = selectOptions[1].value;
-			currentView.data.table = val;
+		dataSourceNameRef.current = selectOptions[0].label;
+		databaseRef.current = selectOptions[1].label;
+		queryTables(dataSourceNameRef.current, databaseRef.current);
+	}
+
+	async function handleExecute() {
+		const res: ApiResult<any> = await Apis.datasource.tableData({
+			dataSourceName: dataSourceNameRef.current,
+			database: databaseRef.current,
+			tableName: dbsTableRef.current
+		});
+
+		if (res.ok) {
+			setTableData(res.data)
 		}
+	}
+
+	function handleTransitionJsonToString (jsonObj: any, callback: any) {
+		var _jsonObj = '';
+		if (Object.prototype.toString.call(jsonObj) !== "[object String]") {
+			try {
+				_jsonObj = JSON.stringify(jsonObj);
+			} catch (error: any) {
+				message.error(error.message);
+				callback(error);
+			}
+		} else {
+			try {jsonObj = jsonObj.replace(/(\')/g, '\"');
+				_jsonObj = JSON.stringify(JSON.parse(jsonObj));
+			} catch (error: any) {
+				message.error(error.message);
+				callback(error);
+			}
+		}
+		setTableData(_jsonObj)
+		return _jsonObj
+	}
+
+	function handleFormatJson (callback: any) {
+		let jsonObj = tableData
+		var reg = null;
+		var formatted = '';
+		var pad = 0;
+		var PADDING = '    ';
+		var jsonString: any = handleTransitionJsonToString(jsonObj, callback);
+		if (!jsonString) {
+			return jsonString;
+		}
+		var _index: any = [];
+		var _indexStart: any = null;
+		var _indexEnd: any = null;
+		var jsonArray: any = [];
+		jsonString = jsonString.replace(/([\{\}])/g, '\r\n$1\r\n');
+		jsonString = jsonString.replace(/([\[\]])/g, '\r\n$1\r\n');
+		jsonString = jsonString.replace(/(\,)/g, '$1\r\n');
+		jsonString = jsonString.replace(/(\r\n\r\n)/g, '\r\n');
+		jsonString = jsonString.replace(/\r\n\,/g, ',');
+		jsonArray = jsonString.split('\r\n');
+		jsonArray.forEach(function (node: any, index: any) {
+			var num = node.match(/\"/g) ? node.match(/\"/g).length : 0;
+			if (num % 2 && !_indexStart) {
+				_indexStart = index
+			}
+			if (num % 2 && _indexStart && _indexStart != index) {
+				_indexEnd = index
+			}
+			if (_indexStart && _indexEnd) {
+				_index.push({start: _indexStart,end: _indexEnd})
+				_indexStart = null
+				_indexEnd = null
+			}
+		})
+		_index.reverse().forEach(function (item: any, index: any) {
+			var newArray = jsonArray.slice(item.start, item.end + 1)
+			jsonArray.splice(item.start, item.end + 1 - item.start, newArray.join(''))
+		})
+		jsonString = jsonArray.join('\r\n');
+		jsonString = jsonString.replace(/\:\r\n\{/g, ':{');
+		jsonString = jsonString.replace(/\:\r\n\[/g, ':[');
+		jsonArray = jsonString.split('\r\n');
+		jsonArray.forEach(function (item: any, index: any) {
+			var i = 0;
+			var indent = 0;
+			var padding = '';
+			if (item.match(/\{$/) || item.match(/\[$/)) {
+				indent += 1
+			} else if (item.match(/\}$/) || item.match(/\]$/) || item.match(/\},$/) || item.match(/\],$/)) {
+				if (pad !== 0) {
+					pad -= 1
+				}
+			} else {
+				indent = 0
+			}
+			for (i = 0; i < pad; i++) {
+				padding += PADDING
+			}
+			formatted += padding + item + '\r\n'
+			pad += indent
+		})
+		setTableData(formatted.trim())
+		return formatted.trim()
+	}
+
+	function handleSaveTableData () {
+		let value = promptInput + tableData
+		console.log(value)
+		setPromptInput(value || "");
+		setModalOpen(false)
 	}
 
 	return {
@@ -352,16 +479,22 @@ function useModelui() {
 		loading,
 		dataSourceOptions,
 		selectedDataSourceOptions,
-		databaseInput,
+		tableData,
+		tableOptions,
 		handleModelChange,
 		handlePromptInputChange,
 		sendMessage,
 		setModalOpen,
 		toggleModal,
 		handleDatabaseSave,
-		queryTables,
+		queryDbs,
 		changeDsSelections,
-		handleDBInputInputChange
+		handleTableDataChange,
+		handleTableChange,
+		handleExecute,
+		handleFormatJson,
+		handleTransitionJsonToString,
+		handleSaveTableData
 	};
 }
 

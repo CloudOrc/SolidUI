@@ -131,6 +131,25 @@ const datasource = {
 		ApiService.get<T>(
 			`/solidui/metadataQuery/queryDatabases?dataSourceName=${params.dataSourceName}&typeName=${params.typeName}`,
 		),
+	tables: <T>(
+		params: { dataSourceName: string | undefined; database: string | undefined } = {
+			dataSourceName: "",
+			database: "",
+		},
+	) =>
+		ApiService.get<T>(
+			`/solidui/metadataQuery/queryTables?dataSourceName=${params.dataSourceName}&database=${params.database}`,
+		),
+	tableData: <T>(
+		params: { dataSourceName: string; database: string; tableName: string } = {
+			dataSourceName: "",
+			database: "",
+			tableName: ""
+		},
+	) =>
+		ApiService.get<T>(
+			`/solidui/metadataQuery/queryTableData?dataSourceName=${params.dataSourceName}&database=${params.database}&tableName=${params.tableName}`,
+		),
 	querySql: <T>(params: {
 		dataSourceName: string;
 		typeName: string;

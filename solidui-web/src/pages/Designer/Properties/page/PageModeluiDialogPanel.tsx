@@ -33,15 +33,20 @@ export default function PageModeluiPropertiesPanel() {
 		loading,
 		dataSourceOptions,
 		selectedDataSourceOptions,
-		databaseInput,
+		tableData,
 		handlePromptInputChange,
 		handleModelChange,
 		sendMessage,
 		toggleModal,
-		queryTables,
+		queryDbs,
 		changeDsSelections,
-		handleDBInputInputChange,
-		handleDataSourceChange
+		handleTableDataChange,
+		tableOptions,
+		handleTableChange,
+		handleExecute,
+		handleFormatJson,
+		handleTransitionJsonToString,
+		handleSaveTableData
 	} = useModelui();
 	const chatScrollRef = React.useRef<HTMLDivElement>(null);
 
@@ -130,7 +135,7 @@ export default function PageModeluiPropertiesPanel() {
 											loadData={(selectOptions) => {
 												const option = selectOptions[0];
 												console.log(option)
-												queryTables(option.value as string);
+												queryDbs(option.value as string);
 											}}
 											onChange={changeDsSelections}
 											showSearch
@@ -157,10 +162,10 @@ export default function PageModeluiPropertiesPanel() {
 											style={{ width: "325px" }} 
 											placeholder="Please select a table"
 											defaultValue={
-												models && models[0] && models[0].value ? models[0].value : 1
+												tableOptions && tableOptions[0] && tableOptions[0].value ? tableOptions[0].value : null
 											}
-											onChange={handleModelChange}
-											options={models}
+											onChange={handleTableChange}
+											options={tableOptions}
 										/>
 									</Col>
 								</Row>
@@ -168,19 +173,38 @@ export default function PageModeluiPropertiesPanel() {
 							<div className="action-bar" style={{
 								marginBottom: 15
 							}}>
-								<Button type="primary" style={{
-									marginRight: 15
-								}}>
+								<Button type="primary" 
+									style={{
+										marginRight: 15
+									}}
+									onClick={() => {
+										handleExecute()
+									}}
+								>
 									Execute
 								</Button>
-								<Button style={{
-									marginRight: 15
-								}}>
+								<Button 
+									style={{
+										marginRight: 15
+									}}
+									onClick={() => {
+										handleFormatJson(() => {
+											console.log('失败了！')
+										})
+									}}
+								>
 									Format verification
 								</Button>
-								<Button style={{
-									marginRight: 15
-								}}>
+								<Button 
+									style={{
+										marginRight: 15
+									}}
+									onClick={() => {
+										handleTransitionJsonToString(tableData, () => {
+											console.log('失败了！')
+										})
+									}}
+								>
 									Compression
 								</Button>
 							</div>
@@ -192,8 +216,8 @@ export default function PageModeluiPropertiesPanel() {
 										maxHeight: 130,
 										width: "100%",
 									}}
-									value={databaseInput}
-									onChange={handleDBInputInputChange}
+									value={tableData}
+									onChange={handleTableDataChange}
 								/>
 							</div>
 						</div>
@@ -206,7 +230,9 @@ export default function PageModeluiPropertiesPanel() {
 							>
 								Cancel
 							</Button>
-							<Button type="primary" size="small">
+							<Button type="primary" size="small" onClick={() => {
+								handleSaveTableData()
+							}}>
 								Save
 							</Button>
 						</div>
