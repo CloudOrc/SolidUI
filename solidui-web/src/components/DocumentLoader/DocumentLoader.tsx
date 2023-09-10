@@ -21,11 +21,13 @@ import Sandbox from "./Sandbox";
 function patchElement(doc: ShadowRoot) {
 	const head = document.createElement("div");
 	const body = document.createElement("div");
+	head.setAttribute("data-element", "head");
+	body.setAttribute("data-element", "body");
 	doc.appendChild(head);
 	doc.appendChild(body);
 	Reflect.set(doc, "body", body);
 	Reflect.set(doc, "head", head);
-	Reflect.set(doc, "documentElement", doc);
+	// Reflect.set(doc, "documentElement", doc);
 	const docKeys = Object.keys(Document.prototype);
 	for (let index = 0; index < docKeys.length; index++) {
 		const key = docKeys[index];
@@ -38,6 +40,8 @@ function patchElement(doc: ShadowRoot) {
 					}
 					return value;
 				},
+				enumerable: true,
+				configurable: true,
 			});
 		}
 	}
@@ -121,6 +125,7 @@ export class DocumentLoaderClass extends HTMLElement {
 	load(tpl: string, callback: (finish?: boolean) => void) {
 		this.loadStatus = true;
 		importHTML(`/${this.cacheKey}`, {
+			// @ts-ignore
 			fetch: (url: string, ...args: any[]) => {
 				if (url === `/${this.cacheKey}`) {
 					return Promise.resolve(
