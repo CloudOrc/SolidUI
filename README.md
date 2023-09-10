@@ -48,7 +48,7 @@
 
 # Introduce
 
-AI-generated visualization prototyping and editing platform, support 2D, 3D models, combined with LLM(Large Language Model) for quick editing.
+AI-generated Graphic Models.
 
 ## Core Features
 
