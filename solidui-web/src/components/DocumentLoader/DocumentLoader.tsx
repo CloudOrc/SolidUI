@@ -1,5 +1,22 @@
-/* eslint-disable */
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import importHTML from "import-html-entry";
+import Sandbox from "./Sandbox";
 
 function patchElement(doc: ShadowRoot) {
 	const head = document.createElement("div");
@@ -44,54 +61,28 @@ function substitute(target: any) {
 	});
 }
 
-/**
- * 沙盒
- */
-export class Sandbox {
-	fakeTarget = {};
-	realTarget = {};
-
-	box: any = null;
-
-	constructor(target: any, fake: any) {
-		this.realTarget = target;
-		this.fakeTarget = fake;
-		this.box = new Proxy(this.fakeTarget, {
-			get: (target, key) => {
-				if (Reflect.has(target, key)) {
-					return Reflect.get(target, key);
-				} else {
-					const result = Reflect.get(this.realTarget, key);
-					if (typeof result === "function") {
-						return result.bind(this.realTarget);
-					}
-					return result;
-				}
-			},
-			set: (target, key, value) => {
-				return Reflect.set(target, key, value);
-			},
-		});
-	}
-}
-
 // 实现 document 加载组件
-class DocumentLoaderClass extends HTMLElement {
+export class DocumentLoaderClass extends HTMLElement {
 	// 当前实例的缓存key
 	cacheKey = crypto.randomUUID();
+
 	// 当前加载的状态
 	loadStatus: boolean | null = null;
+
 	// 下一个等待被加载的 document
 	nextDoc: string | null = null;
+
 	// 监听 attribute 变化
 	static get observedAttributes() {
 		return ["code"];
 	}
+
 	constructor() {
 		super();
 		// 启用 shadow dom
 		this.attachShadow({ mode: "open" });
 	}
+
 	// attribute 变化回调
 	attributeChangedCallback(prop: string, oldValue: string, newValue: string) {
 		if (prop === "code") {
@@ -127,10 +118,10 @@ class DocumentLoaderClass extends HTMLElement {
 	 * @param {*} tpl
 	 * @param {*} callback
 	 */
-	load(tpl: string, callback = (finish: boolean) => {}) {
+	load(tpl: string, callback: (finish?: boolean) => void) {
 		this.loadStatus = true;
 		importHTML(`/${this.cacheKey}`, {
-			fetch: (url, ...args) => {
+			fetch: (url: string, ...args: any[]) => {
 				if (url === `/${this.cacheKey}`) {
 					return Promise.resolve(
 						new Response(new Blob([tpl], { type: "text/plane" })),
@@ -139,7 +130,7 @@ class DocumentLoaderClass extends HTMLElement {
 				return fetch.bind(window)(url, ...args);
 			},
 		}).then(
-			(res) => {
+			(res: any) => {
 				this.loadStatus = false;
 				callback(true);
 				patchElement(this.shadowRoot as ShadowRoot);
