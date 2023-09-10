@@ -34,7 +34,6 @@ import classNames from "classnames";
 import Apis from "@/apis";
 import { ProjectDataType } from "@/types";
 import "./ProjectCard.less";
-import { color } from "echarts";
 
 const { confirm } = Modal;
 
@@ -115,7 +114,7 @@ export default function ProjectCard(props: ProjectCardProps) {
 		// console.log('确定')
 		setShowText(true)
 		setText(inputValue)
-		//console.log(text != inputValue)
+		// console.log(text != inputValue)
 		if(text != inputValue){
 			onFinish(inputValue);
 		}
@@ -166,7 +165,7 @@ export default function ProjectCard(props: ProjectCardProps) {
 		>
 			<div className="card-content">
 				{/* <div className="content-title">{item.projectName}</div> */}
-				<div className="content-title"></div>
+				<div className="content-title" />
 				{popup ? (
 					<div className="content-mask">
 						<div className="mask-icons">
@@ -288,12 +287,12 @@ export default function ProjectCard(props: ProjectCardProps) {
 							showText ? <p onDoubleClick={onDoubleClick} style={{width:200}}>{item.projectName}</p > : ''
 						}
 						{
-							isHovered ?  <span style={underlineStyle}></span> : ''
+							isHovered ? <span style={underlineStyle} /> : ''
 						}
 							   
 					
 						<div style={{display: !showText ? 'block' : 'none' ,paddingTop:10}}>
-							<input  ref={(ref) => { inputRef.current = ref }} type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onBlur={onConfirm} style={{width:'100%', color: '#ffffff', outline: 'none' ,borderTop: 'none',borderLeft: 'none',borderRight: 'none',borderBottomColor:'blue',backgroundColor:'#6c6c6c'}} onKeyDown={(e) => { if (e.keyCode === 13) onConfirm() }}/>
+							<input ref={(ref) => { inputRef.current = ref }} type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onBlur={onConfirm} style={{width:'100%', color: '#ffffff', outline: 'none' ,borderTop: 'none',borderLeft: 'none',borderRight: 'none',borderBottomColor:'blue',backgroundColor:'#6c6c6c'}} onKeyDown={(e) => { if (e.keyCode === 13) onConfirm() }}/>
 							
 						</div>
 						</div>
