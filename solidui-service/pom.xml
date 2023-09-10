@@ -21,11 +21,11 @@
     <parent>
         <groupId>com.cloudorc.solidui</groupId>
         <artifactId>solidui</artifactId>
-        <version>0.2.0</version>
+        <version>0.3.0</version>
     </parent>
 
     <artifactId>solidui-service</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

@@ -33,7 +33,8 @@ export type SolidViewType =
 	| "echarts_bar"
 	| "echarts_line"
 	| "echarts_pie"
-	| "image_base64";
+	| "image_base64"
+	| "html";
 
 export interface SolidModelDataType {
 	id: string;
@@ -81,21 +82,21 @@ export interface SolidViewDataType {
 	};
 	size: SolidComponentSizeDataType;
 	options?: any;
-	data: SolidViewDataDataType;
+	data?: SolidViewDataDataType;
 	// events?: SolidViewEventDataType[];
 	style?: React.CSSProperties;
 	frame: SolidComponentFrameDataType;
 }
 
 interface SolidViewDataDataType {
-	id: string;
-	title: string;
-	remote: boolean;
+	id?: string;
+	title?: string;
+	remote?: boolean;
 	dataset?: any[];
-	dataSourceId: string;
-	dataSourceName: string;
-	dataSourceTypeId: string;
-	dataSourceTypeName: string;
+	dataSourceId?: string;
+	dataSourceName?: string;
+	dataSourceTypeId?: string;
+	dataSourceTypeName?: string;
 	// dsId?: string;
 	// dsTypeId?: string;
 	table?: string;
@@ -105,6 +106,7 @@ interface SolidViewDataDataType {
 	prompt?: string;
 	sql?: string;
 	python?: string;
+	html?: string;
 }
 
 interface SolidViewDataDataXAxisType {

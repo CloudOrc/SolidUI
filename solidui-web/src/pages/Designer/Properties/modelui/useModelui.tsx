@@ -33,6 +33,15 @@ interface Option {
 	loading?: boolean;
 }
 
+function isXmlDocument(code: string) {
+	try {
+		const fragment = new DOMParser().parseFromString(code, "text/html");
+		return fragment.body.children.length > 0;
+	} catch (error) {
+		return false;
+	}
+}
+
 function useModelui() {
 	const [models, setModels] = useState<
 		Array<{ key: string; label: string; value: any }>
@@ -180,8 +189,16 @@ function useModelui() {
 				const data = res.data || {};
 				const code = data.code || "";
 				addMessage({ text: code, type: "code", role: "system" });
-				submitCode(code);
-				setWaitingForSystem(WaitingStates.RunningCode);
+				if (isXmlDocument(code)) {
+					eventbus.emit("onDraw", {
+						viewType: "html",
+						options: { code },
+					});
+					setWaitingForSystem(WaitingStates.Idle);
+				} else {
+					submitCode(code);
+					setWaitingForSystem(WaitingStates.RunningCode);
+				}
 			} else {
 				setWaitingForSystem(WaitingStates.Idle);
 			}

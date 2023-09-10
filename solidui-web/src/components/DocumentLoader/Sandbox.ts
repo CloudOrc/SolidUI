@@ -15,36 +15,29 @@
  * limitations under the License.
  */
 
-export interface ViewCategory {
-	key: string;
-	title: string;
-}
 
-export type ViewType =
-	| "echarts_bar"
-	| "echarts_line"
-	| "echarts_pie"
-	| "image_base64"
-	| "html";
+export default class Sandbox {
+	fakeTarget = {};
 
-export default abstract class ViewBuilder {
-	abstract createModel(options?: any): any;
+	realTarget = {};
 
-	abstract getFrame(): any;
+	box: any = null;
 
-	abstract getComponentType(): any;
-
-	abstract getId(): string;
-
-	abstract getCategory(): ViewCategory;
-
-	abstract getTitle(): string;
-
-	abstract getType(): ViewType;
-
-	abstract getIcon(): string;
-
-	abstract getImage(): string;
-
-	abstract getDescription(): string;
+	constructor(target: any, fake: any) {
+		this.realTarget = target;
+		this.fakeTarget = fake;
+		this.box = new Proxy(this.fakeTarget, {
+			get: (target, key) => {
+				if (Reflect.has(target, key)) {
+					return Reflect.get(target, key);
+				}
+				const result = Reflect.get(this.realTarget, key);
+				if (typeof result === "function") {
+					return result.bind(this.realTarget);
+				}
+				return result;
+			},
+			set: (target, key, value) => Reflect.set(target, key, value),
+		});
+	}
 }

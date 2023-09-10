@@ -130,9 +130,12 @@ export default function DefaultLayout() {
 									backgroundColor: "#0070cc",
 									verticalAlign: "middle",
 									cursor: "pointer",
+									paddingLeft: 30,
+									paddingRight: 30,
+									borderRadius: 30,
 								}}
 								shape="square"
-								size="large"
+								size="default"
 							>
 								admin
 							</Avatar>

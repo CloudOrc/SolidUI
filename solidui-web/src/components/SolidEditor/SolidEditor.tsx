@@ -161,7 +161,7 @@ export default class SolidEditor extends React.PureComponent<
 					position: "absolute",
 					transform: `translate(${vm.position.top}px, ${vm.position.left}px)`,
 				};
-				if (!vm.data.dataSourceId || !vm.data.sql) {
+				if (!vm.data?.dataSourceId || !vm.data?.sql) {
 					const localVM = builder.createModel();
 					vm.data = localVM.data;
 				}

@@ -35,22 +35,22 @@ module.exports = merge(baseConfig, {
     },
     proxy: {
       '/solidui/models/generate': {
-        target: 'http://localhost:5110',
+        target: `${process.env.PROXY_SERVER}:5110`,
         changeOrigin: true,
         pathRewrite: {}
       },
       '/solidui/kernel/restart': {
-        target: 'http://localhost:5010',
+        target: `${process.env.PROXY_SERVER}:5010`,
         changeOrigin: true,
         pathRewrite: {}
       },
       '/solidui/models/api/api': {
-        target: 'http://localhost:5110',
+        target: `${process.env.PROXY_SERVER}:5110`,
         changeOrigin: true,
         pathRewrite: {}
       },
       '/solidui': {
-        target: process.env.PROXY_SERVER,
+        target: `${process.env.PROXY_SERVER}:80`,
         changeOrigin: true,
         pathRewrite: {}
       }
