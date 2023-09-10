@@ -93,6 +93,7 @@ export default function PageModeluiPropertiesPanel() {
 					bodyStyle={{ padding: 0 }}
 					open={modalOpen}
 					modalRender={(modal: any) => modal}
+					destroyOnClose={true}
 				>
 					<div className="solidui-modal">
 						<div className="solidui-modal__header">
