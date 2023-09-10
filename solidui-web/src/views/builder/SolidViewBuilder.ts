@@ -24,7 +24,8 @@ export type ViewType =
 	| "echarts_bar"
 	| "echarts_line"
 	| "echarts_pie"
-	| "image_base64";
+	| "image_base64"
+	| "html";
 
 export default abstract class ViewBuilder {
 	abstract createModel(options?: any): any;
