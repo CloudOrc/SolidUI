@@ -11,7 +11,7 @@
         <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?label=license" />
     </a>
     <a target="_blank" href="https://www.oracle.com/technetwork/java/javase/downloads/index.html">
-        <img src="https://img.shields.io/badge/JDK-8-green.svg" />
+        <img src="https://img.shields.io/badge/JDK-8-blue.svg" />
     </a>
 
 <a target="_blank" href='https://github.com/CloudOrc/SolidUI/fork'>
@@ -21,22 +21,25 @@
 <img src="https://img.shields.io/github/stars/CloudOrc/SolidUI.svg" alt="github stars"/>
 </a>
 <a target="_blank" href='https://github.com/CloudOrc/SolidUI/graphs/contributors'>
-<img src="https://img.shields.io/github/contributors/CloudOrc/SolidUI.svg" alt="github contributors"/>
+<img src="https://img.shields.io/github/contributors/CloudOrc/SolidUI.svg?colorB=blue" alt="github contributors"/>
 </a>
 <a href="">
-<img src="https://badges.toozhao.com/badges/01GS2TEBGN98QRTZ1F3K0Y7XCG/green.svg" alt="page views"/>
+<img src="https://badges.toozhao.com/badges/01GS2TEBGN98QRTZ1F3K0Y7XCG/blue.svg" alt="page views"/>
 </a>
 <a target="_blank" href="https://huggingface.co/spaces/CloudOrc/SolidUI">
-<img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face%20Spaces-blue" alt="hugging face spaces"/>
+<img src="https://img.shields.io/badge/%F0%9F%A4%97%20-Hugging%20Face%20Spaces-blue" alt="hugging face spaces"/>
 </a>
 <a target="_blank" href="https://cloudorc.github.io/SolidUI-Website/">
 <img src="https://img.shields.io/badge/SolidUI%20Website-blue" alt="solidui website"/>
 </a>
 <a target="_blank" href="https://www.producthunt.com/posts/solidui?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-solidui" >
-<img src="https://img.shields.io/badge/producthunt-orange" alt="producthunt" />
+<img src="https://img.shields.io/badge/producthunt-blue" alt="producthunt" />
 </a>
 <a target="_blank" href="https://discord.gg/NGRNu2mGeQ">
-<img src="https://img.shields.io/discord/1110556150199504958" alt="discord"/>
+<img src="https://img.shields.io/badge/discord-blue" alt="discord"/>
+</a>
+<a target="_blank" href='https://gitee.com/CloudOrc/SolidUI'>
+<img src="https://shields.io/badge/%E2%AD%90-Gitee-blue" alt="gitee"/>
 </a>
 </p>
 <br/>
