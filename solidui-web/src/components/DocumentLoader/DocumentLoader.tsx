@@ -18,33 +18,24 @@
 import importHTML from "import-html-entry";
 import Sandbox from "./Sandbox";
 
-function patchElement(doc: ShadowRoot) {
-	const head = document.createElement("div");
-	const body = document.createElement("div");
-	head.setAttribute("data-element", "head");
-	body.setAttribute("data-element", "body");
-	doc.appendChild(head);
-	doc.appendChild(body);
-	Reflect.set(doc, "body", body);
-	Reflect.set(doc, "head", head);
-	// Reflect.set(doc, "documentElement", doc);
+function patchDocument(doc: Document, template: string) {
+	const domTree = new DOMParser().parseFromString(template, "text/html");
+	// @ts-ignore
+	doc.documentElement = domTree.documentElement;
+	doc.appendChild(doc.documentElement);
+
 	const docKeys = Object.keys(Document.prototype);
-	for (let index = 0; index < docKeys.length; index++) {
-		const key = docKeys[index];
+	docKeys.forEach((key) => {
 		if (!Reflect.has(doc, key)) {
 			Object.defineProperty(doc, key, {
 				get() {
 					let value = Reflect.get(document, key);
-					if (typeof value === "function") {
-						value = value.bind(document);
-					}
+					if (typeof value === "function") value = value.bind(document);
 					return value;
 				},
-				enumerable: true,
-				configurable: true,
 			});
 		}
-	}
+	});
 	return doc;
 }
 
@@ -138,9 +129,8 @@ export class DocumentLoaderClass extends HTMLElement {
 			(res: any) => {
 				this.loadStatus = false;
 				callback(true);
-				patchElement(this.shadowRoot as ShadowRoot);
-				// @ts-ignore
-				this.shadowRoot.body.innerHTML = res.template;
+				patchDocument(this.shadowRoot as any, res.template);
+
 				const windowBox = new Sandbox(substitute(window), {
 					document: this.shadowRoot,
 				}).box;
