@@ -478,6 +478,7 @@
                 <version>${apache-rat-plugin.version}</version>
                 <configuration>
                     <excludes>
+                        <exclude>**/index_synset.yaml</exclude>
                         <exclude>**/*.versionsBackup</exclude>
                         <exclude>**/.idea/</exclude>
                         <exclude>**/*.iml</exclude>
