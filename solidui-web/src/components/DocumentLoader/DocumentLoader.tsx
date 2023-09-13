@@ -58,9 +58,6 @@ function substitute(target: any) {
 
 // 实现 document 加载组件
 export class DocumentLoaderClass extends HTMLElement {
-	// 当前实例的缓存key
-	cacheKey = crypto.randomUUID();
-
 	// 当前加载的状态
 	loadStatus: boolean | null = null;
 
@@ -115,10 +112,10 @@ export class DocumentLoaderClass extends HTMLElement {
 	 */
 	load(tpl: string, callback: (finish?: boolean) => void) {
 		this.loadStatus = true;
-		importHTML(`/${this.cacheKey}`, {
+		importHTML(`/code`, {
 			// @ts-ignore
 			fetch: (url: string, ...args: any[]) => {
-				if (url === `/${this.cacheKey}`) {
+				if (url === `/code`) {
 					return Promise.resolve(
 						new Response(new Blob([tpl], { type: "text/plane" })),
 					);
