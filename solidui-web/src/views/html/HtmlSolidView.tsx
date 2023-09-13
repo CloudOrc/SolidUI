@@ -17,9 +17,8 @@
 
 /* eslint-disable */
 // @ts-nocheck
-import React from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import SolidView, { SolidViewProps, SolidViewState } from "../SolidView";
-import { DocumentLoader } from "@/components/DocumentLoader/DocumentLoader";
 
 type HtmlSolidViewState = {
 	code: string;
@@ -60,20 +59,59 @@ export default class HtmlSolidView<
 
 	protected resize(): void {}
 	protected renderView(): React.ReactNode {
-		const { code: tpl } = this.getVM().options || {};
+		const { code } = this.getVM().options || {};
 		return (
-			<div
-				ref={this.divRef}
-				style={{
-					position: "relative",
-					userSelect: "none",
-					width: "100%",
-					height: "100%",
-					overflow: "auto",
-				}}
-			>
-				{tpl && <DocumentLoader code={tpl}></DocumentLoader>}
+			<div ref={this.divRef} className="SolidViewItemContent" data-type="html">
+				<HandleLayer />
+				{code && (
+					<iframe
+						className="frame"
+						srcDoc={code}
+						onLoad={(event) => {
+							const frameBody = event.target.contentDocument.body;
+							const scrollWidth = frameBody.scrollWidth;
+							const scrollHeight = frameBody.scrollHeight;
+							const containerViewRef = this.getViewRef();
+							containerViewRef.current.style.width = `${scrollWidth}px`;
+							containerViewRef.current.style.height = `${scrollHeight}px`;
+						}}
+					/>
+				)}
 			</div>
 		);
 	}
 }
+
+const HandleLayer: FC = () => {
+	const divRef = useRef<HTMLDivElement>(null);
+	const [active, setActive] = useState(false);
+	useEffect(() => {
+		if (divRef.current) {
+			const mouseup = (event) => {
+				document.removeEventListener("mouseup", mouseup);
+				setActive(false);
+			};
+			const mousedown = (event) => {
+				if (event.target === divRef.current) {
+					setActive(true);
+					document.addEventListener("mouseup", mouseup);
+				}
+			};
+			document.addEventListener("mousedown", mousedown);
+			return () => {
+				document.removeEventListener("mousedown", mousedown);
+				document.removeEventListener("mouseup", mouseup);
+			};
+		}
+	}, [divRef.current]);
+
+	return (
+		<div
+			ref={divRef}
+			className="handleBlock TopHandle"
+			style={{
+				height: active ? "100%" : "30px",
+			}}
+		></div>
+	);
+};

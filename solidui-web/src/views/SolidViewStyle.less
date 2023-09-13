@@ -1,0 +1,40 @@
+.SolidViewItem {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	background-color: #fff;
+	.SolidViewItemContent {
+		position: relative;
+		user-select: none;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		&[data-type="html"] {
+			.handleBlock {
+				background-color: #000000;
+				position: absolute;
+				z-index: 100;
+				transition: all 0.05s;
+				opacity: 0.1;
+			}
+			&:hover {
+				.TopHandle {
+					top: 0px;
+				}
+			}
+			.TopHandle {
+				left: 0px;
+				right: 0px;
+				top: -100px;
+				height: 30px;
+			}
+
+			.frame {
+				border: none;
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
+}
