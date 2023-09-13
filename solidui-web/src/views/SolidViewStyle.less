@@ -34,19 +34,20 @@
 				z-index: 100;
 				transition: all 0.05s;
 				opacity: 0.1;
+				left: 0px;
+				right: 0px;
+				top: -30px;
+				height: 30px;
+				&.full{
+					height: 100%;
+					opacity: 0;
+				}
 			}
 			&:hover {
-				.TopHandle {
+				.handleBlock {
 					top: 0px;
 				}
 			}
-			.TopHandle {
-				left: 0px;
-				right: 0px;
-				top: -100px;
-				height: 30px;
-			}
-
 			.frame {
 				border: none;
 				width: 100%;

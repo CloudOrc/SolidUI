@@ -18,6 +18,7 @@
 /* eslint-disable */
 // @ts-nocheck
 import React, { FC, useEffect, useRef, useState } from "react";
+import classnames from "classnames";
 import SolidView, { SolidViewProps, SolidViewState } from "../SolidView";
 
 type HtmlSolidViewState = {
@@ -108,10 +109,7 @@ const HandleLayer: FC = () => {
 	return (
 		<div
 			ref={divRef}
-			className="handleBlock TopHandle"
-			style={{
-				height: active ? "100%" : "30px",
-			}}
+			className={classnames(["handleBlock", "TopHandle", { full: active }])}
 		></div>
 	);
 };
