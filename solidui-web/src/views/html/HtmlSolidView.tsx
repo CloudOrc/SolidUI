@@ -59,6 +59,26 @@ export default class HtmlSolidView<
 		window.removeEventListener("resize", this.resize);
 	}
 
+	private onIframeMount = (
+		event: React.SyntheticEvent<HTMLIFrameElement, Event>,
+	) => {
+		const frame = event.target;
+		const frameDoc = frame.contentDocument.documentElement;
+		const frameBody = frame.contentDocument.body;
+
+		const containerViewRef = this.getViewRef().current;
+		const scrollWidth = frameDoc.scrollWidth;
+		const scrollHeight = frameDoc.scrollHeight;
+		const { width, height } = this.getVM().size;
+		frameDoc.style.padding = "0px";
+		frameBody.style.margin = "0px";
+		if (scrollWidth > width) {
+			containerViewRef.style.width = `${scrollWidth}px`;
+		}
+		if (scrollHeight > height) {
+			containerViewRef.style.height = `${scrollHeight}px`;
+		}
+	};
 	protected resize(): void {}
 	protected renderView(): React.ReactNode {
 		const { code } = this.getVM().options || {};
@@ -72,19 +92,7 @@ export default class HtmlSolidView<
 							loading="lazy"
 							className="frame"
 							srcDoc={code}
-							onLoad={(event) => {
-								const frameDoc = event.target.contentDocument.documentElement;
-								const containerViewRef = this.getViewRef().current;
-								const scrollWidth = frameDoc.scrollWidth;
-								const scrollHeight = frameDoc.scrollHeight;
-								const { width, height } = this.getVM().size;
-								if (scrollWidth > width) {
-									containerViewRef.style.width = `${scrollWidth}px`;
-								}
-								if (scrollHeight > height) {
-									containerViewRef.style.height = `${scrollHeight}px`;
-								}
-							}}
+							onLoad={this.onIframeMount}
 						/>
 					</LazyLoad>
 				)}
@@ -96,11 +104,7 @@ export default class HtmlSolidView<
 const LazyLoad: FC = (props) => {
 	const [state, setState] = useState(true);
 	useEffect(() => {
-		if (state) {
-			setTimeout(() => {
-				setState(false);
-			}, 50);
-		}
+		if (state) setTimeout(() => setState(false), 50);
 	}, [state]);
 	if (state) return null;
 	return props.children;
