@@ -212,7 +212,7 @@ export default function ProjectCard(props: ProjectCardProps) {
 									strokeLinecap="square"
 									onClick={__handleDelete}
 								/>
-								<Editor
+								{/* <Editor
 									className="solidui-icon-btn"
 									theme="outline"
 									size="17"
@@ -225,7 +225,7 @@ export default function ProjectCard(props: ProjectCardProps) {
 										setEditOpen(true);
 										form.setFieldValue("name", item.projectName);
 									}}
-								/>
+								/> */}
 								{/* <Export
 									className="solidui-icon-btn"
 									theme="outline"
