@@ -20,7 +20,7 @@
 	width: 100%;
 	height: 100%;
 	z-index: 1;
-	background-color: #fff;
+	background-color: #ffffff;
 	.SolidViewItemContent {
 		position: relative;
 		user-select: none;
@@ -38,15 +38,23 @@
 				right: 0px;
 				top: -30px;
 				height: 30px;
-				&.full{
-					height: 100%;
-					opacity: 0;
-				}
 			}
 			&:hover {
 				.handleBlock {
 					top: 0px;
 				}
+			}
+			.fullShade {
+				height: 100%;
+				height: 100%;
+				position: absolute;
+				left: 0px;
+				right: 0px;
+				top: 0px;
+				bottom: 0px;
+				z-index: 90;
+				opacity: 0;
+				background-color: red;
 			}
 			.frame {
 				border: none;

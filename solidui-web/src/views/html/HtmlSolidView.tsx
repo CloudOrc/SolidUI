@@ -20,6 +20,7 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import classnames from "classnames";
 import SolidView, { SolidViewProps, SolidViewState } from "../SolidView";
+import { eventbus } from "@/utils";
 
 type HtmlSolidViewState = {
 	code: string;
@@ -65,51 +66,63 @@ export default class HtmlSolidView<
 			<div ref={this.divRef} className="SolidViewItemContent" data-type="html">
 				<HandleLayer />
 				{code && (
-					<iframe
-						className="frame"
-						srcDoc={code}
-						onLoad={(event) => {
-							const frameBody = event.target.contentDocument.body;
-							const scrollWidth = frameBody.scrollWidth;
-							const scrollHeight = frameBody.scrollHeight;
-							const containerViewRef = this.getViewRef();
-							containerViewRef.current.style.width = `${scrollWidth}px`;
-							containerViewRef.current.style.height = `${scrollHeight}px`;
-						}}
-					/>
+				<iframe
+				importance="low"
+				loading="lazy"
+				className="frame"
+				srcDoc={code}
+				onLoad={(event) => {
+					const frameBody = event.target.contentDocument.body;
+					const scrollWidth = frameBody.scrollWidth;
+					const scrollHeight = frameBody.scrollHeight;
+					const containerViewRef = this.getViewRef();
+					containerViewRef.current.style.width = `${scrollWidth}px`;
+					containerViewRef.current.style.height = `${scrollHeight}px`;
+				}}
+			/>
 				)}
 			</div>
 		);
 	}
 }
 
+const LazyLoad: FC = (props) => {
+	const [state, setState] = useState(true);
+	useEffect(() => {
+		if (state) {
+			setTimeout(() => {
+				setState(false);
+			}, 50);
+		}
+	}, [state]);
+	if (state) return null;
+	return props.children;
+};
+
 const HandleLayer: FC = () => {
-	const divRef = useRef<HTMLDivElement>(null);
 	const [active, setActive] = useState(false);
 	useEffect(() => {
-		if (divRef.current) {
-			const mouseup = (event) => {
-				document.removeEventListener("mouseup", mouseup);
-				setActive(false);
-			};
-			const mousedown = (event) => {
-				if (event.target === divRef.current) {
-					setActive(true);
-					document.addEventListener("mouseup", mouseup);
-				}
-			};
-			document.addEventListener("mousedown", mousedown);
-			return () => {
-				document.removeEventListener("mousedown", mousedown);
-				document.removeEventListener("mouseup", mouseup);
-			};
-		}
-	}, [divRef.current]);
+		const onMoveableRenderEnd = () => {
+			setActive(false);
+			eventbus.off("onMoveableRenderEnd", onMoveableRenderEnd);
+		};
+		const onMoveableRednerStart = () => {
+			setActive(true);
+			eventbus.on("onMoveableRenderEnd", onMoveableRenderEnd);
+		};
+		eventbus.on("onMoveableRednerStart", onMoveableRednerStart);
+		return () => {
+			eventbus.off("onMoveableRednerStart", onMoveableRednerStart);
+		};
+	}, []);
 
 	return (
-		<div
-			ref={divRef}
-			className={classnames(["handleBlock", "TopHandle", { full: active }])}
-		></div>
+		<>
+			<div className={classnames(["handleBlock", "TopHandle"])}></div>
+			<div
+				className="fullShade"
+				style={{ display: active ? "block" : "none" }}
+			></div>
+		</>
 	);
 };
