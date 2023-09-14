@@ -64,22 +64,29 @@ export default class HtmlSolidView<
 		const { code } = this.getVM().options || {};
 		return (
 			<div ref={this.divRef} className="SolidViewItemContent" data-type="html">
-				<HandleLayer />
 				{code && (
-				<iframe
-				importance="low"
-				loading="lazy"
-				className="frame"
-				srcDoc={code}
-				onLoad={(event) => {
-					const frameBody = event.target.contentDocument.body;
-					const scrollWidth = frameBody.scrollWidth;
-					const scrollHeight = frameBody.scrollHeight;
-					const containerViewRef = this.getViewRef();
-					containerViewRef.current.style.width = `${scrollWidth}px`;
-					containerViewRef.current.style.height = `${scrollHeight}px`;
-				}}
-			/>
+					<LazyLoad>
+						<HandleLayer />
+						<iframe
+							importance="low"
+							loading="lazy"
+							className="frame"
+							srcDoc={code}
+							onLoad={(event) => {
+								const frameDoc = event.target.contentDocument.documentElement;
+								const containerViewRef = this.getViewRef().current;
+								const scrollWidth = frameDoc.scrollWidth;
+								const scrollHeight = frameDoc.scrollHeight;
+								const { width, height } = this.getVM().size;
+								if (scrollWidth > width) {
+									containerViewRef.style.width = `${scrollWidth}px`;
+								}
+								if (scrollHeight > height) {
+									containerViewRef.style.height = `${scrollHeight}px`;
+								}
+							}}
+						/>
+					</LazyLoad>
 				)}
 			</div>
 		);
@@ -110,6 +117,7 @@ const HandleLayer: FC = () => {
 			setActive(true);
 			eventbus.on("onMoveableRenderEnd", onMoveableRenderEnd);
 		};
+
 		eventbus.on("onMoveableRednerStart", onMoveableRednerStart);
 		return () => {
 			eventbus.off("onMoveableRednerStart", onMoveableRednerStart);
@@ -119,10 +127,7 @@ const HandleLayer: FC = () => {
 	return (
 		<>
 			<div className={classnames(["handleBlock", "TopHandle"])}></div>
-			<div
-				className="fullShade"
-				style={{ display: active ? "block" : "none" }}
-			></div>
+			<div className={classnames("fullShade", { active })} />
 		</>
 	);
 };

@@ -51,7 +51,7 @@ function useModelui() {
 		WaitingStates.Idle,
 	);
 
-	const selectedModelIdRef = React.useRef<number>();
+	const [selectedModelId, setSelectedModelId] = useState();
 	const promptContentRef = React.useRef<string>();
 
 	const loadModels = useMemoizedFn(async () => {
@@ -65,7 +65,7 @@ function useModelui() {
 				value: model.id,
 			}));
 			if (mModels[0] && mModels[0].value) {
-				selectedModelIdRef.current = mModels[0].value;
+				setSelectedModelId(mModels[0].value);
 			}
 			addMessage({
 				text: `Hello! I'm a ${
@@ -111,9 +111,15 @@ function useModelui() {
 
 	useEffect(() => {
 		loadModels();
-		const interval = setInterval(getApiData, 2500);
-		return () => clearInterval(interval);
 	}, [loadModels, getApiData]);
+
+	useEffect(() => {
+		let interval: any = null;
+		if (selectedModelId && [1, 2, 3].includes(selectedModelId)) {
+			interval = setInterval(getApiData, 2500);
+		}
+		return () => clearInterval(interval);
+	}, [selectedModelId, getApiData]);
 
 	async function handleRestart() {
 		addMessage({
@@ -127,7 +133,7 @@ function useModelui() {
 
 	async function sendMessage() {
 		const prompt = promptContentRef.current || "";
-		const modelId = selectedModelIdRef.current;
+		const modelId = selectedModelId;
 		try {
 			if (prompt.length === 0 || isNil(modelId)) {
 				return;
@@ -187,7 +193,7 @@ function useModelui() {
 	}
 
 	function handleModelChange(value: any) {
-		selectedModelIdRef.current = value;
+		setSelectedModelId(value);
 
 		const mModels = models.filter((model) => model.value === value);
 
