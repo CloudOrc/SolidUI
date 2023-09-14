@@ -22,6 +22,8 @@ import PagePropertiesPanel from "./PagePropertiesPanel";
 import StylePropertiesPanel from "./StylePropertiesPanel";
 import DataPropertiesPanel from "./DataPropertiesPanel";
 import useProperties from "./useProperties";
+import { LeftExpand, RightExpand } from "@icon-park/react";
+import { useMemoizedFn } from "ahooks";
 
 import "./configurations.less";
 
@@ -39,6 +41,9 @@ function Properties() {
 				},
 			],
 		});
+
+	const [modelOpen, setModelOpen] = React.useState<boolean>(true);
+	const [modelWidth, setModelWidth] = React.useState<number>(326);
 
 	function renderByPropertyKey() {
 		if (propertyKey === "scene") {
@@ -70,9 +75,87 @@ function Properties() {
 		return undefined;
 	}
 
+	function handleChangeOpen(type: string) {
+		const dom: any = document.getElementById("section-properties");
+		const DbConfig: any = document.getElementById("db-config");
+		const asideEastContainer : any = document.getElementById('aside-east__container');
+		if (type === "close") {
+			setModelWidth(dom.offsetWidth)
+			dom.style.width = 0
+			setModelOpen(false)
+			if (DbConfig) {
+				DbConfig.style.display = 'none'
+			}
+			if (asideEastContainer) {
+				asideEastContainer.style.display = 'none'
+			}
+		} else {
+			dom.style.width = modelWidth + 'px'
+			setModelOpen(true)
+			if (DbConfig) {
+				DbConfig.style.display = 'block'
+			}
+			if (asideEastContainer) {
+				asideEastContainer.style.display = 'block'
+			}
+		}
+	}
+
 	return (
 		<section id="section-properties" className="aside-east" ref={asideRef}>
-			<div className="aside-east__container">{renderByPropertyKey()}</div>
+			<div className="aside-east__container" id="aside-east__container">{renderByPropertyKey()}</div>
+			{ modelOpen ? (
+				<div className="expand" style={{
+					position: "absolute",
+					left: 0,
+					top: 0,
+					zIndex: 99,
+					display: "flex",
+					alignItems: "center",
+					height: "100%"
+				}}>
+					<LeftExpand
+						theme="outline"
+						size="20"
+						fill="#757272"
+						strokeWidth={2}
+						strokeLinejoin="miter"
+						strokeLinecap="square"
+						style={{
+							cursor: "pointer"
+						}}
+						onClick={() => {
+							handleChangeOpen('close')
+						}}
+					/>
+				</div>
+			): (
+				<div className="expand" style={{
+					position: "absolute",
+					left: -20,
+					top: 0,
+					zIndex: 99,
+					display: "flex",
+					alignItems: "center",
+					height: "100%"
+				}}>
+					<RightExpand
+						theme="outline"
+						size="20"
+						fill="#757272"
+						strokeWidth={2}
+						strokeLinejoin="miter"
+						strokeLinecap="square"
+						style={{
+							cursor: "pointer"
+						}}
+						onClick={() => {
+							handleChangeOpen('open')
+						}}
+					/>
+				</div>
+			) }
+			
 		</section>
 	);
 }

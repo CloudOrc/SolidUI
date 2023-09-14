@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.cloudorc.solidui</groupId>
     <artifactId>solidui</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>AI-generated visualization prototyping and editing platform</description>
@@ -478,6 +478,7 @@
                 <version>${apache-rat-plugin.version}</version>
                 <configuration>
                     <excludes>
+                        <exclude>**/index_synset.yaml</exclude>
                         <exclude>**/*.versionsBackup</exclude>
                         <exclude>**/.idea/</exclude>
                         <exclude>**/*.iml</exclude>

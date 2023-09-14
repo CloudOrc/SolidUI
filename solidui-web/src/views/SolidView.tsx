@@ -18,6 +18,7 @@
 import React from "react";
 import { Emitter } from "mitt";
 import { set, cloneDeep } from "lodash-es";
+import classnames from "classnames";
 import {
 	EventBusType,
 	OnReiszeGroupEventData,
@@ -103,23 +104,22 @@ export default abstract class SolidView<
 	}
 
 	private readonly fetchData = async () => {
-		const viewModel = this.vm;
-		const data = viewModel.data || {};
-		const dsId = data.dataSourceId;
-		const { sql } = data;
-		if (!dsId || !sql) {
-			this.dataSheet = viewModel.data.dataset || [];
-			return;
-		}
-
-		const res: ApiResult<any[][]> = await Apis.datasource.querySql({
-			dataSourceName: data.dataSourceName,
-			typeName: data.dataSourceTypeName,
-			sql,
-		});
-		if (res.ok) {
-			this.dataSheet = res.data || [];
-		}
+		// const viewModel = this.vm;
+		// const data = viewModel.data || {};
+		// const dsId = data.dataSourceId;
+		// const { sql } = data;
+		// if (!dsId || !sql) {
+		// 	this.dataSheet = viewModel.data.dataset || [];
+		// 	return;
+		// }
+		// const res: ApiResult<any[][]> = await Apis.datasource.querySql({
+		// 	dataSourceName: data.dataSourceName,
+		// 	typeName: data.dataSourceTypeName,
+		// 	sql,
+		// });
+		// if (res.ok) {
+		// 	this.dataSheet = res.data || [];
+		// }
 	};
 
 	async componentDidMount() {
@@ -205,15 +205,8 @@ export default abstract class SolidView<
 			this.props;
 		return (
 			<div
-				className={className}
-				style={{
-					position: "relative",
-					width: "100%",
-					height: "100%",
-					zIndex: 1,
-					background: "#fff",
-					...style,
-				}}
+				className={classnames(["SolidViewItem", className])}
+				style={style}
 				ref={this.viewRef}
 				{...restProps}
 			>

@@ -100,15 +100,7 @@ export default class Base64ImageSolidView<
 		const imageSrc = `data:"${imageType}";base64,${imageData}`;
 
 		return (
-			<div
-				ref={this.divRef}
-				style={{
-					position: "relative",
-					userSelect: "none",
-					width: "100%",
-					height: "100%",
-				}}
-			>
+			<div className="SolidViewItemContent" data-type="image" ref={this.divRef}>
 				{imageSrc ? <img src={imageSrc} alt="base64" /> : <div>loading</div>}
 			</div>
 		);
