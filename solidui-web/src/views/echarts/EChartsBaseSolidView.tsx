@@ -206,13 +206,9 @@ export default class EChartsBaseSolidView<
 	protected renderView(): React.ReactNode {
 		return (
 			<div
+				className="SolidViewItemContent"
+				data-type="echarts"
 				ref={this.ecRef}
-				style={{
-					position: "relative",
-					userSelect: "none",
-					width: "100%",
-					height: "100%",
-				}}
 			/>
 		);
 	}

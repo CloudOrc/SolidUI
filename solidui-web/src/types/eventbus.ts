@@ -81,6 +81,16 @@ type onPageSizeValueChangeEventData = {
 	value: number;
 };
 
+type onMoveableRednerStartEventData = {
+	[key in string]: any;
+};
+type onMoveableRenderEventData = {
+	[key in string]: any;
+};
+type onMoveableRenderEndEventData = {
+	[key in string]: any;
+};
+
 type EventBusType = {
 	onResize: OnResizeEventData;
 	onDrag: { x: number; y: number };
@@ -98,6 +108,9 @@ type EventBusType = {
 	onDataSetChange: onDataSetChangeEventData;
 	onPageWidthChange: onPageSizeValueChangeEventData;
 	onPageHeightChange: onPageSizeValueChangeEventData;
+	onMoveableRednerStart: onMoveableRednerStartEventData;
+	onMoveableRender: onMoveableRenderEventData;
+	onMoveableRenderEnd: onMoveableRenderEndEventData;
 };
 
 export {

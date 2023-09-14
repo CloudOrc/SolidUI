@@ -17,9 +17,10 @@
 
 /* eslint-disable */
 // @ts-nocheck
-import React from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
+import classnames from "classnames";
 import SolidView, { SolidViewProps, SolidViewState } from "../SolidView";
-import { DocumentLoader } from "@/components/DocumentLoader/DocumentLoader";
+import { eventbus } from "@/utils";
 
 type HtmlSolidViewState = {
 	code: string;
@@ -58,22 +59,79 @@ export default class HtmlSolidView<
 		window.removeEventListener("resize", this.resize);
 	}
 
+	private onIframeMount = (
+		event: React.SyntheticEvent<HTMLIFrameElement, Event>,
+	) => {
+		const frame = event.target;
+		const frameDoc = frame.contentDocument.documentElement;
+		const frameBody = frame.contentDocument.body;
+
+		const containerViewRef = this.getViewRef().current;
+		const scrollWidth = frameDoc.scrollWidth;
+		const scrollHeight = frameDoc.scrollHeight;
+		const { width, height } = this.getVM().size;
+		frameDoc.style.padding = "0px";
+		frameBody.style.margin = "0px";
+		if (scrollWidth > width) {
+			containerViewRef.style.width = `${scrollWidth}px`;
+		}
+		if (scrollHeight > height) {
+			containerViewRef.style.height = `${scrollHeight}px`;
+		}
+	};
 	protected resize(): void {}
 	protected renderView(): React.ReactNode {
-		const { code: tpl } = this.getVM().options || {};
+		const { code } = this.getVM().options || {};
 		return (
-			<div
-				ref={this.divRef}
-				style={{
-					position: "relative",
-					userSelect: "none",
-					width: "100%",
-					height: "100%",
-					overflow: "auto",
-				}}
-			>
-				{tpl && <DocumentLoader code={tpl}></DocumentLoader>}
+			<div ref={this.divRef} className="SolidViewItemContent" data-type="html">
+				{code && (
+					<LazyLoad>
+						<HandleLayer />
+						<iframe
+							importance="low"
+							loading="lazy"
+							className="frame"
+							srcDoc={code}
+							onLoad={this.onIframeMount}
+						/>
+					</LazyLoad>
+				)}
 			</div>
 		);
 	}
 }
+
+const LazyLoad: FC = (props) => {
+	const [state, setState] = useState(true);
+	useEffect(() => {
+		if (state) setTimeout(() => setState(false), 50);
+	}, [state]);
+	if (state) return null;
+	return props.children;
+};
+
+const HandleLayer: FC = () => {
+	const [active, setActive] = useState(false);
+	useEffect(() => {
+		const onMoveableRenderEnd = () => {
+			setActive(false);
+			eventbus.off("onMoveableRenderEnd", onMoveableRenderEnd);
+		};
+		const onMoveableRednerStart = () => {
+			setActive(true);
+			eventbus.on("onMoveableRenderEnd", onMoveableRenderEnd);
+		};
+
+		eventbus.on("onMoveableRednerStart", onMoveableRednerStart);
+		return () => {
+			eventbus.off("onMoveableRednerStart", onMoveableRednerStart);
+		};
+	}, []);
+
+	return (
+		<>
+			<div className={classnames(["handleBlock", "TopHandle"])}></div>
+			<div className={classnames("fullShade", { active })} />
+		</>
+	);
+};
