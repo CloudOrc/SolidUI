@@ -78,6 +78,9 @@ class MoveableManager extends React.PureComponent<{
 				dimensionViewable
 				deleteButtonViewable
 				zoom={1 / zoom}
+				useResizeObserver
+				// @ts-ignore
+				useMutationObserver
 				throttleResize={1}
 				passDragArea={selectedMenu === "Text"}
 				checkInput={selectedMenu === "Text"}
@@ -260,12 +263,18 @@ class MoveableManager extends React.PureComponent<{
 				onBeforeRenderGroupStart={moveableData.onBeforeRenderGroupStart}
 				onRenderStart={(e) => {
 					e.datas.prevData = moveableData.getFrame(e.target).get();
+					// console.log("onRenderStart");
+					eventbus.emit("onMoveableRednerStart", e);
 				}}
 				onRender={(e) => {
 					e.datas.isRender = true;
+					// console.log("onRender");
+					eventbus.emit("onMoveableRender", e);
 					// this.eventBus.requestTrigger("render");
 				}}
-				onRenderEnd={() => {
+				onRenderEnd={(e) => {
+					// console.log("onRenderEnd");
+					eventbus.emit("onMoveableRenderEnd", e);
 					// this.eventBus.requestTrigger("render");
 					// if (!e.datas.isRender) {
 					// 	return;
