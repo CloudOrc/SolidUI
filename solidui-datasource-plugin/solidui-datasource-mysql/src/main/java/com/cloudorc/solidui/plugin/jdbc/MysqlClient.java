@@ -36,7 +36,7 @@ public class MysqlClient extends BaseJdbcClient {
 
     @Override
     public String generateSelectAllDataSql(String database, String tableName) {
-        return "SELECT * FROM " + tableName;
+        return "SELECT * FROM " + database+"."+tableName;
     }
 
     @Override
