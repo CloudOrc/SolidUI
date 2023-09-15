@@ -172,8 +172,6 @@ function useModelui() {
 	async function sendMessage() {
 		const prompt = promptContentRef.current || "";
 		const modelId = selectedModelId;
-		console.log(prompt)
-		console.log(modelId)
 		try {
 			if (prompt.length === 0 || isNil(modelId)) {
 				return;
