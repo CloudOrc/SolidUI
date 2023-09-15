@@ -263,10 +263,6 @@ function useModelui() {
 		setModalOpen(open);
 	}
 
-	function handleDatabaseSave () {
-
-	}
-
 	function handleTableDataChange(value: string) {
 		setTableData(value || "");
 	}
@@ -488,7 +484,7 @@ function useModelui() {
 
 	function handleSaveTableData () {
 		let value = promptInput + tableData
-		console.log(value)
+		promptContentRef.current = value
 		setPromptInput(value || "");
 		setModalOpen(false)
 	}
@@ -509,7 +505,6 @@ function useModelui() {
 		sendMessage,
 		setModalOpen,
 		toggleModal,
-		handleDatabaseSave,
 		queryDbs,
 		changeDsSelections,
 		handleTableDataChange,
