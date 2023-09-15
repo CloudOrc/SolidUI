@@ -269,6 +269,7 @@ export default function PageModeluiPropertiesPanel() {
 							minHeight: 100,
 							maxHeight: 100,
 							width: "100%",
+							paddingRight: 40
 						}}
 						value={promptInput}
 						onChange={handlePromptInputChange}
