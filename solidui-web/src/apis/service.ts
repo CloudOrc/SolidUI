@@ -29,7 +29,7 @@ import { Result, AxiosResultType, HttpMethod, ApiResult } from "@/types";
 
 const instance = axios.create({
 	baseURL: "",
-	timeout: 10000,
+	timeout: 60000 * 3,
 	headers: {
 		"Content-Type": "application/json;charset=utf-8",
 	},
