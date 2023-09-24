@@ -36,7 +36,7 @@ type DataSourceDataType = {
 	id: string;
 	dataSourceName: string;
 	dataSourceDesc: string;
-	dataSourceTypeId: number;
+	dataSourceType: string;
 	createTime: string;
 	expire: boolean;
 };
@@ -65,8 +65,8 @@ function useDataSource() {
 			align: "center",
 		},
 		{
-			title: "dataSourceTypeId",
-			dataIndex: "dataSourceTypeId",
+			title: "dataSourceTypeName",
+			dataIndex: "dataSourceType",
 			align: "center",
 		},
 		{
