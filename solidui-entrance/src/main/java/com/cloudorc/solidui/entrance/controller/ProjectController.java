@@ -88,14 +88,9 @@ public class ProjectController extends BaseController{
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
     public Result updateProject(HttpServletRequest req,
                                 @PathVariable("id") Integer projectId,
-                                @RequestParam("projectName") String projectName,
-                                @RequestParam("backgroundImage") String backgroundImage,
+                                @RequestParam(value = "projectName", required = false) String projectName,
+                                @RequestParam(value = "backgroundImage", required = false) String backgroundImage,
                                 @RequestParam(value = "description", required = false) String description) {
-
-        if(StringUtils.isBlank(projectName))   {
-            return error(Status.UPDATE_PROJECT_ERROR.getCode(),
-                    Status.UPDATE_PROJECT_ERROR.getMsg());
-        }
 
         if(projectId == null)   {
             return error(Status.UPDATE_PROJECT_ERROR.getCode(),
