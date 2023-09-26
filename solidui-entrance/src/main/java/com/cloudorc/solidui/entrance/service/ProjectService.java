@@ -22,7 +22,7 @@ public interface ProjectService {
 
     Result createProject(String loginUser, String name, String desc);
 
-    Result updateProject(Integer projectId, String name, String desc);
+    Result updateProject(Integer projectId, String name, String image, String desc);
 
     Result queryProjectListPaging(String searchName, Integer pageNo, Integer pageSize);
 

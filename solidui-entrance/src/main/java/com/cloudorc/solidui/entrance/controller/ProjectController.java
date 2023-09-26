@@ -80,6 +80,7 @@ public class ProjectController extends BaseController{
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "project_id", dataTypeClass = int.class, example = "123456"),
             @ApiImplicitParam(name = "projectName", value = "project_name", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "backgroundImage", value = "backgroundImage", dataTypeClass = String.class),
             @ApiImplicitParam(name = "description", value = "project_desc", dataTypeClass = String.class)
     })
     @ResponseStatus(HttpStatus.OK)
@@ -88,6 +89,7 @@ public class ProjectController extends BaseController{
     public Result updateProject(HttpServletRequest req,
                                 @PathVariable("id") Integer projectId,
                                 @RequestParam("projectName") String projectName,
+                                @RequestParam("backgroundImage") String backgroundImage,
                                 @RequestParam(value = "description", required = false) String description) {
 
         if(StringUtils.isBlank(projectName))   {
@@ -99,7 +101,7 @@ public class ProjectController extends BaseController{
             return error(Status.UPDATE_PROJECT_ERROR.getCode(),
                     Status.UPDATE_PROJECT_ERROR.getMsg());
         }
-        return projectService.updateProject(projectId, projectName, description);
+        return projectService.updateProject(projectId, projectName, backgroundImage, description);
     }
 
 

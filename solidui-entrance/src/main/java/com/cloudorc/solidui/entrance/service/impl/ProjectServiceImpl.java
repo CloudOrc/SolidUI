@@ -71,7 +71,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
     }
 
     @Override
-    public Result updateProject(Integer projectId, String name, String desc) {
+    public Result updateProject(Integer projectId, String name, String image, String desc) {
         Project newProject = projectMapper.selectById(projectId);
         Result result = new Result();
         if (newProject == null) {
@@ -79,6 +79,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
             return result;
         }
         newProject.setProjectName(name);
+        newProject.setImage(image);
         newProject.setDescription(desc);
         newProject.setUpdateTime(new Date());
         newProject.setStatus(0);
