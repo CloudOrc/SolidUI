@@ -24,6 +24,7 @@ import com.cloudorc.solidui.entrance.enums.Status;
 import com.cloudorc.solidui.entrance.service.ProjectService;
 import com.cloudorc.solidui.entrance.utils.PageInfo;
 import com.cloudorc.solidui.entrance.utils.Result;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,13 +79,13 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
             putMsg(result, Status.PROJECT_NOT_EXISTS_ERROR);
             return result;
         }
-        if (name != null){
+        if (StringUtils.isNotBlank(name)){
             newProject.setProjectName(name);
         }
-        if (image != null){
+        if (StringUtils.isNotBlank(image)){
             newProject.setImage(image);
         }
-        if (desc != null){
+        if (StringUtils.isNotBlank(desc)){
             newProject.setDescription(desc);
         }
         newProject.setUpdateTime(new Date());
