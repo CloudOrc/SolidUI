@@ -35,10 +35,10 @@ function Properties() {
 					key: "Style",
 					tab: "Style",
 				},
-				{
-					key: "Data",
-					tab: "Data",
-				},
+				// {
+				// 	key: "Data",
+				// 	tab: "Data",
+				// },
 			],
 		});
 
@@ -78,42 +78,49 @@ function Properties() {
 	function handleChangeOpen(type: string) {
 		const dom: any = document.getElementById("section-properties");
 		const DbConfig: any = document.getElementById("db-config");
-		const asideEastContainer : any = document.getElementById('aside-east__container');
+		const asideEastContainer: any = document.getElementById(
+			"aside-east__container",
+		);
 		if (type === "close") {
-			setModelWidth(dom.offsetWidth)
-			dom.style.width = 0
-			setModelOpen(false)
+			setModelWidth(dom.offsetWidth);
+			dom.style.width = 0;
+			setModelOpen(false);
 			if (DbConfig) {
-				DbConfig.style.display = 'none'
+				DbConfig.style.display = "none";
 			}
 			if (asideEastContainer) {
-				asideEastContainer.style.display = 'none'
+				asideEastContainer.style.display = "none";
 			}
 		} else {
-			dom.style.width = modelWidth + 'px'
-			setModelOpen(true)
+			dom.style.width = modelWidth + "px";
+			setModelOpen(true);
 			if (DbConfig) {
-				DbConfig.style.display = 'block'
+				DbConfig.style.display = "block";
 			}
 			if (asideEastContainer) {
-				asideEastContainer.style.display = 'block'
+				asideEastContainer.style.display = "block";
 			}
 		}
 	}
 
 	return (
 		<section id="section-properties" className="aside-east" ref={asideRef}>
-			<div className="aside-east__container" id="aside-east__container">{renderByPropertyKey()}</div>
-			{ modelOpen ? (
-				<div className="expand" style={{
-					position: "absolute",
-					left: 0,
-					top: 0,
-					zIndex: 99,
-					display: "flex",
-					alignItems: "center",
-					height: "100%"
-				}}>
+			<div className="aside-east__container" id="aside-east__container">
+				{renderByPropertyKey()}
+			</div>
+			{modelOpen ? (
+				<div
+					className="expand"
+					style={{
+						position: "absolute",
+						left: 0,
+						top: 0,
+						zIndex: 99,
+						display: "flex",
+						alignItems: "center",
+						height: "100%",
+					}}
+				>
 					<LeftExpand
 						theme="outline"
 						size="20"
@@ -122,23 +129,26 @@ function Properties() {
 						strokeLinejoin="miter"
 						strokeLinecap="square"
 						style={{
-							cursor: "pointer"
+							cursor: "pointer",
 						}}
 						onClick={() => {
-							handleChangeOpen('close')
+							handleChangeOpen("close");
 						}}
 					/>
 				</div>
-			): (
-				<div className="expand" style={{
-					position: "absolute",
-					left: -20,
-					top: 0,
-					zIndex: 99,
-					display: "flex",
-					alignItems: "center",
-					height: "100%"
-				}}>
+			) : (
+				<div
+					className="expand"
+					style={{
+						position: "absolute",
+						left: -20,
+						top: 0,
+						zIndex: 99,
+						display: "flex",
+						alignItems: "center",
+						height: "100%",
+					}}
+				>
 					<RightExpand
 						theme="outline"
 						size="20"
@@ -147,15 +157,14 @@ function Properties() {
 						strokeLinejoin="miter"
 						strokeLinecap="square"
 						style={{
-							cursor: "pointer"
+							cursor: "pointer",
 						}}
 						onClick={() => {
-							handleChangeOpen('open')
+							handleChangeOpen("open");
 						}}
 					/>
 				</div>
-			) }
-			
+			)}
 		</section>
 	);
 }
