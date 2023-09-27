@@ -71,15 +71,22 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
     }
 
     @Override
-    public Result updateProject(Integer projectId, String name, String desc) {
+    public Result updateProject(Integer projectId, String name, String image, String desc) {
         Project newProject = projectMapper.selectById(projectId);
         Result result = new Result();
         if (newProject == null) {
             putMsg(result, Status.PROJECT_NOT_EXISTS_ERROR);
             return result;
         }
-        newProject.setProjectName(name);
-        newProject.setDescription(desc);
+        if (name != null){
+            newProject.setProjectName(name);
+        }
+        if (image != null){
+            newProject.setImage(image);
+        }
+        if (desc != null){
+            newProject.setDescription(desc);
+        }
         newProject.setUpdateTime(new Date());
         newProject.setStatus(0);
         if(projectMapper.updateById(newProject) > 0){
