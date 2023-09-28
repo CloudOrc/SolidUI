@@ -33,5 +33,7 @@ jobs:
 
       - name: Replace SQL script
         run: |
-          chmod +x ./replace-sql-script.sh
-          ./replace-sql-script.sh
+          sed -i -e '/solidui_mysql.sql: |-/,$ {
+              /solidui_mysql.sql: |-/!d
+              r solidui-entrance/src/main/resources/sql/mysql/solidui_mysql.sql
+          }' deploy/kubernetes/helm-solidui/templates/cm-mysql.yaml
