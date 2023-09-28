@@ -33,5 +33,5 @@ jobs:
 
       - name: Replace SQL script
         run: |
-          chmod +x replace-sql-script.sh
+          chmod +x ./replace-sql-script.sh
           ./replace-sql-script.sh
