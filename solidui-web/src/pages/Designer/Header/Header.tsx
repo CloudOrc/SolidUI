@@ -116,7 +116,7 @@ function Header() {
 					</div>
 				</div>
 				<div className="header-center">
-					<Tooltip title="Bar Chart">
+					{/* <Tooltip title="Bar Chart">
 						<ChartHistogramTwo
 							theme="two-tone"
 							size="32"
@@ -132,7 +132,7 @@ function Header() {
 								});
 							}}
 						/>
-					</Tooltip>
+					</Tooltip> */}
 				</div>
 				<div className="header-right">
 					<Button
