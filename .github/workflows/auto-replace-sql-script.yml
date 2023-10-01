@@ -22,7 +22,9 @@ on:
     types:
       - opened
       - synchronize
-
+  push:
+    branches:
+      - dev
 jobs:
   replace-script:
     runs-on: ubuntu-latest
@@ -37,3 +39,4 @@ jobs:
               /solidui_mysql.sql: |-/!d
               r solidui-entrance/src/main/resources/sql/mysql/solidui_mysql.sql
           }' deploy/kubernetes/helm-solidui/templates/cm-mysql.yaml
+          cat deploy/kubernetes/helm-solidui/templates/cm-mysql.yaml
