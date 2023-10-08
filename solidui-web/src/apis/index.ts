@@ -83,6 +83,16 @@ const project = {
 		ApiService.put<T>(`/solidui/projects/${id}?projectName=${name}`),
 
 	load: <T>(id: string) => ApiService.get<T>(`/solidui/projects/${id}`),
+	changeBgImage: <T>(id: string, backgroundImage: string) =>
+		ApiService.put<T>(
+			`/solidui/projects/${id}`,
+			{ backgroundImage },
+			{
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+			},
+		),
 };
 
 const datasource = {
@@ -132,7 +142,10 @@ const datasource = {
 			`/solidui/metadataQuery/queryDatabases?dataSourceName=${params.dataSourceName}&typeName=${params.typeName}`,
 		),
 	tables: <T>(
-		params: { dataSourceName: string | undefined; database: string | undefined } = {
+		params: {
+			dataSourceName: string | undefined;
+			database: string | undefined;
+		} = {
 			dataSourceName: "",
 			database: "",
 		},
@@ -144,7 +157,7 @@ const datasource = {
 		params: { dataSourceName: string; database: string; tableName: string } = {
 			dataSourceName: "",
 			database: "",
-			tableName: ""
+			tableName: "",
 		},
 	) =>
 		ApiService.get<T>(
