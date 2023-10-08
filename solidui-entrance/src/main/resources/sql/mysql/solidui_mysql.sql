@@ -57,24 +57,22 @@ CREATE TABLE `solidui_datasource_type` (
 DROP TABLE IF EXISTS `solidui_datasource_type_key`;
 
 CREATE TABLE `solidui_datasource_type_key` (
-                                               `id` int(11) NOT NULL AUTO_INCREMENT,
-                                               `data_source_type_id` int(11) NOT NULL,
-                                               `key` varchar(32) COLLATE utf8_bin NOT NULL,
-                                               `name` varchar(32) COLLATE utf8_bin NOT NULL,
-                                               `name_en` varchar(32) COLLATE utf8_bin NOT NULL,
-                                               `default_value` varchar(50) COLLATE utf8_bin DEFAULT NULL,
-                                               `value_type` varchar(50) COLLATE utf8_bin NOT NULL,
-                                               `scope` varchar(50) COLLATE utf8_bin DEFAULT NULL,
-                                               `require` tinyint(1) DEFAULT '0',
-                                               `description` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-                                               `description_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-                                               `value_regex` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-                                               `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                               `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                               PRIMARY KEY (`id`)
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `data_source_type_id` int(11) NOT NULL,
+    `key` varchar(32) COLLATE utf8_bin NOT NULL,
+    `name` varchar(32) COLLATE utf8_bin NOT NULL,
+    `name_en` varchar(32) COLLATE utf8_bin NOT NULL,
+    `default_value` varchar(50) COLLATE utf8_bin DEFAULT NULL,
+    `value_type` varchar(50) COLLATE utf8_bin NOT NULL,
+    `scope` varchar(50) COLLATE utf8_bin DEFAULT NULL,
+    `require` tinyint(1) DEFAULT '0',
+    `description` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+    `description_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+    `value_regex` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+    `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-
 
 DROP TABLE IF EXISTS `solidui_job_element`;
 
@@ -88,8 +86,6 @@ CREATE TABLE `solidui_job_element` (
                                        `update_time` datetime NOT NULL,
                                        PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='storage of various elements';
-
-
 
 DROP TABLE IF EXISTS `solidui_job_element_page`;
 
