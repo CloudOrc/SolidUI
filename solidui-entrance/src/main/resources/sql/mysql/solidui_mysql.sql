@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 */
+
 SET NAMES utf8mb4;
 
 DROP DATABASE IF EXISTS solidui;
@@ -56,24 +57,22 @@ CREATE TABLE `solidui_datasource_type` (
 DROP TABLE IF EXISTS `solidui_datasource_type_key`;
 
 CREATE TABLE `solidui_datasource_type_key` (
-                                               `id` int(11) NOT NULL AUTO_INCREMENT,
-                                               `data_source_type_id` int(11) NOT NULL,
-                                               `key` varchar(32) COLLATE utf8_bin NOT NULL,
-                                               `name` varchar(32) COLLATE utf8_bin NOT NULL,
-                                               `name_en` varchar(32) COLLATE utf8_bin NOT NULL,
-                                               `default_value` varchar(50) COLLATE utf8_bin DEFAULT NULL,
-                                               `value_type` varchar(50) COLLATE utf8_bin NOT NULL,
-                                               `scope` varchar(50) COLLATE utf8_bin DEFAULT NULL,
-                                               `require` tinyint(1) DEFAULT '0',
-                                               `description` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-                                               `description_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-                                               `value_regex` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-                                               `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                               `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                               PRIMARY KEY (`id`)
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `data_source_type_id` int(11) NOT NULL,
+    `key` varchar(32) COLLATE utf8_bin NOT NULL,
+    `name` varchar(32) COLLATE utf8_bin NOT NULL,
+    `name_en` varchar(32) COLLATE utf8_bin NOT NULL,
+    `default_value` varchar(50) COLLATE utf8_bin DEFAULT NULL,
+    `value_type` varchar(50) COLLATE utf8_bin NOT NULL,
+    `scope` varchar(50) COLLATE utf8_bin DEFAULT NULL,
+    `require` tinyint(1) DEFAULT '0',
+    `description` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+    `description_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+    `value_regex` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+    `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-
 
 DROP TABLE IF EXISTS `solidui_job_element`;
 
@@ -87,8 +86,6 @@ CREATE TABLE `solidui_job_element` (
                                        `update_time` datetime NOT NULL,
                                        PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='storage of various elements';
-
-
 
 DROP TABLE IF EXISTS `solidui_job_element_page`;
 
@@ -190,5 +187,4 @@ VALUES
 \n\nEnsure that the response contains only HTML content to be directly executed in the kernel, with no other outputs.',NULL,NULL),
 (5,'chatglm_lite','html', 'chatglm','首先，这是我之前要求你做的事情的历史记录。实际的提示在“ENDOFHISTORY”之后。历史记录：\n\n{}ENDOFHISTORY。\n\n你的任务是根据以下要求使用指定的JavaScript库（如D3、echartjs、three.js等）生成一个HTML代码片段：\n\n{}\n\n请注意：\n\n1.HTML代码将在Chrome浏览器中执行。\n 2.只返回HTML内容，不包括任何额外的解释或描述文本。\n3.如果需要在HTML内容中提供下载链接，请按照以下格式编写：<a href=''/solidui/models/download?file=INSERT_FILENAME_HERE''>下载文件</a>，并将INSERT_FILENAME_HERE替换为实际的文件名。\n4.确保包含必要的<script>标签来引入你正在使用的JavaScript库。\n\n确保响应仅包含直接在内核中执行的HTML内容，不包含其他输出。',NULL,NULL),
 (6,'gpt-4','html', 'gpt','First, here is a history of what I asked you to do earlier. The actual prompt follows after ENDOFHISTORY. History:\n\n{}ENDOFHISTORY.\n\nYour task is to generate an HTML code snippet using the specified JavaScript library (such as D3, echartjs, three.js, etc.) based on the following requirements:\n\n{}\n\nPlease note that:\n1. The HTML code will be executed in a Chrome web browser.\n2. Only return the HTML content without any additional explanatory or descriptive text.\n3. If there''s a need to provide a download link within the HTML content, format it as follows: <a href=''/solidui/models/download?file=INSERT_FILENAME_HERE''>Download file</a>, replacing INSERT_FILENAME_HERE with the actual filename.\n4. Ensure to include the necessary `<script>` tags for incorporating the JavaScript library you are using.
-\n\nEnsure that the response contains only HTML content to be directly executed in the kernel, with no other outputs.',NULL,NULL)
-;
+\n\nEnsure that the response contains only HTML content to be directly executed in the kernel, with no other outputs.',NULL,NULL);

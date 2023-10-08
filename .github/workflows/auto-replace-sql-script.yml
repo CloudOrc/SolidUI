@@ -14,7 +14,29 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-#
-HUB=ghcr.io/cloudorc/solidui
-TAG=0.4.0
 
+name: Auto Replace SQL Script
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+  push:
+    branches:
+      - dev
+jobs:
+  replace-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Replace SQL script
+        run: |
+          sed -i -e '/solidui_mysql.sql: |-/,$ {
+              /solidui_mysql.sql: |-/!d
+              r solidui-entrance/src/main/resources/sql/mysql/solidui_mysql.sql
+          }' deploy/kubernetes/helm-solidui/templates/cm-mysql.yaml
+          cat deploy/kubernetes/helm-solidui/templates/cm-mysql.yaml

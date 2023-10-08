@@ -24,6 +24,7 @@ import com.cloudorc.solidui.entrance.enums.Status;
 import com.cloudorc.solidui.entrance.service.ProjectService;
 import com.cloudorc.solidui.entrance.utils.PageInfo;
 import com.cloudorc.solidui.entrance.utils.Result;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,15 +72,22 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
     }
 
     @Override
-    public Result updateProject(Integer projectId, String name, String desc) {
+    public Result updateProject(Integer projectId, String name, String image, String desc) {
         Project newProject = projectMapper.selectById(projectId);
         Result result = new Result();
         if (newProject == null) {
             putMsg(result, Status.PROJECT_NOT_EXISTS_ERROR);
             return result;
         }
-        newProject.setProjectName(name);
-        newProject.setDescription(desc);
+        if (StringUtils.isNotBlank(name)){
+            newProject.setProjectName(name);
+        }
+        if (StringUtils.isNotBlank(image)){
+            newProject.setImage(image);
+        }
+        if (StringUtils.isNotBlank(desc)){
+            newProject.setDescription(desc);
+        }
         newProject.setUpdateTime(new Date());
         newProject.setStatus(0);
         if(projectMapper.updateById(newProject) > 0){
