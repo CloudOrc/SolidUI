@@ -29,7 +29,7 @@ import {
 	message,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { Delete, Editor, Close } from "@icon-park/react";
+import { Delete, Editor, Close, Pic } from "@icon-park/react";
 import classNames from "classnames";
 import Apis from "@/apis";
 import { ProjectDataType } from "@/types";
@@ -50,11 +50,12 @@ export interface ProjectCardProps {
 }
 
 export default function ProjectCard(props: ProjectCardProps) {
-	const inputRef = useRef<HTMLInputElement>()
+	const inputRef = useRef<HTMLInputElement>();
 
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [editOpen, setEditOpen] = useState<boolean>(false);
+	const [picOpen, setPicOpen] = useState<boolean>(false);
 
 	const {
 		className,
@@ -98,40 +99,37 @@ export default function ProjectCard(props: ProjectCardProps) {
 
 	const clazzName = classNames("solidui-card__project", className);
 
-	const [showText, setShowText] = useState(true)
-	const [text, setText] = useState(item.projectName)
-	
-	const [inputValue, setInputValue] = useState('')
+	const [showText, setShowText] = useState(true);
+	const [text, setText] = useState(item.projectName);
+
+	const [inputValue, setInputValue] = useState("");
 	const onDoubleClick = () => {
-		setShowText(false)
-		setInputValue(text)
+		setShowText(false);
+		setInputValue(text);
 		// console.log('inputRef', inputRef)
 		setTimeout(() => {
-			inputRef.current?.focus()
+			inputRef.current?.focus();
 		}, 100);
-	}
+	};
 	const onConfirm = () => {
 		// console.log('确定')
-		setShowText(true)
-		setText(inputValue)
+		setShowText(true);
+		setText(inputValue);
 		// console.log(text != inputValue)
-		if(text != inputValue){
+		if (text != inputValue) {
 			onFinish(inputValue);
 		}
-	}
+	};
 	const onCancel = () => setShowText(true);
 
 	const onFinish = async (values) => {
-		const res = await Apis.project.update(
-			`${item.id}`,
-			values,
-		);
+		const res = await Apis.project.update(`${item.id}`, values);
 		if (res.ok) {
 			message.success("rename ok");
 			setEditOpen(false);
 			onUpdate();
 		}
-	}
+	};
 	const [isHovered, setIsHovered] = useState(false);
 
 	const textHoverStyle = {
@@ -149,9 +147,9 @@ export default function ProjectCard(props: ProjectCardProps) {
 		width: "100%",
 		height: "2px",
 		backgroundColor: "blue",
-		content: '""'
-	  };
-	
+		content: '""',
+	};
+
 	return (
 		<div
 			className={clazzName}
@@ -165,7 +163,9 @@ export default function ProjectCard(props: ProjectCardProps) {
 		>
 			<div className="card-content">
 				{/* <div className="content-title">{item.projectName}</div> */}
-				<div className="content-title" />
+				<div className="content-title">
+					{item.image && <img src={item.image} alt="" />}
+				</div>
 				{popup ? (
 					<div className="content-mask">
 						<div className="mask-icons">
@@ -210,6 +210,19 @@ export default function ProjectCard(props: ProjectCardProps) {
 									strokeLinejoin="miter"
 									strokeLinecap="square"
 									onClick={__handleDelete}
+								/>
+								<Pic
+									className="solidui-icon-btn"
+									theme="outline"
+									size="18"
+									fill="#f1f1f1"
+									strokeWidth={2}
+									strokeLinejoin="miter"
+									strokeLinecap="square"
+									onClick={() => {
+										setPicOpen(true);
+										// form.setFieldValue("name", item.projectName);
+									}}
 								/>
 								{/* <Editor
 									className="solidui-icon-btn"
@@ -280,21 +293,49 @@ export default function ProjectCard(props: ProjectCardProps) {
 						<Avatar size={44} icon={<UserOutlined rev={1} />} />
 					</Col>
 					<Col flex="auto">
-						<div style={textHoverStyle}
-       						onMouseEnter={() => setIsHovered(true)}
-      						onMouseLeave={() => setIsHovered(false)} >
-						{
-							showText ? <p onDoubleClick={onDoubleClick} style={{width:200}}>{item.projectName}</p > : ''
-						}
-						{
-							isHovered ? <span style={underlineStyle} /> : ''
-						}
-							   
-					
-						<div style={{display: !showText ? 'block' : 'none' ,paddingTop:10}}>
-							<input ref={(ref) => { inputRef.current = ref }} type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onBlur={onConfirm} style={{width:'100%', color: '#ffffff', outline: 'none' ,borderTop: 'none',borderLeft: 'none',borderRight: 'none',borderBottomColor:'blue',backgroundColor:'#6c6c6c'}} onKeyDown={(e) => { if (e.keyCode === 13) onConfirm() }}/>
-							
-						</div>
+						<div
+							style={textHoverStyle}
+							onMouseEnter={() => setIsHovered(true)}
+							onMouseLeave={() => setIsHovered(false)}
+						>
+							{showText ? (
+								<p onDoubleClick={onDoubleClick} style={{ width: 200 }}>
+									{item.projectName}
+								</p>
+							) : (
+								""
+							)}
+							{isHovered ? <span style={underlineStyle} /> : ""}
+
+							<div
+								style={{
+									display: !showText ? "block" : "none",
+									paddingTop: 10,
+								}}
+							>
+								<input
+									ref={(ref) => {
+										inputRef.current = ref;
+									}}
+									type="text"
+									value={inputValue}
+									onChange={(e) => setInputValue(e.target.value)}
+									onBlur={onConfirm}
+									style={{
+										width: "100%",
+										color: "#ffffff",
+										outline: "none",
+										borderTop: "none",
+										borderLeft: "none",
+										borderRight: "none",
+										borderBottomColor: "blue",
+										backgroundColor: "#6c6c6c",
+									}}
+									onKeyDown={(e) => {
+										if (e.keyCode === 13) onConfirm();
+									}}
+								/>
+							</div>
 						</div>
 						<div>{item.userName}</div>
 						<div>{item.updateTime}</div>
@@ -373,6 +414,86 @@ export default function ProjectCard(props: ProjectCardProps) {
 							size="small"
 							style={{ marginRight: 10 }}
 							onClick={() => setEditOpen(false)}
+						>
+							Cancel
+						</Button>
+						<Button type="primary" size="small" onClick={() => form.submit()}>
+							Save
+						</Button>
+					</div>
+				</div>
+			</Modal>
+			<Modal
+				title={null}
+				footer={null}
+				width={400}
+				closable={false}
+				bodyStyle={{ padding: 0 }}
+				open={picOpen}
+				modalRender={(modal: any) => modal}
+			>
+				<div className="solidui-modal">
+					<div className="solidui-modal__header">
+						Change background image
+						<span className="solidui-modal__close-btn">
+							<Close
+								theme="outline"
+								size="16"
+								fill="rgba(0, 0, 0, 0.65)"
+								strokeWidth={2}
+								strokeLinejoin="miter"
+								strokeLinecap="square"
+								onClick={() => {
+									setPicOpen(false);
+								}}
+							/>
+						</span>
+					</div>
+					<div
+						className="solidui-modal__content"
+						style={{
+							height: 100,
+						}}
+					>
+						<div className="modal-content__form">
+							<Form
+								layout="vertical"
+								form={form}
+								initialValues={{ layout: "vertical" }}
+								onFinish={async (values) => {
+									const res = await Apis.project.changeBgImage(
+										`${item.id}`,
+										values.backgroundImage,
+									);
+									if (res.ok) {
+										message.success("rename ok");
+										setPicOpen(false);
+										onUpdate();
+									}
+								}}
+							>
+								<Form.Item
+									label="background image link"
+									name="backgroundImage"
+									required
+									rules={[
+										{
+											required: true,
+											message: "Please input background image link",
+										},
+									]}
+								>
+									<Input placeholder="input background image link" autoFocus />
+								</Form.Item>
+							</Form>
+						</div>
+					</div>
+					<div className="solidui-modal__footer">
+						<Button
+							type="default"
+							size="small"
+							style={{ marginRight: 10 }}
+							onClick={() => setPicOpen(false)}
 						>
 							Cancel
 						</Button>
