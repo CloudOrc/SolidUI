@@ -50,4 +50,4 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add deploy/kubernetes/helm-solidui/templates/cm-mysql.yaml
           git commit -m "update cm-mysql.yaml"
-          git push origin dev
+          git push origin HEAD:refs/heads/remote-branch
