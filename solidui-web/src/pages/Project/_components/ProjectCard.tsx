@@ -54,6 +54,7 @@ export default function ProjectCard(props: ProjectCardProps) {
 
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
+	const [bgImageform] = Form.useForm();
 	const [editOpen, setEditOpen] = useState<boolean>(false);
 	const [picOpen, setPicOpen] = useState<boolean>(false);
 
@@ -221,7 +222,7 @@ export default function ProjectCard(props: ProjectCardProps) {
 									strokeLinecap="square"
 									onClick={() => {
 										setPicOpen(true);
-										// form.setFieldValue("name", item.projectName);
+										bgImageform.setFieldValue("backgroundImage", item.image);
 									}}
 								/>
 								{/* <Editor
@@ -458,7 +459,7 @@ export default function ProjectCard(props: ProjectCardProps) {
 						<div className="modal-content__form">
 							<Form
 								layout="vertical"
-								form={form}
+								form={bgImageform}
 								initialValues={{ layout: "vertical" }}
 								onFinish={async (values) => {
 									const res = await Apis.project.changeBgImage(
@@ -497,7 +498,11 @@ export default function ProjectCard(props: ProjectCardProps) {
 						>
 							Cancel
 						</Button>
-						<Button type="primary" size="small" onClick={() => form.submit()}>
+						<Button
+							type="primary"
+							size="small"
+							onClick={() => bgImageform.submit()}
+						>
 							Save
 						</Button>
 					</div>
