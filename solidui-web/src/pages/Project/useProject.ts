@@ -31,27 +31,40 @@ function useProject() {
 		current: number;
 		size: number;
 		total: number;
-	}>();
+	}>({ current: 1, size: 12, total: 12 });
+	const [searchName, setSearchName] = useState<string>("");
 
 	const popupConverMap = useRef<Map<string, boolean>>(new Map());
 
 	useEffect(() => {
-		query();
-		return () => {};
-	}, []);
+		query({
+			pageNo: pagination.current,
+			pageSize: pagination.size,
+			searchName,
+		});
+	}, [pagination?.current, pagination?.size]);
 
-	async function handleSearch(value: string) {
-		query({ pageNo: 1, pageSize: 10, searchName: value });
+	function handlePaginationChange(current: number, size: number) {
+		setPagination({ current, size, total: pagination.total });
+	}
+	async function handleSearch() {
+		query({ pageNo: 1, pageSize: 12, searchName });
 	}
 
-	async function query(params: any = { pageNo: 1, pageSize: 10 }) {
+	async function query(
+		params: any = {
+			pageNo: 1,
+			pageSize: 12,
+			searchName: "",
+		},
+	) {
 		setLoading(true);
 		const res = await Apis.project.query(params);
 		if (res.ok) {
 			const data = res.data || ({} as any);
 			const current = data.currentPage || 1;
-			const size = data.pageSize || 10;
-			const total = data.total || 0;
+			const size = data.pageSize || 12;
+			const total = data.total || 12;
 			const records = data.totalList || [];
 			records.forEach((item: any) => {
 				popupConverMap.current.set(`${item.id}`, false);
@@ -106,12 +119,15 @@ function useProject() {
 		toggleModal,
 		query,
 		handleSearch,
+		handlePaginationChange,
 		create,
 		del,
 		toggleCover,
 		projects,
 		pagination,
 		popupConverMap,
+		searchName,
+		setSearchName,
 	};
 }
 

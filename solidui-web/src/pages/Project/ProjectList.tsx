@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { Input, Button, Form, Spin, Modal } from "antd";
+import { Input, Button, Form, Spin, Modal, Pagination } from "antd";
 import { Close } from "@icon-park/react";
 import useProject from "./useProject";
 import ProjectCard from "./_components/ProjectCard";
@@ -39,6 +39,10 @@ export default function ProjectList() {
 		toggleModal,
 		handleSearch,
 		query,
+		setSearchName,
+		searchName,
+		pagination,
+		handlePaginationChange,
 	} = useProject();
 
 	function renderModalContent() {
@@ -148,6 +152,11 @@ export default function ProjectList() {
 						<Search
 							placeholder="input search text"
 							onSearch={handleSearch}
+							onPressEnter={handleSearch}
+							value={searchName}
+							onChange={(e) => {
+								setSearchName(e.target.value);
+							}}
 							enterButton
 							style={{
 								width: 300,
@@ -169,6 +178,15 @@ export default function ProjectList() {
 					<Spin tip="loading" spinning={loading}>
 						<div className="projects-list">{renderProjects()}</div>
 					</Spin>
+					<div style={{ display: "flex", justifyContent: "flex-end" }}>
+						<Pagination
+							showSizeChanger={false}
+							pageSize={pagination.size}
+							current={pagination.current}
+							total={pagination.total}
+							onChange={handlePaginationChange}
+						/>
+					</div>
 				</div>
 			</div>
 
