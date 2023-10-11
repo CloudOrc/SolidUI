@@ -80,7 +80,7 @@ public class ProjectController extends BaseController{
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "project_id", dataTypeClass = int.class, example = "123456"),
             @ApiImplicitParam(name = "projectName", value = "project_name", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "backgroundImage", value = "backgroundImage", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "backgroundImage", value = "background_image", dataTypeClass = String.class),
             @ApiImplicitParam(name = "description", value = "project_desc", dataTypeClass = String.class)
     })
     @ResponseStatus(HttpStatus.OK)
