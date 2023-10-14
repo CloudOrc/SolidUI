@@ -54,7 +54,6 @@ jobs:
       - name: Push to branch
         uses: ad-m/github-push-action@master
         with:
-          github_url: https://github.com
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: dev
           force: true
