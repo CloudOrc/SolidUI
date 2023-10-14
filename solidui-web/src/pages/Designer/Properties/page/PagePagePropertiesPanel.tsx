@@ -21,7 +21,12 @@ import { PropertyElement, InputNumber } from "@/components";
 import { mm, eventbus } from "@/utils";
 
 export default function PagePagePropertiesPanel() {
-	const [size] = useState<{ width: number; height: number }>();
+	const page = mm.getCurrentPage();
+
+	const [size] = useState<{ width: number; height: number }>({
+		width: page?.size.width || 1024,
+		height: page?.size.height || 768,
+	});
 
 	return (
 		<>
