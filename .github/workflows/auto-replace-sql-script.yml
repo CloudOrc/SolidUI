@@ -49,6 +49,7 @@ jobs:
       - name: Push to branch
         uses: ad-m/github-push-action@master
         with:
+          github_url: https://github.com/CloudOrc/SolidUI
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: dev
 #        run: |
