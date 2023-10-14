@@ -46,15 +46,15 @@ jobs:
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
 
+      - name: Commit files for change
+        run: |
+          git add deploy/kubernetes/helm-solidui/templates/cm-mysql.yaml
+          git commit -m "update cm-mysql.yaml"
+
       - name: Push to branch
         uses: ad-m/github-push-action@master
         with:
-          github_url: https://github.com/CloudOrc/SolidUI
+          github_url: https://github.com
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: dev
-#        run: |
-#          git config --local user.email "actions@github.com"
-#          git config --local user.name "GitHub Actions"
-#          git add deploy/kubernetes/helm-solidui/templates/cm-mysql.yaml
-#          git commit -m "update cm-mysql.yaml"
-#          git push origin HEAD:refs/heads/dev
+          force: true
