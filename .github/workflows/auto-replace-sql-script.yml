@@ -49,7 +49,7 @@ jobs:
       - name: Push to branch
         uses: ad-m/github-push-action@master
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: dev
 #        run: |
 #          git config --local user.email "actions@github.com"
