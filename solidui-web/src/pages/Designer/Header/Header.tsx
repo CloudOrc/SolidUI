@@ -17,9 +17,8 @@
 
 import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Button, Tooltip, Drawer, message } from "antd";
-import { ChartHistogramTwo } from "@icon-park/react";
-import { eventbus, mm } from "@/utils/index";
+import { Button, Drawer, message } from "antd";
+import { mm } from "@/utils/index";
 import Apis from "@/apis";
 import {
 	ProjectPageViewsCreationDataType,
@@ -34,6 +33,73 @@ function Header() {
 	const [searchParams] = useSearchParams();
 	const [previewVisible, setPreviewVisible] = React.useState(false);
 	const [title, setTitle] = React.useState("");
+
+	async function handlePreview() {
+		await handleSave();
+		const page = mm.getCurrentPage();
+		const project = mm.getModel();
+		if (isNil(project) || isNil(page)) {
+			message.warn("please select a page first");
+			return;
+		}
+		setPreviewVisible(true);
+	}
+
+	async function handleSave() {
+		const model = mm.getPrepareSavingModel();
+		const page = mm.getCurrentPage();
+
+		if (isNil(model) || isNil(page)) {
+			return;
+		}
+		const views = page.views || [];
+		const _views: PageViewCreationDataType[] = [];
+		views.forEach((view) => {
+			const v: any = {
+				title: view.title,
+				position: {
+					top: `${view.position.top}`,
+					left: `${view.position.left}`,
+				},
+				size: {
+					width: `${view.size.width}`,
+					height: `${view.size.height}`,
+				},
+				type: view.type,
+				data: {
+					dataSourceId: `${view.data.dataSourceId || ""}`,
+					dataSourceName: `${view.data.dataSourceName || ""}`,
+					dataSourceTypeId: `${view.data.dataSourceTypeId || ""}`,
+					dataSourceTypeName: `${view.data.dataSourceTypeName || ""}`,
+					sql: view.data.sql || "",
+					table: view.data.table || "",
+				},
+			};
+			if (view.options !== null && undefined !== view.options) {
+				v.options = view.options;
+			}
+			if (!startsWith(view.id, "visual")) {
+				v.id = view.id;
+			}
+			_views.push(v);
+		});
+		const data: ProjectPageViewsCreationDataType = {
+			projectId: model.id,
+			page: {
+				id: page.id,
+				name: page.title,
+			},
+			size: {
+				width: page.size.width,
+				height: page.size.height,
+			},
+			views: _views,
+		};
+		const res = await Apis.model.updateProjectPageViews(data);
+		if (res.ok) {
+			message.success("Save success");
+		}
+	}
 
 	function renderPreviewPopup() {
 		if (!previewVisible) {
@@ -115,103 +181,17 @@ function Header() {
 						<span style={{ marginLeft: "10px" }}>{title}</span>
 					</div>
 				</div>
-				<div className="header-center">
-					{/* <Tooltip title="Bar Chart">
-						<ChartHistogramTwo
-							theme="two-tone"
-							size="32"
-							fill={["#379aff", "#4890f3"]}
-							strokeLinejoin="bevel"
-							strokeLinecap="square"
-							style={{
-								cursor: "pointer",
-							}}
-							onClick={() => {
-								eventbus.emit("onDraw", {
-									viewType: "echarts_bar",
-								});
-							}}
-						/>
-					</Tooltip> */}
-				</div>
+				<div className="header-center">{}</div>
 				<div className="header-right">
 					<Button
 						type="primary"
 						size="small"
-						style={{
-							marginRight: 10,
-						}}
-						onClick={() => {
-							const page = mm.getCurrentPage();
-							const project = mm.getModel();
-							if (isNil(project) || isNil(page)) {
-								message.warn("please select a page first");
-								return;
-							}
-							setPreviewVisible(true);
-						}}
+						style={{ marginRight: 10 }}
+						onClick={handlePreview}
 					>
 						Preview
 					</Button>
-					<Button
-						type="primary"
-						size="small"
-						onClick={async () => {
-							const model = mm.getPrepareSavingModel();
-							const page = mm.getCurrentPage();
-
-							if (isNil(model) || isNil(page)) {
-								return;
-							}
-							const views = page.views || [];
-							const _views: PageViewCreationDataType[] = [];
-							views.forEach((view) => {
-								const v: any = {
-									title: view.title,
-									position: {
-										top: `${view.position.top}`,
-										left: `${view.position.left}`,
-									},
-									size: {
-										width: `${view.size.width}`,
-										height: `${view.size.height}`,
-									},
-									type: view.type,
-									data: {
-										dataSourceId: `${view.data.dataSourceId || ""}`,
-										dataSourceName: `${view.data.dataSourceName || ""}`,
-										dataSourceTypeId: `${view.data.dataSourceTypeId || ""}`,
-										dataSourceTypeName: `${view.data.dataSourceTypeName || ""}`,
-										sql: view.data.sql || "",
-										table: view.data.table || "",
-									},
-								};
-								if (view.options !== null && undefined !== view.options) {
-									v.options = view.options;
-								}
-								if (!startsWith(view.id, "visual")) {
-									v.id = view.id;
-								}
-								_views.push(v);
-							});
-							const data: ProjectPageViewsCreationDataType = {
-								projectId: model.id,
-								page: {
-									id: page.id,
-									name: page.title,
-								},
-								size: {
-									width: page.size.width,
-									height: page.size.height,
-								},
-								views: _views,
-							};
-							const res = await Apis.model.updateProjectPageViews(data);
-							if (res.ok) {
-								message.success("Save success");
-							}
-						}}
-					>
+					<Button type="primary" size="small" onClick={handleSave}>
 						Save
 					</Button>
 				</div>
