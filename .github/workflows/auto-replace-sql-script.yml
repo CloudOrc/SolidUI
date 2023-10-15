@@ -41,10 +41,10 @@ jobs:
           }' deploy/kubernetes/helm-solidui/templates/cm-mysql.yaml
           cat deploy/kubernetes/helm-solidui/templates/cm-mysql.yaml
 
-      - name: Configure git
-        run: |
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'actions@github.com'
+#      - name: Configure git
+#        run: |
+#          git config --global user.name 'GitHub Actions'
+#          git config --global user.email 'actions@github.com'
 
       - name: Commit files for change
         run: |
