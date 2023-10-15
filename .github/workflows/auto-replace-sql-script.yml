@@ -15,23 +15,19 @@
 # specific language governing permissions and limitations
 # under the License.
 
-name: Auto Replace SQL Script
-
 on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
   push:
     branches:
       - dev
+
 jobs:
-  replace-script:
+
+  commit-file-changes:
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Replace SQL script
         run: |
@@ -39,4 +35,16 @@ jobs:
               /solidui_mysql.sql: |-/!d
               r solidui-entrance/src/main/resources/sql/mysql/solidui_mysql.sql
           }' deploy/kubernetes/helm-solidui/templates/cm-mysql.yaml
-          cat deploy/kubernetes/helm-solidui/templates/cm-mysql.yaml
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add .
+          git commit -m "Replace SQL script"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: dev
