@@ -68,7 +68,7 @@ AI-generated Graphic Models.
 
 # QuickStart
 
-https://cloudorc.github.io/SolidUI-Website/docs/user-guide/quick-start/
+[Quick Start](https://cloudorc.github.io/SolidUI-Website/docs/user-guide/quick-start/)
 
 # What's this?
 

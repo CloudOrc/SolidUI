@@ -67,7 +67,9 @@ AI生成图形模型
 
 # 快速开始
 
-https://cloudorc.github.io/SolidUI-Website/zh-CN/docs/user-guide/quick-start/
+
+
+[快速开始](https://cloudorc.github.io/SolidUI-Website/zh-CN/docs/user-guide/quick-start/)
 
 # 这是什么？
 
