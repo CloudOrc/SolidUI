@@ -45,10 +45,11 @@ jobs:
           git commit -m "Replace SQL script" --allow-empty
 
       - name: Push changes
-        uses: github-push-action/force-push@v1
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: dev
+          force: true
 
   update-sql-script:
     if: ${{ github.event_name == 'pull_request' }}
