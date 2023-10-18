@@ -19,9 +19,11 @@ import { useEffect, useState, useRef } from "react";
 import { useUpdate } from "react-use";
 import { useForm } from "antd/lib/form/Form";
 import Apis from "@/apis";
+import {useNavigate} from "react-router-dom";
 
 function useProject() {
 	const forceUpdate = useUpdate();
+	const navigate = useNavigate();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [projects, setProjects] = useState<any[]>([]);
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -80,14 +82,14 @@ function useProject() {
 	}
 
 	async function create(values: { name: string; description?: string }) {
+		const defaultName = "Default Project Name";
 		const res = await Apis.project.create({
-			projectName: values.name,
+			projectName: values.name || defaultName,
 			description: values.description,
 		});
-		if (res.ok) {
-			query();
-			toggleModal(false);
-			resetForm();
+		if (res.ok && res.data) {
+			const projId = res.data;
+			navigate(`/dashboard/${projId}?projectName=${values.name}`);
 		}
 	}
 

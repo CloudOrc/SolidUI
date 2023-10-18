@@ -300,7 +300,7 @@ export default function ProjectCard(props: ProjectCardProps) {
 							onMouseLeave={() => setIsHovered(false)}
 						>
 							{showText ? (
-								<p onDoubleClick={onDoubleClick} style={{ width: 200 }}>
+								<p onClick={onDoubleClick} style={{ width: 200 }}>
 									{item.projectName}
 								</p>
 							) : (
