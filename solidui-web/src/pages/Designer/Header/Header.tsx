@@ -107,7 +107,7 @@ function Header() {
 	async function handleTitleUpdate() {
 			const res = await Apis.project.update(id || "", title);
 			if (res.ok) {
-				message.success("Title updated successfully");
+				message.success("rename ok");
 				setIsEditing(false);
 				navigate(`/dashboard/${id}?projectName=${title}`);
 			}
