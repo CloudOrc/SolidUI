@@ -49,12 +49,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
      */
     @Override
     public Result createProject(String loginUser, String name, String desc) {
-        Project newProject = projectMapper.queryByName(name);
         Result result = new Result();
-        if (newProject != null) {
-            putMsg(result, Status.PROJECT_ALREADY_EXISTS_ERROR);
-            return result;
-        }
 
         Project project = new Project();
         project.setProjectName(name);
