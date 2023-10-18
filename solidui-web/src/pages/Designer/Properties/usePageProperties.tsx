@@ -33,6 +33,7 @@ function usePageProperties(initialData: InitialData) {
 	const [propertyKey, setPropertyKey] = useState<"page" | "modelui" | "none">(
 		"page",
 	);
+	const [modelOpen, setModelOpen] = useState<boolean>(true);
 	const [currentTabKey, setCurrentTabKey] = useState<string>("Page");
 	const mainRef = React.createRef<HTMLDivElement>();
 	const asideRef = React.createRef<HTMLDivElement>();
@@ -59,7 +60,7 @@ function usePageProperties(initialData: InitialData) {
 
 	function renderTabs() {
 		return (
-			<ul className="conf-header__tabs">
+			<ul className="conf-header__tabs" id="conf-header__tabs">
 				{initialData.tabs?.map((tabItemData) => {
 					const active = currentTabKey === tabItemData.key;
 					return (
@@ -81,8 +82,10 @@ function usePageProperties(initialData: InitialData) {
 		if (dom) {
 			if (key === "Modelui") {
 				dom.style.width = "800px";
+				setModelOpen(true);
 			} else {
 				dom.style.width = "326px";
+				setModelOpen(false);
 			}
 		}
 		setCurrentTabKey(key);
@@ -94,6 +97,8 @@ function usePageProperties(initialData: InitialData) {
 		mainRef,
 		asideRef,
 		renderTabs,
+		modelOpen,
+		setModelOpen,
 	};
 }
 

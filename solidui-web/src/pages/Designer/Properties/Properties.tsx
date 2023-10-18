@@ -108,63 +108,6 @@ function Properties() {
 			<div className="aside-east__container" id="aside-east__container">
 				{renderByPropertyKey()}
 			</div>
-			{modelOpen ? (
-				<div
-					className="expand"
-					style={{
-						position: "absolute",
-						left: 0,
-						top: 0,
-						zIndex: 99,
-						display: "flex",
-						alignItems: "center",
-						height: "100%",
-					}}
-				>
-					<LeftExpand
-						theme="outline"
-						size="20"
-						fill="#757272"
-						strokeWidth={2}
-						strokeLinejoin="miter"
-						strokeLinecap="square"
-						style={{
-							cursor: "pointer",
-						}}
-						onClick={() => {
-							handleChangeOpen("close");
-						}}
-					/>
-				</div>
-			) : (
-				<div
-					className="expand"
-					style={{
-						position: "absolute",
-						left: -20,
-						top: 0,
-						zIndex: 99,
-						display: "flex",
-						alignItems: "center",
-						height: "100%",
-					}}
-				>
-					<RightExpand
-						theme="outline"
-						size="20"
-						fill="#757272"
-						strokeWidth={2}
-						strokeLinejoin="miter"
-						strokeLinecap="square"
-						style={{
-							cursor: "pointer",
-						}}
-						onClick={() => {
-							handleChangeOpen("open");
-						}}
-					/>
-				</div>
-			)}
 		</section>
 	);
 }
