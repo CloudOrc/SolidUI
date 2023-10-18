@@ -60,18 +60,14 @@ export default function PagePropertiesPanel() {
 			if (DbConfig) {
 				DbConfig.style.display = "none";
 			}
-			if (asideEastContainer) {
-				// asideEastContainer.style.display = "none";
-			}
+
 		} else {
 			dom.style.width = modelWidth + "px";
 			setModelOpen(true);
 			if (DbConfig) {
 				DbConfig.style.display = "block";
 			}
-			if (asideEastContainer) {
-				// asideEastContainer.style.display = "block";
-			}
+
 		}
 	}
 
