@@ -45,72 +45,6 @@ export default function ProjectList() {
 		handlePaginationChange,
 	} = useProject();
 
-	function renderModalContent() {
-		return (
-			<div className="solidui-modal">
-				<div className="solidui-modal__header">
-					New Project
-					<span className="solidui-modal__close-btn">
-						<Close
-							theme="outline"
-							size="16"
-							fill="rgba(0, 0, 0, 0.65)"
-							strokeWidth={2}
-							strokeLinejoin="miter"
-							strokeLinecap="square"
-							onClick={() => {
-								toggleModal(false);
-							}}
-						/>
-					</span>
-				</div>
-				<div
-					className="solidui-modal__content"
-					style={{
-						height: 100,
-					}}
-				>
-					<div className="modal-content__form">
-						<Form
-							layout="vertical"
-							form={form}
-							initialValues={{ layout: "vertical" }}
-							onFinish={(values) => {
-								create(values);
-							}}
-						>
-							<Form.Item
-								label="Project Name"
-								name="name"
-								required
-								rules={[
-									{
-										required: true,
-										message: "Please input project name",
-									},
-								]}
-							>
-								<Input placeholder="project name" autoFocus />
-							</Form.Item>
-						</Form>
-					</div>
-				</div>
-				<div className="solidui-modal__footer">
-					<Button
-						type="default"
-						size="small"
-						style={{ marginRight: 10 }}
-						onClick={() => toggleModal(false)}
-					>
-						Cancel
-					</Button>
-					<Button type="primary" size="small" onClick={() => form.submit()}>
-						Save
-					</Button>
-				</div>
-			</div>
-		);
-	}
 
 	function renderProjects() {
 		const nodes: React.ReactNode[] = [];
@@ -166,10 +100,10 @@ export default function ProjectList() {
 						<Button
 							type="primary"
 							onClick={() => {
-								toggleModal(true);
+								create({ name: "Default Project Name" });
 							}}
 						>
-							New project
+							New Project
 						</Button>
 					</div>
 				</div>
@@ -190,16 +124,6 @@ export default function ProjectList() {
 				</div>
 			</div>
 
-			<Modal
-				title={null}
-				footer={null}
-				closable={false}
-				bodyStyle={{ padding: 0 }}
-				open={modalOpen}
-				modalRender={(modal: any) => modal}
-			>
-				{renderModalContent()}
-			</Modal>
 		</div>
 	);
 }

@@ -16,8 +16,8 @@
  */
 
 import React, { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { Button, Drawer, message } from "antd";
+import {useNavigate, useParams, useSearchParams} from "react-router-dom";
+import { Button, Drawer, message, Input } from "antd";
 import { mm } from "@/utils/index";
 import Apis from "@/apis";
 import {
@@ -29,10 +29,13 @@ import { isNil, startsWith } from "lodash-es";
 import PreviewPopup from "../Preview/PreviewPopup";
 
 function Header() {
+	const params = useParams();
+	const { id } = params;
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const [previewVisible, setPreviewVisible] = React.useState(false);
 	const [title, setTitle] = React.useState("");
+	const [isEditing, setIsEditing] = React.useState(false);
 
 	async function handlePreview() {
 		await handleSave();
@@ -99,6 +102,15 @@ function Header() {
 		if (res.ok) {
 			message.success("Save success");
 		}
+	}
+
+	async function handleTitleUpdate() {
+			const res = await Apis.project.update(id || "", title);
+			if (res.ok) {
+				message.success("Title updated successfully");
+				setIsEditing(false);
+				navigate(`/dashboard/${id}?projectName=${title}`);
+			}
 	}
 
 	function renderPreviewPopup() {
@@ -177,8 +189,20 @@ function Header() {
 					</div>
 					<div className="version">v{vars.APP_VERSION || "0.4.0"}</div>
 					<div className="split-line" />
-					<div className="left-main">
-						<span style={{ marginLeft: "10px" }}>{title}</span>
+					<div className="left-main" onClick={() => setIsEditing(true)}>
+						<div className="editable-area">
+							{isEditing ? (
+								<Input
+									autoFocus
+									value={title}
+									onChange={(e) => setTitle(e.target.value)}
+									onBlur={handleTitleUpdate}
+									onPressEnter={handleTitleUpdate}
+								/>
+							) : (
+								<span style={{ marginLeft: "10px", marginRight: "10px" }}>{title}</span>
+							)}
+						</div>
 					</div>
 				</div>
 				<div className="header-center">{}</div>
