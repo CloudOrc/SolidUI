@@ -19,9 +19,10 @@ import React from "react";
 import usePageProperties from "./usePageProperties";
 import PagePagePropertiesPanel from "./page/PagePagePropertiesPanel";
 import PageModeluiPropertiesPanel from "./page/PageModeluiDialogPanel";
+import {LeftExpand, RightExpand} from "@icon-park/react";
 
 export default function PagePropertiesPanel() {
-	const { currentTabKey, mainRef, renderTabs } = usePageProperties({
+	const { currentTabKey, mainRef, renderTabs, modelOpen, setModelOpen } = usePageProperties({
 		tabs: [
 			{
 				key: "Page",
@@ -34,6 +35,8 @@ export default function PagePropertiesPanel() {
 		],
 	});
 
+	const [modelWidth, setModelWidth] = React.useState<number>(326);
+
 	function renderPanel() {
 		if (currentTabKey === "Page") {
 			return <PagePagePropertiesPanel />;
@@ -44,12 +47,95 @@ export default function PagePropertiesPanel() {
 		return undefined;
 	}
 
+	function handleChangeOpen(type: string) {
+		const dom: any = document.getElementById("section-properties");
+		const DbConfig: any = document.getElementById("db-config");
+		const asideEastContainer: any = document.getElementById(
+			"aside-east__container",
+		);
+		if (type === "close") {
+			setModelWidth(dom.offsetWidth);
+			dom.style.width = 0;
+			setModelOpen(false);
+			if (DbConfig) {
+				DbConfig.style.display = "none";
+			}
+
+		} else {
+			dom.style.width = modelWidth + "px";
+			setModelOpen(true);
+			if (DbConfig) {
+				DbConfig.style.display = "block";
+			}
+
+		}
+	}
+
 	return (
 		<>
 			<header className="conf-header">{renderTabs()}</header>
 			<main className="conf-main" ref={mainRef}>
 				{renderPanel()}
 			</main>
+			{modelOpen && currentTabKey === "Modelui" ? (
+				<div
+					className="expand"
+					style={{
+						position: "absolute",
+						left: 0,
+						top: 0,
+						zIndex: 99,
+						display: "flex",
+						alignItems: "center",
+						height: "100%",
+					}}
+				>
+					<LeftExpand
+						theme="outline"
+						size="20"
+						fill="#757272"
+						strokeWidth={2}
+						strokeLinejoin="miter"
+						strokeLinecap="square"
+						style={{
+							cursor: "pointer",
+						}}
+						onClick={() => {
+							handleChangeOpen("close");
+						}}
+					/>
+				</div>
+			) : (
+				currentTabKey === "Modelui" && (
+					<div
+						className="expand"
+						style={{
+							position: "absolute",
+							left: -20,
+							top: 0,
+							zIndex: 99,
+							display: "flex",
+							alignItems: "center",
+							height: "100%",
+						}}
+					>
+						<RightExpand
+							theme="outline"
+							size="20"
+							fill="#757272"
+							strokeWidth={2}
+							strokeLinejoin="miter"
+							strokeLinecap="square"
+							style={{
+								cursor: "pointer",
+							}}
+							onClick={() => {
+								handleChangeOpen("open");
+							}}
+						/>
+					</div>
+				)
+			)}
 		</>
 	);
 }
