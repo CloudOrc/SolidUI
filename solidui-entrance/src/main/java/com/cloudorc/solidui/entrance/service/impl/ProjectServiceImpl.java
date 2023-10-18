@@ -64,6 +64,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
         project.setUpdateTime(new Date());
         project.setStatus(0);
         if(projectMapper.insert(project) > 0){
+            result.setData(project.getId());
             putMsg(result, Status.SUCCESS);
         }else{
             putMsg(result, Status.CREATE_PROJECT_ERROR);
