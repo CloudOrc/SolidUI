@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { isNil } from "lodash-es";
 import { PropertyElement, InputNumber } from "@/components";
 import { mm, eventbus } from "@/utils";
@@ -23,10 +23,20 @@ import { mm, eventbus } from "@/utils";
 export default function PagePagePropertiesPanel() {
 	const page = mm.getCurrentPage();
 
-	const [size] = useState<{ width: number; height: number }>({
+	const [size, setSize] = useState<{ width: number; height: number }>({
 		width: page?.size.width || 1024,
 		height: page?.size.height || 768,
 	});
+
+	useEffect(() => {
+		eventbus.on("onSelectPage", () => {
+			const page = mm.getCurrentPage();
+			setSize({
+				width: page?.size.width || 1024,
+				height: page?.size.height || 768,
+			});
+		});
+	}, []);
 
 	return (
 		<>
@@ -45,6 +55,7 @@ export default function PagePagePropertiesPanel() {
 							width: value,
 							height: page.size.height,
 						};
+						setSize(page.size)
 						eventbus.emit("onPageWidthChange", {
 							value,
 						});
@@ -67,6 +78,7 @@ export default function PagePagePropertiesPanel() {
 							width: page.size.width,
 							height: value,
 						};
+						setSize(page.size)
 						eventbus.emit("onPageHeightChange", {
 							value,
 						});
