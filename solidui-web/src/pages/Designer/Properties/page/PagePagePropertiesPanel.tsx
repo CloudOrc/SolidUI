@@ -29,13 +29,17 @@ export default function PagePagePropertiesPanel() {
 	});
 
 	useEffect(() => {
-		eventbus.on("onSelectPage", () => {
+		const onSelectPage = () => {
 			const page = mm.getCurrentPage();
 			setSize({
 				width: page?.size.width || 1024,
 				height: page?.size.height || 768,
 			});
-		});
+		};
+		eventbus.on("onSelectPage", onSelectPage);
+		return () => {
+			eventbus.off("onSelectPage", onSelectPage);
+		};
 	}, []);
 
 	return (
@@ -55,7 +59,7 @@ export default function PagePagePropertiesPanel() {
 							width: value,
 							height: page.size.height,
 						};
-						setSize(page.size)
+						setSize(page.size);
 						eventbus.emit("onPageWidthChange", {
 							value,
 						});
@@ -78,7 +82,7 @@ export default function PagePagePropertiesPanel() {
 							width: page.size.width,
 							height: value,
 						};
-						setSize(page.size)
+						setSize(page.size);
 						eventbus.emit("onPageHeightChange", {
 							value,
 						});
