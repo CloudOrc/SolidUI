@@ -163,9 +163,17 @@ export default function ProjectCard(props: ProjectCardProps) {
 			}}
 		>
 			<div className="card-content">
-				{/* <div className="content-title">{item.projectName}</div> */}
 				<div className="content-title">
-					{item.image && <img src={item.image} alt="" />}
+					{item.image && (
+						<div
+							style={{
+								width: "100%",
+								height: "100%",
+								backgroundImage: `url(${item.image})`,
+								backgroundSize: "100% 100%",
+							}}
+						/>
+					)}
 				</div>
 				{popup ? (
 					<div className="content-mask">
