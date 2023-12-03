@@ -19,19 +19,19 @@ kind: Service
 metadata:
   namespace: solidui
   labels:
-    app: {{ .Chart.Name }}modelui
-  name: {{ .Chart.Name }}modelui
+    app: {{ .Chart.Name }}solidui-modelui
+  name: {{ .Chart.Name }}solidui-modelui
 spec:
   ports:
-  - name: {{ .Chart.Name }}modelui-5010
+  - name: {{ .Chart.Name }}solidui-modelui-5010
     port: 5010
     protocol: TCP
     targetPort: 5010
-  - name: {{ .Chart.Name }}modelui-5110
+  - name: {{ .Chart.Name }}solidui-modelui-5110
     port: 5110
     protocol: TCP
     targetPort: 5110
   selector:
-    app: {{ .Chart.Name }}modelui
+    app: {{ .Chart.Name }}solidui-modelui
   sessionAffinity: None
   type: ClusterIP

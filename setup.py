@@ -40,7 +40,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'modelui = soliduimodelui.main:main',
+            'solidui-modelui = soliduimodelui.main:main',
         ],
     },
 )
