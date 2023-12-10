@@ -11,3 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from flask import current_app, Flask
+from werkzeug.local import LocalProxy
+from solidui.app import create_app
+
+
+app: Flask = current_app
+conf = LocalProxy(lambda: current_app.config)

@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from modelui.datasource_plugin.base_jdbc_client import BaseJdbcClient
+from solidui.datasource_plugin.base_jdbc_client import BaseJdbcClient
 
 import mysql.connector
 
