@@ -44,3 +44,5 @@ def create_app(solidui_config_module: Optional[str] = None) -> Flask:
 
 class SolidUIApp(Flask):
     pass
+
+app = create_app()

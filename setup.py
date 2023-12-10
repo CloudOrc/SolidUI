@@ -35,7 +35,11 @@ setup(
         'python-dotenv>=1,<2',
         'matplotlib>=3,<4',
         'pymysql>=1,<2',
-        'pandas>=1,<2'
+        'pandas>=1,<2',
+        "typing-extensions>=4, <5",
+        "click>=8.0.3",
+        "click-option-group",
+        "deprecation>=2.1.0, <2.2.0"
     ],
     entry_points={
         'console_scripts': [

@@ -16,6 +16,7 @@ import logging
 import os
 import pkg_resources
 
+from datetime import timedelta
 logger = logging.getLogger(__name__)
 
 if "SOLIDUI_HOME" in os.environ:

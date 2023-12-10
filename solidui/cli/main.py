@@ -21,8 +21,13 @@ import click
 from colorama import Fore, Style
 from flask.cli import FlaskGroup, with_appcontext
 from solidui import app, cli
+from solidui.cli.lib import normalize_token
 
 
+@click.group(
+    cls=FlaskGroup,
+    context_settings={"token_normalize_func": normalize_token},
+)
 
 @with_appcontext
 def solidui() -> None:
@@ -33,3 +38,7 @@ def solidui() -> None:
         return {"app": app}
 
 
+
+
+if __name__ == "__main__":
+    solidui()

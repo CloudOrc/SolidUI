@@ -16,8 +16,10 @@ import logging
 import os
 import sys
 from typing import Any, Callable, TYPE_CHECKING
+from deprecation import deprecated
 
 import wtforms_json
+
 
 if TYPE_CHECKING:
     from solidui.app import SolidUIApp
@@ -25,16 +27,18 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 class SolidUIAppInitializer:
-    def __init__(self, app: SolidUIApp) -> None:
+    def __init__(self, app: 'SolidUIApp') -> None:
         super().__init__()
 
         self.solidui_app = app
         self.config = app.config
         self.manifest: dict[Any, Any] = {}
 
+    @deprecated(details="use self.solidui_app instead of self.flask_app")  # type: ignore
     @property
-    def flask_app(self) -> SolidUIApp:
+    def flask_app(self) -> 'SolidUIApp':
         return self.solidui_app
+
 
     def pre_init(self) -> None:
         """
