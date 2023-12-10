@@ -248,7 +248,42 @@ def download_file():
     return send_from_directory(os.path.join(os.getcwd(), 'workspace'), file, as_attachment=True)
 
 
+@base_blueprint.route('/model_types')
+def query_model_types():
+    rows = int(request.args.get('rows', 10))
+    page = int(request.args.get('page', 1))
 
+    results = web_utils.query_model_types(page, rows)
+
+    return web_utils.response_format(code=0, data=results)
+
+@base_blueprint.route('/model_types', methods=['POST'])
+def create_model_type():
+    data = request.get_json()
+
+    web_utils.create_model_type(data)
+
+    return web_utils.response_format(code=0)
+
+@base_blueprint.route('/model_types/<id>', methods=['DELETE'])
+def delete_model_type(id):
+    web_utils.delete_model_type(id)
+
+    return web_utils.response_format(code=0)
+
+@base_blueprint.route('/model_types/<id>', methods=['GET'])
+def get_model_type(id):
+    result = web_utils.get_model_type_by_id(id)
+
+    return web_utils.response_format(code=0, data=result)
+
+@base_blueprint.route('/model_types', methods=['PUT'])
+def update_model_type():
+    data = request.get_json()
+
+    web_utils.update_model_type(data)
+
+    return web_utils.response_format(code=0)
 
 app.register_blueprint(base_blueprint)
 
