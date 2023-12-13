@@ -19,7 +19,7 @@ version: "3.8"
 services:
   solidui-entrance:
     image: ${HUB}/solidui-entrance:${TAG}
-    container_name: solidui-entrance
+    container_name: solidui-views
     ports:
       - "12345:12345"
     networks:
@@ -42,7 +42,7 @@ services:
       MYSQL_ROOT_PASSWORD: SolidUI@123
     volumes:
       - mysql_data:/var/lib/mysql
-      - ../../solidui-entrance/src/main/resources/sql/mysql/solidui_mysql.sql:/docker-entrypoint-initdb.d/solidui_mysql.sql
+      - ../../solidui-views/src/main/resources/sql/mysql/solidui_mysql.sql:/docker-entrypoint-initdb.d/solidui_mysql.sql
     networks:
       - solidui
 
