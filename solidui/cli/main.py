@@ -22,7 +22,7 @@ from colorama import Fore, Style
 from flask.cli import FlaskGroup, with_appcontext
 from solidui import app, cli
 from solidui.cli.lib import normalize_token
-
+from solidui.extensions import db
 
 @click.group(
     cls=FlaskGroup,
@@ -35,7 +35,7 @@ def solidui() -> None:
 
     @app.shell_context_processor
     def make_shell_context() -> dict[str, Any]:
-        return {"app": app}
+        return {"app": app, "db": db}
 
 
 
