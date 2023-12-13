@@ -14,11 +14,13 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+import sys
+from enum import Enum
 
-import os
-from flask_appbuilder import AppBuilder, SQLA
-from solidui.extensions.stats_logger import BaseStatsLoggerManager
+if sys.version_info >= (3, 11):
+    # pylint: disable=unused-import
+    from enum import StrEnum  # nopycln: import
+else:
 
-APP_DIR = os.path.join(os.path.dirname(__file__), os.path.pardir)
-db = SQLA()
-stats_logger_manager = BaseStatsLoggerManager()
+    class StrEnum(str, Enum):
+        pass

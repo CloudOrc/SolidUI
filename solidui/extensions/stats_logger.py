@@ -14,11 +14,18 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+from flask import Flask
 
-import os
-from flask_appbuilder import AppBuilder, SQLA
-from solidui.extensions.stats_logger import BaseStatsLoggerManager
+from solidui.stats_logger import BaseStatsLogger
 
-APP_DIR = os.path.join(os.path.dirname(__file__), os.path.pardir)
-db = SQLA()
-stats_logger_manager = BaseStatsLoggerManager()
+
+class BaseStatsLoggerManager:
+    def __init__(self) -> None:
+        self._stats_logger = BaseStatsLogger()
+
+    def init_app(self, app: Flask) -> None:
+        self._stats_logger = app.config["STATS_LOGGER"]
+
+    @property
+    def instance(self) -> BaseStatsLogger:
+        return self._stats_logger

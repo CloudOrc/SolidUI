@@ -1,3 +1,4 @@
+#
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
@@ -11,20 +12,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-HTTP_X_FORWARDED_FOR = "X-Forwarded-For"
-HTTP_X_REAL_IP = "X-Real-IP"
-HTTP_HEADER_UNKNOWN = "unKnown"
-COMMA = ","
-CRYPTKEY = "solidui-for-server"
-TICKETHEADER = "bfs_"
-
-SESSION_TICKETID_KEY = "solidui_user_session_ticket_id_v1"
-SESSION_TIMEOUT = 2 * 60 * 60 * 1000
-ADMIN_NAME = "admin"
-
-JOB_PAGE_LAYOUT_ONE = 1
-JOB_PAGE_LAYOUT_TWO = 2
-
-CLEAN_PERIOD = 12 * 60 * 60 * 1000
-
-YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss"
