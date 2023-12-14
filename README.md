@@ -42,6 +42,9 @@
 <a target="_blank" href='https://gitee.com/CloudOrc/SolidUI'>
 <img src="https://shields.io/badge/%E2%AD%90-Gitee-blue" alt="gitee"/>
 </a>
+<a target="_blank" href="https://join.slack.com/t/solidui/shared_invite/zt-1r83iino0-SZD38aHAIw2KBA~DSpZndA">
+<img src="https://img.shields.io/badge/join-us%20on%20slack-blue.svg?longCache=true&logo=slack&colorB=blue" alt="us on slack"/>
+</a>
 </p>
 <br/>
 
