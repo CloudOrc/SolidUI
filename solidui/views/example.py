@@ -14,6 +14,10 @@
 import logging
 
 from flask_appbuilder.api import expose, protect, safe
+
+from solidui.solidui_typing import FlaskResponse
+from solidui.views.base_api import BaseSolidUIApi
+
 logger = logging.getLogger(__name__)
 
 class Example(BaseSolidUIApi):
@@ -33,10 +37,7 @@ class Example(BaseSolidUIApi):
         self, datasource_type: str, datasource_id: int, column_name: str
     ) -> FlaskResponse:
         try:
-            datasource = DatasourceDAO.get_datasource(
-                db.session, DatasourceType(datasource_type), datasource_id
-            )
-            datasource.raise_for_access()
+           print("测试")
         except ValueError:
             return self.response(
                 400, message=f"Invalid datasource type: {datasource_type}"
