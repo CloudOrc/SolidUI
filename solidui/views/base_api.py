@@ -23,7 +23,7 @@ from solidui.extensions import stats_logger_manager
 logger = logging.getLogger(__name__)
 
 
-class BaseSupersetApiMixin:
+class BaseSolidUIApiMixin:
     csrf_exempt = False
 
     responses = {
