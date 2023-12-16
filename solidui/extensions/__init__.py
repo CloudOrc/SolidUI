@@ -21,4 +21,5 @@ from solidui.extensions.stats_logger import BaseStatsLoggerManager
 
 APP_DIR = os.path.join(os.path.dirname(__file__), os.path.pardir)
 db = SQLA()
+
 stats_logger_manager = BaseStatsLoggerManager()

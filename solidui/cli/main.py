@@ -21,14 +21,20 @@ import click
 from colorama import Fore, Style
 from flask.cli import FlaskGroup, with_appcontext
 from solidui import app, cli
+from solidui.app import create_app
 from solidui.cli.lib import normalize_token
 from solidui.extensions import db
 
+
+def create_solidui_app():
+
+    return create_app()
+
 @click.group(
     cls=FlaskGroup,
+    create_app=create_solidui_app,
     context_settings={"token_normalize_func": normalize_token},
 )
-
 @with_appcontext
 def solidui() -> None:
     """This is a management script for the SolidUI application."""
@@ -37,6 +43,48 @@ def solidui() -> None:
     def make_shell_context() -> dict[str, Any]:
         return {"app": app, "db": db}
 
+
+
+# add sub-commands
+for load, module_name, is_pkg in pkgutil.walk_packages(
+    cli.__path__, cli.__name__ + "."
+):
+    module = importlib.import_module(module_name)
+    for attribute in module.__dict__.values():
+        if isinstance(attribute, (click.core.Command, click.core.Group)):
+            solidui.add_command(attribute)
+
+            if isinstance(attribute, click.core.Group):
+                break
+
+@solidui.command()
+@with_appcontext
+def init() -> None:
+    ...
+
+
+@solidui.command()
+@with_appcontext
+@click.option("--verbose", "-v", is_flag=True, help="Show extra information")
+def version(verbose: bool) -> None:
+    print("")
+    """Prints the current version number"""
+    print(Fore.BLUE + "-=" * 15)
+    print(Fore.YELLOW + "SolidUI " + Fore.CYAN + f"{app.config['VERSION_STRING']}")
+    print(Fore.BLUE + "-=" * 15)
+    if verbose:
+        print("[DB] : " + f"{db.engine}")
+    print(Style.RESET_ALL)
+
+@solidui.command()
+@with_appcontext
+def run():
+    print("测试1")
+    """Run the Superset web server."""
+    app = create_solidui_app()
+    host = app.config.get("SOLIDUI_WEBSERVER_ADDRESS", "0.0.0.0")
+    port = app.config.get("SOLIDUI_WEBSERVER_PORT", 8088)
+    app.run(host=host, port=port)
 
 
 

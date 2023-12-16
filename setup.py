@@ -50,7 +50,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'solidui = solidui.cli.main:solidui',
+            'solidui=solidui.cli.main:solidui',
         ],
     },
     python_requires="~=3.9",
