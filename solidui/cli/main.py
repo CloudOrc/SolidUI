@@ -27,7 +27,6 @@ from solidui.extensions import db
 
 
 def create_solidui_app():
-
     return create_app()
 
 @click.group(
@@ -76,12 +75,10 @@ def version(verbose: bool) -> None:
         print("[DB] : " + f"{db.engine}")
     print(Style.RESET_ALL)
 
-@solidui.command()
-@with_appcontext
-def run():
+
+def run_app():
     print("测试1")
     """Run the Superset web server."""
-    app = create_solidui_app()
     host = app.config.get("SOLIDUI_WEBSERVER_ADDRESS", "0.0.0.0")
     port = app.config.get("SOLIDUI_WEBSERVER_PORT", 8088)
     app.run(host=host, port=port)
@@ -89,4 +86,5 @@ def run():
 
 
 if __name__ == "__main__":
-    solidui()
+    run_app()
+
