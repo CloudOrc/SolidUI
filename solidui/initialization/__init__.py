@@ -20,7 +20,9 @@ from typing import Any, Callable, TYPE_CHECKING
 from deprecation import deprecated
 
 import wtforms_json
-
+from solidui.extensions import (
+    appbuilder
+)
 
 if TYPE_CHECKING:
     from solidui.app import SolidUIApp
@@ -61,6 +63,8 @@ class SolidUIAppInitializer:
         models which in turn try to import
         the global Flask app
         """
+        from solidui.views.example import Example
+        appbuilder.add_api(Example)
 
     def init_app(self) -> None:
         """

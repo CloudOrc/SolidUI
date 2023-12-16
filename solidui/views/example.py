@@ -32,7 +32,7 @@ class Example(BaseSolidUIApi):
         self, datasource_type: str, datasource_id: int, column_name: str
     ) -> FlaskResponse:
         try:
-           print("测试")
+           print("测试get_column_values")
         except ValueError:
             return self.response(
                 400, message=f"Invalid datasource type: {datasource_type}"
