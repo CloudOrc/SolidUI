@@ -23,17 +23,16 @@ logger = logging.getLogger(__name__)
 class Example(BaseSolidUIApi):
 
     @expose(
-        "/values/",
+        "/values/test",
         methods=("GET",),
     )
-    @protect()
     @safe
     def get_column_values(
-        self, datasource_type: str, datasource_id: int, column_name: str
+        self
     ) -> FlaskResponse:
         try:
            print("测试get_column_values")
         except ValueError:
             return self.response(
-                400, message=f"Invalid datasource type: {datasource_type}"
+                400, message=f"Invalid datasource type: cesr"
             )

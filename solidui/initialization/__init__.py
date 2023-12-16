@@ -30,7 +30,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 class SolidUIAppInitializer:
-    def __init__(self, app: 'SolidUIApp') -> None:
+    def __init__(self, app: SolidUIApp) -> None:
         super().__init__()
 
         self.solidui_app = app
@@ -39,7 +39,7 @@ class SolidUIAppInitializer:
 
     @deprecated(details="use self.solidui_app instead of self.flask_app")  # type: ignore
     @property
-    def flask_app(self) -> 'SolidUIApp':
+    def flask_app(self) -> SolidUIApp:
         return self.solidui_app
 
 
