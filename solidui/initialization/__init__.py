@@ -21,8 +21,10 @@ from deprecation import deprecated
 
 import wtforms_json
 from solidui.extensions import (
-    appbuilder
+    appbuilder,
+    db
 )
+from solidui.utils.core import pessimistic_connection_handling
 
 if TYPE_CHECKING:
     from solidui.app import SolidUIApp
@@ -57,14 +59,43 @@ class SolidUIAppInitializer:
         Called after any other init tasks
         """
 
+    def setup_db(self) -> None:
+        db.init_app(self.solidui_app)
+        with self.solidui_app.app_context():
+            pessimistic_connection_handling(db.engine)
+
+
+
     def init_views(self) -> None:
         """
         We're doing local imports, as several of them import
         models which in turn try to import
         the global Flask app
         """
+
+        print("init_views")
+        print(appbuilder)
         from solidui.views.example import Example
+        print(appbuilder)
         appbuilder.add_api(Example)
+
+    def configure_fab(self) -> None:
+        if self.config["SILENCE_FAB"]:
+            logging.getLogger("flask_appbuilder").setLevel(logging.ERROR)
+
+        appbuilder.init_app(self.solidui_app, db.session)
+
+
+
+    def init_app_in_ctx(self) -> None:
+
+        self.configure_fab()
+
+        if flask_app_mutator := self.config["FLASK_APP_MUTATOR"]:
+            flask_app_mutator(self.solidui_app)
+
+        self.init_views()
+
 
     def init_app(self) -> None:
         """
@@ -73,7 +104,11 @@ class SolidUIAppInitializer:
         """
 
         self.pre_init()
-        self.init_views()
+        self.setup_db()
+
+        with self.solidui_app.app_context():
+            self.init_app_in_ctx()
+
         self.post_init()
 
 

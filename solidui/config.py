@@ -34,6 +34,9 @@ SOLIDUI_WEBSERVER_TIMEOUT = int(timedelta(minutes=1).total_seconds())
 
 VERSION_STRING = "0.5.0"
 
+SILENCE_FAB = True
+FLASK_APP_MUTATOR = None
+
 # The SQLAlchemy connection string.
 SQLALCHEMY_DATABASE_URI = (
     f"""sqlite:///{os.path.join(DATA_DIR, "solidui.db")}?check_same_thread=false"""

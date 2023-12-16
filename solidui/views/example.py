@@ -31,6 +31,7 @@ class Example(BaseSolidUIApi):
         self
     ) -> FlaskResponse:
         try:
+           logger.info("测试get_column_values")
            print("测试get_column_values")
         except ValueError:
             return self.response(

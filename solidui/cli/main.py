@@ -33,7 +33,6 @@ from solidui.extensions import db
 @with_appcontext
 def solidui() -> None:
     """This is a management script for the SolidUI application."""
-    print("solidui()")
     @app.shell_context_processor
     def make_shell_context() -> dict[str, Any]:
         return {"app": app, "db": db}
