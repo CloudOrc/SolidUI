@@ -24,7 +24,6 @@ logger = logging.getLogger(__name__)
 
 def create_app(solidui_config_module: Optional[str] = None) -> Flask:
     app = SolidUIApp(__name__)
-    print("测试create_app")
     try:
         # Allow user to override our config completely
         config_module = solidui_config_module or os.environ.get(

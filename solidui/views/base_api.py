@@ -80,5 +80,4 @@ class BaseSolidUIApiMixin:
 
 
 class BaseSolidUIApi(BaseSolidUIApiMixin, BaseApi):
-    print("BaseSolidUIApi")
     ...
