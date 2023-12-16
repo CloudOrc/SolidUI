@@ -17,5 +17,5 @@ from werkzeug.local import LocalProxy
 from solidui.app import create_app
 
 
-app: Flask = current_app
+app = create_app()
 conf = LocalProxy(lambda: current_app.config)

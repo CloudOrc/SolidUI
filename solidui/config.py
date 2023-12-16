@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
 import logging
 import os
-import pkg_resources
+
 
 from datetime import timedelta
 logger = logging.getLogger(__name__)
@@ -30,6 +31,8 @@ SOLIDUI_WEBSERVER_PORT = 8088
 
 SOLIDUI_WEBSERVER_TIMEOUT = int(timedelta(minutes=1).total_seconds())
 
+
+VERSION_STRING = "0.5.0"
 
 # The SQLAlchemy connection string.
 SQLALCHEMY_DATABASE_URI = (

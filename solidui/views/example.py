@@ -28,11 +28,6 @@ class Example(BaseSolidUIApi):
     )
     @protect()
     @safe
-    @event_logger.log_this_with_context(
-        action=lambda self, *args, **kwargs: f"{self.__class__.__name__}"
-        f".get_column_values",
-        log_to_statsd=False,
-    )
     def get_column_values(
         self, datasource_type: str, datasource_id: int, column_name: str
     ) -> FlaskResponse:
