@@ -21,23 +21,18 @@ import click
 from colorama import Fore, Style
 from flask.cli import FlaskGroup, with_appcontext
 from solidui import app, cli
-from solidui.app import create_app
 from solidui.cli.lib import normalize_token
 from solidui.extensions import db
 
 
-def create_solidui_app():
-    return create_app()
 
 @click.group(
     cls=FlaskGroup,
-    create_app=create_solidui_app,
     context_settings={"token_normalize_func": normalize_token},
 )
 @with_appcontext
 def solidui() -> None:
     """This is a management script for the SolidUI application."""
-
     @app.shell_context_processor
     def make_shell_context() -> dict[str, Any]:
         return {"app": app, "db": db}
@@ -75,16 +70,4 @@ def version(verbose: bool) -> None:
         print("[DB] : " + f"{db.engine}")
     print(Style.RESET_ALL)
 
-
-def run_app():
-    print("测试1")
-    """Run the Superset web server."""
-    host = app.config.get("SOLIDUI_WEBSERVER_ADDRESS", "0.0.0.0")
-    port = app.config.get("SOLIDUI_WEBSERVER_PORT", 8088)
-    app.run(host=host, port=port)
-
-
-
-if __name__ == "__main__":
-    run_app()
 

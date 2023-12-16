@@ -20,9 +20,15 @@ from typing import Any, Callable, TYPE_CHECKING
 from deprecation import deprecated
 
 import wtforms_json
+from flask import Flask, redirect
+from flask_appbuilder import expose, IndexView
+from flask_session import Session
 from solidui.extensions import (
-    appbuilder
+    appbuilder,
+    db
 )
+from solidui.solidui_typing import FlaskResponse
+from solidui.utils.core import pessimistic_connection_handling
 
 if TYPE_CHECKING:
     from solidui.app import SolidUIApp
@@ -30,7 +36,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 class SolidUIAppInitializer:
-    def __init__(self, app: 'SolidUIApp') -> None:
+    def __init__(self, app: SolidUIApp) -> None:
         super().__init__()
 
         self.solidui_app = app
@@ -39,7 +45,7 @@ class SolidUIAppInitializer:
 
     @deprecated(details="use self.solidui_app instead of self.flask_app")  # type: ignore
     @property
-    def flask_app(self) -> 'SolidUIApp':
+    def flask_app(self) -> SolidUIApp:
         return self.solidui_app
 
 
@@ -57,14 +63,49 @@ class SolidUIAppInitializer:
         Called after any other init tasks
         """
 
+    def setup_db(self) -> None:
+        db.init_app(self.solidui_app)
+        with self.solidui_app.app_context():
+            pessimistic_connection_handling(db.engine)
+
+
+
     def init_views(self) -> None:
         """
         We're doing local imports, as several of them import
         models which in turn try to import
         the global Flask app
         """
-        from solidui.views.example import Example
-        appbuilder.add_api(Example)
+
+        from solidui.example.api import ExampleRestApi
+
+
+        appbuilder.add_api(ExampleRestApi)
+
+        # for rule in self.solidui_app.url_map.iter_rules():
+        #     print(rule)
+
+
+    def configure_fab(self) -> None:
+        if self.config["SILENCE_FAB"]:
+            logging.getLogger("flask_appbuilder").setLevel(logging.ERROR)
+
+
+        appbuilder.init_app(self.solidui_app, db.session)
+
+    def configure_session(self) -> None:
+        if self.config["SESSION_SERVER_SIDE"]:
+            Session(self.solidui_app)
+
+    def init_app_in_ctx(self) -> None:
+
+        self.configure_fab()
+
+        if flask_app_mutator := self.config["FLASK_APP_MUTATOR"]:
+            flask_app_mutator(self.solidui_app)
+
+        self.init_views()
+
 
     def init_app(self) -> None:
         """
@@ -73,7 +114,11 @@ class SolidUIAppInitializer:
         """
 
         self.pre_init()
-        self.init_views()
-        self.post_init()
+        self.configure_session()
+        self.setup_db()
 
+        with self.solidui_app.app_context():
+            self.init_app_in_ctx()
+
+        self.post_init()
 

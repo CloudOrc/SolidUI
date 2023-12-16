@@ -34,10 +34,16 @@ SOLIDUI_WEBSERVER_TIMEOUT = int(timedelta(minutes=1).total_seconds())
 
 VERSION_STRING = "0.5.0"
 
+SILENCE_FAB = True
+FLASK_APP_MUTATOR = None
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+SESSION_SERVER_SIDE = False
+FAB_API_SWAGGER_UI = True
+FAB_API_SWAGGER = True
 # The SQLAlchemy connection string.
-SQLALCHEMY_DATABASE_URI = (
-    f"""sqlite:///{os.path.join(DATA_DIR, "solidui.db")}?check_same_thread=false"""
-)
+SQLALCHEMY_DATABASE_URI = (f"""sqlite:///{os.path.join(DATA_DIR, "solidui.db")}?check_same_thread=false""")
+
+#SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://username:password@host:port/dbname'
 
 # SQLALCHEMY_CUSTOM_PASSWORD_STORE = lookup_password
 SQLALCHEMY_CUSTOM_PASSWORD_STORE = None

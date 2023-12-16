@@ -33,6 +33,7 @@ setup(
         "deprecation>=2.1.0, <2.2.0",
         "flask>=2.2.5, <3.0.0",
         "flask-appbuilder>=4.3.9, <5.0.0",
+        "flask-session>=0.4.0, <1.0",
         'ipykernel>=6,<7',
         'python-dotenv>=1,<2',
         'matplotlib>=3,<4',
