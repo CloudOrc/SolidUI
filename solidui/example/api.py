@@ -36,7 +36,7 @@ class ExampleRestApi(BaseSolidUIApi):
     @expose('/greeting')
     def greeting(self, datasource_type: str = None
     ) -> FlaskResponse:
-        print("greeting")
+
         logger.info("greeting")
         logger.debug("greeting")
         return self.response(200, message="Hello")
