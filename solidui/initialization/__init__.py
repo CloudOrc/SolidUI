@@ -20,10 +20,14 @@ from typing import Any, Callable, TYPE_CHECKING
 from deprecation import deprecated
 
 import wtforms_json
+from flask import Flask, redirect
+from flask_appbuilder import expose, IndexView
+from flask_session import Session
 from solidui.extensions import (
     appbuilder,
     db
 )
+from solidui.solidui_typing import FlaskResponse
 from solidui.utils.core import pessimistic_connection_handling
 
 if TYPE_CHECKING:
@@ -73,19 +77,25 @@ class SolidUIAppInitializer:
         the global Flask app
         """
 
-        print("init_views")
-        print(appbuilder)
-        from solidui.views.example import Example
-        print(appbuilder)
-        appbuilder.add_api(Example)
+        from solidui.example.api import ExampleRestApi
+
+
+        appbuilder.add_api(ExampleRestApi)
+
+        # for rule in self.solidui_app.url_map.iter_rules():
+        #     print(rule)
+
 
     def configure_fab(self) -> None:
         if self.config["SILENCE_FAB"]:
             logging.getLogger("flask_appbuilder").setLevel(logging.ERROR)
 
+
         appbuilder.init_app(self.solidui_app, db.session)
 
-
+    def configure_session(self) -> None:
+        if self.config["SESSION_SERVER_SIDE"]:
+            Session(self.solidui_app)
 
     def init_app_in_ctx(self) -> None:
 
@@ -104,11 +114,11 @@ class SolidUIAppInitializer:
         """
 
         self.pre_init()
+        self.configure_session()
         self.setup_db()
 
         with self.solidui_app.app_context():
             self.init_app_in_ctx()
 
         self.post_init()
-
 
