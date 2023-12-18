@@ -82,6 +82,7 @@ class SolidUIAppInitializer:
 
         appbuilder.add_api(ExampleRestApi)
 
+
         # for rule in self.solidui_app.url_map.iter_rules():
         #     print(rule)
 
