@@ -12,34 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from enums import Status
 
-class BaseResponse:
 
-    def __init__(self):
-        self.code = None
-        self.message = None
-        self.data = None
+import logging
 
-    @staticmethod
-    def success(data=None):
-        resp = BaseResponse()
-        resp.code = Status.SUCCESS.value
-        resp.message = Status.SUCCESS.name
-        resp.data = data
-        return resp
+from flask_appbuilder.api import expose, protect, safe, BaseApi
 
-    @staticmethod
-    def error(error_code, message):
-        resp = BaseResponse()
-        resp.code = error_code
-        resp.message = message
-        return resp
+from solidui.extensions import db
+from solidui.daos.user import UserDao
+from solidui.solidui_typing import FlaskResponse
+from solidui.views.base_api import BaseSolidUIApi
 
-class BaseController:
+logger = logging.getLogger(__name__)
 
-    def handle_success(self, data=None):
-        return BaseResponse.success(data)
 
-    def handle_error(self, error_code, message):
-        return BaseResponse.error(error_code, message)
+class LoginRestApi(BaseSolidUIApi):
+
+    route_base = "/solidui"
+
+    @expose('/login')
+    @safe
+    def login(self, username: str, password: str
+    ) -> FlaskResponse:
+
+        logger.info("login")
+
+        user = UserDao.queryUserByNamePassword(db.session, username, password)
+        print(user)
+
+        return self.response(200, message="Hello")

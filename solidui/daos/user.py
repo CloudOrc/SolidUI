@@ -11,35 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from solidui.daos.base import BaseDAO
+from solidui.entity.core import User
+from sqlalchemy.orm import Session
 
-from enums import Status
-
-class BaseResponse:
-
-    def __init__(self):
-        self.code = None
-        self.message = None
-        self.data = None
-
-    @staticmethod
-    def success(data=None):
-        resp = BaseResponse()
-        resp.code = Status.SUCCESS.value
-        resp.message = Status.SUCCESS.name
-        resp.data = data
-        return resp
-
-    @staticmethod
-    def error(error_code, message):
-        resp = BaseResponse()
-        resp.code = error_code
-        resp.message = message
-        return resp
-
-class BaseController:
-
-    def handle_success(self, data=None):
-        return BaseResponse.success(data)
-
-    def handle_error(self, error_code, message):
-        return BaseResponse.error(error_code, message)
+class UserDao(BaseDAO[User]):
+    @classmethod
+    def queryUserByNamePassword(cls, session: Session, user_name: str, user_password: str) -> User:
+        """To query a user based on their username and password."""
+        return db.session.query(User).filter(
+            User.user_name == user_name,
+            User.user_password == user_password
+        ).one_or_none()
