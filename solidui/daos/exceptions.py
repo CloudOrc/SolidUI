@@ -12,34 +12,46 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from enums import Status
+from solidui.exceptions import SolidUIException
+class DAOException(SolidUIException):
+    """
+    Base DAO Exception
+    """
 
-class BaseResponse:
 
-    def __init__(self):
-        self.code = None
-        self.message = None
-        self.data = None
+class DAOCreateFailedError(DAOException):
+    """
+    DAO Create failed
+    """
 
-    @staticmethod
-    def success(data=None):
-        resp = BaseResponse()
-        resp.code = Status.SUCCESS.value
-        resp.message = Status.SUCCESS.name
-        resp.data = data
-        return resp
+    message = "Create failed"
 
-    @staticmethod
-    def error(error_code, message):
-        resp = BaseResponse()
-        resp.code = error_code
-        resp.message = message
-        return resp
 
-class BaseController:
+class DAOUpdateFailedError(DAOException):
+    """
+    DAO Update failed
+    """
 
-    def handle_success(self, data=None):
-        return BaseResponse.success(data)
+    message = "Update failed"
 
-    def handle_error(self, error_code, message):
-        return BaseResponse.error(error_code, message)
+
+class DAODeleteFailedError(DAOException):
+    """
+    DAO Delete failed
+    """
+
+    message = "Delete failed"
+
+
+class DatasourceTypeNotSupportedError(DAOException):
+    """
+    DAO datasource query source type is not supported
+    """
+
+    status = 422
+    message = "DAO datasource query source type is not supported"
+
+
+class DatasourceNotFound(DAOException):
+    status = 404
+    message = "Datasource does not exist"

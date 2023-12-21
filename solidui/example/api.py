@@ -39,4 +39,6 @@ class ExampleRestApi(BaseSolidUIApi):
 
         logger.info("greeting")
         logger.debug("greeting")
+
+
         return self.response(200, message="Hello")

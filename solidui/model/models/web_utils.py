@@ -12,34 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from enums import Status
+import pymysql
 
-class BaseResponse:
 
-    def __init__(self):
-        self.code = None
-        self.message = None
-        self.data = None
+def response_format(code=0,msg="success",data={},success=True,failed=False):
+    return {
+        "code": code,
+        "msg": msg,
+        "data": data,
+        "success": success,
+        "failed": failed
+    }
 
-    @staticmethod
-    def success(data=None):
-        resp = BaseResponse()
-        resp.code = Status.SUCCESS.value
-        resp.message = Status.SUCCESS.name
-        resp.data = data
-        return resp
 
-    @staticmethod
-    def error(error_code, message):
-        resp = BaseResponse()
-        resp.code = error_code
-        resp.message = message
-        return resp
+def query_model(db_host='localhost',db_port=3306,db_user='root',db_pass='password', db_name='testdb', model_id=0):
 
-class BaseController:
+    conn = pymysql.connect(host=db_host, port=db_port, user=db_user, passwd=db_pass, db=db_name, cursorclass=pymysql.cursors.DictCursor)
 
-    def handle_success(self, data=None):
-        return BaseResponse.success(data)
+    cursor = conn.cursor()
 
-    def handle_error(self, error_code, message):
-        return BaseResponse.error(error_code, message)
+    cursor.execute("SELECT * FROM solidui_model_type WHERE id = %s", model_id)
+
+    result = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    return result
+

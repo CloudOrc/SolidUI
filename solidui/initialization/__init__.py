@@ -28,7 +28,7 @@ from solidui.extensions import (
     db
 )
 from solidui.solidui_typing import FlaskResponse
-from solidui.utils.core import pessimistic_connection_handling
+from solidui.utils.base import pessimistic_connection_handling
 
 if TYPE_CHECKING:
     from solidui.app import SolidUIApp

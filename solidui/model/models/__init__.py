@@ -11,35 +11,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from sqlalchemy import Column, Integer, String, DateTime
 
-from enums import Status
+from .base import Base
 
-class BaseResponse:
+class JobElement(Base):
 
-    def __init__(self):
-        self.code = None
-        self.message = None
-        self.data = None
+    __tablename__ = 'job_element'
 
-    @staticmethod
-    def success(data=None):
-        resp = BaseResponse()
-        resp.code = Status.SUCCESS.value
-        resp.message = Status.SUCCESS.name
-        resp.data = data
-        return resp
-
-    @staticmethod
-    def error(error_code, message):
-        resp = BaseResponse()
-        resp.code = error_code
-        resp.message = message
-        return resp
-
-class BaseController:
-
-    def handle_success(self, data=None):
-        return BaseResponse.success(data)
-
-    def handle_error(self, error_code, message):
-        return BaseResponse.error(error_code, message)
+    id = Column(Integer, primary_key=True)
+    project_id = Column(Integer)
+    name = Column(String)
+    data = Column(String)
+    data_type = Column(String)
+    create_time = Column(DateTime)
+    update_time = Column(DateTime)
