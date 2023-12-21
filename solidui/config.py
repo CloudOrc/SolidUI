@@ -18,6 +18,9 @@ import os
 
 
 from datetime import timedelta
+
+from solidui.utils.logging_configurator import DefaultLoggingConfigurator
+
 logger = logging.getLogger(__name__)
 
 if "SOLIDUI_HOME" in os.environ:
@@ -45,7 +48,16 @@ FAB_API_SWAGGER = True
 
 #SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://username:password@host:port/dbname'
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:SolidUI@123@43.138.5.82:3306/solidui'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:SolidUI%40123@43.138.5.82:3306/solidui'
 
 # SQLALCHEMY_CUSTOM_PASSWORD_STORE = lookup_password
 SQLALCHEMY_CUSTOM_PASSWORD_STORE = None
+
+
+# Default configurator will consume the LOG_* settings below
+LOGGING_CONFIGURATOR = DefaultLoggingConfigurator()
+
+# Console Log Settings
+
+LOG_FORMAT = "%(asctime)s:%(levelname)s:%(name)s:%(message)s"
+LOG_LEVEL = "DEBUG"

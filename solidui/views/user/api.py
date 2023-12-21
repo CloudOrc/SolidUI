@@ -11,18 +11,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-
-
+import json
 import logging
 
+from flask import request, make_response
 from flask_appbuilder.api import expose, protect, safe, BaseApi
 
 from solidui.extensions import db
 from solidui.daos.user import UserDao
 from solidui.solidui_typing import FlaskResponse
 from solidui.views.base_api import BaseSolidUIApi
-
+from solidui.utils.encryption_utils import get_md5
+from solidui.utils.login_utils import set_login_user, remove_login_user
 logger = logging.getLogger(__name__)
 
 
@@ -30,14 +30,40 @@ class LoginRestApi(BaseSolidUIApi):
 
     route_base = "/solidui"
 
-    @expose('/login')
+    @expose('/login', methods=("GET",))
     @safe
-    def login(self, username: str, password: str
-    ) -> FlaskResponse:
+    def login(self) -> FlaskResponse:
 
-        logger.info("login")
+        username = request.args.get("username")
+        password = request.args.get("password")
 
-        user = UserDao.queryUserByNamePassword(db.session, username, password)
-        print(user)
+        if username is None or password is None:
+            return self.response_format(code=400, msg="Missing username or password", success=False, failed=True)
 
-        return self.response(200, message="Hello")
+        user = UserDao.queryUserByNamePassword(db.session, username, get_md5(password))
+
+        login_resp = set_login_user(user.user_name)
+
+        response_data = self.response_format()
+        resp = make_response(response_data)
+        for key, value in login_resp.headers:
+            if key.lower() == 'set-cookie':
+                resp.headers.set(key, value)
+
+        return resp
+
+    @expose('/loginOut', methods=("POST",))
+    @safe
+    def signOut(self) -> FlaskResponse:
+
+        cookie = request.cookies
+        if cookie is None:
+            return self.response_format(code=400, msg="Missing cookie", success=False, failed=True)
+
+        login_resp = remove_login_user(cookie)
+        response_data = self.response_format()
+        resp = make_response(response_data)
+        for key, value in login_resp.headers:
+            if key.lower() == 'set-cookie':
+                resp.headers.set(key, value)
+        return resp

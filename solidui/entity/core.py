@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import json
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, Boolean
 from sqlalchemy.ext.declarative import declarative_base
@@ -123,6 +124,10 @@ class User(Base):
     create_time = Column(DateTime, nullable=False)
     update_time = Column(DateTime, nullable=False)
     queue = Column(String(20))
+
+    @property
+    def json_data(self) -> str:
+        return json.dumps(self.data)
 
 class ModelType(Base):
     __tablename__ = 'solidui_model_type'

@@ -19,7 +19,7 @@ class UserDao(BaseDAO[User]):
     @classmethod
     def queryUserByNamePassword(cls, session: Session, user_name: str, user_password: str) -> User:
         """To query a user based on their username and password."""
-        return db.session.query(User).filter(
+        return session.query(User).filter(
             User.user_name == user_name,
             User.user_password == user_password
         ).one_or_none()

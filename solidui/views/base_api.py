@@ -15,11 +15,12 @@
 from __future__ import annotations
 import logging
 
-from flask import request, Response
+from flask import request, jsonify, Response
 from flask_appbuilder.api import BaseApi, expose, protect, rison, safe
-
+from typing import Any, Union
 from solidui.schemas import error_payload_content
 from solidui.extensions import stats_logger_manager
+
 logger = logging.getLogger(__name__)
 
 
@@ -61,7 +62,7 @@ class BaseSolidUIApiMixin:
         )
 
     def send_stats_metrics(
-        self, response: Response, key: str, time_delta: float | None = None
+            self, response: Response, key: str, time_delta: float | None = None
     ) -> None:
         """
         Helper function to handle sending statsd metrics
@@ -77,6 +78,18 @@ class BaseSolidUIApiMixin:
             self.incr_stats("error", key)
         if time_delta:
             self.timing_stats("time", key, time_delta)
+
+    @staticmethod
+    def response_format(code=0, msg="success", data={}, success=True, failed=False) -> Union[dict, Any]:
+        """Unified response statistics method"""
+        response = {
+            "code": code,
+            "msg": msg,
+            "data": data,
+            "success": success,
+            "failed": failed
+        }
+        return jsonify(response)
 
 
 class BaseSolidUIApi(BaseSolidUIApiMixin, BaseApi):

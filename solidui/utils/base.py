@@ -16,17 +16,19 @@
 from __future__ import annotations
 
 import sqlite3
-from typing import Any,TypeVar
+from typing import Any, TypeVar
 from contextlib import closing
 from sqlalchemy import event, exc, select
 from sqlalchemy.engine import Connection, Engine
+from flask import jsonify
+
+from solidui.solidui_typing import FlaskResponse
 
 
 def pessimistic_connection_handling(some_engine: Engine) -> None:
     @event.listens_for(some_engine, "engine_connect")
     def ping_connection(connection: Connection, branch: bool) -> None:
         if branch:
-
             return
 
         save_should_close_with_result = connection.should_close_with_result
@@ -56,18 +58,17 @@ def pessimistic_connection_handling(some_engine: Engine) -> None:
             connection.should_close_with_result = save_should_close_with_result
 
     if some_engine.dialect.name == "sqlite":
-
         @event.listens_for(some_engine, "connect")
         def set_sqlite_pragma(  # pylint: disable=unused-argument
-            connection: sqlite3.Connection,
-            *args: Any,
+                connection: sqlite3.Connection,
+                *args: Any,
         ) -> None:
-
             with closing(connection.cursor()) as cursor:
                 cursor.execute("PRAGMA foreign_keys=ON")
 
 
 T = TypeVar("T")
+
 
 def as_list(x: T | list[T]) -> list[T]:
     """
@@ -77,3 +78,5 @@ def as_list(x: T | list[T]) -> list[T]:
     :returns: A list wrapping the object if it's not already a list
     """
     return x if isinstance(x, list) else [x]
+
+

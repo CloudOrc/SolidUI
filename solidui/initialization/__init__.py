@@ -68,7 +68,12 @@ class SolidUIAppInitializer:
         with self.solidui_app.app_context():
             pessimistic_connection_handling(db.engine)
 
+    def initialize_database(self) -> None:
+        with self.solidui_app.app_context():
+            db.create_all()
 
+    def initialize_data(self) -> None:
+        ...
 
     def init_views(self) -> None:
         """
@@ -78,9 +83,10 @@ class SolidUIAppInitializer:
         """
 
         from solidui.example.api import ExampleRestApi
-
+        from solidui.views.user.api import LoginRestApi
 
         appbuilder.add_api(ExampleRestApi)
+        appbuilder.add_api(LoginRestApi)
 
 
         # for rule in self.solidui_app.url_map.iter_rules():
@@ -117,6 +123,7 @@ class SolidUIAppInitializer:
         self.pre_init()
         self.configure_session()
         self.setup_db()
+        self.initialize_database()
 
         with self.solidui_app.app_context():
             self.init_app_in_ctx()
