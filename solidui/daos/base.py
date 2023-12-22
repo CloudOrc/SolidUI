@@ -18,8 +18,10 @@ from typing import Any, cast, Generic, get_args, TypeVar
 from flask_appbuilder.models.filters import BaseFilter
 from flask_appbuilder.models.sqla import Model
 from flask_appbuilder.models.sqla.interface import SQLAInterface
+from flask_sqlalchemy import Pagination
 from sqlalchemy.exc import SQLAlchemyError, StatementError
 from sqlalchemy.orm import Session
+from sqlalchemy import asc, desc
 from solidui.daos.exceptions import (
     DAOCreateFailedError,
     DAODeleteFailedError,
@@ -52,6 +54,35 @@ class BaseDAO(Generic[T]):
         cls.model_cls = get_args(
             cls.__orig_bases__[0]  # type: ignore  # pylint: disable=no-member
         )[0]
+
+    @classmethod
+    def query_paginated(
+            cls,
+            session: Session = None,
+            page: int = 1,
+            per_page: int = 10,
+            custom_filters=None,
+            sort_by=None,
+            sort_order='asc',  # Default sort order is ascending
+            **filters
+    ) -> Pagination:
+        session = session or db.session
+        query = session.query(cls.model_cls).filter_by(**filters)
+
+        # Apply custom filters
+        if custom_filters:
+            query = query.filter(custom_filters)
+
+        # Apply sorting
+        if sort_by:
+            sort_column = getattr(cls.model_cls, sort_by, None)
+            if sort_column:
+                if sort_order == 'desc':
+                    query = query.order_by(desc(sort_column))
+                else:
+                    query = query.order_by(asc(sort_column))
+
+        return query.paginate(page, per_page, False)
 
     @classmethod
     def find_by_id(

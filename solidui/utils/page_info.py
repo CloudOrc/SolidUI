@@ -12,46 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from solidui.exceptions import SolidUIException
-class DAOException(SolidUIException):
-    """
-    Base DAO Exception
-    """
+from typing import List, Generic, TypeVar
 
+T = TypeVar('T')
 
-class DAOCreateFailedError(DAOException):
-    """
-    DAO Create failed
-    """
+class PageInfo(Generic[T]):
+    def __init__(self, current_page: int = 1, page_size: int = 20):
+        self.current_page = max(current_page, 1)
+        self.page_size = max(page_size, 1)
+        self.total = 0
+        self.total_list: List[T] = []
+        self.total_page = 0
 
-    message = "Create failed"
+    def set_total(self, total: int):
+        self.total = total
+        self.total_page = (total + self.page_size - 1) // self.page_size
 
-
-class DAOUpdateFailedError(DAOException):
-    """
-    DAO Update failed
-    """
-
-    message = "Update failed"
-
-
-class DAODeleteFailedError(DAOException):
-    """
-    DAO Delete failed
-    """
-
-    message = "Delete failed"
-
-
-class DAOTypeNotSupportedError(DAOException):
-    """
-    query source type is not supported
-    """
-
-    status = 422
-    message = "query source type is not supported"
-
-
-class DAONotFound(DAOException):
-    status = 404
-    message = "does not exist"
+    def set_total_list(self, total_list: List[T]):
+        self.total_list = total_list

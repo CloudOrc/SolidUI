@@ -15,8 +15,9 @@ import json
 import logging
 
 from flask import request, make_response
-from flask_appbuilder.api import expose, protect, safe, BaseApi
+from flask_appbuilder.api import expose, safe
 
+from solidui.errors import SolidUIErrorType
 from solidui.extensions import db
 from solidui.daos.user import UserDao
 from solidui.solidui_typing import FlaskResponse
@@ -38,7 +39,7 @@ class LoginRestApi(BaseSolidUIApi):
         password = request.args.get("password")
 
         if username is None or password is None:
-            return self.response_format(code=400, msg="Missing username or password", success=False, failed=True)
+            return self.handle_error(SolidUIErrorType.USER_NAME_NULL)
 
         user = UserDao.queryUserByNamePassword(db.session, username, get_md5(password))
 
@@ -58,7 +59,7 @@ class LoginRestApi(BaseSolidUIApi):
 
         cookie = request.cookies
         if cookie is None:
-            return self.response_format(code=400, msg="Missing cookie", success=False, failed=True)
+            return self.handle_error(SolidUIErrorType.USER_NAME_NULL)
 
         login_resp = remove_login_user(cookie)
         response_data = self.response_format()

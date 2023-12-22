@@ -18,6 +18,8 @@ import logging
 from flask import request, jsonify, Response
 from flask_appbuilder.api import BaseApi, expose, protect, rison, safe
 from typing import Any, Union
+from flask_babel import gettext as _
+from solidui.errors import SolidUIErrorType, ERROR_TYPE_TO_STATUS_CODE, ERROR_TYPES_TO_CODES_MAPPING, ISSUE_CODES
 from solidui.schemas import error_payload_content
 from solidui.extensions import stats_logger_manager
 
@@ -93,4 +95,11 @@ class BaseSolidUIApiMixin:
 
 
 class BaseSolidUIApi(BaseSolidUIApiMixin, BaseApi):
-    ...
+    @staticmethod
+    def handle_error(error_type: SolidUIErrorType):
+        status_code = ERROR_TYPE_TO_STATUS_CODE.get(error_type, 500)  # Default to 500 for unspecified errors
+        error_code = ERROR_TYPES_TO_CODES_MAPPING.get(error_type, [])[0]
+        error_message = ISSUE_CODES.get(error_code, _("Unknown error"))
+
+        # Using response_format to structure the response
+        return super().response_format(code=status_code, msg=error_message, success=False, failed=True)

@@ -12,46 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from solidui.exceptions import SolidUIException
-class DAOException(SolidUIException):
-    """
-    Base DAO Exception
-    """
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from solidui.entity.core import Project
+from marshmallow import fields, Schema
 
 
-class DAOCreateFailedError(DAOException):
-    """
-    DAO Create failed
-    """
-
-    message = "Create failed"
+class ProjectSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Project
+        load_instance = True  # Optional: if you also want to use it for deserialization
 
 
-class DAOUpdateFailedError(DAOException):
-    """
-    DAO Update failed
-    """
-
-    message = "Update failed"
-
-
-class DAODeleteFailedError(DAOException):
-    """
-    DAO Delete failed
-    """
-
-    message = "Delete failed"
-
-
-class DAOTypeNotSupportedError(DAOException):
-    """
-    query source type is not supported
-    """
-
-    status = 422
-    message = "query source type is not supported"
-
-
-class DAONotFound(DAOException):
-    status = 404
-    message = "does not exist"
+class PageInfoSchema(Schema):
+    current_page = fields.Int()
+    page_size = fields.Int()
+    total = fields.Int()
+    total_page = fields.Int()
+    total_list = fields.Nested(ProjectSchema, many=True)
