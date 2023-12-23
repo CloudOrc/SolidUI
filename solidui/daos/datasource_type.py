@@ -11,3 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from solidui.daos.base import BaseDAO
+from solidui.daos.exceptions import DAONotFound
+from solidui.entity.core import DataSourceType
+
+
+class DataSourceTypeDAO(BaseDAO[DataSourceType]):
+    model_cls = DataSourceType
+
+    @classmethod
+    def all_list(cls) -> DataSourceType:
+        return super().find_all()
+
+    @classmethod
+    def get_id(cls, id: int) -> DataSourceType:
+        data_source_type = super().find_by_id(id)
+        if not data_source_type:
+            raise DAONotFound(message="DataSourceType not found")
+        return data_source_type
