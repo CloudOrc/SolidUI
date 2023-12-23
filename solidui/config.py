@@ -61,3 +61,8 @@ LOGGING_CONFIGURATOR = DefaultLoggingConfigurator()
 
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(name)s:%(message)s"
 LOG_LEVEL = "DEBUG"
+
+PREFERRED_DATABASES: list[str] = [
+    "MySQL",
+    "SQLite",
+]

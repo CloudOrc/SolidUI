@@ -28,6 +28,9 @@ class ProjectRestApi(BaseSolidUIApi):
     @expose('', methods=("POST",))
     @safe
     def create(self) -> FlaskResponse:
+        """
+        create project
+        """
         project_name = request.form.get('projectName')
         description = request.form.get('description', default='')
 
@@ -50,6 +53,9 @@ class ProjectRestApi(BaseSolidUIApi):
     @expose('/<int:pk>', methods=("PUT",))
     @safe
     def update(self, pk: int) -> FlaskResponse:
+        """
+        update project
+        """
         project_name = request.form.get('projectName')
         background_image = request.form.get('backgroundImage')
         description = request.form.get('description')
@@ -65,7 +71,9 @@ class ProjectRestApi(BaseSolidUIApi):
     @expose('/queryProjectListPaging', methods=("GET",))
     @safe
     def query_Project_List_Paging(self) -> FlaskResponse:
-
+        """
+        query project list paging
+        """
         search_name = request.args.get('searchName', default='')
         page_size = request.args.get('pageSize', default=10, type=int)
         page_no = request.args.get('pageNo', default=1, type=int)
@@ -79,14 +87,18 @@ class ProjectRestApi(BaseSolidUIApi):
     @expose('/<int:pk>', methods=("DELETE",))
     @safe
     def delete(self, pk: int) -> FlaskResponse:
-
+        """
+        delete project by id
+        """
         ProjectDAO.delete_project(pk)
         return self.response_format()
 
     @expose('/<int:pk>', methods=("GET",))
     @safe
     def get(self, pk: int) -> FlaskResponse:
-
+        """
+        get project by id
+        """
         project = ProjectDAO.get_project(pk)
         if project:
             project_schema = ProjectSchema()

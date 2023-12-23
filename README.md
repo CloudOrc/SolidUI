@@ -10,17 +10,11 @@
     <a target="_blank" href="https://github.com/CloudOrc/SolidUI/blob/main/LICENSE">
         <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?label=license" />
     </a>
-    <a target="_blank" href="https://www.oracle.com/technetwork/java/javase/downloads/index.html">
-        <img src="https://img.shields.io/badge/JDK-8-blue.svg" />
-    </a>
-
 
 <a target="_blank" href='https://github.com/CloudOrc/SolidUI/fork'>
 <img src="https://img.shields.io/github/forks/CloudOrc/SolidUI.svg" alt="github forks"/>
 </a>
-<a href="">
-<img src="https://img.shields.io/github/stars/CloudOrc/SolidUI.svg" alt="github stars"/>
-</a>
+
 <a target="_blank" href='https://github.com/CloudOrc/SolidUI/graphs/contributors'>
 <img src="https://img.shields.io/github/contributors/CloudOrc/SolidUI.svg?colorB=blue" alt="github contributors"/>
 </a>

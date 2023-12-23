@@ -10,9 +10,6 @@
     <a target="_blank" href="https://github.com/CloudOrc/SolidUI/blob/main/LICENSE">
         <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?label=license" />
     </a>
-    <a target="_blank" href="https://www.oracle.com/technetwork/java/javase/downloads/index.html">
-        <img src="https://img.shields.io/badge/JDK-8-blue.svg" />
-    </a>
 
 <a target="_blank" href='https://github.com/CloudOrc/SolidUI/fork'>
 <img src="https://img.shields.io/github/forks/CloudOrc/SolidUI.svg" alt="github forks"/>
@@ -61,8 +58,8 @@ AI生成图形模型
 * 支持多种数据源
 * 支持Huggingface space
 * 支持插件机器人
-* 支持SolidUI-Model
-* 支持Large Language Model
+* 支持SolidUI模型
+* 支持大模型接入
 * 容器化部署
 
 # 快速开始

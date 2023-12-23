@@ -11,13 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-class ConnectDTO:
-
-    def __init__(self):
-        self.host = None
-        self.port = None
-        self.username = None
-        self.password = None
-        self.database = None
-        self.driver_class_name = None
-        self.extra_params = {}

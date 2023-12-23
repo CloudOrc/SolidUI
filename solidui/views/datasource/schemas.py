@@ -11,4 +11,26 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
+from solidui.entity.core import DataSourceType, DataSource
+from marshmallow_sqlalchemy.schema import Schema
+from marshmallow_sqlalchemy.fields import fields
+
+class DataSourceTypeSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = DataSourceType
+        load_instance = True  # Optional: if you also want to use it for deserialization
+
+
+class DataSourceSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = DataSource
+        load_instance = True  # Optional: if you also want to use it for deserialization
+
+class DataSourcePageInfoSchema(Schema):
+    current_page = fields.Int()
+    page_size = fields.Int()
+    total = fields.Int()
+    total_page = fields.Int()
+    total_list = fields.Nested(DataSourceSchema, many=True)
