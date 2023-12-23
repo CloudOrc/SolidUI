@@ -71,7 +71,9 @@ class ProjectRestApi(BaseSolidUIApi):
         page_no = request.args.get('pageNo', default=1, type=int)
 
         page_info = ProjectDAO.query_project_list_paging(search_name, page_no, page_size)
+
         page_info_schema = PageInfoSchema()
+
         return self.response_format(data=page_info_schema.dump(page_info))
 
     @expose('/<int:pk>', methods=("DELETE",))

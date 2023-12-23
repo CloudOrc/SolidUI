@@ -11,11 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from marshmallow_sqlalchemy.schema import Schema
 from solidui.entity.core import Project
-from marshmallow import fields, Schema
-
+from marshmallow_sqlalchemy.fields import fields
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 class ProjectSchema(SQLAlchemyAutoSchema):
     class Meta:

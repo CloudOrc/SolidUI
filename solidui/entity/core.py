@@ -115,6 +115,7 @@ class Project(Base):
     update_time = Column(DateTime)
     status = Column(Integer, nullable=False, default=0)
 
+
 class User(Base):
     __tablename__ = 'solidui_user'
 

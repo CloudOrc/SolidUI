@@ -12,14 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Status
-STATUS = "status"
-DATA_LIST = "data"
-MSG = "msg"
-TOTAL_LIST = "totalList"
-CURRENT_PAGE = "currentPage"
-TOTAL_PAGE = "totalPage"
-TOTAL = "total"
 
-DEFAULT_PAGE_SIZE = 10
-DEFAULT_PAGE_NO = 1
+
+
