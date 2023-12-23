@@ -84,13 +84,14 @@ class SolidUIAppInitializer:
 
         from solidui.example.api import ExampleRestApi
         from solidui.views.user.api import LoginRestApi
+        from solidui.views.project.api import ProjectRestApi
 
         appbuilder.add_api(ExampleRestApi)
         appbuilder.add_api(LoginRestApi)
+        appbuilder.add_api(ProjectRestApi)
 
-
-        # for rule in self.solidui_app.url_map.iter_rules():
-        #     print(rule)
+        for rule in self.solidui_app.url_map.iter_rules():
+            print(rule)
 
 
     def configure_fab(self) -> None:

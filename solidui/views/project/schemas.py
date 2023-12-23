@@ -11,4 +11,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from marshmallow_sqlalchemy.schema import Schema
+from solidui.entity.core import Project
+from marshmallow_sqlalchemy.fields import fields
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
+class ProjectSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Project
+        load_instance = True  # Optional: if you also want to use it for deserialization
+
+
+class PageInfoSchema(Schema):
+    current_page = fields.Int()
+    page_size = fields.Int()
+    total = fields.Int()
+    total_page = fields.Int()
+    total_list = fields.Nested(ProjectSchema, many=True)

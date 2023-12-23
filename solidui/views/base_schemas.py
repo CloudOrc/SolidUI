@@ -12,46 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from solidui.exceptions import SolidUIException
-class DAOException(SolidUIException):
-    """
-    Base DAO Exception
-    """
 
 
-class DAOCreateFailedError(DAOException):
-    """
-    DAO Create failed
-    """
 
-    message = "Create failed"
-
-
-class DAOUpdateFailedError(DAOException):
-    """
-    DAO Update failed
-    """
-
-    message = "Update failed"
-
-
-class DAODeleteFailedError(DAOException):
-    """
-    DAO Delete failed
-    """
-
-    message = "Delete failed"
-
-
-class DAOTypeNotSupportedError(DAOException):
-    """
-    query source type is not supported
-    """
-
-    status = 422
-    message = "query source type is not supported"
-
-
-class DAONotFound(DAOException):
-    status = 404
-    message = "does not exist"

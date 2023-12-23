@@ -80,3 +80,19 @@ def as_list(x: T | list[T]) -> list[T]:
     return x if isinstance(x, list) else [x]
 
 
+def snake_to_camel(snake_str):
+    """Convert snake_case to camelCase"""
+    components = snake_str.split('_')
+    if len(components) > 1:
+        return components[0] + ''.join(x.title() for x in components[1:])
+    else:
+        return components[0]
+
+
+def convert_keys_to_camel_case(data):
+    if isinstance(data, dict):
+        return {snake_to_camel(key): convert_keys_to_camel_case(value) for key, value in data.items()}
+    elif isinstance(data, list):
+        return [convert_keys_to_camel_case(item) for item in data]
+    else:
+        return data

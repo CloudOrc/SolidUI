@@ -77,8 +77,7 @@ def remove_login_user(cookies):
     return resp
 
 
-def get_login_user():
-    cookies = request.cookies
+def get_login_user(cookies):
     for cookie_name, cookie_value in cookies.items():
         if cookie_name == SESSION_TICKETID_KEY:
             user_ticket_id = cookie_value
