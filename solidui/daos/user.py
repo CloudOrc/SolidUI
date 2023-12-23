@@ -16,7 +16,10 @@ from solidui.daos.base import BaseDAO
 from solidui.entity.core import User
 from sqlalchemy.orm import Session
 
+
 class UserDao(BaseDAO[User]):
+    model_cls = User
+
     @classmethod
     def queryUserByNamePassword(cls, session: Session, user_name: str, user_password: str) -> User:
         """To query a user based on their username and password."""
