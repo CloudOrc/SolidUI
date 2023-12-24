@@ -16,34 +16,43 @@
  */
 
 import React from "react";
-// import TopPropertiesPanel from "./TopPropertiesPanel";
 import ScenePropertiesPanel from "./ScenePropertiesPanel";
 import PagePropertiesPanel from "./PagePropertiesPanel";
 import StylePropertiesPanel from "./StylePropertiesPanel";
 import DataPropertiesPanel from "./DataPropertiesPanel";
-import useProperties from "./useProperties";
-import { LeftExpand, RightExpand } from "@icon-park/react";
-import { useMemoizedFn } from "ahooks";
+import useProperties, { modelSizeType, modelStatusType } from "./useProperties";
 
 import "./configurations.less";
 
-function Properties() {
-	const { propertyKey, currentTabKey, asideRef, mainRef, renderTabs } =
-		useProperties({
-			tabs: [
-				{
-					key: "Style",
-					tab: "Style",
-				},
-				// {
-				// 	key: "Data",
-				// 	tab: "Data",
-				// },
-			],
-		});
+export const propertiesContext = React.createContext<{
+	modelStatus: modelStatusType;
+	onClosePanel: () => void;
+	onOpenPanel: (size: modelSizeType) => void;
+}>({
+	modelStatus: "display",
+	onClosePanel: () => {},
+	onOpenPanel: () => {},
+});
+const { Provider } = propertiesContext;
 
-	const [modelOpen, setModelOpen] = React.useState<boolean>(true);
-	const [modelWidth, setModelWidth] = React.useState<number>(326);
+function Properties() {
+	const {
+		propertyKey,
+		currentTabKey,
+		mainRef,
+		renderTabs,
+		modelStatus,
+		handleClosePanel,
+		handleShowPanel,
+		panelSize,
+	} = useProperties({
+		tabs: [
+			{
+				key: "Style",
+				tab: "Style",
+			},
+		],
+	});
 
 	function renderByPropertyKey() {
 		if (propertyKey === "scene") {
@@ -75,38 +84,26 @@ function Properties() {
 		return undefined;
 	}
 
-	function handleChangeOpen(type: string) {
-		const dom: any = document.getElementById("section-properties");
-		const DbConfig: any = document.getElementById("db-config");
-		const asideEastContainer: any = document.getElementById(
-			"aside-east__container",
-		);
-		if (type === "close") {
-			setModelWidth(dom.offsetWidth);
-			dom.style.width = 0;
-			setModelOpen(false);
-			if (DbConfig) {
-				DbConfig.style.display = "none";
-			}
-			if (asideEastContainer) {
-				asideEastContainer.style.display = "none";
-			}
-		} else {
-			dom.style.width = modelWidth + "px";
-			setModelOpen(true);
-			if (DbConfig) {
-				DbConfig.style.display = "block";
-			}
-			if (asideEastContainer) {
-				asideEastContainer.style.display = "block";
-			}
-		}
-	}
-
+	const translateX = modelStatus === "hidden" ? panelSize : 0;
 	return (
-		<section id="section-properties" className="aside-east" ref={asideRef}>
+		<section
+			id="section-properties"
+			className="aside-east"
+			style={{
+				transform: `translateX(${translateX}px)`,
+				width: panelSize,
+			}}
+		>
 			<div className="aside-east__container" id="aside-east__container">
-				{renderByPropertyKey()}
+				<Provider
+					value={{
+						modelStatus,
+						onClosePanel: handleClosePanel,
+						onOpenPanel: handleShowPanel,
+					}}
+				>
+					{renderByPropertyKey()}
+				</Provider>
 			</div>
 		</section>
 	);
