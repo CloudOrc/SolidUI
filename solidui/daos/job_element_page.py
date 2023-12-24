@@ -12,21 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Optional
 from solidui.daos.base import BaseDAO
 from solidui.daos.exceptions import DAONotFound
-from solidui.entity.core import DataSourceType
+from solidui.entity.core import JobElementPage
 
 
-class DataSourceTypeDAO(BaseDAO[DataSourceType]):
-    model_cls = DataSourceType
-
-    @classmethod
-    def all_list(cls) -> list[DataSourceType]:
-        return super().find_all()
-
-    @classmethod
-    def get_id(cls, id: int) -> DataSourceType:
-        data_source_type = super().find_by_id(id)
-        if not data_source_type:
-            raise DAONotFound(message="DataSourceType not found")
-        return data_source_type
+class JobElementPageDAO(BaseDAO[JobElementPage]):
+    model_cls = JobElementPage

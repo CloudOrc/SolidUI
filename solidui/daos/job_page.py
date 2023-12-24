@@ -12,21 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Optional
 from solidui.daos.base import BaseDAO
 from solidui.daos.exceptions import DAONotFound
-from solidui.entity.core import DataSourceType
+from solidui.entity.core import JobPage
+from solidui.extensions import db
 
-
-class DataSourceTypeDAO(BaseDAO[DataSourceType]):
-    model_cls = DataSourceType
-
-    @classmethod
-    def all_list(cls) -> list[DataSourceType]:
-        return super().find_all()
+class JobPageDAO(BaseDAO[JobPage]):
+    model_cls = JobPage
 
     @classmethod
-    def get_id(cls, id: int) -> DataSourceType:
-        data_source_type = super().find_by_id(id)
-        if not data_source_type:
-            raise DAONotFound(message="DataSourceType not found")
-        return data_source_type
+    def query_by_name(cls, name, project_id) -> JobPage:
+        return db.session.query(JobPage).filter_by(name=name, project_id=project_id).first()
+
+    @classmethod
+    def delete_by_project_id(cls, project_id) -> None:
+        db.session.query(JobPage).filter_by(project_id=project_id).delete()
+        db.session.commit()
+
+    @classmethod
+    def query_job_page_parent_ids(cls, parent_id) -> list[JobPage]:
+        return db.session.query(JobPage).filter_by(parent_id=parent_id).all()
