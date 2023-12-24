@@ -14,6 +14,8 @@
 from typing import Any
 import logging
 
+from solidui.extensions import db
+
 from solidui.utils.page_info import PageInfo
 
 from solidui.daos.base import BaseDAO
@@ -35,7 +37,7 @@ class DataSourceDAO(BaseDAO[DataSource]):
         return super().create(item=data_source)
 
     @classmethod
-    def get_data_source_name(cls, data_source_name: int) -> DataSource:
+    def get_data_source_name(cls, data_source_name: str) -> DataSource:
         return super().find_one_or_none(datasource_name=data_source_name)
 
     @classmethod
@@ -57,7 +59,7 @@ class DataSourceDAO(BaseDAO[DataSource]):
     @classmethod
     def get_data_source_page(cls, page_no: int, page_size: int, name_filter: str = None, type_filter: int = None,
                              expire_filter: bool = None) -> PageInfo:
-        query = cls.model_cls.query
+        query = db.session.query(DataSource)
 
         # Apply filters
         if name_filter is not None:
@@ -81,7 +83,7 @@ class DataSourceDAO(BaseDAO[DataSource]):
         if data_source_id is None:
             raise DAONotFound(message="DataSource id is required")
 
-        data_source = cls.find_by_id(data_source_id)
+        data_source = super().find_by_id(data_source_id)
         if not data_source:
             raise DAONotFound(message="DataSource is required")
 
@@ -96,7 +98,7 @@ class DataSourceDAO(BaseDAO[DataSource]):
         if data_source.id is None:
             raise DAONotFound(message="DataSource id is required")
 
-        existing_data_source = cls.find_by_id(data_source.id)
+        existing_data_source = super().find_by_id(data_source.id)
         if not existing_data_source:
             raise DAONotFound(message="DataSource is required")
 

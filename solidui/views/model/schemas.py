@@ -12,21 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from solidui.daos.base import BaseDAO
-from solidui.daos.exceptions import DAONotFound
-from solidui.entity.core import DataSourceType
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+
+from solidui.entity.core import ModelType
+from marshmallow_sqlalchemy.fields import fields
 
 
-class DataSourceTypeDAO(BaseDAO[DataSourceType]):
-    model_cls = DataSourceType
-
-    @classmethod
-    def all_list(cls) -> list[DataSourceType]:
-        return super().find_all()
-
-    @classmethod
-    def get_id(cls, id: int) -> DataSourceType:
-        data_source_type = super().find_by_id(id)
-        if not data_source_type:
-            raise DAONotFound(message="DataSourceType not found")
-        return data_source_type
+class ModelKeyVO:
+    def __init__(self, id, name, type_name):
+        self.id = id
+        self.name = name
+        self.type_name = type_name

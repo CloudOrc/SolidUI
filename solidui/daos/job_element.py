@@ -11,3 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Optional
+from solidui.daos.base import BaseDAO
+from solidui.daos.exceptions import DAONotFound
+from solidui.entity.core import JobElement
+
+
+class JobElementDAO(BaseDAO[JobElement]):
+    model_cls = JobElement
