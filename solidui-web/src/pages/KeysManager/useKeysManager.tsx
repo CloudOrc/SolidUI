@@ -15,84 +15,90 @@
  * limitations under the License.
  */
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { message, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/lib/table";
-import { Delete, Pencil, PreviewOpen, Lightning, Time } from "@icon-park/react";
-import { useUpdate } from "react-use";
+import { Delete, Pencil } from "@icon-park/react";
 import { useForm } from "antd/lib/form/Form";
-import { find } from "lodash-es";
-import { ApiResult, DataSourceTypeDataType } from "@/types";
+import { ApiResult } from "@/types";
 import Apis from "@/apis";
 
 const { confirm } = Modal;
 
-// type InitialData = {
-// 	dataSources?: any[];
-// };
-
-type DataSourceDataType = {
-	id: string;
-	dataSourceName: string;
-	dataSourceDesc: string;
-	dataSourceTypeId: number;
-	dataSourceType: string;
-	createTime: string;
-	expire: boolean;
+type ModelTypeDataType = {
+	id: number | string;
+	name: string;
+	code: string;
+	type_name: string;
+	prompt: string;
+	token: string;
+	baseurl: string;
 };
 
-function useDataSource() {
-	const forceUpdate = useUpdate();
+type ModelTypeItemDataType = {
+	id: number | string;
+	name: string;
+	code: string;
+	type_name: string;
+	prompt: string;
+	token: string;
+	base_url: string;
+};
+
+function useKeysManager() {
 	const [loading, setLoading] = useState<boolean>(false);
-	const [dataSources, setDataSources] = useState<any[]>([]);
-	const [modalOpen, setModalOpen] = useState<boolean>(false);
-	const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
-	const [viewModalOpen, setViewModalOpen] = useState<boolean>(false);
-	const [dataSource, setDataSource] = useState<any>({});
-	const [types, setTypes] = useState<DataSourceTypeDataType[]>([]);
+	const [list, setList] = useState<any[]>([]);
+	const [modalStatus, setModalStatus] = useState<{
+		open: boolean;
+		id?: number | string;
+	}>({
+		open: false,
+		id: undefined,
+	});
+
 	const [form] = useForm();
 
 	const [pagination, setPagination] = useState<{
 		current: number;
 		size: number;
 		total: number;
-	}>();
+	}>({
+		current: 1,
+		size: 10,
+		total: 10,
+	});
 
-	const columns: ColumnsType<DataSourceDataType> = [
+	const columns: ColumnsType<ModelTypeDataType> = [
 		{
-			title: "dataSourceName",
-			dataIndex: "dataSourceName",
+			title: "name",
+			dataIndex: "name",
 			align: "center",
 		},
 		{
-			title: "dataSourceTypeName",
-			dataIndex: "dataSourceType",
+			title: "code",
+			dataIndex: "code",
 			align: "center",
 		},
 		{
-			title: "createTime",
-			dataIndex: "createTime",
+			title: "type_name",
+			dataIndex: "type_name",
 			align: "center",
 		},
 		{
-			title: "dataSourceDesc",
-			dataIndex: "dataSourceDesc",
-			align: "center",
+			title: "baseurl",
+			dataIndex: "baseurl",
 		},
 		{
-			title: "expire",
-			dataIndex: "expire",
+			title: "prompt",
+			dataIndex: "prompt",
 			align: "center",
-			render(value) {
-				return value ? "true" : "false";
-			},
+			ellipsis: true,
 		},
 		{
 			title: "operation",
 			dataIndex: "operation",
 			align: "center",
-			// eslint-disable-next-line
 			render(value, record) {
 				return (
 					<div
@@ -102,66 +108,6 @@ function useDataSource() {
 							justifyContent: "center",
 						}}
 					>
-						<Time
-							theme="outline"
-							size="18"
-							fill="#757272"
-							strokeWidth={3}
-							strokeLinejoin="miter"
-							strokeLinecap="square"
-							style={{
-								cursor: "pointer",
-							}}
-							onClick={async () => {
-								const res = await Apis.datasource.expire(record.id);
-								if (res.ok) {
-									message.success("expire success");
-									query();
-								}
-							}}
-						/>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<Lightning
-							theme="outline"
-							size="18"
-							fill="#757272"
-							strokeWidth={3}
-							strokeLinejoin="miter"
-							strokeLinecap="square"
-							style={{
-								cursor: "pointer",
-							}}
-							onClick={async () => {
-								const typeId = record.dataSourceTypeId;
-								const target = find(types, (type) => type.id === `${typeId}`);
-								if (target) {
-									const res = await Apis.datasource.test_connect({
-										dataSourceName: record.dataSourceName,
-										typeName: target.classifier,
-									});
-									if (res.ok) {
-										message.success("test connection success");
-									}
-								}
-							}}
-						/>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<PreviewOpen
-							theme="outline"
-							size="20"
-							fill="#757272"
-							strokeWidth={3}
-							strokeLinejoin="miter"
-							strokeLinecap="square"
-							style={{
-								cursor: "pointer",
-							}}
-							onClick={() => {
-								setViewModalOpen(true);
-								setDataSource(record);
-							}}
-						/>
-						&nbsp;&nbsp;&nbsp;&nbsp;
 						<Pencil
 							theme="outline"
 							size="18"
@@ -172,10 +118,7 @@ function useDataSource() {
 							style={{
 								cursor: "pointer",
 							}}
-							onClick={() => {
-								setEditModalOpen(true);
-								setDataSource(record);
-							}}
+							onClick={() => openModal(record)}
 						/>
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						<Delete
@@ -192,18 +135,13 @@ function useDataSource() {
 								confirm({
 									title: "Are you sure delete this item?",
 									icon: <ExclamationCircleOutlined rev={false} />,
-									content: `${record.dataSourceName}`,
+									content: `${record.name}`,
 									okText: "Yes",
 									okType: "danger",
 									cancelText: "No",
 									async onOk() {
-										const res = await Apis.datasource.delete(record.id);
-										if (res.ok) {
-											message.success("delete success");
-											query();
-										}
+										await del(record.id);
 									},
-									onCancel() {},
 								});
 							}}
 						/>
@@ -213,123 +151,95 @@ function useDataSource() {
 		},
 	];
 
-	const popupConverMap = useRef<Map<string, boolean>>(new Map());
-
 	useEffect(() => {
 		query();
-		queryDataSourceTypes();
-		return () => {};
-	}, []);
+	}, [pagination.current, pagination.size]);
 
-	async function query(
-		params: any = { pageNo: 1, pageSize: 10, expire: false, name: "" },
-	) {
+	async function query() {
 		setLoading(true);
-		const res: ApiResult<any> = await Apis.datasource.query({
-			pageNo: params.pageNo || 1,
-			pageSize: params.pageSize || 10,
-			expire: params.expire || "",
-			name: params.name || "",
+		const res: ApiResult<any> = await Apis.modelType.query({
+			page: pagination.current,
+			rows: pagination.size,
 		});
+		setLoading(false);
 		if (res.ok) {
 			const data = res.data || ({} as any);
-			const current = data.currentPage || 1;
-			const size = data.pageSize || 10;
-			const total = data.total || 0;
-			const records = data.totalList || [];
-			records.forEach((item: any) => {
-				item.key = item.id;
-				popupConverMap.current.set(`${item.id}`, false);
-			});
-			setDataSources(records || []);
+			setList(data.items || []);
 			setPagination({
-				current,
-				size,
-				total,
+				...pagination,
+				total: data.total || 0,
 			});
 		}
-
-		setLoading(false);
 	}
 
-	async function queryDataSourceTypes() {
-		const res: ApiResult<DataSourceTypeDataType[]> =
-			await Apis.datasource.types();
+	async function create(data: ModelTypeItemDataType) {
+		const res = await Apis.modelType.create(data);
 		if (res.ok) {
-			setTypes(res.data || []);
-		}
-	}
-
-	async function create(values: { name: string; description?: string }) {
-		const res = await Apis.project.create({
-			projectName: values.name,
-			description: values.description,
-		});
-		if (res.ok) {
-			query();
-			toggleModal(false);
-			resetForm();
-		}
-	}
-
-	async function del(id: string) {
-		const res = await Apis.project.delete(id);
-		if (res.ok) {
+			message.success("create success");
+			closeModal();
 			query();
 		}
 	}
 
-	async function resetForm() {
+	async function del(id: string | number) {
+		const res = await Apis.modelType.delete(id);
+		if (res.ok) {
+			message.success("delete success");
+			query();
+		}
+	}
+
+	async function update(data: ModelTypeItemDataType) {
+		const res = await Apis.modelType.update(data);
+		if (res.ok) {
+			message.success("update success");
+			closeModal();
+			query();
+		}
+	}
+
+	async function closeModal() {
 		form.resetFields();
+		setModalStatus({ open: false, id: undefined });
 	}
-
-	async function toggleCover(id: string, popup: boolean) {
-		popupConverMap.current.set(id, popup);
-		forceUpdate();
-	}
-
-	async function toggleModal(open: boolean) {
-		setModalOpen(open);
-	}
-
-	async function toggleEditModal(open: boolean) {
-		setEditModalOpen(open);
-	}
-
-	async function toggleViewModal(open: boolean) {
-		setViewModalOpen(open);
-	}
-
-	async function handleSearch(value: string) {
-		query({
-			pageNo: 1,
-			pageSize: 10,
-			expire: false,
-			name: value,
+	async function openModal(record?: ModelTypeDataType) {
+		setModalStatus({
+			open: true,
+			id: record?.id,
 		});
+		if (record) {
+			form.setFieldsValue({
+				name: record.name,
+				code: record.code,
+				type_name: record.type_name,
+				prompt: record.prompt,
+				token: record.token,
+				base_url: record.baseurl,
+			});
+		}
+	}
+
+	async function handleModalOk() {
+		const data: ModelTypeItemDataType = await form.validateFields();
+		if (modalStatus.id) {
+			await update({ ...data, id: modalStatus.id });
+		} else {
+			await create(data);
+		}
 	}
 
 	return {
+		openModal,
+		closeModal,
+		handleModalOk,
+		modalStatus,
 		loading,
-		modalOpen,
-		editModalOpen,
-		viewModalOpen,
-		dataSource,
 		columns,
 		form,
-		resetForm,
-		toggleModal,
-		toggleEditModal,
-		toggleViewModal,
-		query,
-		create,
-		del,
-		toggleCover,
-		dataSources,
+		list,
 		pagination,
-		popupConverMap,
-		handleSearch,
+		setPagination,
 	};
 }
 
-export default useDataSource;
+export default useKeysManager;
