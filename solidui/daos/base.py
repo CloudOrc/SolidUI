@@ -56,7 +56,7 @@ class BaseDAO(Generic[T]):
         )[0]
 
     @classmethod
-    def query_paginated(
+    def find_paginated(
             cls,
             session: Session = None,
             page: int = 1,

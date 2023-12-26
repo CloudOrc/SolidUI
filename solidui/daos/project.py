@@ -86,7 +86,7 @@ class ProjectDAO(BaseDAO[Project]):
             )
 
         # Using the query_paginated method of BaseDAO
-        pagination = super().query_paginated(
+        pagination = super().find_paginated(
             page=page_no,
             per_page=page_size,
             custom_filters=custom_filters,

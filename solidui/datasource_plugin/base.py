@@ -97,7 +97,6 @@ class JdbcClientFactory(ABC):
         return future.result()
 
 
-
 class MySQLClient(BaseJdbcClient):
     def get_databases(self):
         cursor = self.conn.cursor()

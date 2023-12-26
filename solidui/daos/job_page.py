@@ -14,25 +14,28 @@
 
 from __future__ import annotations
 
-from datetime import datetime
-from typing import Optional
 from solidui.daos.base import BaseDAO
 from solidui.daos.exceptions import DAONotFound
 from solidui.entity.core import JobPage
 from solidui.extensions import db
 
+
 class JobPageDAO(BaseDAO[JobPage]):
     model_cls = JobPage
 
     @classmethod
-    def query_by_name(cls, name, project_id) -> JobPage:
+    def get_job_name(cls, name: str, project_id: int) -> JobPage:
         return db.session.query(JobPage).filter_by(name=name, project_id=project_id).first()
 
     @classmethod
-    def delete_by_project_id(cls, project_id) -> None:
+    def get_job_page_project_ids(cls, project_id: int) -> list[JobPage]:
+        return db.session.query(JobPage).filter_by(project_id=project_id).all()
+
+    @classmethod
+    def delete_project_id(cls, project_id: int) -> None:
         db.session.query(JobPage).filter_by(project_id=project_id).delete()
         db.session.commit()
 
     @classmethod
-    def query_job_page_parent_ids(cls, parent_id) -> list[JobPage]:
+    def get_job_page_parent_ids(cls, parent_id: int) -> list[JobPage]:
         return db.session.query(JobPage).filter_by(parent_id=parent_id).all()

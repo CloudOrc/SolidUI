@@ -16,7 +16,6 @@ from __future__ import annotations
 import logging
 import os
 
-
 from datetime import timedelta
 
 from solidui.utils.logging_configurator import DefaultLoggingConfigurator
@@ -34,7 +33,6 @@ SOLIDUI_WEBSERVER_PORT = 8088
 
 SOLIDUI_WEBSERVER_TIMEOUT = int(timedelta(minutes=1).total_seconds())
 
-
 VERSION_STRING = "0.5.0"
 
 SILENCE_FAB = True
@@ -44,15 +42,14 @@ SESSION_SERVER_SIDE = False
 FAB_API_SWAGGER_UI = True
 FAB_API_SWAGGER = True
 # The SQLAlchemy connection string.
-#SQLALCHEMY_DATABASE_URI = (f"""sqlite:///{os.path.join(DATA_DIR, "solidui.db")}?check_same_thread=false""")
+# SQLALCHEMY_DATABASE_URI = (f"""sqlite:///{os.path.join(DATA_DIR, "solidui.db")}?check_same_thread=false""")
 
-#SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://username:password@host:port/dbname'
+# SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://username:password@host:port/dbname'
 
 SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:SolidUI%40123@43.138.5.82:3306/solidui'
 
 # SQLALCHEMY_CUSTOM_PASSWORD_STORE = lookup_password
 SQLALCHEMY_CUSTOM_PASSWORD_STORE = None
-
 
 # Default configurator will consume the LOG_* settings below
 LOGGING_CONFIGURATOR = DefaultLoggingConfigurator()
@@ -62,7 +59,13 @@ LOGGING_CONFIGURATOR = DefaultLoggingConfigurator()
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(name)s:%(message)s"
 LOG_LEVEL = "DEBUG"
 
-PREFERRED_DATABASES: list[str] = [
-    "MySQL",
-    "SQLite",
-]
+DB_HOST = 'localhost'
+DB_PORT = 3306
+DB_NAME = 'solidui'
+DB_USER = 'root'
+DB_PASS = 'SolidUI@123'
+API_PORT = 5010
+WEB_PORT = 5110
+SNAKEMQ_PORT = 8765
+SNAKEMQ_LISTENER = '127.0.0.1'
+SNAKEMQ_CONNECTOR = '127.0.0.1'

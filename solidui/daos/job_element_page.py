@@ -14,12 +14,26 @@
 
 from __future__ import annotations
 
-from datetime import datetime
-from typing import Optional
 from solidui.daos.base import BaseDAO
 from solidui.daos.exceptions import DAONotFound
-from solidui.entity.core import JobElementPage
+from solidui.entity.core import JobElementPage, JobPage
+from solidui.extensions import db
+from sqlalchemy import select
 
 
 class JobElementPageDAO(BaseDAO[JobElementPage]):
     model_cls = JobElementPage
+
+    @classmethod
+    def get_job_element_page_id(cls, page_id: int) -> list[JobElementPage]:
+        return db.session.query(JobElementPage).filter_by(job_page_id=page_id).all()
+
+    @classmethod
+    def delete_project_id(cls, project_id: int) -> None:
+        # Create a subquery to find job_page_ids associated with the project_id
+        subquery = select(JobPage.id).filter(JobPage.project_id == project_id).subquery()
+
+        # Delete JobElementPage records where job_page_id is in the subquery results
+        db.session.query(JobElementPage).filter(JobElementPage.job_page_id.in_(subquery)).delete(
+            synchronize_session='fetch')
+        db.session.commit()

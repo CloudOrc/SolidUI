@@ -24,7 +24,6 @@ from solidui.solidui_typing import FlaskResponse
 from solidui.views.base_api import BaseSolidUIApi
 from flask_appbuilder.api import expose, safe
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -67,8 +66,6 @@ class MetadataQueryRestApi(BaseSolidUIApi):
         except DAONotFound as ex:
             logger.exception(ex)
             return self.handle_error(SolidUIErrorType.QUERY_METADATA_DB_ERROR)
-
-
 
     @expose('/queryTables', methods=("GET",))
     @safe
