@@ -11,21 +11,5 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-from __future__ import annotations
-
-
-from solidui.daos.base import BaseDAO
-from solidui.daos.exceptions import DAONotFound
-from solidui.entity.core import JobElement
-from solidui.extensions import db
-
-
-class JobElementDAO(BaseDAO[JobElement]):
-    model_cls = JobElement
-
-    @classmethod
-    def delete_job_element_project_id(cls, project_id: int) -> None:
-        db.session.query(JobElement).filter_by(project_id=project_id).delete()
-        db.session.commit()
+from typing import Dict, Any
 

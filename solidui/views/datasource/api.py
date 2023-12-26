@@ -11,13 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import json
 import logging
 from flask import request
 
 from solidui.daos.datasource import DataSourceDAO
 from solidui.daos.datasource_type import DataSourceTypeDAO
 from solidui.daos.exceptions import DAONotFound, DAOUpdateFailedError, DAOException, DAODeleteFailedError
+from solidui.datasource_plugin.base import JdbcClientFactory
 from solidui.entity.core import DataSource
 from solidui.errors import SolidUIErrorType
 from solidui.solidui_typing import FlaskResponse
@@ -201,6 +202,35 @@ class DataSourceRestApi(BaseSolidUIApi):
         connect
         """
         data_source_name = request.form.get('dataSourceName')
-        type_name = request.form.get('typeName', default=None)
 
-        return self.response_format()
+        data_source = DataSourceDAO.get_data_source_name(data_source_name)
+        if data_source is None:
+            return self.handle_error(SolidUIErrorType.QUERY_DATASOURCE_ERROR)
+
+        data_source_type = DataSourceTypeDAO.get_id(data_source.datasource_type_id)
+        if data_source_type is None:
+            return self.handle_error(SolidUIErrorType.QUERY_DATASOURCE_TYPE_ERROR)
+
+        # Parse the JSON parameters
+        params = json.loads(data_source.parameter)
+
+        # Create a JDBC client
+        jdbc_client = JdbcClientFactory.create_client(
+            db_type=data_source_type.name.lower(),  # Assuming MySQL for example
+            host=params.get("host"),
+            port=params.get("port"),
+            username=params.get("username"),
+            password=params.get("password"),
+            database=params.get("database"),
+            extra_params=params.get("params", {})
+        )
+
+        try:
+            # Retrieve and return the list of databases
+            JdbcClientFactory.get_databases(jdbc_client)
+            return self.response_format()
+
+        except DAONotFound as ex:
+            logger.exception(ex)
+            return self.handle_error(SolidUIErrorType.QUERY_METADATA_DB_ERROR)
+

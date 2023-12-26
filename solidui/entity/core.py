@@ -36,7 +36,7 @@ class DataSource(Base):
     id = Column(Integer, primary_key=True)
     datasource_name = Column(String(255), nullable=False)
     datasource_desc = Column(String(255))
-    datasource_type_id = Column(Integer, ForeignKey('solidui_datasource_type.id'), nullable=False)
+    datasource_type_id = Column(Integer, nullable=False)
     create_identify = Column(String(255))
     parameter = Column(String(255))
     create_time = Column(DateTime)
@@ -44,13 +44,13 @@ class DataSource(Base):
     labels = Column(String(255))
     expire = Column(Boolean, default=False)
 
-    datasource_type = relationship("DataSourceType")
+    # datasource_type = relationship("DataSourceType")
 
 class DataSourceTypeKey(Base):
     __tablename__ = 'solidui_datasource_type_key'
 
     id = Column(Integer, primary_key=True)
-    data_source_type_id = Column(Integer, ForeignKey('solidui_datasource_type.id'), nullable=False)
+    data_source_type_id = Column(Integer, nullable=False)
     key = Column(String(32), nullable=False)
     name = Column(String(32), nullable=False)
     name_en = Column(String(32), nullable=False)
@@ -64,37 +64,37 @@ class DataSourceTypeKey(Base):
     update_time = Column(DateTime, nullable=False)
     create_time = Column(DateTime, nullable=False)
 
-    datasource_type = relationship("DataSourceType")
+    # datasource_type = relationship("DataSourceType")
 
 class JobElement(Base):
     __tablename__ = 'solidui_job_element'
 
     id = Column(Integer, primary_key=True)
-    project_id = Column(Integer, ForeignKey('solidui_project.id'), nullable=False)
+    project_id = Column(Integer, nullable=False)
     name = Column(String(255), nullable=False, default='')
     data = Column(Text, nullable=False)
     data_type = Column(String(255), nullable=False, default='')
     create_time = Column(DateTime, nullable=False)
     update_time = Column(DateTime, nullable=False)
 
-    project = relationship("Project")
+    # project = relationship("Project")
 class JobElementPage(Base):
     __tablename__ = 'solidui_job_element_page'
 
     id = Column(Integer, primary_key=True)
-    job_page_id = Column(Integer, ForeignKey('solidui_job_page.id'), nullable=False)
-    job_element_id = Column(Integer, ForeignKey('solidui_job_element.id'), nullable=False)
+    job_page_id = Column(Integer, nullable=False)
+    job_element_id = Column(Integer,  nullable=False)
     position = Column(String(255), nullable=False, default='')
     create_time = Column(DateTime, nullable=False)
     update_time = Column(DateTime, nullable=False)
 
-    job_page = relationship("JobPage")
-    job_element = relationship("JobElement")
+    # job_page = relationship("JobPage")
+    # job_element = relationship("JobElement")
 class JobPage(Base):
     __tablename__ = 'solidui_job_page'
 
     id = Column(Integer, primary_key=True)
-    project_id = Column(Integer, ForeignKey('solidui_project.id'), nullable=False)
+    project_id = Column(Integer, nullable=False)
     name = Column(String(255), nullable=False, default='')
     parent_id = Column(Integer)
     layout = Column(Integer, nullable=False)
@@ -102,7 +102,7 @@ class JobPage(Base):
     create_time = Column(DateTime, nullable=False)
     update_time = Column(DateTime, nullable=False)
 
-    project = relationship("Project")
+    # project = relationship("Project")
 class Project(Base):
     __tablename__ = 'solidui_project'
 

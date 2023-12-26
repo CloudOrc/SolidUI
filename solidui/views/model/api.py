@@ -16,7 +16,6 @@ import json
 import logging
 from flask import request
 
-
 from solidui.daos.exceptions import DAONotFound
 from solidui.daos.model_type import ModelTypeDAO
 from solidui.errors import SolidUIErrorType
@@ -31,7 +30,6 @@ logger = logging.getLogger(__name__)
 
 class ModelRestApi(BaseSolidUIApi):
     route_base = "/solidui/models"
-
 
     ## soliduimodelui/webapp
 
@@ -48,5 +46,3 @@ class ModelRestApi(BaseSolidUIApi):
             model_key_vos.append(ModelKeyVO(m.id, f"{m.name}_{m.code}", m.type_name))
 
         return self.response_format(data=model_key_vos)
-
-
