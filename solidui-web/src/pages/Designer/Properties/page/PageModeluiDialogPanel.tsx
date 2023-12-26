@@ -17,11 +17,11 @@
 
 import React from "react";
 import { Row, Col, Select, Button, Modal, Cascader } from "antd";
-import { Close } from "@icon-park/react";
+import { Close, DatabaseConfig } from "@icon-park/react";
 import { InputTextArea } from "@/components";
 import Chat from "@/components/Chat";
 import useModelui from "../modelui/useModelui";
-import { DatabaseConfig } from "@icon-park/react";
+import { propertiesContext } from "../Properties";
 
 export default function PageModeluiPropertiesPanel() {
 	const {
@@ -46,10 +46,9 @@ export default function PageModeluiPropertiesPanel() {
 		handleExecute,
 		handleFormatJson,
 		handleTransitionJsonToString,
-		handleSaveTableData
+		handleSaveTableData,
 	} = useModelui();
 	const chatScrollRef = React.useRef<HTMLDivElement>(null);
-
 	return (
 		<div
 			style={{
@@ -75,29 +74,19 @@ export default function PageModeluiPropertiesPanel() {
 					waitingForSystem={waitingForSystem}
 				/>
 			</div>
-			{ modalOpen ? (
+			{modalOpen ? (
 				<Modal
-					// title="database"
-					// closable={false}
-					// open={modalOpen}
-					// modalRender={(modal: any) => modal}
-					// width={680}
-					// footer={[
-					// 	<Button key="submit" type="primary" onClick={handleDatabaseSave}>
-					// 		save
-					// 	</Button>,
-					// ]}
 					title={null}
 					footer={null}
 					closable={false}
 					bodyStyle={{ padding: 0 }}
 					open={modalOpen}
 					modalRender={(modal: any) => modal}
-					destroyOnClose={true}
+					destroyOnClose
 				>
 					<div className="solidui-modal">
 						<div className="solidui-modal__header">
-						database
+							database
 							<span className="solidui-modal__close-btn">
 								<Close
 									theme="outline"
@@ -116,18 +105,24 @@ export default function PageModeluiPropertiesPanel() {
 							className="solidui-modal__content"
 							style={{
 								padding: 15,
-								height: 300
+								height: 300,
 							}}
 						>
-							<div className="select-datasource" style={{
-								marginBottom: 15
-							}}>
+							<div
+								className="select-datasource"
+								style={{
+									marginBottom: 15,
+								}}
+							>
 								<Row gutter={10}>
-									<Col span={4} 
+									<Col
+										span={4}
 										style={{
-											lineHeight: "30px"
+											lineHeight: "30px",
 										}}
-									>datasource:</Col>
+									>
+										datasource:
+									</Col>
 									<Col span={16}>
 										<Cascader
 											loading={loading}
@@ -135,7 +130,7 @@ export default function PageModeluiPropertiesPanel() {
 											value={selectedDataSourceOptions}
 											loadData={(selectOptions) => {
 												const option = selectOptions[0];
-												console.log(option)
+												console.log(option);
 												queryDbs(option.value as string);
 											}}
 											onChange={changeDsSelections}
@@ -149,21 +144,29 @@ export default function PageModeluiPropertiesPanel() {
 									</Col>
 								</Row>
 							</div>
-							<div className="select-datasource" style={{
-								marginBottom: 15
-							}}>
+							<div
+								className="select-datasource"
+								style={{
+									marginBottom: 15,
+								}}
+							>
 								<Row gutter={10}>
-									<Col span={4}
+									<Col
+										span={4}
 										style={{
-											lineHeight: "30px"
+											lineHeight: "30px",
 										}}
-									>table:</Col>
+									>
+										table:
+									</Col>
 									<Col span={16}>
-										<Select 
-											style={{ width: "325px" }} 
+										<Select
+											style={{ width: "325px" }}
 											placeholder="Please select a table"
 											defaultValue={
-												tableOptions && tableOptions[0] && tableOptions[0].value ? tableOptions[0].value : null
+												tableOptions && tableOptions[0] && tableOptions[0].value
+													? tableOptions[0].value
+													: null
 											}
 											onChange={handleTableChange}
 											options={tableOptions}
@@ -171,39 +174,43 @@ export default function PageModeluiPropertiesPanel() {
 									</Col>
 								</Row>
 							</div>
-							<div className="action-bar" style={{
-								marginBottom: 15
-							}}>
-								<Button type="primary" 
+							<div
+								className="action-bar"
+								style={{
+									marginBottom: 15,
+								}}
+							>
+								<Button
+									type="primary"
 									style={{
-										marginRight: 15
+										marginRight: 15,
 									}}
 									onClick={() => {
-										handleExecute()
+										handleExecute();
 									}}
 								>
 									Execute
 								</Button>
-								<Button 
+								<Button
 									style={{
-										marginRight: 15
+										marginRight: 15,
 									}}
 									onClick={() => {
 										handleFormatJson(() => {
-											console.log('失败了！')
-										})
+											console.log("失败了！");
+										});
 									}}
 								>
 									Format verification
 								</Button>
-								<Button 
+								<Button
 									style={{
-										marginRight: 15
+										marginRight: 15,
 									}}
 									onClick={() => {
 										handleTransitionJsonToString(tableData, () => {
-											console.log('失败了！')
-										})
+											console.log("失败了！");
+										});
 									}}
 								>
 									Compression
@@ -231,9 +238,13 @@ export default function PageModeluiPropertiesPanel() {
 							>
 								Cancel
 							</Button>
-							<Button type="primary" size="small" onClick={() => {
-								handleSaveTableData()
-							}}>
+							<Button
+								type="primary"
+								size="small"
+								onClick={() => {
+									handleSaveTableData();
+								}}
+							>
 								Save
 							</Button>
 						</div>
@@ -269,7 +280,7 @@ export default function PageModeluiPropertiesPanel() {
 							minHeight: 100,
 							maxHeight: 100,
 							width: "100%",
-							paddingRight: 40
+							paddingRight: 40,
 						}}
 						value={promptInput}
 						onChange={handlePromptInputChange}
@@ -281,7 +292,7 @@ export default function PageModeluiPropertiesPanel() {
 							position: "absolute",
 							top: 10,
 							right: 10,
-							cursor: "pointer"
+							cursor: "pointer",
 						}}
 					>
 						<DatabaseConfig

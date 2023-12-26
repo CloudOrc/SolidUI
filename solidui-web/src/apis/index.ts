@@ -184,6 +184,19 @@ const modelui = {
 	kernel_restart: () => ApiService.post(`/solidui/kernel/restart`),
 };
 
+const modelType = {
+	query: <T>(params: any) =>
+		ApiService.get<T>("/solidui/models/model_types", params),
+	delete: <T>(id: string | number) =>
+		ApiService.delete<T>(`/solidui/models/model_types/${id}`),
+	update: <T>(data: any) =>
+		ApiService.put<T>("/solidui/models/model_types", data),
+	queryById: <T>(id: string | number) =>
+		ApiService.get<T>(`/solidui/models/model_types/${id}`),
+	create: <T>(data: any) =>
+		ApiService.post<T>("/solidui/models/model_types", data),
+};
+
 const Apis = {
 	model,
 	images,
@@ -191,6 +204,7 @@ const Apis = {
 	project,
 	datasource,
 	modelui,
+	modelType,
 };
 
 export default Apis;

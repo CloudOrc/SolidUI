@@ -19,7 +19,7 @@ import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useCookie } from "react-use";
 import type { MenuProps } from "antd";
-import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
+import { DesktopOutlined, PieChartOutlined,KeyOutlined } from "@ant-design/icons";
 import { Menu, Dropdown, Avatar } from "antd";
 import Apis from "@/apis";
 import "./DefaultLayout.less";
@@ -45,6 +45,7 @@ function getItem(
 const items: MenuItem[] = [
 	getItem("Project", "/project", <PieChartOutlined rev={1} />),
 	getItem("Datasource", "/datasource", <DesktopOutlined rev={1} />),
+	getItem("KeysManager", "/key", <KeyOutlined rev={1} />),
 ];
 
 export default function DefaultLayout() {
