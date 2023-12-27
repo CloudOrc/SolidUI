@@ -19,10 +19,10 @@ import snakemq.packeter
 import snakemq.messaging
 import snakemq.message
 import os
-import soliduimodelui.kernelprogram.config as config
-from dotenv import load_dotenv
+import solidui.kernel_program.config as config
 
-load_dotenv(dotenv_path='soliduimodelui/.env', override=True)
+
+
 slip = os.environ.get('SNAKEMQ_LISTENER')
 scip = os.environ.get('SNAKEMQ_CONNECTOR')
 def escape_ansi(line):
@@ -45,5 +45,14 @@ def init_snakemq(ident, init_type="listen"):
     else:
         raise Exception("Unsupported init type.")
     return messaging, link
+
+def response_format(code=0,msg="success",data={},success=True,failed=False):
+    return {
+        "code": code,
+        "msg": msg,
+        "data": data,
+        "success": success,
+        "failed": failed
+    }
 
 

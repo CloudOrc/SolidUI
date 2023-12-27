@@ -14,6 +14,10 @@
 
 from __future__ import annotations
 
+from solidui.extensions import db
+
+from solidui.utils.page_info import PageInfo
+
 from solidui.daos.base import BaseDAO
 from solidui.entity.core import ModelType
 
@@ -24,3 +28,16 @@ class ModelTypeDAO(BaseDAO[ModelType]):
     @classmethod
     def get_list(cls) -> list[ModelType]:
         return super().find_all()
+
+    @classmethod
+    def get_model_types(cls, page=1, per_page=10) -> PageInfo:
+        pagination = super().find_paginated(page=page, per_page=per_page)
+        page_info = PageInfo[ModelType](page, per_page)
+        page_info.set_total(pagination.total)
+        page_info.set_total_list(pagination.items)
+        return page_info
+
+    @classmethod
+    def delete_model_type(cls, pk: int) -> None:
+        db.session.query(ModelType).filter_by(id=pk).delete()
+        db.session.commit()

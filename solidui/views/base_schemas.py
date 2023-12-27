@@ -11,7 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from collections import deque
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Optional, Dict, List
 
 
@@ -81,3 +83,33 @@ class JobElementPageVO:
     views: List[View] = None
 
 
+class JobPageDTO:
+    def __init__(self, id: int, project_id: int, name: str, parent_id: int, layout: int,
+                 create_time: datetime, update_time: datetime, orders: int, children: List['JobPageDTO']):
+        self.id = id
+        self.project_id = project_id
+        self.name = name
+        self.parent_id = parent_id
+        self.layout = layout
+        self.create_time = create_time
+        self.update_time = update_time
+        self.orders = orders
+        self.children = children
+
+
+class LimitedLengthString:
+    def __init__(self, maxlen=2000):
+        self.data = deque()
+        self.len = 0
+        self.maxlen = maxlen
+
+    def append(self, string):
+        self.data.append(string)
+        self.len += len(string)
+        while self.len > self.maxlen:
+            popped = self.data.popleft()
+            self.len -= len(popped)
+
+    def get_string(self):
+        result = ''.join(self.data)
+        return result[-self.maxlen:]

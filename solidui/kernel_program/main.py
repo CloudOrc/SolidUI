@@ -29,15 +29,12 @@ from queue import Queue
 from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS  # Import the CORS library
 
-from dotenv import load_dotenv
+import solidui.kernel_program.kernel_manager as kernel_manager
+import solidui.kernel_program.config as config
+import solidui.kernel_program.utils as utils
 
 
-import soliduimodelui.kernelprogram.kernel_manager as kernel_manager
-import soliduimodelui.kernelprogram.config as config
-import soliduimodelui.kernelprogram.utils as utils
-import soliduimodelui.webapp.web_utils as web_utils
 
-load_dotenv(dotenv_path='soliduimodelui/.env', override=True)
 APP_PORT = int(os.environ.get("API_PORT", 5010))
 base_blueprint = Blueprint("baseurl", __name__, url_prefix="/solidui/kernel")
 
@@ -57,7 +54,7 @@ console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)
 logger.addHandler(console_handler)
 logger.setLevel(logging.INFO)
-fh = logging.FileHandler('soliduimodelui/kernel.log')
+fh = logging.FileHandler('solidui/kernel.log')
 logger.addHandler(fh)
 
 
@@ -157,7 +154,7 @@ def handle_restart():
     cleanup_kernel_program()
     start_kernel_manager()
 
-    return web_utils.response_format()
+    return utils.response_format()
 
 
 app.register_blueprint(base_blueprint)

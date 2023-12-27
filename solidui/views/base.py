@@ -16,8 +16,8 @@ import logging
 from datetime import datetime
 
 from solidui.daos.job_element_page import JobElementPageDAO
-from solidui.entity.core import JobElementPage, JobElement
-from solidui.views.base_schemas import View, DataView, Data, Size, Position
+from solidui.entity.core import JobElementPage, JobElement, JobPage
+from solidui.views.base_schemas import View, DataView, Data, Size, Position, JobPageDTO
 
 logger = logging.getLogger(__name__)
 
@@ -62,7 +62,7 @@ def save_job_element_page(page_id: int, job_element_id: int, size: Size) -> None
     JobElementPageDAO.create(item=job_element_page)
 
 
-def create_job_element_page_vo(job_element: JobElement, views: list[View]) ->None:
+def create_job_element_page_vo(job_element: JobElement, views: list[View]) -> None:
     if not job_element:
         return
 
@@ -80,3 +80,20 @@ def create_job_element_page_vo(job_element: JobElement, views: list[View]) ->Non
     view.options = data_view.options
     view.data = data_view.data
     views.append(view)
+
+
+def convert_to_dto(job_page: JobPage):
+    # Assuming JobPage has attributes like id, project_id, name, etc.
+    # and JobPageDTO has a constructor that accepts these attributes.
+    job_page_dto = JobPageDTO(
+        id=job_page.id,
+        project_id=job_page.project_id,
+        name=job_page.name,
+        parent_id=job_page.parent_id,
+        layout=job_page.layout,
+        create_time=job_page.create_time,
+        update_time=job_page.update_time,
+        orders=job_page.orders,
+        children=[]  # Initially empty, to be filled later if needed
+    )
+    return job_page_dto
