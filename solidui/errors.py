@@ -62,6 +62,9 @@ class SolidUIErrorType(StrEnum):
     DELETE_JOB_ERROR = "DELETE_JOB_ERROR"
     JOB_PAGE_ALREADY_EXISTS_ERROR = "JOB_PAGE_ALREADY_EXISTS_ERROR"
     QUERY_MODEL_TYPE_ERROR = "QUERY_MODEL_TYPE_ERROR"
+    CREATE_MODEL_TYPE_ERROR = "CREATE_MODEL_TYPE_ERROR"
+    UPDATE_MODEL_TYPE_ERROR = "UPDATE_MODEL_TYPE_ERROR"
+    DELETE_MODEL_TYPE_ERROR = "DELETE_MODEL_TYPE_ERROR"
     COOKIE_IS_NULL = "COOKIE_IS_NULL"
     FAILED = "FAILED"
 
@@ -105,11 +108,13 @@ ISSUE_CODES = {
     10076: _("Failed to update job"),
     10077: _("Failed to delete job"),
     10078: _("Job page already exists"),
-    10080: _("Failed to query model types"),
     10081: _("Missing cookie"),
+    10082: _("Failed to query model type"),
+    10083: _("Failed to create model type"),
+    10084: _("Failed to update model type"),
+    10085: _("Failed to delete model type"),
     1: _("Request failed"),
 }
-
 
 ERROR_TYPES_TO_CODES_MAPPING = {
     SolidUIErrorType.INTERNAL_SERVER_ERROR: [10000],
@@ -150,15 +155,18 @@ ERROR_TYPES_TO_CODES_MAPPING = {
     SolidUIErrorType.UPDATE_JOB_ERROR: [10076],
     SolidUIErrorType.DELETE_JOB_ERROR: [10077],
     SolidUIErrorType.JOB_PAGE_ALREADY_EXISTS_ERROR: [10078],
-    SolidUIErrorType.QUERY_MODEL_TYPE_ERROR: [10080],
     SolidUIErrorType.COOKIE_IS_NULL: [10081],
+    SolidUIErrorType.QUERY_MODEL_TYPE_ERROR: [10082],
+    SolidUIErrorType.CREATE_MODEL_TYPE_ERROR: [10083],
+    SolidUIErrorType.UPDATE_MODEL_TYPE_ERROR: [10084],
+    SolidUIErrorType.DELETE_MODEL_TYPE_ERROR: [10085],
     SolidUIErrorType.FAILED: [1],
 }
 
 ERROR_TYPE_TO_STATUS_CODE = {
     SolidUIErrorType.INTERNAL_SERVER_ERROR: 500,
     SolidUIErrorType.USER_NAME_EXIST: 409,  # Conflict
-    SolidUIErrorType.USER_NAME_NULL: 400,   # Bad Request
+    SolidUIErrorType.USER_NAME_NULL: 400,  # Bad Request
     SolidUIErrorType.PASSWORD_NAME_NULL: 400,
     SolidUIErrorType.USER_LOGIN_FAILURE: 401,  # Unauthorized
     SolidUIErrorType.LOGIN_OUT_FAILURE: 401,
@@ -194,7 +202,10 @@ ERROR_TYPE_TO_STATUS_CODE = {
     SolidUIErrorType.UPDATE_JOB_ERROR: 400,
     SolidUIErrorType.DELETE_JOB_ERROR: 400,
     SolidUIErrorType.JOB_PAGE_ALREADY_EXISTS_ERROR: 409,
-    SolidUIErrorType.QUERY_MODEL_TYPE_ERROR: 400,
     SolidUIErrorType.COOKIE_IS_NULL: 400,
+    SolidUIErrorType.QUERY_MODEL_TYPE_ERROR: 400,
+    SolidUIErrorType.CREATE_MODEL_TYPE_ERROR: 400,
+    SolidUIErrorType.UPDATE_MODEL_TYPE_ERROR: 400,
+    SolidUIErrorType.DELETE_MODEL_TYPE_ERROR: 400,
     SolidUIErrorType.FAILED: 400,
 }

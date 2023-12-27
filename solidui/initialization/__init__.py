@@ -22,6 +22,7 @@ from deprecation import deprecated
 import wtforms_json
 from flask import Flask, redirect
 from flask_appbuilder import expose, IndexView
+from flask_cors import CORS
 from flask_session import Session
 from solidui.extensions import (
     appbuilder,
@@ -101,6 +102,9 @@ class SolidUIAppInitializer:
 
         appbuilder.init_app(self.solidui_app, db.session)
 
+    def configure_cors(self) -> None:
+        CORS(self.solidui_app)
+
     def configure_session(self) -> None:
         if self.config["SESSION_SERVER_SIDE"]:
             Session(self.solidui_app)
@@ -108,6 +112,7 @@ class SolidUIAppInitializer:
     def init_app_in_ctx(self) -> None:
 
         self.configure_fab()
+        self.configure_cors()
 
         if flask_app_mutator := self.config["FLASK_APP_MUTATOR"]:
             flask_app_mutator(self.solidui_app)

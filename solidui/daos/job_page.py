@@ -39,3 +39,8 @@ class JobPageDAO(BaseDAO[JobPage]):
     @classmethod
     def get_job_page_parent_ids(cls, parent_id: int) -> list[JobPage]:
         return db.session.query(JobPage).filter_by(parent_id=parent_id).all()
+
+    @classmethod
+    def delete_page_id(cls, pk: int) -> None:
+        db.session.query(JobPage).filter_by(id=pk).delete()
+        db.session.commit()

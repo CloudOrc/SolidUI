@@ -15,6 +15,7 @@
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 from solidui.entity.core import ModelType
+from marshmallow_sqlalchemy.schema import Schema
 from marshmallow_sqlalchemy.fields import fields
 
 
@@ -23,3 +24,17 @@ class ModelKeyVO:
         self.id = id
         self.name = name
         self.type_name = type_name
+
+
+class ModelTypeSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = ModelType
+        load_instance = True  # Optional: if you also want to use it for deserialization
+
+
+class ModelTypePageInfoSchema(Schema):
+    current_page = fields.Int()
+    page_size = fields.Int()
+    total = fields.Int()
+    total_page = fields.Int()
+    total_list = fields.Nested(ModelTypeSchema, many=True)

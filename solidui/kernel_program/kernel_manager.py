@@ -26,12 +26,10 @@ import logging
 from time import sleep
 from jupyter_client import BlockingKernelClient
 
-from dotenv import load_dotenv
 
-import soliduimodelui.kernelprogram.utils as utils
-import soliduimodelui.kernelprogram.config as config
+import solidui.kernel_program.utils as utils
+import solidui.kernel_program.config as config
 
-load_dotenv(dotenv_path='soliduimodelui/.env', override=True)
 # Set up globals
 messaging = None
 logger = config.get_logger()
@@ -39,7 +37,7 @@ console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)
 logger.addHandler(console_handler)
 logger.setLevel(logging.INFO)
-fh = logging.FileHandler('soliduimodelui/kernel.log')
+fh = logging.FileHandler('solidui/kernel.log')
 logger.addHandler(fh)
 
 

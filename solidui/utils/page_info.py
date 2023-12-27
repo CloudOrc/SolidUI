@@ -16,6 +16,7 @@ from typing import List, Generic, TypeVar
 
 T = TypeVar('T')
 
+
 class PageInfo(Generic[T]):
     def __init__(self, current_page: int = 1, page_size: int = 20):
         self.current_page = max(current_page, 1)
