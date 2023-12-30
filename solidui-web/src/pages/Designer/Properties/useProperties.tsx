@@ -31,8 +31,13 @@ type InitialData = {
 	tabs?: TabItemDataType[];
 };
 
+export type modelSizeType = "smail" | "large" | "medium" | number;
+export type modelStatusType = "display" | "hidden";
 function useProperties(initialData: InitialData) {
 	const forceUpdate = useUpdate();
+	const [modelStatus, setModelStatus] =
+		React.useState<modelStatusType>("display");
+	const [modelSize, setModelSize] = React.useState<modelSizeType>("medium");
 	const [propertyKey, setPropertyKey] = useState<
 		"top" | "scene" | "page" | "view" | "none"
 	>("none");
@@ -54,24 +59,16 @@ function useProperties(initialData: InitialData) {
 
 	const handleSelectPage = useMemoizedFn(() => {
 		setPropertyKey("page");
-		const dom = document.getElementById("section-properties");
-		if (dom) {
-			dom.style.width = "326px";
-		}
-		forceUpdate();
+		handleShowPanel("medium");
 	});
 
 	const handleSelectViewEvent = useMemoizedFn(() => {
 		setPropertyKey("view");
-		const dom = document.getElementById("section-properties");
-		if (dom) {
-			if (currentTabKey === "Style") {
-				dom.style.width = "326px";
-			} else {
-				dom.style.width = "500px";
-			}
+		if (currentTabKey === "Style") {
+			handleShowPanel("medium");
+		} else {
+			handleShowPanel(500);
 		}
-		forceUpdate();
 	});
 
 	useEffect(() => {
@@ -115,15 +112,38 @@ function useProperties(initialData: InitialData) {
 	}
 
 	function handleTabChange(key: string) {
-		if (asideRef.current) {
-			if (key === "Data") {
-				asideRef.current.style.width = "500px";
-			} else {
-				asideRef.current.style.width = "326px";
-			}
+		if (key === "Data") {
+			handleShowPanel(500);
+		} else {
+			handleShowPanel("medium");
 		}
 		setCurrentTabKey(key);
 	}
+
+	const handleShowPanel = (size: modelSizeType | number) => {
+		setModelSize(size);
+		setModelStatus("display");
+	};
+
+	const handleClosePanel = () => {
+		setModelStatus("hidden");
+	};
+
+	const panelSize = React.useMemo(() => {
+		if (modelSize === "smail") {
+			return 200;
+		}
+		if (modelSize === "large") {
+			return 800;
+		}
+		if (modelSize === "medium") {
+			return 326;
+		}
+		if (typeof modelSize === "number") {
+			return modelSize;
+		}
+		return 326;
+	}, [modelSize]);
 
 	return {
 		propertyKey,
@@ -131,6 +151,11 @@ function useProperties(initialData: InitialData) {
 		mainRef,
 		asideRef,
 		renderTabs,
+		panelSize,
+		modelSize,
+		modelStatus,
+		handleClosePanel,
+		handleShowPanel,
 	};
 }
 

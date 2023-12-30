@@ -18,6 +18,7 @@
 import React, { useState, useEffect } from "react";
 import { useMemoizedFn } from "ahooks";
 import { eventbus } from "@/utils";
+import { propertiesContext } from "./Properties";
 
 type TabItemDataType = {
 	key: string;
@@ -30,23 +31,21 @@ type InitialData = {
 };
 
 function usePageProperties(initialData: InitialData) {
+	const { modelStatus, onClosePanel, onOpenPanel } =
+		React.useContext(propertiesContext);
 	const [propertyKey, setPropertyKey] = useState<"page" | "modelui" | "none">(
 		"page",
 	);
-	const [modelOpen, setModelOpen] = useState<boolean>(true);
 	const [currentTabKey, setCurrentTabKey] = useState<string>("Page");
 	const mainRef = React.createRef<HTMLDivElement>();
 	const asideRef = React.createRef<HTMLDivElement>();
 
 	const handleSelectPage = useMemoizedFn(() => {
 		setPropertyKey("page");
-		const dom = document.getElementById("section-properties");
-		if (dom) {
-			if (currentTabKey === "Page") {
-				dom.style.width = "326px";
-			} else {
-				dom.style.width = "800px";
-			}
+		if (currentTabKey === "Page") {
+			onOpenPanel("medium");
+		} else {
+			onOpenPanel("large");
 		}
 	});
 
@@ -78,17 +77,12 @@ function usePageProperties(initialData: InitialData) {
 	}
 
 	function handleTabChange(key: string) {
-		const dom = document.getElementById("section-properties");
-		if (dom) {
-			if (key === "Modelui") {
-				dom.style.width = "800px";
-				setModelOpen(true);
-			} else {
-				dom.style.width = "326px";
-				setModelOpen(false);
-			}
-		}
 		setCurrentTabKey(key);
+		if (key === "Modelui") {
+			onOpenPanel("large");
+		} else {
+			onOpenPanel("medium");
+		}
 	}
 
 	return {
@@ -97,8 +91,9 @@ function usePageProperties(initialData: InitialData) {
 		mainRef,
 		asideRef,
 		renderTabs,
-		modelOpen,
-		setModelOpen,
+		modelStatus,
+		onOpenPanel,
+		onClosePanel,
 	};
 }
 

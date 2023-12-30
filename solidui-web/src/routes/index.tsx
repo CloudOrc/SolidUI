@@ -23,6 +23,7 @@ import DataSourceList from "@/pages/DataSource/DataSourceList";
 import Preview from "@/pages/Designer/Preview";
 import ProjectList from "../pages/Project/ProjectList";
 import Dashboard from "../pages/Designer/Designer";
+import KeysManager from "../pages/KeysManager/KeysManager";
 import Login from "../pages/Login/Login";
 
 const routes: RouteObject[] = [
@@ -41,6 +42,10 @@ const routes: RouteObject[] = [
 			{
 				path: "/datasource",
 				element: <DataSourceList />,
+			},
+			{
+				path: "/key",
+				element: <KeysManager />,
 			},
 		],
 	},
