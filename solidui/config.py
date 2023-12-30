@@ -17,6 +17,7 @@ import logging
 import os
 
 from datetime import timedelta
+from typing import Any
 
 from solidui.utils.logging_configurator import DefaultLoggingConfigurator
 
@@ -69,3 +70,6 @@ WEB_PORT = 5110
 SNAKEMQ_PORT = 8765
 SNAKEMQ_LISTENER = '127.0.0.1'
 SNAKEMQ_CONNECTOR = '127.0.0.1'
+
+ENABLE_CORS = True
+CORS_OPTIONS: dict[Any, Any] = {}
