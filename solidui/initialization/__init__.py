@@ -15,14 +15,10 @@
 from __future__ import annotations
 import logging
 import os
-import sys
 from typing import Any, Callable, TYPE_CHECKING
 from deprecation import deprecated
 
 import wtforms_json
-from flask import Flask, redirect
-from flask_appbuilder import expose, IndexView
-from flask_cors import CORS
 from flask_session import Session
 from solidui.extensions import (
     appbuilder,
@@ -76,6 +72,13 @@ class SolidUIAppInitializer:
     def initialize_data(self) -> None:
         ...
 
+    def configure_middlewares(self) -> None:
+        if self.config["ENABLE_CORS"]:
+            # pylint: disable=import-outside-toplevel
+            from flask_cors import CORS
+
+            CORS(self.solidui_app, **self.config["CORS_OPTIONS"])
+
     def init_views(self) -> None:
         """
         We're doing local imports, as several of them import
@@ -86,10 +89,20 @@ class SolidUIAppInitializer:
         from solidui.example.api import ExampleRestApi
         from solidui.views.user.api import LoginRestApi
         from solidui.views.project.api import ProjectRestApi
+        from solidui.views.model.api import ModelRestApi
+        from solidui.views.datasource.api import DataSourceRestApi
+        from solidui.views.metadata.api import MetadataQueryRestApi
+        from solidui.views.job.api import JobRestApi
+        from solidui.views.job_page.api import JobPageRestApi
 
         appbuilder.add_api(ExampleRestApi)
         appbuilder.add_api(LoginRestApi)
         appbuilder.add_api(ProjectRestApi)
+        appbuilder.add_api(ModelRestApi)
+        appbuilder.add_api(DataSourceRestApi)
+        appbuilder.add_api(MetadataQueryRestApi)
+        appbuilder.add_api(JobRestApi)
+        appbuilder.add_api(JobPageRestApi)
 
         for rule in self.solidui_app.url_map.iter_rules():
             print(rule)
@@ -102,8 +115,7 @@ class SolidUIAppInitializer:
 
         appbuilder.init_app(self.solidui_app, db.session)
 
-    def configure_cors(self) -> None:
-        CORS(self.solidui_app)
+
 
     def configure_session(self) -> None:
         if self.config["SESSION_SERVER_SIDE"]:
@@ -130,6 +142,7 @@ class SolidUIAppInitializer:
         self.configure_session()
         self.setup_db()
         self.initialize_database()
+        self.configure_middlewares()
 
         with self.solidui_app.app_context():
             self.init_app_in_ctx()

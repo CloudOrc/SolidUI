@@ -19,7 +19,7 @@ from datetime import datetime
 
 from flask import request
 
-from solidui.daos.exceptions import DAONotFound, DAOCreateFailedError
+from solidui.daos.exceptions import DAOCreateFailedError
 from solidui.daos.job_element import JobElementDAO
 from solidui.daos.job_element_page import JobElementPageDAO
 from solidui.entity.core import JobElementPage, JobElement
