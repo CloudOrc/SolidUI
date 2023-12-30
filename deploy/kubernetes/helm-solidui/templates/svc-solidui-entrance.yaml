@@ -19,15 +19,15 @@ kind: Service
 metadata:
   namespace: solidui
   labels:
-    app: {{ .Chart.Name }}-entrance
-  name: {{ .Chart.Name }}-entrance
+    app: {{ .Chart.Name }}-views
+  name: {{ .Chart.Name }}-views
 spec:
   ports:
-  - name: {{ .Chart.Name }}-entrance
+  - name: {{ .Chart.Name }}-views
     port: 12345
     protocol: TCP
     targetPort: 12345
   selector:
-    app: {{ .Chart.Name }}-entrance
+    app: {{ .Chart.Name }}-views
   sessionAffinity: None
   type: ClusterIP

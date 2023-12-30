@@ -18,23 +18,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: solidui
-  name: {{ .Chart.Name }}modelui
+  name: {{ .Chart.Name }}solidui
   labels:
-    app: {{ .Chart.Name }}modelui
+    app: {{ .Chart.Name }}solidui
 spec:
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}modelui
+      app: {{ .Chart.Name }}solidui
   replicas: {{ .Values.replicaCount }}
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}modelui
+        app: {{ .Chart.Name }}solidui
     spec:
       containers:
-        - name: {{ .Chart.Name }}modelui
+        - name: {{ .Chart.Name }}solidui
           image: '{{ .Values.image.hub }}/soliduimodelui:{{ .Values.image.tag }}'
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:

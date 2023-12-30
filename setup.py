@@ -20,27 +20,41 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='soliduimodelui',
-    version='0.4.0',
+    name='solidui',
+    version='0.5.0',
     description="AI-generated visualization prototyping and editing platform",
     long_description=long_description,
     long_description_content_type='text/markdown',  # This field specifies the format of the `long_description`.
     packages=find_packages(),
-    # package_data={'soliduimodelui.webapp': ['static/*', 'static/assets/*']},
     install_requires=[
+        'click>=8.0.3',
+        'click-option-group',
+        'colorama',
+        'deprecation>=2.1.0, <2.2.0',
+        'flask>=2.2.5, <3.0.0',
+        'flask-appbuilder>=4.3.9, <5.0.0',
+        'flask-session>=0.4.0, <1.0',
         'ipykernel>=6,<7',
+        'python-dotenv>=1,<2',
+        'pycryptodome',
+        'matplotlib>=3,<4',
+        'pandas>=1,<2',
         'snakemq>=1,<2',
         'requests>=2,<3',
-        'Flask>=2,<3',
-        'flask-cors>=3,<4',
-        'python-dotenv>=1,<2',
-        'matplotlib>=3,<4',
-        'pymysql>=1,<2',
-        'pandas>=1,<2'
+        'sqlalchemy>=1.4, <2',
+        'sqlalchemy-utils>=0.38.3, <0.39',
+        'typing-extensions>=4, <5',
+        'werkzeug>=2.3.3, <3'
     ],
+    extras_require={
+        "cors": ["flask-cors>=2.0.0"],
+        "mysql": ["mysqlclient>=2.1.0, <3"]
+    },
     entry_points={
         'console_scripts': [
-            'modelui = soliduimodelui.main:main',
+            'solidui=solidui.cli.main:solidui',
         ],
     },
+    python_requires="~=3.9",
+    url="https://cloudorc.github.io/SolidUI-Website/",
 )
