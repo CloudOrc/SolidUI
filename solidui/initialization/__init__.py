@@ -124,7 +124,6 @@ class SolidUIAppInitializer:
     def init_app_in_ctx(self) -> None:
 
         self.configure_fab()
-        self.configure_cors()
 
         if flask_app_mutator := self.config["FLASK_APP_MUTATOR"]:
             flask_app_mutator(self.solidui_app)
