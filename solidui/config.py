@@ -44,9 +44,9 @@ FAB_API_SWAGGER = True
 # The SQLAlchemy connection string.
 # SQLALCHEMY_DATABASE_URI = (f"""sqlite:///{os.path.join(DATA_DIR, "solidui.db")}?check_same_thread=false""")
 
-# SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://username:password@host:port/dbname'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://username:password@host:port/dbname'
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:SolidUI%40123@43.138.5.82:3306/solidui'
+
 
 # SQLALCHEMY_CUSTOM_PASSWORD_STORE = lookup_password
 SQLALCHEMY_CUSTOM_PASSWORD_STORE = None
