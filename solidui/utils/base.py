@@ -15,6 +15,7 @@
 # specific language governing permissions and limitations
 from __future__ import annotations
 
+import os
 import sqlite3
 from typing import Any, TypeVar
 from contextlib import closing
@@ -96,3 +97,35 @@ def convert_keys_to_camel_case(data):
         return [convert_keys_to_camel_case(item) for item in data]
     else:
         return data
+
+def parse_boolean_string(bool_str: str | None) -> bool:
+    """
+    Convert a string representation of a true/false value into a boolean
+
+    >>> parse_boolean_string(None)
+    False
+    >>> parse_boolean_string('false')
+    False
+    >>> parse_boolean_string('true')
+    True
+    >>> parse_boolean_string('False')
+    False
+    >>> parse_boolean_string('True')
+    True
+    >>> parse_boolean_string('foo')
+    False
+    >>> parse_boolean_string('0')
+    False
+    >>> parse_boolean_string('1')
+    True
+
+    :param bool_str: string representation of a value that is assumed to be boolean
+    :return: parsed boolean value
+    """
+    if bool_str is None:
+        return False
+    return bool_str.lower() in ("y", "Y", "yes", "True", "t", "true", "On", "on", "1")
+
+
+def is_test() -> bool:
+    return parse_boolean_string(os.environ.get("SOLIDUI_TESTENV", "false"))

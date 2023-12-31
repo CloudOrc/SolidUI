@@ -37,11 +37,7 @@ class ProjectRestApi(BaseSolidUIApi):
         if not project_name:
             return self.handle_error(SolidUIErrorType.PROJECT_NOT_EXISTS_ERROR)
 
-        cookie = request.cookies
-        if cookie is None:
-            return self.handle_error(SolidUIErrorType.COOKIE_IS_NULL)
-
-        loginUser = get_login_user(cookie)
+        loginUser = self.get_api_user()
 
         project = ProjectDAO.create_project(project_name, description, loginUser)
         if project:

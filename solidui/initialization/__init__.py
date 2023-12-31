@@ -15,17 +15,20 @@
 from __future__ import annotations
 import logging
 import os
+import sys
 from typing import Any, Callable, TYPE_CHECKING
 from deprecation import deprecated
 
 import wtforms_json
 from flask_session import Session
+
+from solidui.common.constants import CHANGE_ME_SECRET_KEY
 from solidui.extensions import (
     appbuilder,
     db
 )
 from solidui.solidui_typing import FlaskResponse
-from solidui.utils.base import pessimistic_connection_handling
+from solidui.utils.base import pessimistic_connection_handling, is_test
 
 if TYPE_CHECKING:
     from solidui.app import SolidUIApp
@@ -130,6 +133,32 @@ class SolidUIAppInitializer:
 
         self.init_views()
 
+    def check_secret_key(self) -> None:
+        def log_default_secret_key_warning() -> None:
+            top_banner = 80 * "-" + "\n" + 36 * " " + "WARNING\n" + 80 * "-"
+            bottom_banner = 80 * "-" + "\n" + 80 * "-"
+            logger.warning(top_banner)
+            logger.warning(
+                "A Default SECRET_KEY was detected, please use superset_config.py "
+                "to override it.\n"
+                "Use a strong complex alphanumeric string and use a tool to help"
+                " you generate \n"
+                "a sufficiently random sequence, ex: openssl rand -base64 42"
+            )
+            logger.warning(bottom_banner)
+
+        if self.config["SECRET_KEY"] == CHANGE_ME_SECRET_KEY:
+            if (
+                    self.solidui_app.debug
+                    or self.solidui_app.config["TESTING"]
+                    or is_test()
+            ):
+                logger.warning("Debug mode identified with default secret key")
+                log_default_secret_key_warning()
+                return
+            log_default_secret_key_warning()
+            logger.error("Refusing to start due to insecure SECRET_KEY")
+            sys.exit(1)
 
     def init_app(self) -> None:
         """
@@ -138,6 +167,7 @@ class SolidUIAppInitializer:
         """
 
         self.pre_init()
+        self.check_secret_key()
         self.configure_session()
         self.setup_db()
         self.initialize_database()

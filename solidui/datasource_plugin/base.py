@@ -14,6 +14,10 @@
 from __future__ import annotations
 from abc import abstractmethod, ABC
 from concurrent.futures import ThreadPoolExecutor
+from datetime import time
+import time
+from functools import wraps
+
 import MySQLdb
 
 
@@ -41,7 +45,6 @@ class BaseJdbcClient(ABC):
     def close(self):
         self.conn.close()
 
-
 class JdbcClientFactory(ABC):
     executor = ThreadPoolExecutor(max_workers=10)
 
@@ -66,10 +69,9 @@ class JdbcClientFactory(ABC):
     @staticmethod
     def run_query(client, sql: str):
         def query():
-            try:
-                return client.run_query(sql)
-            finally:
-                client.close()
+            result = client.run_query(sql)
+            client.close()
+            return result
 
         future = JdbcClientFactory.executor.submit(query)
         return future.result()
