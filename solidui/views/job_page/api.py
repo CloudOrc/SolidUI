@@ -28,6 +28,9 @@ from solidui.views.base import convert_to_dto
 from solidui.views.base_api import BaseSolidUIApi
 from flask_appbuilder.api import expose, safe
 
+from solidui.views.base_schemas import JobPageDTOSchema
+from solidui.views.job_page.schemas import JobPageVO, JobPageSchema
+
 logger = logging.getLogger(__name__)
 
 
@@ -39,7 +42,15 @@ class JobPageRestApi(BaseSolidUIApi):
     def create_job_page(self) -> FlaskResponse:
         # Extract data from request
         job_page_data = request.json
-        job_page = JobPage(**job_page_data)
+        job_page_vo = JobPageVO(**job_page_data)
+
+        job_page = JobPage(
+            project_id=job_page_vo.projectId,
+            name=job_page_vo.name,
+            parent_id=job_page_vo.parentId,
+            layout=job_page_vo.layout,
+            orders=job_page_vo.orders
+        )
 
         # Check if page name already exists
         existing_job_page = JobPageDAO.get_job_name(job_page.name, job_page.project_id)
@@ -62,7 +73,8 @@ class JobPageRestApi(BaseSolidUIApi):
         # Insert job page
         try:
             JobPageDAO.create(item=job_page)
-            return self.response_format(data=job_page)
+            job_page_schema = JobPageSchema()
+            return self.response_format(data=job_page_schema.dump(job_page))
         except DAOCreateFailedError as ex:
             logger.exception(ex)
             return self.handle_error(SolidUIErrorType.CREATE_JOB_PAGE_ERROR)
@@ -74,15 +86,23 @@ class JobPageRestApi(BaseSolidUIApi):
         update job page
         """
         job_page_data = request.json
-        job_page = JobPage(**job_page_data)
+        job_page_vo = JobPageVO(**job_page_data)
+
+        job_page = JobPage(
+            project_id=job_page_vo.projectId,
+            name=job_page_vo.name,
+            parent_id=job_page_vo.parentId,
+            layout=job_page_vo.layout,
+            orders=job_page_vo.orders
+        )
         job_page.id = pk
         new_job_page = JobPageDAO.find_by_id(pk)
-        if new_job_page:
+        if not new_job_page:
             return self.handle_error(SolidUIErrorType.QUERY_JOB_PAGE_ERROR)
-        new_job_page.update_time = datetime.now()
+        job_page.update_time = datetime.now()
 
         try:
-            JobPageDAO.update(new_job_page)
+            JobPageDAO.update(job_page)
         except DAOCreateFailedError as ex:
             logger.exception(ex)
             return self.handle_error(SolidUIErrorType.UPDATE_JOB_PAGE_ERROR)
@@ -111,7 +131,7 @@ class JobPageRestApi(BaseSolidUIApi):
             logger.exception(ex)
             return self.handle_error(SolidUIErrorType.DELETE_JOB_PAGE_ERROR)
 
-    @expose('/query/<int:project_id>', methods=('GET',))
+    @expose('/queryList/<int:project_id>', methods=('GET',))
     @safe
     def get_job_pages(self, project_id) -> FlaskResponse:
         """
@@ -124,7 +144,7 @@ class JobPageRestApi(BaseSolidUIApi):
 
         # Convert JobPage to JobPageDTO and sort
         job_page_dtos = [convert_to_dto(job_page) for job_page in job_pages]
-        sorted_job_page_dtos = sorted(job_page_dtos, key=lambda x: (x.parent_id, x.orders))
+        sorted_job_page_dtos = sorted(job_page_dtos, key=lambda x: (x.parent_id or 0, x.orders or 0))
 
         # Group and nest job pages
         top_level_job_pages = [dto for dto in sorted_job_page_dtos if dto.layout == 1]
@@ -133,4 +153,5 @@ class JobPageRestApi(BaseSolidUIApi):
         for top_level in top_level_job_pages:
             top_level.children = [dto for dto in second_level_job_pages if dto.parent_id == top_level.id]
 
-        return self.response_format(data=top_level_job_pages)
+        schema = JobPageDTOSchema()
+        return self.response_format(data=schema.dump(top_level_job_pages, many=True))

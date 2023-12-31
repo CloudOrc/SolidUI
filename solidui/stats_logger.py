@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 class BaseStatsLogger:
     """Base class for logging realtime events"""
 
-    def __init__(self, prefix: str = "superset") -> None:
+    def __init__(self, prefix: str = "solidui") -> None:
         self.prefix = prefix
 
     def key(self, key: str) -> str:
@@ -79,7 +79,7 @@ try:
             self,
             host: str = "localhost",
             port: int = 8125,
-            prefix: str = "superset",
+            prefix: str = "solidui",
             statsd_client: Optional[StatsClient] = None,
         ) -> None:
             """
