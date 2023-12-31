@@ -17,6 +17,9 @@ from datetime import datetime
 from typing import Optional, Dict, List
 
 
+from marshmallow_sqlalchemy.schema import Schema
+from marshmallow_sqlalchemy.fields import fields
+
 @dataclass
 class Position:
     top: str = None
@@ -84,8 +87,9 @@ class JobElementPageVO:
 
 
 class JobPageDTO:
-    def __init__(self, id: int, project_id: int, name: str, parent_id: int, layout: int,
-                 create_time: datetime, update_time: datetime, orders: int, children: List['JobPageDTO']):
+    def __init__(self, id: int = None, project_id: int = None, name: str = None, parent_id: int = 0, layout: int = None,
+                 create_time: datetime = None, update_time: datetime = None, orders: int = None,
+                 children: List['JobPageDTO'] = None):
         self.id = id
         self.project_id = project_id
         self.name = name
@@ -113,3 +117,16 @@ class LimitedLengthString:
     def get_string(self):
         result = ''.join(self.data)
         return result[-self.maxlen:]
+
+
+class JobPageDTOSchema(Schema):
+    id = fields.Int()
+    project_id = fields.Int()
+    name = fields.Str()
+    parent_id = fields.Int()
+    layout = fields.Int()
+    create_time = fields.DateTime()
+    update_time = fields.DateTime()
+    orders = fields.Int()
+    # Use a Nested field for children, with many=True to indicate it's a list
+    children = fields.Nested('self', many=True, exclude=('children',))

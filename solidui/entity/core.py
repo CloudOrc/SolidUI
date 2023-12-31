@@ -19,6 +19,7 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
+
 class DataSourceType(Base):
     __tablename__ = 'solidui_datasource_type'
 
@@ -29,6 +30,7 @@ class DataSourceType(Base):
     classifier = Column(String(32), nullable=False, default='')
     icon = Column(String(255), nullable=False, default='')
     layers = Column(Integer, nullable=False)
+
 
 class DataSource(Base):
     __tablename__ = 'solidui_datasource'
@@ -45,6 +47,7 @@ class DataSource(Base):
     expire = Column(Boolean, default=False)
 
     # datasource_type = relationship("DataSourceType")
+
 
 class DataSourceTypeKey(Base):
     __tablename__ = 'solidui_datasource_type_key'
@@ -66,6 +69,7 @@ class DataSourceTypeKey(Base):
 
     # datasource_type = relationship("DataSourceType")
 
+
 class JobElement(Base):
     __tablename__ = 'solidui_job_element'
 
@@ -78,31 +82,37 @@ class JobElement(Base):
     update_time = Column(DateTime, nullable=False)
 
     # project = relationship("Project")
+
+
 class JobElementPage(Base):
     __tablename__ = 'solidui_job_element_page'
 
     id = Column(Integer, primary_key=True)
     job_page_id = Column(Integer, nullable=False)
-    job_element_id = Column(Integer,  nullable=False)
+    job_element_id = Column(Integer, nullable=False)
     position = Column(String(255), nullable=False, default='')
     create_time = Column(DateTime, nullable=False)
     update_time = Column(DateTime, nullable=False)
 
     # job_page = relationship("JobPage")
     # job_element = relationship("JobElement")
+
+
 class JobPage(Base):
     __tablename__ = 'solidui_job_page'
 
     id = Column(Integer, primary_key=True)
     project_id = Column(Integer, nullable=False)
     name = Column(String(255), nullable=False, default='')
-    parent_id = Column(Integer)
+    parent_id = Column(Integer, default=0)
     layout = Column(Integer, nullable=False)
     orders = Column(Integer, nullable=False)
     create_time = Column(DateTime, nullable=False)
     update_time = Column(DateTime, nullable=False)
 
     # project = relationship("Project")
+
+
 class Project(Base):
     __tablename__ = 'solidui_project'
 
@@ -129,6 +139,7 @@ class User(Base):
     @property
     def json_data(self) -> str:
         return json.dumps(self.data)
+
 
 class ModelType(Base):
     __tablename__ = 'solidui_model_type'
