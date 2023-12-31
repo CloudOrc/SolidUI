@@ -103,7 +103,7 @@ class DataSourceDAO(BaseDAO[DataSource]):
             raise DAONotFound(message="DataSource is required")
 
         try:
-            return super().update(existing_data_source, data_source.__dict__)
+            return super().update(data_source)
         except DAOUpdateFailedError as ex:
             logger.exception(ex)
             raise ex

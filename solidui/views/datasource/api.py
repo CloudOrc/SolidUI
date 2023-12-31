@@ -13,6 +13,8 @@
 # limitations under the License.
 import json
 import logging
+from datetime import datetime
+
 from flask import request
 
 from solidui.daos.datasource import DataSourceDAO
@@ -24,7 +26,8 @@ from solidui.errors import SolidUIErrorType
 from solidui.solidui_typing import FlaskResponse
 from solidui.views.base_api import BaseSolidUIApi
 from flask_appbuilder.api import expose, safe
-from solidui.views.datasource.schemas import DataSourceTypeSchema, DataSourceSchema, DataSourcePageInfoSchema
+from solidui.views.datasource.schemas import DataSourceTypeSchema, DataSourceSchema, DataSourcePageInfoSchema, \
+    DataSourceVO
 
 logger = logging.getLogger(__name__)
 
@@ -59,11 +62,20 @@ class DataSourceRestApi(BaseSolidUIApi):
         insert json info
         """
         data = request.get_json()
-        data_source = DataSource(**data)
+        data_source_vo = DataSourceVO(**data)
+        user: str = self.get_api_user()
+        data_source = DataSource(
+            datasource_name=data_source_vo.dataSourceName,
+            datasource_desc=data_source_vo.dataSourceDesc,
+            datasource_type_id=data_source_vo.dataSourceTypeId,
+            parameter=data_source_vo.parameter,
+            create_user = user,
+            create_time=datetime.now()
+        )
 
         # Verify data source name and type ID
         if not data_source.datasource_name or not data_source.datasource_type_id:
-            return self.handle_error(SolidUIErrorType.QUERY_DATASOURCE_ERROR)
+             return self.handle_error(SolidUIErrorType.QUERY_DATASOURCE_ERROR)
 
         try:
             DataSourceDAO.create_data_source(data_source)
@@ -85,8 +97,13 @@ class DataSourceRestApi(BaseSolidUIApi):
             return self.handle_error(SolidUIErrorType.QUERY_DATASOURCE_ERROR)
 
         try:
-
-            data_source = DataSource(**data)
+            data_source_vo = DataSourceVO(**data)
+            data_source = DataSource(
+                datasource_name=data_source_vo.dataSourceName,
+                datasource_desc=data_source_vo.dataSourceDesc,
+                datasource_type_id=data_source_vo.dataSourceTypeId,
+                parameter=data_source_vo.parameter
+            )
             data_source.id = data_source_id  # Make sure the ID passed in is set to the data source object
             DataSourceDAO.update_data_source(data_source)
             return self.response_format()
@@ -233,4 +250,3 @@ class DataSourceRestApi(BaseSolidUIApi):
         except DAONotFound as ex:
             logger.exception(ex)
             return self.handle_error(SolidUIErrorType.QUERY_METADATA_DB_ERROR)
-

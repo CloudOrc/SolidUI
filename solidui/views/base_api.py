@@ -15,14 +15,15 @@
 from __future__ import annotations
 import logging
 
-from flask import jsonify, Response, make_response
+from flask import jsonify, Response, request
 from flask_appbuilder.api import BaseApi
 from typing import Any, Union
-from flask_babel import gettext as _
+from flask_babel import lazy_gettext as _
 from solidui.errors import SolidUIErrorType, ERROR_TYPE_TO_STATUS_CODE, ERROR_TYPES_TO_CODES_MAPPING, ISSUE_CODES
 from solidui.schemas import error_payload_content
 from solidui.extensions import stats_logger_manager
 from solidui.utils.base import convert_keys_to_camel_case
+from solidui.utils.login_utils import get_login_user
 
 logger = logging.getLogger(__name__)
 
@@ -95,15 +96,20 @@ class BaseSolidUIApiMixin:
 
 
 class BaseSolidUIApi(BaseSolidUIApiMixin, BaseApi):
-    @staticmethod
-    def handle_error(error_type: SolidUIErrorType):
+
+    def handle_error(self, error_type: SolidUIErrorType):
         status_code = ERROR_TYPE_TO_STATUS_CODE.get(error_type, 500)  # Default to 500 for unspecified errors
         error_code = ERROR_TYPES_TO_CODES_MAPPING.get(error_type, [])[0]
-        error_message = ISSUE_CODES.get(error_code, _("Unknown error"))
+        error_message: str = ISSUE_CODES.get(error_code, _("Unknown error"))
 
-        # Using response_format to structure the response
-        return super().response_format(code=status_code, msg=error_message, success=False, failed=True)
+        # Using response_format to structure the response msg=error_message,
+        return self.response_format(code=status_code, msg=error_message, success=False, failed=True)
 
     def response_format(self, code=0, msg="success", data={}, success=True, failed=False) -> Union[dict, Any]:
         camel_case_data = convert_keys_to_camel_case(data)
         return super().response_format(code, msg, camel_case_data, success, failed)
+
+    @staticmethod
+    def get_api_user() -> str:
+        cookie = request.cookies
+        return get_login_user(cookie)

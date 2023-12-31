@@ -11,11 +11,28 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import annotations
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 from solidui.entity.core import DataSourceType, DataSource
 from marshmallow_sqlalchemy.schema import Schema
 from marshmallow_sqlalchemy.fields import fields
+
+
+class DataSourceVO:
+    def __init__(self, id=None, dataSourceName=None, dataSourceDesc=None, dataSourceTypeId=None, createIdentify=None, parameter=None, createTime=None,
+                 createUser=None, labels=None, expire=None):
+        self.id = id
+        self.dataSourceName = dataSourceName
+        self.dataSourceDesc = dataSourceDesc
+        self.dataSourceTypeId = dataSourceTypeId
+        self.createIdentify = createIdentify
+        self.parameter = parameter
+        self.createTime = createTime
+        self.createUser = createUser
+        self.labels = labels
+        self.expire = expire
+
 
 class DataSourceTypeSchema(SQLAlchemyAutoSchema):
     class Meta:
@@ -27,6 +44,7 @@ class DataSourceSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = DataSource
         load_instance = True  # Optional: if you also want to use it for deserialization
+
 
 class DataSourcePageInfoSchema(Schema):
     current_page = fields.Int()

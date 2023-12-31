@@ -19,6 +19,7 @@ import os
 from datetime import timedelta
 from typing import Any
 
+from solidui.common.constants import CHANGE_ME_SECRET_KEY
 from solidui.utils.logging_configurator import DefaultLoggingConfigurator
 
 logger = logging.getLogger(__name__)
@@ -72,3 +73,5 @@ SNAKEMQ_CONNECTOR = '127.0.0.1'
 
 ENABLE_CORS = True
 CORS_OPTIONS: dict[Any, Any] = {}
+
+SECRET_KEY = os.environ.get("SOLIDUI_SECRET_KEY") or CHANGE_ME_SECRET_KEY
