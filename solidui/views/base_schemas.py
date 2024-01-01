@@ -14,11 +14,11 @@
 from collections import deque
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional, Dict, List
-
+from typing import Dict, List
 
 from marshmallow_sqlalchemy.schema import Schema
 from marshmallow_sqlalchemy.fields import fields
+
 
 @dataclass
 class Position:
@@ -130,3 +130,5 @@ class JobPageDTOSchema(Schema):
     orders = fields.Int()
     # Use a Nested field for children, with many=True to indicate it's a list
     children = fields.Nested('self', many=True, exclude=('children',))
+
+

@@ -16,7 +16,7 @@ from __future__ import annotations
 import logging
 import os
 import sys
-from typing import Any, Callable, TYPE_CHECKING
+from typing import Any,TYPE_CHECKING
 from deprecation import deprecated
 
 import wtforms_json
@@ -27,13 +27,14 @@ from solidui.extensions import (
     appbuilder,
     db
 )
-from solidui.solidui_typing import FlaskResponse
 from solidui.utils.base import pessimistic_connection_handling, is_test
+
 
 if TYPE_CHECKING:
     from solidui.app import SolidUIApp
 
 logger = logging.getLogger(__name__)
+
 
 class SolidUIAppInitializer:
     def __init__(self, app: SolidUIApp) -> None:
@@ -48,7 +49,6 @@ class SolidUIAppInitializer:
     def flask_app(self) -> SolidUIApp:
         return self.solidui_app
 
-
     def pre_init(self) -> None:
         """
         Called before all other init tasks are complete
@@ -62,6 +62,8 @@ class SolidUIAppInitializer:
         """
         Called after any other init tasks
         """
+        from solidui.views.base import schedule_clean_job_element_page
+        schedule_clean_job_element_page()
 
     def setup_db(self) -> None:
         db.init_app(self.solidui_app)
@@ -110,15 +112,11 @@ class SolidUIAppInitializer:
         for rule in self.solidui_app.url_map.iter_rules():
             print(rule)
 
-
     def configure_fab(self) -> None:
         if self.config["SILENCE_FAB"]:
             logging.getLogger("flask_appbuilder").setLevel(logging.ERROR)
 
-
         appbuilder.init_app(self.solidui_app, db.session)
-
-
 
     def configure_session(self) -> None:
         if self.config["SESSION_SERVER_SIDE"]:
@@ -175,6 +173,6 @@ class SolidUIAppInitializer:
 
         with self.solidui_app.app_context():
             self.init_app_in_ctx()
+            self.post_init()
 
-        self.post_init()
 

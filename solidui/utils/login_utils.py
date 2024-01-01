@@ -18,6 +18,7 @@ import time
 from flask import request, make_response
 
 from solidui.common.constants import SESSION_TIMEOUT, TICKETHEADER, CRYPTKEY, SESSION_TICKETID_KEY, ADMIN_NAME
+from solidui.daos.exceptions import DAOException
 from solidui.utils.des_utils import DESUtil
 
 logger = logging.getLogger(__name__)
@@ -33,13 +34,17 @@ def schedule_timeout_removal():
                 if current_time - value > SESSION_TIMEOUT:
                     logger.info(f"remove timeout userTicket {key}, since the last access time is {value}.")
                     user_ticket_id_to_last_access_time.pop(key, None)
-        except Exception as e:
+        except DAOException as e:
             logger.error("Failed to remove timeout user ticket id.", exc_info=True)
 
+        threads = threading.Timer(SESSION_TIMEOUT / 1000 / 10, remove_timeout_user_tickets)
+        threads.daemon = True
+        threads.start()
 
     thread = threading.Timer(SESSION_TIMEOUT / 1000 / 10, remove_timeout_user_tickets)
     thread.daemon = True
     thread.start()
+
 
 schedule_timeout_removal()
 
@@ -48,7 +53,7 @@ def get_user_ticket_id(username: str):
     timeout_user = f"{username},{int(time.time() * 1000)}"
     try:
         return DESUtil.encrypt(f"{TICKETHEADER}{timeout_user}", CRYPTKEY)
-    except Exception as e:
+    except DAOException as e:
         logger.info(f"Failed to encrypt user ticket id, username: {username}")
         return None
 
@@ -85,6 +90,6 @@ def get_login_user(cookies):
                 timeout_user = DESUtil.decrypt(user_ticket_id, CRYPTKEY)
                 if timeout_user and timeout_user.startswith(TICKETHEADER):
                     return timeout_user.split(',')[0][len(TICKETHEADER):]
-            except Exception as e:
+            except DAOException as e:
                 logger.info(f"Failed to decrypt user ticket id, userTicketId: {user_ticket_id}")
     return ADMIN_NAME

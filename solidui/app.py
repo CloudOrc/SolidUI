@@ -22,6 +22,7 @@ from solidui.initialization import SolidUIAppInitializer
 
 logger = logging.getLogger(__name__)
 
+
 def create_app(solidui_config_module: Optional[str] = None) -> Flask:
     app = SolidUIApp(__name__)
     try:
@@ -41,7 +42,6 @@ def create_app(solidui_config_module: Optional[str] = None) -> Flask:
         logger.exception("Failed to create app")
         raise ex
 
+
 class SolidUIApp(Flask):
     pass
-
-

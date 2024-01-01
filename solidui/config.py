@@ -49,6 +49,7 @@ SQLALCHEMY_DATABASE_URI = (f"""sqlite:///{os.path.join(DATA_DIR, "solidui.db")}?
 #SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://username:password@host:port/dbname'
 
 
+
 # SQLALCHEMY_CUSTOM_PASSWORD_STORE = lookup_password
 SQLALCHEMY_CUSTOM_PASSWORD_STORE = None
 
