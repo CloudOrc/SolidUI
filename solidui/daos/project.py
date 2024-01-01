@@ -15,6 +15,9 @@ from __future__ import annotations
 
 from datetime import datetime
 from typing import Optional
+
+from solidui.extensions import db
+
 from solidui.daos.base import BaseDAO
 from solidui.daos.exceptions import DAONotFound
 from solidui.entity.core import Project
@@ -76,7 +79,11 @@ class ProjectDAO(BaseDAO[Project]):
         return project
 
     @classmethod
-    def query_project_list_paging(cls, search_name: str, page_no: int, page_size: int) -> PageInfo[Project]:
+    def get_project_list(cls, status: int) -> list[Project]:
+        return db.session.query(Project).filter_by(status=status).all()
+
+    @classmethod
+    def get_project_list_paging(cls, search_name: str, page_no: int, page_size: int) -> PageInfo[Project]:
         # Build custom filters
         custom_filters = None
         if search_name:

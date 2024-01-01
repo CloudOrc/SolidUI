@@ -27,7 +27,7 @@ from solidui.solidui_typing import FlaskResponse
 from solidui.views.base_api import BaseSolidUIApi
 from flask_appbuilder.api import expose, safe
 from solidui.kernel_program.main import APP_PORT as KERNEL_APP_PORT
-from solidui.views.model.schemas import ModelKeyVO, ModelTypePageInfoSchema
+from solidui.views.model.schemas import ModelKeyVO, ModelTypePageInfoSchema, ModelKeyVOSchema
 from solidui.views.utils import get_code, add_prompt_type_buffer
 
 logger = logging.getLogger(__name__)
@@ -48,7 +48,8 @@ class ModelRestApi(BaseSolidUIApi):
         for m in model_types:
             model_key_vos.append(ModelKeyVO(m.id, f"{m.name}_{m.code}", m.type_name))
 
-        return self.response_format(data=model_key_vos)
+        schema = ModelKeyVOSchema()
+        return self.response_format(data=schema.dump(model_key_vos, many=True))
 
     @expose('/api/<path:path>', methods=('GET', 'POST'))
     @safe

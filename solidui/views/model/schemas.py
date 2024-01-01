@@ -38,3 +38,9 @@ class ModelTypePageInfoSchema(Schema):
     total = fields.Int()
     total_page = fields.Int()
     total_list = fields.Nested(ModelTypeSchema, many=True)
+
+
+class ModelKeyVOSchema(Schema):
+    id = fields.Int()
+    name = fields.Str()
+    type_name = fields.Str()

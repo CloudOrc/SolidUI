@@ -11,51 +11,69 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import annotations
 import json
 import logging
+import threading
+import time
 from datetime import datetime
-
+from dataclasses import asdict
+from solidui.common.constants import CLEAN_PERIOD
+from solidui.daos.exceptions import DAODeleteFailedError
+from solidui.daos.job_element import JobElementDAO
 from solidui.daos.job_element_page import JobElementPageDAO
+from solidui.daos.job_page import JobPageDAO
+from solidui.daos.project import ProjectDAO
 from solidui.entity.core import JobElementPage, JobElement, JobPage
-from solidui.views.base_schemas import View, DataView, Data, Size, Position, JobPageDTO
+from solidui.views.base_schemas import View, DataView, Data, Size, Position, JobPageDTO, JobElementPageVO, Page
 
 logger = logging.getLogger(__name__)
 
 
-def deep_copy_view_to_data_view(view: View) -> DataView:
+def serialize_dataclass(dataclass_instance):
+    """
+    Serialize a dataclass instance to a dictionary, handling nested dataclasses.
+    """
+    if isinstance(dataclass_instance, list):
+        return [serialize_dataclass(item) for item in dataclass_instance]
+    elif hasattr(dataclass_instance, "__dict__"):
+        return {k: serialize_dataclass(v) for k, v in asdict(dataclass_instance).items()}
+    else:
+        return dataclass_instance
+
+
+def deep_copy_view_to_data_view(view: View):
     # Copy Position
-    new_position = None
-    if view.position is not None:
-        new_position = Position(top=view.position.top, left=view.position.left)
+    new_position = Position(**view.position) if isinstance(view.position, dict) else view.position
 
     # Copy Size
-    new_size = None
-    if view.size is not None:
-        new_size = Size(width=view.size.width, height=view.size.height)
+    new_size = Size(**view.size) if isinstance(view.size, dict) else view.size
 
     # Copy Data
-    new_data = None
-    if view.data is not None:
-        new_data = Data(
-            dataSourceId=view.data.dataSourceId,
-            dataSourceName=view.data.dataSourceName,
-            dataSourceTypeId=view.data.dataSourceTypeId,
-            dataSourceTypeName=view.data.dataSourceTypeName,
-            sql=view.data.sql,
-            table=view.data.table
-        )
+    new_data = Data(**view.data) if isinstance(view.data, dict) else view.data
 
     # Copy DataView
     data_view = DataView(position=new_position, size=new_size, options=view.options, data=new_data)
 
-    return data_view
+    serialized_data_view = serialize_dataclass(data_view)
+
+    return json.dumps(serialized_data_view, ensure_ascii=False)
 
 
-def save_job_element_page(page_id: int, job_element_id: int, size: Size) -> None:
+def save_job_element_page(job_element_page_vo: JobElementPageVO, job_element_id: int) -> None:
+    # page_id: int
+    new_page = Page(**job_element_page_vo.page) if isinstance(job_element_page_vo.page,
+                                                              dict) else job_element_page_vo.page
+    # size: Size
+    new_size = Size(**job_element_page_vo.size) if isinstance(job_element_page_vo.size,
+                                                              dict) else job_element_page_vo.size
+
+    serialized_size = serialize_dataclass(new_size)
+
     job_element_page = JobElementPage(
-        job_page_id=page_id,
+        job_page_id=new_page.id,
         job_element_id=job_element_id,
-        position=json.dumps(size),
+        position=json.dumps(serialized_size, ensure_ascii=False),
         create_time=datetime.now(),
         update_time=datetime.now()
     )
@@ -69,11 +87,18 @@ def create_job_element_page_vo(job_element: JobElement, views: list[View]) -> No
     view = View()
     view.id = job_element.id
     view.title = job_element.name
-    view.type = job_element.dataType
+    view.type = job_element.data_type
     # Assuming JSONUtils is replaced with a Python JSON library
-    data_view: DataView = json.loads(job_element.data)
-    if not data_view:
+    data_view_dict = json.loads(job_element.data)
+    if not data_view_dict:
         return
+
+    data_view = DataView(
+        position=Position(**data_view_dict['position']) if 'position' in data_view_dict else None,
+        size=Size(**data_view_dict['size']) if 'size' in data_view_dict else None,
+        options=data_view_dict.get('options'),
+        data=Data(**data_view_dict['data']) if 'data' in data_view_dict else None
+    )
 
     view.position = data_view.position
     view.size = data_view.size
@@ -97,3 +122,39 @@ def convert_to_dto(job_page: JobPage):
         children=[]  # Initially empty, to be filled later if needed
     )
     return job_page_dto
+
+
+def schedule_clean_job_element_page():
+    thread = threading.Timer(CLEAN_PERIOD / 1000 / 10, clean_job_element_page_task)
+    thread.daemon = True
+    thread.start()
+
+
+def clean_job_element_page_task():
+    try:
+        clean_job_element_page()
+    except DAODeleteFailedError as e:
+        logger.error(f"Error cleaning job element page : {e}")
+    thread = threading.Timer(CLEAN_PERIOD / 1000 / 10, clean_job_element_page_task)
+    thread.daemon = True
+    thread.start()
+
+
+def clean_job_element_page():
+    """
+    Clean job element pages for projects.
+    """
+    projects = ProjectDAO.get_project_list(1)
+    if projects:
+        for project in projects:
+            JobElementPageDAO.delete_project_id(project.id)
+            logger.info(f"cleanJobElementPage delete_project_id projectId: {project.id}")
+
+            JobElementDAO.delete_job_element_project_id(project.id)
+            logger.info(f"cleanJobElementPage delete_job_element_project_id projectId: {project.id}")
+            # Delete associated records
+            JobPageDAO.delete_project_id(project.id)
+            logger.info(f"cleanJobElementPage delete_project_id projectId: {project.id}")
+
+            ProjectDAO.delete(project)
+            logger.info(f"cleanJobElementPage projectId: {project.id}")

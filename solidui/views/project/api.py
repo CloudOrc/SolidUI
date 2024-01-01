@@ -74,7 +74,7 @@ class ProjectRestApi(BaseSolidUIApi):
         page_size = request.args.get('pageSize', default=10, type=int)
         page_no = request.args.get('pageNo', default=1, type=int)
 
-        page_info = ProjectDAO.query_project_list_paging(search_name, page_no, page_size)
+        page_info = ProjectDAO.get_project_list_paging(search_name, page_no, page_size)
 
         page_info_schema = PageInfoSchema()
 

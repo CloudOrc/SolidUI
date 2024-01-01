@@ -55,13 +55,14 @@ class JobRestApi(BaseSolidUIApi):
         if not views:
             # If the list is empty, save the job element page with jobElementId set to 0
             try:
-                save_job_element_page(job_element_page_vo.page.id, 0, job_element_page_vo.size)
+                save_job_element_page(job_element_page_vo, 0)
                 return self.response_format()
             except DAOCreateFailedError as ex:
                 logger.exception(ex)
                 return self.handle_error(SolidUIErrorType.CREATE_JOB_PAGE_ERROR)
 
-        for view in views:
+        for view_dict in views:
+            view = View(**view_dict)
             job_element = JobElement(
                 project_id=job_element_page_vo.projectId,
                 data_type=view.type,
@@ -72,7 +73,7 @@ class JobRestApi(BaseSolidUIApi):
             job_element.data = deep_copy_view_to_data_view(view)
             try:
                 JobElementDAO.create(item=job_element)
-                save_job_element_page(job_element_page_vo.page.id, job_element.id, job_element_page_vo.size)
+                save_job_element_page(job_element_page_vo, job_element.id)
             except DAOCreateFailedError as ex:
                 logger.exception(ex)
                 return self.handle_error(SolidUIErrorType.CREATE_JOB_ERROR)
@@ -91,7 +92,9 @@ class JobRestApi(BaseSolidUIApi):
         if not job_element_page_vo.page or not job_element_page_vo.size:
             return self.handle_error(SolidUIErrorType.QUERY_JOB_PAGE_ERROR)
 
-        job_element_pages: list[JobElementPage] = JobElementPageDAO.get_job_element_page_id(job_element_page_vo.page.id)
+        new_page = Page(**job_element_page_vo.page) if isinstance(job_element_page_vo.page,
+                                                                  dict) else job_element_page_vo.page
+        job_element_pages: list[JobElementPage] = JobElementPageDAO.get_job_element_page_id(new_page.id)
         if job_element_pages:
             for ep in job_element_pages:
                 JobElementPageDAO.delete(ep)
@@ -99,19 +102,20 @@ class JobRestApi(BaseSolidUIApi):
                 if ep.job_element_id and ep.job_element_id > 0:
                     job_element = JobElementDAO.find_by_id(ep.job_element_id)
                     if job_element:
-                        JobElementDAO.delete(ep.job_element)
+                        JobElementDAO.delete(job_element)
 
         views = job_element_page_vo.views
         if not views:
             # If the list is empty, save the job element page with jobElementId set to 0
             try:
-                save_job_element_page(job_element_page_vo.page.id, 0, job_element_page_vo.size)
+                save_job_element_page(job_element_page_vo, 0)
                 return self.response_format()
             except DAOCreateFailedError as ex:
                 logger.exception(ex)
                 return self.handle_error(SolidUIErrorType.UPDATE_JOB_ERROR)
 
-        for view in views:
+        for view_dict in views:
+            view = View(**view_dict)
             job_element = JobElement(
                 project_id=job_element_page_vo.projectId,
                 data_type=view.type,
@@ -122,7 +126,7 @@ class JobRestApi(BaseSolidUIApi):
             job_element.data = deep_copy_view_to_data_view(view)
             try:
                 JobElementDAO.create(item=job_element)
-                save_job_element_page(job_element_page_vo.page.id, job_element.id, job_element_page_vo.size)
+                save_job_element_page(job_element_page_vo, job_element.id)
             except DAOCreateFailedError as ex:
                 logger.exception(ex)
                 return self.handle_error(SolidUIErrorType.UPDATE_JOB_ERROR)
@@ -150,13 +154,13 @@ class JobRestApi(BaseSolidUIApi):
 
         for job_element_page in job_element_pages:
             # Retrieve the associated JobElement
-            job_element_id = job_element_page.jobElementId
+            job_element_id = job_element_page.job_element_id
             if job_element_id and job_element_id > 0:
                 # Assuming job_element_mapper is an instance with a select_by_id method
                 job_element = JobElementDAO.find_by_id(job_element_id)
 
             if first:
-                job_element_page_vos.page = Page(id=job_element_page.jobPageId)
+                job_element_page_vos.page = Page(id=job_element_page.job_page_id)
                 # Assuming JSONUtils is replaced with a Python JSON library
                 job_element_page_vos.size = json.loads(job_element_page.position)
                 first = False
