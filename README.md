@@ -11,10 +11,6 @@
         <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?label=license" />
     </a>
 
-<a target="_blank" href='https://github.com/CloudOrc/SolidUI/fork'>
-<img src="https://img.shields.io/github/forks/CloudOrc/SolidUI.svg" alt="github forks"/>
-</a>
-
 <a target="_blank" href='https://github.com/CloudOrc/SolidUI/graphs/contributors'>
 <img src="https://img.shields.io/github/contributors/CloudOrc/SolidUI.svg?colorB=blue" alt="github contributors"/>
 </a>
