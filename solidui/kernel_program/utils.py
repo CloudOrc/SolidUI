@@ -18,13 +18,13 @@ import snakemq.link
 import snakemq.packeter
 import snakemq.messaging
 import snakemq.message
-import os
 import solidui.kernel_program.config as config
+from solidui.config import KERNEL_SNAKEMQ_LISTENER, KERNEL_SNAKEMQ_CONNECTOR
+
+slip = KERNEL_SNAKEMQ_LISTENER
+scip = KERNEL_SNAKEMQ_CONNECTOR
 
 
-
-slip = os.environ.get('SNAKEMQ_LISTENER')
-scip = os.environ.get('SNAKEMQ_CONNECTOR')
 def escape_ansi(line):
     ansi_escape = re.compile(r"(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]")
     return ansi_escape.sub("", line)
@@ -33,6 +33,7 @@ def escape_ansi(line):
 def send_json(messaging, message, identity):
     message = snakemq.message.Message(json.dumps(message).encode("utf-8"), ttl=600)
     messaging.send_message(identity, message)
+
 
 def init_snakemq(ident, init_type="listen"):
     link = snakemq.link.Link()
@@ -46,7 +47,8 @@ def init_snakemq(ident, init_type="listen"):
         raise Exception("Unsupported init type.")
     return messaging, link
 
-def response_format(code=0,msg="success",data={},success=True,failed=False):
+
+def response_format(code=0, msg="success", data={}, success=True, failed=False):
     return {
         "code": code,
         "msg": msg,
@@ -54,5 +56,3 @@ def response_format(code=0,msg="success",data={},success=True,failed=False):
         "success": success,
         "failed": failed
     }
-
-

@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from dataclasses import dataclass
 
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
@@ -30,6 +31,18 @@ class ModelTypeSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = ModelType
         load_instance = True  # Optional: if you also want to use it for deserialization
+
+
+@dataclass
+class ModelTypeVO:
+    id: int = None
+    name: str = None
+    typeName: str = None
+    prompt: str = None
+    token: str = None
+    baseurl: str = None
+    code: str = None
+
 
 
 class ModelTypePageInfoSchema(Schema):

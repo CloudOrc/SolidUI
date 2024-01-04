@@ -27,7 +27,8 @@ from solidui.solidui_typing import FlaskResponse
 from solidui.views.base_api import BaseSolidUIApi
 from flask_appbuilder.api import expose, safe
 from solidui.kernel_program.main import APP_PORT as KERNEL_APP_PORT
-from solidui.views.model.schemas import ModelKeyVO, ModelTypePageInfoSchema, ModelKeyVOSchema
+from solidui.views.model.schemas import ModelKeyVO, ModelTypePageInfoSchema, ModelKeyVOSchema, ModelTypeSchema, \
+    ModelTypeVO
 from solidui.views.utils import get_code, add_prompt_type_buffer
 
 logger = logging.getLogger(__name__)
@@ -125,7 +126,15 @@ class ModelRestApi(BaseSolidUIApi):
     @safe
     def create_model_type(self) -> FlaskResponse:
         data = request.get_json()
-        model_type = ModelType(**data)
+        model_type_vo = ModelTypeVO(**data)
+        model_type = ModelType(
+            name=model_type_vo.name,
+            type_name=model_type_vo.typeName,
+            prompt=model_type_vo.prompt,
+            token=model_type_vo.token,
+            baseurl=model_type_vo.baseurl,
+            code=model_type_vo.code
+        )
 
         try:
             ModelTypeDAO.create(model_type)
@@ -140,7 +149,7 @@ class ModelRestApi(BaseSolidUIApi):
 
         try:
             model_type = ModelTypeDAO.find_by_id(pk)
-            if model_type:
+            if not model_type:
                 return self.handle_error(SolidUIErrorType.QUERY_MODEL_TYPE_ERROR)
 
             ModelTypeDAO.delete_model_type(pk)
@@ -151,22 +160,31 @@ class ModelRestApi(BaseSolidUIApi):
 
     @expose('/model_types/<int:pk>', methods=('GET',))
     @safe
-    def get_model_type_by_id(self,pk) -> FlaskResponse:
+    def get_model_type_by_id(self, pk) -> FlaskResponse:
 
         model_type = ModelTypeDAO.find_by_id(pk)
-        if model_type:
+        if not model_type:
             return self.handle_error(SolidUIErrorType.QUERY_MODEL_TYPE_ERROR)
-
-        return self.response_format(data=model_type)
+        schema = ModelTypeSchema()
+        return self.response_format(data=schema.dump(model_type))
 
     @expose('/model_types', methods=('PUT',))
     @safe
     def update_model_type(self) -> FlaskResponse:
         data = request.get_json()
-        model_type = ModelType(**data)
+        model_type_vo = ModelTypeVO(**data)
+        model_type = ModelType(
+            id=model_type_vo.id,
+            name=model_type_vo.name,
+            type_name=model_type_vo.typeName,
+            prompt=model_type_vo.prompt,
+            token=model_type_vo.token,
+            baseurl=model_type_vo.baseurl,
+            code=model_type_vo.code
+        )
 
         new_model_type = ModelTypeDAO.find_by_id(model_type.id)
-        if new_model_type:
+        if not new_model_type:
             return self.handle_error(SolidUIErrorType.QUERY_MODEL_TYPE_ERROR)
 
         try:
@@ -175,5 +193,3 @@ class ModelRestApi(BaseSolidUIApi):
         except DAOCreateFailedError as ex:
             logger.exception(ex)
             return self.handle_error(SolidUIErrorType.UPDATE_MODEL_TYPE_ERROR)
-
-
