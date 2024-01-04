@@ -32,12 +32,10 @@ from flask_cors import CORS  # Import the CORS library
 import solidui.kernel_program.kernel_manager as kernel_manager
 import solidui.kernel_program.config as config
 import solidui.kernel_program.utils as utils
+from solidui.config import KERNEL_API_PORT
 
-
-
-APP_PORT = int(os.environ.get("API_PORT", 5010))
+APP_PORT = KERNEL_API_PORT
 base_blueprint = Blueprint("baseurl", __name__, url_prefix="/solidui/kernel")
-
 
 # Note, only one kernel_manager_process can be active
 kernel_manager_process = None
@@ -57,13 +55,13 @@ logger.setLevel(logging.INFO)
 fh = logging.FileHandler('solidui/kernel.log')
 logger.addHandler(fh)
 
-
 cli = sys.modules['flask.cli']
 cli.show_server_banner = lambda *x: None
 
 app = Flask(__name__)
 
 CORS(app)
+
 
 def start_kernel_manager():
     global kernel_manager_process
@@ -80,8 +78,10 @@ def start_kernel_manager():
     with open(os.path.join(config.KERNEL_PID_DIR, "%d.pid" % kernel_manager_process.pid), "w") as p:
         p.write("kernel_manager")
 
+
 def cleanup_kernel_program():
     kernel_manager.cleanup_spawned_processes()
+
 
 async def start_snakemq():
     global messaging
@@ -95,7 +95,7 @@ async def start_snakemq():
             if message["value"] == "ready":
                 logger.debug("Kernel is ready.")
                 result_queue.put({
-                    "value":"Kernel is ready.",
+                    "value": "Kernel is ready.",
                     "type": "message"
                 })
 
@@ -116,9 +116,9 @@ async def start_snakemq():
             if send_queue.qsize() > 0:
                 message = send_queue.get()
                 utils.send_json(messaging,
-                    {"type": "execute", "value": message["command"]},
-                    config.IDENT_KERNEL_MANAGER
-                )
+                                {"type": "execute", "value": message["command"]},
+                                config.IDENT_KERNEL_MANAGER
+                                )
             time.sleep(0.1)
 
     async def async_send_queued_messages():
@@ -159,6 +159,7 @@ def handle_restart():
 
 app.register_blueprint(base_blueprint)
 
+
 async def main():
     start_kernel_manager()
 
@@ -173,7 +174,6 @@ async def main():
 def run_flask_app():
     app.run(host="0.0.0.0", port=APP_PORT, debug=True, use_reloader=False)
 
+
 if __name__ == "__main__":
     asyncio.run(main())
-
-

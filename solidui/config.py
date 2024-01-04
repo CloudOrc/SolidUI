@@ -46,7 +46,7 @@ FAB_API_SWAGGER = True
 # The SQLAlchemy connection string.
 SQLALCHEMY_DATABASE_URI = (f"""sqlite:///{os.path.join(DATA_DIR, "solidui.db")}?check_same_thread=false""")
 
-#SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://username:password@host:port/dbname'
+# SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://username:password@host:port/dbname'
 
 
 
@@ -61,16 +61,10 @@ LOGGING_CONFIGURATOR = DefaultLoggingConfigurator()
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(name)s:%(message)s"
 LOG_LEVEL = "DEBUG"
 
-DB_HOST = 'localhost'
-DB_PORT = 3306
-DB_NAME = 'solidui'
-DB_USER = 'root'
-DB_PASS = 'SolidUI@123'
-API_PORT = 5010
-WEB_PORT = 5110
-SNAKEMQ_PORT = 8765
-SNAKEMQ_LISTENER = '127.0.0.1'
-SNAKEMQ_CONNECTOR = '127.0.0.1'
+KERNEL_API_PORT = 5010
+KERNEL_SNAKEMQ_PORT = 8765
+KERNEL_SNAKEMQ_LISTENER = '127.0.0.1'
+KERNEL_SNAKEMQ_CONNECTOR = '127.0.0.1'
 
 ENABLE_CORS = True
 CORS_OPTIONS: dict[Any, Any] = {}
