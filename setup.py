@@ -44,7 +44,9 @@ setup(
         'sqlalchemy>=1.4, <2',
         'sqlalchemy-utils>=0.38.3, <0.39',
         'typing-extensions>=4, <5',
-        'werkzeug>=2.3.3, <3'
+        'werkzeug>=2.3.3, <3',
+        "wtforms>=2.3.3, <4",
+        "wtforms-json"
     ],
     extras_require={
         "cors": ["flask-cors>=2.0.0"],
