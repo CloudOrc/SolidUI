@@ -37,7 +37,7 @@ console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)
 logger.addHandler(console_handler)
 logger.setLevel(logging.INFO)
-fh = logging.FileHandler('solidui/kernel.log')
+fh = logging.FileHandler('kernel.log')
 logger.addHandler(fh)
 
 
