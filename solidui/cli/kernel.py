@@ -16,11 +16,8 @@
 # under the License.
 import logging
 import asyncio
-import os
 import sys
-from typing import Optional
 from multiprocessing import Process
-from flask import current_app
 from flask.cli import with_appcontext
 import click
 

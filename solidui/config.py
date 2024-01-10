@@ -29,11 +29,6 @@ if "SOLIDUI_HOME" in os.environ:
 else:
     DATA_DIR = os.path.expanduser("~/.solidui")
 
-SOLIDUI_WEBSERVER_PROTOCOL = "http"
-SOLIDUI_WEBSERVER_ADDRESS = "0.0.0.0"
-SOLIDUI_WEBSERVER_PORT = 8088
-
-SOLIDUI_WEBSERVER_TIMEOUT = int(timedelta(minutes=1).total_seconds())
 
 VERSION_STRING = "0.5.0"
 
