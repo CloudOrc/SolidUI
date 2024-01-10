@@ -33,26 +33,30 @@ def extract_code(text):
     return text
 
 
-async def send_request_and_process_response(url, headers, data, process_response_func):
+async def send_request_and_process_response(url, headers, data, type_name, process_response_func):
     response = requests.post(url, data=json.dumps(data), headers=headers)
     if response.status_code != 200:
         return "Error: " + response.text, 500
-    return process_response_func(response), 200
+    if type_name == "glm":
+        return process_response_func(response.json()["response"]), 200
+    elif type_name == "gpt":
+        return process_response_func(response.json()["choices"][0]["message"]["content"]), 200
 
 
-async def get_code(gpt_prompt, user_prompt, model_code, user_key="", model_type="gpt", base_url="default_url",
+
+async def get_code(gpt_prompt, user_prompt, type_name, model_code, user_key="", base_url="default_url",
                    model: str = None, process_response_func=None):
     new_prompt = prompt_type_buffer(gpt_prompt, user_prompt, model_code)
 
-    if model_type == "glm":
+    if type_name == "glm":
         # URL、headers和data
         url, headers, data = configure_for_glm(base_url, model, user_key, new_prompt)
-    elif model_type == "gpt":
+    elif type_name == "gpt":
         url, headers, data = configure_for_gpt(base_url, model, user_key, new_prompt)
     else:
         raise ValueError("Unsupported model type")
 
-    return await send_request_and_process_response(url, headers, data, process_response_func or extract_code)
+    return await send_request_and_process_response(url, headers, data, type_name, process_response_func or extract_code)
 
 
 def add_prompt_type_buffer(user_prompt, model_code):

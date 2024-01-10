@@ -84,7 +84,7 @@ export default function DataSourceList() {
 							</Select>
 						</Form.Item>
 						<Form.Item
-							name="type_name"
+							name="typeName"
 							label="typeName"
 							rules={[
 								{
