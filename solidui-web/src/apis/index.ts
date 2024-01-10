@@ -175,7 +175,7 @@ const datasource = {
 
 const modelui = {
 	// keys: <T>() => ApiService.get<T>("/solidui/models/keys"),
-	keys: <T>() => ApiService.get<T>("/solidui/keys/list"),
+	keys: <T>() => ApiService.get<T>("/solidui/models/list"),
 	generate: <T>(params: { modelId: number; prompt: string }) =>
 		ApiService.post<T>(`/solidui/models/generate`, params),
 	generateByCommand: <T>(params: { command: string }) =>

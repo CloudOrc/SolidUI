@@ -88,14 +88,9 @@ class ModelRestApi(BaseSolidUIApi):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
 
-        if type_name == 'gpt':
-            code, status = loop.run_until_complete(
-                get_code(gpt_prompt, user_prompt, model_code, user_key, model, base_url))
-            loop.close()
-        else:
-            code, status = loop.run_until_complete(
-                get_code(gpt_prompt, user_prompt, model_code, user_key, model, base_url))
-            loop.close()
+        code, status = loop.run_until_complete(
+            get_code(gpt_prompt, user_prompt, type_name, model_code, user_key, base_url, model))
+        loop.close()
 
         # Append all messages to the message buffer for later use
         add_prompt_type_buffer(user_prompt, model_code)

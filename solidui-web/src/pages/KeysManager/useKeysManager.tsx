@@ -30,7 +30,7 @@ type ModelTypeDataType = {
 	id: number | string;
 	name: string;
 	code: string;
-	type_name: string;
+	typeName: string;
 	prompt: string;
 	token: string;
 	baseurl: string;
@@ -40,7 +40,7 @@ type ModelTypeItemDataType = {
 	id: number | string;
 	name: string;
 	code: string;
-	type_name: string;
+	typeName: string;
 	prompt: string;
 	token: string;
 	base_url: string;
@@ -81,8 +81,8 @@ function useKeysManager() {
 			align: "center",
 		},
 		{
-			title: "type_name",
-			dataIndex: "type_name",
+			title: "typeName",
+			dataIndex: "typeName",
 			align: "center",
 		},
 		{
@@ -211,7 +211,7 @@ function useKeysManager() {
 			form.setFieldsValue({
 				name: record.name,
 				code: record.code,
-				type_name: record.type_name,
+				typeName: record.typeName,
 				prompt: record.prompt,
 				token: record.token,
 				base_url: record.baseurl,
