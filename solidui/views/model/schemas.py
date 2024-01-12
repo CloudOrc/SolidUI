@@ -13,7 +13,7 @@
 # limitations under the License.
 from dataclasses import dataclass
 
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema as MSSchema
 
 from solidui.entity.core import ModelType
 from marshmallow_sqlalchemy.schema import Schema
@@ -27,7 +27,7 @@ class ModelKeyVO:
         self.type_name = type_name
 
 
-class ModelTypeSchema(SQLAlchemyAutoSchema):
+class ModelTypeSchema(MSSchema):
     class Meta:
         model = ModelType
         load_instance = True  # Optional: if you also want to use it for deserialization
@@ -42,7 +42,6 @@ class ModelTypeVO:
     token: str = None
     baseurl: str = None
     code: str = None
-
 
 
 class ModelTypePageInfoSchema(Schema):

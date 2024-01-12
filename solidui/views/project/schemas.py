@@ -14,9 +14,10 @@
 from marshmallow_sqlalchemy.schema import Schema
 from solidui.entity.core import Project
 from marshmallow_sqlalchemy.fields import fields
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema as MSSchema
 
-class ProjectSchema(SQLAlchemyAutoSchema):
+
+class ProjectSchema(MSSchema):
     class Meta:
         model = Project
         load_instance = True  # Optional: if you also want to use it for deserialization
