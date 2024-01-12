@@ -146,7 +146,7 @@ class JobRestApi(BaseSolidUIApi):
 
         job_element_pages = JobElementPageDAO.get_job_element_page_id(page_id)
         if not job_element_pages:
-            return self.handle_error(SolidUIErrorType.QUERY_JOB_ERROR)
+            return self.response_format()
 
         first = True
         views: list[View] = []

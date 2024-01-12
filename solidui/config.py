@@ -54,6 +54,18 @@ LOGGING_CONFIGURATOR = DefaultLoggingConfigurator()
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(name)s:%(message)s"
 LOG_LEVEL = "DEBUG"
 
+# ---------------------------------------------------
+# Enable Time Rotate Log Handler
+# ---------------------------------------------------
+# LOG_LEVEL = DEBUG, INFO, WARNING, ERROR, CRITICAL
+
+ENABLE_TIME_ROTATE = False
+TIME_ROTATE_LOG_LEVEL = "DEBUG"
+FILENAME = os.path.join(DATA_DIR, "solidui.log")
+ROLLOVER = "midnight"
+INTERVAL = 1
+BACKUP_COUNT = 30
+
 KERNEL_API_PORT = 5010
 KERNEL_SNAKEMQ_PORT = 8765
 KERNEL_SNAKEMQ_LISTENER = '127.0.0.1'
