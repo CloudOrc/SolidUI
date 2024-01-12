@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from __future__ import annotations
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema as MSSchema
 
 from solidui.entity.core import DataSourceType, DataSource
 from marshmallow_sqlalchemy.schema import Schema
@@ -34,13 +34,13 @@ class DataSourceVO:
         self.expire = expire
 
 
-class DataSourceTypeSchema(SQLAlchemyAutoSchema):
+class DataSourceTypeSchema(MSSchema):
     class Meta:
         model = DataSourceType
         load_instance = True  # Optional: if you also want to use it for deserialization
 
 
-class DataSourceSchema(SQLAlchemyAutoSchema):
+class DataSourceSchema(MSSchema):
     class Meta:
         model = DataSource
         load_instance = True  # Optional: if you also want to use it for deserialization

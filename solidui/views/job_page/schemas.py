@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema as MSSchema
 
 from solidui.entity.core import JobPage
 
@@ -26,7 +26,7 @@ class JobPageVO:
         self.orders = orders
 
 
-class JobPageSchema(SQLAlchemyAutoSchema):
+class JobPageSchema(MSSchema):
     class Meta:
         model = JobPage
         load_instance = True  # Optional: if you also want to use it for deserialization

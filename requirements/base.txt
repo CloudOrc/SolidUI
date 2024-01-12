@@ -85,7 +85,7 @@ marshmallow==3.19.0
     # via
     #   flask-appbuilder
     #   marshmallow-sqlalchemy
-marshmallow-sqlalchemy==0.23.1
+marshmallow-sqlalchemy==0.26.1
     # via flask-appbuilder
 packaging==23.1
     # via
