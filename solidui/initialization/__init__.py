@@ -109,8 +109,8 @@ class SolidUIAppInitializer:
         appbuilder.add_api(JobRestApi)
         appbuilder.add_api(JobPageRestApi)
 
-        for rule in self.solidui_app.url_map.iter_rules():
-            print(rule)
+        # for rule in self.solidui_app.url_map.iter_rules():
+        #     print(rule)
 
     def configure_fab(self) -> None:
         if self.config["SILENCE_FAB"]:
