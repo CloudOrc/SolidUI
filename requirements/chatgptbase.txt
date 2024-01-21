@@ -1,0 +1,4 @@
+openai
+colorama
+json
+tiktoken
