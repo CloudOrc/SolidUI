@@ -72,7 +72,7 @@ export OPENAI_API_KEY="your_api_key"
 2. **Install Dependencies**:
 
    ```bash
-   pip install -r requirements.txt
+   pip install -r chatgptbase.txt
    ```
 
 ## Prepare your data:
